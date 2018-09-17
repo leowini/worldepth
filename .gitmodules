@@ -1,3 +1,6 @@
 [submodule "lsd_slam"]
 	path = lsd_slam
 	url = https://github.com/tum-vision/lsd_slam.git
+[submodule "ORB_SLAM2"]
+	path = ORB_SLAM2
+	url = https://github.com/raulmur/ORB_SLAM2.git
