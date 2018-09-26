@@ -1,2 +1,4 @@
  - Motion Model - this is the motion tracking from the accelerometer, gyroscope in the actual phone - there is probably
     an easy way to make use of these sensors in XCode.
+ - Initialization
+ - Bundle Adustment / Pose Graph Optimization
