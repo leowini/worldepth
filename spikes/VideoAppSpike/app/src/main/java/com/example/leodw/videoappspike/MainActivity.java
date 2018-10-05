@@ -2,6 +2,7 @@ package com.example.leodw.videoappspike;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.ImageFormat;
 import android.graphics.Point;
@@ -158,12 +159,132 @@ public class MainActivity extends AppCompatActivity {
         textureView = (TextureView) findViewById(R.id.textureView);
         assert textureView != null;
         captureBtn = (Button) findViewById(R.id.captureBtn);
-        captureBtn.setOnClickListener(new View.OnClickListener() {
+//        //captureBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                takePicture();
+//            }
+//        });
+        captureBtn.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                takePicture();
+            public boolean onTouch(View v, MotionEvent event) {
+                //Hold capture button to start recording
+                if(event.getAction() == MotionEvent.ACTION_DOWN) {
+                    startRecording();
+                    takePicture();
+                    return true;
+                }
+
+                //Release capture button to end recording
+                if(event.getAction() == MotionEvent.ACTION_UP) {
+                    stopRecording();
+                    takePicture();
+                    return true;
+                }
+                return false;
             }
         });
+    }
+
+    private void startRecording() {
+        if (cameraDevice == null) return;
+        CameraManager manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
+        try{
+            CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraDevice.getId());
+            Size[] jpegSizes = null;
+            if (characteristics != null) {
+                jpegSizes = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
+                        .getOutputSizes(ImageFormat.JPEG);
+                //capture images with custom sizes
+                int width = 640;
+                int height = 480;
+                if (jpegSizes != null && jpegSizes.length > 0) {
+                    width = jpegSizes[0].getWidth();
+                    height = jpegSizes[0].getHeight();
+                }
+                ImageReader reader = ImageReader.newInstance(width,height,ImageFormat.JPEG, 1);
+                List<Surface> outputSurface = new ArrayList<>(2);
+                outputSurface.add(reader.getSurface());
+                outputSurface.add(new Surface(textureView.getSurfaceTexture()));
+
+                final CaptureRequest.Builder captureBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_RECORD);
+                captureBuilder.addTarget(reader.getSurface());
+                captureBuilder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO);
+
+                //check orientation base on device
+                int rotation = getWindowManager().getDefaultDisplay().getRotation();
+                captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS.get(rotation));
+
+                file = new File(Environment.getExternalStorageDirectory()+"/"+UUID.randomUUID().toString()+".jpg");
+                ImageReader.OnImageAvailableListener readerListener = new ImageReader.OnImageAvailableListener() {
+                    @Override
+                    public void onImageAvailable(ImageReader reader) {
+                        Image image = null;
+                        try{
+                            image = reader.acquireLatestImage();
+                            ByteBuffer buffer = image.getPlanes()[0].getBuffer();
+                            byte[] bytes = new byte[buffer.capacity()];
+                            buffer.get(bytes);
+                            save(bytes);
+                        }
+                        catch (FileNotFoundException e){
+                            e.printStackTrace();
+                        }
+                        catch (IOException e){
+                            e.printStackTrace();
+                        }
+                        finally {
+                            if(image!=null){
+                                image.close();
+                            }
+                        }
+                    }
+
+                    private void save(byte[] bytes) throws IOException {
+                        OutputStream outputStream = null;
+                        try{
+                            outputStream = new FileOutputStream(file);
+                            outputStream.write(bytes);
+                        }finally {
+                            if(outputStream != null) {
+                                outputStream.close();
+                            }
+                        }
+                    }
+                };
+
+                reader.setOnImageAvailableListener(readerListener,mBackgroundHandler);
+                final CameraCaptureSession.CaptureCallback captureListener = new CameraCaptureSession.CaptureCallback() {
+                    @Override
+                    public void onCaptureCompleted(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, @NonNull TotalCaptureResult result) {
+                        super.onCaptureCompleted(session, request, result);
+                        Toast.makeText(MainActivity.this, "Saved "+file, Toast. LENGTH_SHORT).show();
+                        createCameraPreview();
+                    }
+                };
+
+                cameraDevice.createCaptureSession(outputSurface, new CameraCaptureSession.StateCallback() {
+                    @Override
+                    public void onConfigured( @NonNull CameraCaptureSession session) {
+                        try{
+                            session.capture(captureBuilder.build(),captureListener,mBackgroundHandler);
+                        }catch (CameraAccessException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onConfigureFailed( @NonNull CameraCaptureSession session) {
+
+                    }
+                }, mBackgroundHandler);
+            }
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void stopRecording() {
     }
 
     private void takePicture() {
@@ -219,6 +340,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
                     }
+
                     private void save(byte[] bytes) throws IOException {
                         OutputStream outputStream = null;
                         try{
