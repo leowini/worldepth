@@ -1,0 +1,2 @@
+# Referenced at C:\git\worldepth2\Spikes\CameraAppSpike\feature\build\intermediates\merged_manifests\debugFeature\processDebugFeatureManifest\merged\AndroidManifest.xml:20
+-keep class com.example.leodw.cameraappspike.feature.MainActivity { <init>(...); }

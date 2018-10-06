@@ -1,0 +1,7 @@
+#Thu Oct 04 14:38:46 MST 2018
+base.0=C\:\\git\\worldepth2\\Spikes\\CameraAppSpike\\base\\build\\intermediates\\transforms\\dexMerger\\feature\\debug\\0
+path.1=classes.dex
+renamed.1=classes2.dex
+path.0=classes.dex
+renamed.0=classes.dex
+base.1=C\:\\git\\worldepth2\\Spikes\\CameraAppSpike\\base\\build\\intermediates\\transforms\\dexMerger\\feature\\debug\\1
