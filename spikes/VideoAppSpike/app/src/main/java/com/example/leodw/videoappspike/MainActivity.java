@@ -59,33 +59,33 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
-        private static final String TAG = "CameraActivity";
+    private static final String TAG = "CameraActivity";
 
-        private Button captureBtn;
-        private AutoFitTextureView textureView;
+    private Button captureBtn;
+    private AutoFitTextureView textureView;
 
-        private boolean recordingState;
+    private boolean recordingState;
 
-        private Integer sensorOrientation;
-        private static final int SENSOR_ORIENTATION_DEFAULT_DEGREES = 90;
-        private static final int SENSOR_ORIENTATION_INVERSE_DEGREES = 270;
-        private static final SparseIntArray DEFAULT_ORIENTATIONS = new SparseIntArray();
-        private static final SparseIntArray INVERSE_ORIENTATIONS = new SparseIntArray();
+    private Integer sensorOrientation;
+    private static final int SENSOR_ORIENTATION_DEFAULT_DEGREES = 90;
+    private static final int SENSOR_ORIENTATION_INVERSE_DEGREES = 270;
+    private static final SparseIntArray DEFAULT_ORIENTATIONS = new SparseIntArray();
+    private static final SparseIntArray INVERSE_ORIENTATIONS = new SparseIntArray();
+    static {
+        DEFAULT_ORIENTATIONS.append(Surface.ROTATION_0, 90);
+        DEFAULT_ORIENTATIONS.append(Surface.ROTATION_90, 0);
+        DEFAULT_ORIENTATIONS.append(Surface.ROTATION_180, 270);
+        DEFAULT_ORIENTATIONS.append(Surface.ROTATION_270, 180);
+    }
 
-        static {
-            DEFAULT_ORIENTATIONS.append(Surface.ROTATION_0, 90);
-            DEFAULT_ORIENTATIONS.append(Surface.ROTATION_90, 0);
-            DEFAULT_ORIENTATIONS.append(Surface.ROTATION_180, 270);
-            DEFAULT_ORIENTATIONS.append(Surface.ROTATION_270, 180);
-        }
+    static {
+        INVERSE_ORIENTATIONS.append(Surface.ROTATION_0, 270);
+        INVERSE_ORIENTATIONS.append(Surface.ROTATION_90, 180);
+        INVERSE_ORIENTATIONS.append(Surface.ROTATION_180, 90);
+        INVERSE_ORIENTATIONS.append(Surface.ROTATION_270, 0);
+    }
 
-        static {
-            INVERSE_ORIENTATIONS.append(Surface.ROTATION_0, 270);
-            INVERSE_ORIENTATIONS.append(Surface.ROTATION_90, 180);
-            INVERSE_ORIENTATIONS.append(Surface.ROTATION_180, 90);
-            INVERSE_ORIENTATIONS.append(Surface.ROTATION_270, 0);
-        }
-
+    //Camera stuff
     private String cameraId;
     private CameraDevice cameraDevice;
     private CameraCaptureSession previewSession;
@@ -103,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
     //Video file
     private String nextVideoAbsolutePath;
 
+    //Opens the camera when the SurfaceTexture becomes available
     TextureView.SurfaceTextureListener textureListener = new TextureView.SurfaceTextureListener() {
         @Override
         public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
@@ -124,7 +125,8 @@ public class MainActivity extends AppCompatActivity {
 
         }
     };
-    
+
+    //Starts preview when the camera opens
     CameraDevice.StateCallback stateCallback = new CameraDevice.StateCallback() {
         @Override
         public void onOpened( @NonNull CameraDevice camera) {
@@ -148,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    //chooses the optimal size for the preview based on the aspectRatio of the video and the preview
     private static Size chooseOptimalSize(Size[] choices, int width, int height, Size aspectRatio) {
         // Collect the supported resolutions that are at least as big as the preview Surface
         List<Size> bigEnough = new ArrayList<>();
@@ -168,6 +171,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //chooses a video size based on a four thirds aspect ratio and a width equal to 1080.
+    // Basically selects 1920 by 1080 video size.
     private static Size chooseVideoSize(Size[] choices) {
         for (Size size : choices) {
             if (size.getWidth() == size.getHeight() * 4 / 3 && size.getWidth() <= 1080) {
@@ -178,6 +183,7 @@ public class MainActivity extends AppCompatActivity {
         return choices[choices.length - 1];
     }
 
+    //Starts a preview when ...
     private void startPreview() {
         if (null == cameraDevice || !textureView.isAvailable() || null == previewSize) {
             return;
@@ -213,6 +219,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //Updates the preview when ...
     private void updatePreview() {
         if (cameraDevice == null)
             return;
@@ -226,10 +233,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     private void setUpCaptureRequestBuilder(CaptureRequest.Builder builder) {
         builder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO);
     }
 
+    //When the MainActivity is initialized, this gets the textureView and the captureBtn from the layout.
+    //It also sets an OnTouchListener for the captureBtn.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -268,6 +278,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //starts the video recording
     private void startRecording() {
         if (cameraDevice == null) return;
         CameraManager manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
@@ -321,7 +332,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
+    //stops the video recording
     private void stopRecording() {
         mediaRecorder.stop();
         mediaRecorder.reset();
@@ -334,6 +345,7 @@ public class MainActivity extends AppCompatActivity {
         startPreview();
     }
 
+    //open camera and create a MediaRecorder instance.
     private void openCamera(int width, int height) {
         CameraManager manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
         try {
@@ -391,6 +403,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //makes sure that the permissions are all good.
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if(requestCode == REQUEST_CAMERA_PERMISSION){
@@ -402,6 +415,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //helps the activity start up again.
     @Override
     protected void onResume() {
         super.onResume();
@@ -412,6 +426,7 @@ public class MainActivity extends AppCompatActivity {
             textureView.setSurfaceTextureListener(textureListener);
     }
 
+    //pauses the activity.
     @Override
     protected void onPause() {
         closeCamera();
@@ -419,6 +434,7 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
     }
 
+    //Stops the camera thread.
     private void stopBackgroundThread() {
         mBackgroundThread.quitSafely();
         try{
@@ -431,12 +447,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //The camera runs on a thread in the background.
     private void startBackgroundThread() {
         mBackgroundThread = new HandlerThread("Camera Background");
         mBackgroundThread.start();
         mBackgroundHandler = new Handler(mBackgroundThread.getLooper());
     }
-    
+
+    //Gets the mediaRecorder ready to record.
     private void setUpMediaRecorder() throws IOException {
         mediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
@@ -461,12 +479,14 @@ public class MainActivity extends AppCompatActivity {
         Log.d("prepared", "the mediarecorder is reader");
     }
 
+    //creates a new path - file name = current time.
     private String getVideoFilePath() {
         final File dir = getExternalFilesDir(null);
         return (dir == null ? "" : (dir.getAbsolutePath() + "/"))
                 + System.currentTimeMillis() + ".mp4";
     }
-    
+
+    //closes the camera preview
     private void closePreviewSession() {
         if (previewSession != null) {
             previewSession.close();
@@ -474,6 +494,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //sets the transform for the cameraview.
     private void configureTransform(int viewWidth, int viewHeight) {
         if (null == textureView || null == previewSize) {
             return;
@@ -497,7 +518,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     static class CompareSizesByArea implements Comparator<Size> {
-
         @Override
         public int compare(Size lhs, Size rhs) {
             // We cast here to ensure the multiplications won't overflow
