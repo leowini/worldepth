@@ -16,14 +16,14 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/pushPointCloudBtn"
+        android:id="@+id/pushUserBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="109dp"
         android:layout_marginTop="149dp"
         android:layout_marginEnd="121dp"
         android:layout_marginBottom="21dp"
-        android:text="Push Point Cloud"
+        android:text="Push User"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
