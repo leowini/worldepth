@@ -1,7 +1,7 @@
 package RestApi;
 
 public class Rest {
-    void AddUser(String userInformation) {
+    void PushUser(String userInfo) {
         //Do Http request.
     }
 }

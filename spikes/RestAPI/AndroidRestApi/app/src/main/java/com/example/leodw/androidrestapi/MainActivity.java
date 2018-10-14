@@ -11,18 +11,18 @@ import RestApi.Rest;
 public class MainActivity extends AppCompatActivity {
 
     private IRest mIRest = (IRest) new Rest();
-    private Button pushUserBtn;
+    private Button pushPointCloudBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        pushUserBtn = (Button) findViewById(R.id.pushUserBtn);
-        pushUserBtn.setOnClickListener(new View.OnClickListener() {
+        pushPointCloudBtn = (Button) findViewById(R.id.pushPointCloudBtn);
+        pushPointCloudBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mIRest.AddUser("Leo");
+                mIRest.PushUser("Leo");
             }
         });
     }
