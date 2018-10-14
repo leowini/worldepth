@@ -1,7 +1,7 @@
 package RestApi;
 
-public class Rest {
-    void PushUser(String userInfo) {
+public class Rest implements IRest {
+    public void PushUser(String userInfo) {
         //Do Http request.
     }
 }
