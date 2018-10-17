@@ -1,0 +1,634 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		70FBE728216EE8B900F598A9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70FBE727216EE8B900F598A9 /* AppDelegate.swift */; };
+		70FBE72A216EE8B900F598A9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70FBE729216EE8B900F598A9 /* ViewController.swift */; };
+		70FBE72D216EE8B900F598A9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 70FBE72B216EE8B900F598A9 /* Main.storyboard */; };
+		70FBE72F216EE8BA00F598A9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 70FBE72E216EE8BA00F598A9 /* Assets.xcassets */; };
+		70FBE732216EE8BA00F598A9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 70FBE730216EE8BA00F598A9 /* LaunchScreen.storyboard */; };
+		70FBE73D216EE8BA00F598A9 /* WorldepthTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70FBE73C216EE8BA00F598A9 /* WorldepthTests.swift */; };
+		70FBE748216EE8BA00F598A9 /* WorldepthUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70FBE747216EE8BA00F598A9 /* WorldepthUITests.swift */; };
+		70FBE759216EE94300F598A9 /* ExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70FBE758216EE94300F598A9 /* ExploreViewController.swift */; };
+		70FBE75B216EE99B00F598A9 /* PostEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70FBE75A216EE99B00F598A9 /* PostEnvironment.swift */; };
+		70FBE75D216EF18700F598A9 /* PostTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70FBE75C216EF18700F598A9 /* PostTableCell.swift */; };
+		70FBE75F216F068300F598A9 /* SceneKit Asset Catalog.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 70FBE75E216F068300F598A9 /* SceneKit Asset Catalog.scnassets */; };
+		70FBE761216FDA3C00F598A9 /* ModelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70FBE760216FDA3C00F598A9 /* ModelView.swift */; };
+		70FBE7632171082A00F598A9 /* PostDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70FBE7622171082A00F598A9 /* PostDetailViewController.swift */; };
+		70FBE76B2173B6C700F598A9 /* FrameExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70FBE76A2173B6C700F598A9 /* FrameExtractor.swift */; };
+		70FBE76D2173BDB500F598A9 /* CameraCaptureController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70FBE76C2173BDB500F598A9 /* CameraCaptureController.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		70FBE739216EE8BA00F598A9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 70FBE71C216EE8B900F598A9 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 70FBE723216EE8B900F598A9;
+			remoteInfo = Worldepth;
+		};
+		70FBE744216EE8BA00F598A9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 70FBE71C216EE8B900F598A9 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 70FBE723216EE8B900F598A9;
+			remoteInfo = Worldepth;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		70FBE724216EE8B900F598A9 /* Worldepth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Worldepth.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		70FBE727216EE8B900F598A9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		70FBE729216EE8B900F598A9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		70FBE72C216EE8B900F598A9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		70FBE72E216EE8BA00F598A9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		70FBE731216EE8BA00F598A9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		70FBE733216EE8BA00F598A9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		70FBE738216EE8BA00F598A9 /* WorldepthTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WorldepthTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		70FBE73C216EE8BA00F598A9 /* WorldepthTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldepthTests.swift; sourceTree = "<group>"; };
+		70FBE73E216EE8BA00F598A9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		70FBE743216EE8BA00F598A9 /* WorldepthUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WorldepthUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		70FBE747216EE8BA00F598A9 /* WorldepthUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldepthUITests.swift; sourceTree = "<group>"; };
+		70FBE749216EE8BA00F598A9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		70FBE758216EE94300F598A9 /* ExploreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreViewController.swift; sourceTree = "<group>"; };
+		70FBE75A216EE99B00F598A9 /* PostEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostEnvironment.swift; sourceTree = "<group>"; };
+		70FBE75C216EF18700F598A9 /* PostTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableCell.swift; sourceTree = "<group>"; };
+		70FBE75E216F068300F598A9 /* SceneKit Asset Catalog.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = "SceneKit Asset Catalog.scnassets"; sourceTree = "<group>"; };
+		70FBE760216FDA3C00F598A9 /* ModelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelView.swift; sourceTree = "<group>"; };
+		70FBE7622171082A00F598A9 /* PostDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailViewController.swift; sourceTree = "<group>"; };
+		70FBE76A2173B6C700F598A9 /* FrameExtractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameExtractor.swift; sourceTree = "<group>"; };
+		70FBE76C2173BDB500F598A9 /* CameraCaptureController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraCaptureController.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		70FBE721216EE8B900F598A9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		70FBE735216EE8BA00F598A9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		70FBE740216EE8BA00F598A9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		70FBE71B216EE8B900F598A9 = {
+			isa = PBXGroup;
+			children = (
+				70FBE726216EE8B900F598A9 /* Worldepth */,
+				70FBE73B216EE8BA00F598A9 /* WorldepthTests */,
+				70FBE746216EE8BA00F598A9 /* WorldepthUITests */,
+				70FBE725216EE8B900F598A9 /* Products */,
+				70FBE755216EE8D100F598A9 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		70FBE725216EE8B900F598A9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				70FBE724216EE8B900F598A9 /* Worldepth.app */,
+				70FBE738216EE8BA00F598A9 /* WorldepthTests.xctest */,
+				70FBE743216EE8BA00F598A9 /* WorldepthUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		70FBE726216EE8B900F598A9 /* Worldepth */ = {
+			isa = PBXGroup;
+			children = (
+				70FBE727216EE8B900F598A9 /* AppDelegate.swift */,
+				70FBE729216EE8B900F598A9 /* ViewController.swift */,
+				70FBE72B216EE8B900F598A9 /* Main.storyboard */,
+				70FBE7622171082A00F598A9 /* PostDetailViewController.swift */,
+				70FBE760216FDA3C00F598A9 /* ModelView.swift */,
+				70FBE75C216EF18700F598A9 /* PostTableCell.swift */,
+				70FBE75A216EE99B00F598A9 /* PostEnvironment.swift */,
+				70FBE758216EE94300F598A9 /* ExploreViewController.swift */,
+				70FBE76A2173B6C700F598A9 /* FrameExtractor.swift */,
+				70FBE76C2173BDB500F598A9 /* CameraCaptureController.swift */,
+				70FBE72E216EE8BA00F598A9 /* Assets.xcassets */,
+				70FBE75E216F068300F598A9 /* SceneKit Asset Catalog.scnassets */,
+				70FBE730216EE8BA00F598A9 /* LaunchScreen.storyboard */,
+				70FBE733216EE8BA00F598A9 /* Info.plist */,
+			);
+			path = Worldepth;
+			sourceTree = "<group>";
+		};
+		70FBE73B216EE8BA00F598A9 /* WorldepthTests */ = {
+			isa = PBXGroup;
+			children = (
+				70FBE73C216EE8BA00F598A9 /* WorldepthTests.swift */,
+				70FBE73E216EE8BA00F598A9 /* Info.plist */,
+			);
+			path = WorldepthTests;
+			sourceTree = "<group>";
+		};
+		70FBE746216EE8BA00F598A9 /* WorldepthUITests */ = {
+			isa = PBXGroup;
+			children = (
+				70FBE747216EE8BA00F598A9 /* WorldepthUITests.swift */,
+				70FBE749216EE8BA00F598A9 /* Info.plist */,
+			);
+			path = WorldepthUITests;
+			sourceTree = "<group>";
+		};
+		70FBE755216EE8D100F598A9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		70FBE723216EE8B900F598A9 /* Worldepth */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 70FBE74C216EE8BA00F598A9 /* Build configuration list for PBXNativeTarget "Worldepth" */;
+			buildPhases = (
+				70FBE720216EE8B900F598A9 /* Sources */,
+				70FBE721216EE8B900F598A9 /* Frameworks */,
+				70FBE722216EE8B900F598A9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Worldepth;
+			productName = Worldepth;
+			productReference = 70FBE724216EE8B900F598A9 /* Worldepth.app */;
+			productType = "com.apple.product-type.application";
+		};
+		70FBE737216EE8BA00F598A9 /* WorldepthTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 70FBE74F216EE8BA00F598A9 /* Build configuration list for PBXNativeTarget "WorldepthTests" */;
+			buildPhases = (
+				70FBE734216EE8BA00F598A9 /* Sources */,
+				70FBE735216EE8BA00F598A9 /* Frameworks */,
+				70FBE736216EE8BA00F598A9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				70FBE73A216EE8BA00F598A9 /* PBXTargetDependency */,
+			);
+			name = WorldepthTests;
+			productName = WorldepthTests;
+			productReference = 70FBE738216EE8BA00F598A9 /* WorldepthTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		70FBE742216EE8BA00F598A9 /* WorldepthUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 70FBE752216EE8BA00F598A9 /* Build configuration list for PBXNativeTarget "WorldepthUITests" */;
+			buildPhases = (
+				70FBE73F216EE8BA00F598A9 /* Sources */,
+				70FBE740216EE8BA00F598A9 /* Frameworks */,
+				70FBE741216EE8BA00F598A9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				70FBE745216EE8BA00F598A9 /* PBXTargetDependency */,
+			);
+			name = WorldepthUITests;
+			productName = WorldepthUITests;
+			productReference = 70FBE743216EE8BA00F598A9 /* WorldepthUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		70FBE71C216EE8B900F598A9 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1000;
+				LastUpgradeCheck = 1000;
+				ORGANIZATIONNAME = "Soren Dahl";
+				TargetAttributes = {
+					70FBE723216EE8B900F598A9 = {
+						CreatedOnToolsVersion = 10.0;
+						SystemCapabilities = {
+							com.apple.Maps.iOS = {
+								enabled = 0;
+							};
+						};
+					};
+					70FBE737216EE8BA00F598A9 = {
+						CreatedOnToolsVersion = 10.0;
+						TestTargetID = 70FBE723216EE8B900F598A9;
+					};
+					70FBE742216EE8BA00F598A9 = {
+						CreatedOnToolsVersion = 10.0;
+						TestTargetID = 70FBE723216EE8B900F598A9;
+					};
+				};
+			};
+			buildConfigurationList = 70FBE71F216EE8B900F598A9 /* Build configuration list for PBXProject "Worldepth" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 70FBE71B216EE8B900F598A9;
+			productRefGroup = 70FBE725216EE8B900F598A9 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				70FBE723216EE8B900F598A9 /* Worldepth */,
+				70FBE737216EE8BA00F598A9 /* WorldepthTests */,
+				70FBE742216EE8BA00F598A9 /* WorldepthUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		70FBE722216EE8B900F598A9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				70FBE75F216F068300F598A9 /* SceneKit Asset Catalog.scnassets in Resources */,
+				70FBE732216EE8BA00F598A9 /* LaunchScreen.storyboard in Resources */,
+				70FBE72F216EE8BA00F598A9 /* Assets.xcassets in Resources */,
+				70FBE72D216EE8B900F598A9 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		70FBE736216EE8BA00F598A9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		70FBE741216EE8BA00F598A9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		70FBE720216EE8B900F598A9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				70FBE761216FDA3C00F598A9 /* ModelView.swift in Sources */,
+				70FBE7632171082A00F598A9 /* PostDetailViewController.swift in Sources */,
+				70FBE72A216EE8B900F598A9 /* ViewController.swift in Sources */,
+				70FBE76D2173BDB500F598A9 /* CameraCaptureController.swift in Sources */,
+				70FBE728216EE8B900F598A9 /* AppDelegate.swift in Sources */,
+				70FBE759216EE94300F598A9 /* ExploreViewController.swift in Sources */,
+				70FBE75D216EF18700F598A9 /* PostTableCell.swift in Sources */,
+				70FBE76B2173B6C700F598A9 /* FrameExtractor.swift in Sources */,
+				70FBE75B216EE99B00F598A9 /* PostEnvironment.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		70FBE734216EE8BA00F598A9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				70FBE73D216EE8BA00F598A9 /* WorldepthTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		70FBE73F216EE8BA00F598A9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				70FBE748216EE8BA00F598A9 /* WorldepthUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		70FBE73A216EE8BA00F598A9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 70FBE723216EE8B900F598A9 /* Worldepth */;
+			targetProxy = 70FBE739216EE8BA00F598A9 /* PBXContainerItemProxy */;
+		};
+		70FBE745216EE8BA00F598A9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 70FBE723216EE8B900F598A9 /* Worldepth */;
+			targetProxy = 70FBE744216EE8BA00F598A9 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		70FBE72B216EE8B900F598A9 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				70FBE72C216EE8B900F598A9 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		70FBE730216EE8BA00F598A9 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				70FBE731216EE8BA00F598A9 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		70FBE74A216EE8BA00F598A9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		70FBE74B216EE8BA00F598A9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		70FBE74D216EE8BA00F598A9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = L3PW3CJHY8;
+				INFOPLIST_FILE = Worldepth/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = soren.Worldepth;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		70FBE74E216EE8BA00F598A9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = L3PW3CJHY8;
+				INFOPLIST_FILE = Worldepth/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = soren.Worldepth;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		70FBE750216EE8BA00F598A9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = WorldepthTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = soren.WorldepthTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Worldepth.app/Worldepth";
+			};
+			name = Debug;
+		};
+		70FBE751216EE8BA00F598A9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = WorldepthTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = soren.WorldepthTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Worldepth.app/Worldepth";
+			};
+			name = Release;
+		};
+		70FBE753216EE8BA00F598A9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = WorldepthUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = soren.WorldepthUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Worldepth;
+			};
+			name = Debug;
+		};
+		70FBE754216EE8BA00F598A9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = WorldepthUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = soren.WorldepthUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Worldepth;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		70FBE71F216EE8B900F598A9 /* Build configuration list for PBXProject "Worldepth" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				70FBE74A216EE8BA00F598A9 /* Debug */,
+				70FBE74B216EE8BA00F598A9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		70FBE74C216EE8BA00F598A9 /* Build configuration list for PBXNativeTarget "Worldepth" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				70FBE74D216EE8BA00F598A9 /* Debug */,
+				70FBE74E216EE8BA00F598A9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		70FBE74F216EE8BA00F598A9 /* Build configuration list for PBXNativeTarget "WorldepthTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				70FBE750216EE8BA00F598A9 /* Debug */,
+				70FBE751216EE8BA00F598A9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		70FBE752216EE8BA00F598A9 /* Build configuration list for PBXNativeTarget "WorldepthUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				70FBE753216EE8BA00F598A9 /* Debug */,
+				70FBE754216EE8BA00F598A9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 70FBE71C216EE8B900F598A9 /* Project object */;
+}
