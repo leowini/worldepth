@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">VideoAppSpike</string>
+    <string name="capture_button_text">Capture</string>
+</resources>
