@@ -2,9 +2,14 @@ package com.example.leodw.minimumviableproduct;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.TextureView;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
+
+    private Button mCaptureButton;
+    private TextureView mTextureView;
 
     // Used to load the 'native-lib' library on application startup.
     static {
@@ -19,6 +24,9 @@ public class MainActivity extends AppCompatActivity {
         // Example of a call to a native method
         TextView tv = (TextView) findViewById(R.id.sample_text);
         tv.setText(stringFromJNI());
+
+        mTextureView = (TextureView) findViewById(R.id.textureView);
+        mCaptureButton = (Button) findViewById(R.id.captureButton);
     }
 
     /**
