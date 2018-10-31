@@ -259,19 +259,19 @@ public class ExtractMpegFramesTest {
                     // to SurfaceTexture to convert to a texture.  The API doesn't guarantee
                     // that the texture will be available before the call returns, so we
                     // need to wait for the onFrameAvailable callback to fire.
-                    decoder.releaseOutputBuffer(decoderStatus, doRender);
-                    if (doRender) {
-                        if (VERBOSE) Log.d(TAG, "awaiting decode of frame " + decodeCount);
-                        outputSurface.awaitNewImage();
-                        outputSurface.drawImage(true);
+                        decoder.releaseOutputBuffer(decoderStatus, doRender);
+                        if (doRender) {
+                            if (VERBOSE) Log.d(TAG, "awaiting decode of frame " + decodeCount);
+                            outputSurface.awaitNewImage();
+                            outputSurface.drawImage(true);
 
-                        if (decodeCount < MAX_FRAMES) {
-                            File outputFile = new File(FILES_DIR,
-                                    String.format("frame-%02d.png", decodeCount));
-                            long startWhen = System.nanoTime();
-                            outputSurface.saveFrame(outputFile.toString());
-                            frameSaveTime += System.nanoTime() - startWhen;
-                        }
+                            if (decodeCount < MAX_FRAMES) {
+                                File outputFile = new File(FILES_DIR,
+                                        String.format("frame-%02d.png", decodeCount));
+                                long startWhen = System.nanoTime();
+                                outputSurface.saveFrame(outputFile.toString());
+                                frameSaveTime += System.nanoTime() - startWhen;
+                            }
                         decodeCount++;
                     }
                 }
