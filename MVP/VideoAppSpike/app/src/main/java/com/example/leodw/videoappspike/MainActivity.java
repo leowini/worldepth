@@ -24,6 +24,9 @@ import android.hardware.camera2.TotalCaptureResult;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.Image;
 import android.media.ImageReader;
+import android.media.MediaCodec;
+import android.media.MediaExtractor;
+import android.media.MediaFormat;
 import android.media.MediaRecorder;
 import android.opengl.EGL14;
 import android.opengl.EGLConfig;
@@ -72,6 +75,11 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "CameraActivity";
     private static final boolean VERBOSE = false;           // lots of logging
+
+    private static final File FILES_DIR = Environment.getExternalStorageDirectory();
+    private static final int MAX_FRAMES = 10;
+
+    private CodecOutputSurface codecOutputSurface;
 
     private Button captureBtn;
     private AutoFitTextureView textureView;
@@ -308,10 +316,11 @@ public class MainActivity extends AppCompatActivity {
                 previewBuilder.addTarget(recorderSurface);
 
                 //Set up Surface for SLAM
-                CodecOutputSurface slamOutputSurface = new CodecOutputSurface(previewSize.getWidth(),previewSize.getHeight());
-                Surface slamSurface = slamOutputSurface.getSurface();
+                codecOutputSurface = new CodecOutputSurface(previewSize.getWidth(), previewSize.getHeight());
+                Surface slamSurface = codecOutputSurface.getSurface();
                 surfaces.add(slamSurface);
                 previewBuilder.addTarget(slamSurface);
+                ExtractFrames();
 
                 cameraDevice.createCaptureSession(surfaces, new CameraCaptureSession.StateCallback() {
                     @Override
@@ -1031,6 +1040,218 @@ public class MainActivity extends AppCompatActivity {
         public static void checkLocation(int location, String label) {
             if (location < 0) {
                 throw new RuntimeException("Unable to locate '" + label + "' in program");
+            }
+        }
+    }
+
+
+    /**
+     * entry point
+     */
+    public void ExtractFrames() throws Throwable {
+        ExtractFramesWrapper.runTest(this);
+    }
+
+    /**
+     * Wraps extractFrames().  This is necessary because SurfaceTexture will try to use
+     * the looper in the current thread if one exists, and the CTS tests create one on the
+     * test thread.
+     * <p>
+     * The wrapper propagates exceptions thrown by the worker thread back to the caller.
+     */
+
+    private static class ExtractFramesWrapper implements Runnable {
+        private Throwable mThrowable;
+        private MainActivity mTest;
+
+        private ExtractFramesWrapper(MainActivity test) {
+            mTest = test;
+        }
+
+        @Override
+        public void run() {
+            try {
+                mTest.extractFrames();
+            } catch (Throwable th) {
+                mThrowable = th;
+            }
+        }
+
+        /**
+         * Entry point.
+         */
+        public static void runTest(MainActivity obj) throws Throwable {
+            ExtractFramesWrapper wrapper = new ExtractFramesWrapper(obj);
+            Thread th = new Thread(wrapper, "codec test");
+            th.start();
+            th.join();
+            if (wrapper.mThrowable != null) {
+                throw wrapper.mThrowable;
+            }
+        }
+    }
+
+    /**
+     * Tests extraction from an MP4 to a series of PNG files.
+     * <p>
+     * We scale the video to 640x480 for the PNG just to demonstrate that we can scale the
+     * video with the GPU.  If the input video has a different aspect ratio, we could preserve
+     * it by adjusting the GL viewport to get letterboxing or pillarboxing, but generally if
+     * you're extracting frames you don't want black bars.
+     */
+    private void extractFrames() throws IOException {
+        MediaCodec decoder = null;
+        codecOutputSurface = null;
+        //MediaExtractor extractor = null;
+        int saveWidth = 640;
+        int saveHeight = 480;
+
+        try {
+//            File inputFile = new File(FILES_DIR, INPUT_FILE);   // must be an absolute path
+//            // The MediaExtractor error messages aren't very useful.  Check to see if the input
+//            // file exists so we can throw a better one if it's not there.
+//            if (!inputFile.canRead()) {
+//                throw new FileNotFoundException("Unable to read " + inputFile);
+//            }
+//
+//            extractor = new MediaExtractor();
+//            extractor.setDataSource(inputFile.toString());
+//            int trackIndex = selectTrack(extractor);
+//            if (trackIndex < 0) {
+//                throw new RuntimeException("No video track found in " + inputFile);
+//           }
+//            extractor.selectTrack(trackIndex);
+//
+//            MediaFormat format = extractor.getTrackFormat(trackIndex);
+//            if (VERBOSE) {
+//                Log.d(TAG, "Video size is " + format.getInteger(MediaFormat.KEY_WIDTH) + "x" +
+//                        format.getInteger(MediaFormat.KEY_HEIGHT));
+//            }
+
+            // Could use width/height from the MediaFormat to get full-size frames.
+            codecOutputSurface = new CodecOutputSurface(saveWidth, saveHeight);
+
+            // Create a MediaCodec decoder, and configure it with the MediaFormat from the
+            // extractor.  It's very important to use the format from the extractor because
+            // it contains a copy of the CSD-0/CSD-1 codec-specific data chunks.
+            String mime = format.getString(MediaFormat.KEY_MIME);
+            decoder = MediaCodec.createDecoderByType(mime);
+            decoder.configure(format, codecOutputSurface.getSurface(), null, 0);
+            decoder.start();
+
+            doExtract(/*extractor, trackIndex,*/ decoder, codecOutputSurface);
+        } finally {
+            // release everything we grabbed
+            if (codecOutputSurface != null) {
+                codecOutputSurface.release();
+                codecOutputSurface = null;
+            }
+            if (decoder != null) {
+                decoder.stop();
+                decoder.release();
+                decoder = null;
+            }
+//            if (extractor != null) {
+//                extractor.release();
+//                extractor = null;
+//            }
+        }
+    }
+
+    /**
+     * Work loop.
+     */
+    static void doExtract(/*MediaExtractor extractor, int trackIndex,*/ MediaCodec decoder,
+            CodecOutputSurface codecOutputSurface) throws IOException {
+        final int TIMEOUT_USEC = 10000;
+//        ByteBuffer[] decoderInputBuffers = decoder.getInputBuffers();
+        MediaCodec.BufferInfo info = new MediaCodec.BufferInfo();
+        int inputChunk = 0;
+        int decodeCount = 0;
+        long frameSaveTime = 0;
+
+        boolean outputDone = false;
+        boolean inputDone = false;
+        while (!outputDone) {
+            if (VERBOSE) Log.d(TAG, "loop");
+
+            // Feed more data to the decoder.
+            if (!inputDone) {
+                int inputBufIndex = decoder.dequeueInputBuffer(TIMEOUT_USEC);
+                if (inputBufIndex >= 0) {
+//                    ByteBuffer inputBuf = decoderInputBuffers[inputBufIndex];
+                    ByteBuffer inputBuf = decoder.getInputBuffer(inputBufIndex);
+                    // Read the sample data into the ByteBuffer.  This neither respects nor
+                    // updates inputBuf's position, limit, etc.
+//                    int chunkSize = extractor.readSampleData(inputBuf, 0);
+                    if (chunkSize < 0) {
+                        // End of stream -- send empty frame with EOS flag set.
+                        decoder.queueInputBuffer(inputBufIndex, 0, 0, 0L,
+                                MediaCodec.BUFFER_FLAG_END_OF_STREAM);
+                        inputDone = true;
+                        if (VERBOSE) Log.d(TAG, "sent input EOS");
+                    } else {
+//                        if (extractor.getSampleTrackIndex() != trackIndex) {
+//                            Log.w(TAG, "WEIRD: got sample from track " +
+//                                    extractor.getSampleTrackIndex() + ", expected " + trackIndex);
+//                        }
+//                        long presentationTimeUs = extractor.getSampleTime();
+                        decoder.queueInputBuffer(inputBufIndex, 0, chunkSize,
+                                presentationTimeUs, 0 /*flags*/);
+                        if (VERBOSE) {
+                            Log.d(TAG, "submitted frame " + inputChunk + " to dec, size=" +
+                                    chunkSize);
+                        }
+                        inputChunk++;
+//                        extractor.advance();
+                    }
+                } else {
+                    if (VERBOSE) Log.d(TAG, "input buffer not available");
+                }
+            }
+
+            if (!outputDone) {
+                int decoderStatus = decoder.dequeueOutputBuffer(info, TIMEOUT_USEC);
+                if (decoderStatus == MediaCodec.INFO_TRY_AGAIN_LATER) {
+                    // no output available yet
+                    if (VERBOSE) Log.d(TAG, "no output from decoder available");
+                } /*else if (decoderStatus == MediaCodec.INFO_OUTPUT_BUFFERS_CHANGED) {
+                    // not important for us, since we're using Surface
+                    if (VERBOSE) Log.d(TAG, "decoder output buffers changed");*/
+                else if (decoderStatus == MediaCodec.INFO_OUTPUT_FORMAT_CHANGED) {
+                    MediaFormat newFormat = decoder.getOutputFormat();
+                    if (VERBOSE) Log.d(TAG, "decoder output format changed: " + newFormat);
+                } else if (decoderStatus < 0) {
+                    //fail("unexpected result from decoder.dequeueOutputBuffer: " + decoderStatus);
+            } else {  //decoderStatus >= 0
+                if (VERBOSE) Log.d(TAG, "surface decoder given buffer " + /*decoderStatus + */
+                        " (size=" + info.size + ")");
+                if ((info.flags & MediaCodec.BUFFER_FLAG_END_OF_STREAM) != 0) {
+                    if (VERBOSE) Log.d(TAG, "output EOS");
+                    outputDone = true;
+                }
+
+                boolean doRender = (info.size != 0);
+
+                // As soon as we call releaseOutputBuffer, the buffer will be forwarded
+                // to SurfaceTexture to convert to a texture.  The API doesn't guarantee
+                // that the texture will be available before the call returns, so we
+                // need to wait for the onFrameAvailable callback to fire.
+                decoder.releaseOutputBuffer(decoderStatus, doRender);
+                if (doRender) {
+                    if (VERBOSE) Log.d(TAG, "awaiting decode of frame " + decodeCount);
+                    codecOutputSurface.awaitNewImage();
+                    codecOutputSurface.drawImage(true);
+
+                    if (decodeCount < MAX_FRAMES) {
+                        File outputFile = new File(FILES_DIR,
+                                String.format("frame-%02d.png", decodeCount));
+                        long startWhen = System.nanoTime();
+                        codecOutputSurface.saveFrame(outputFile.toString());
+                        frameSaveTime += System.nanoTime() - startWhen;
+                    }
+                    decodeCount++;
+                }
             }
         }
     }
