@@ -323,9 +323,9 @@ public class MainActivity extends AppCompatActivity {
 //                previewBuilder.addTarget(recorderSurface);
 
                 //Set up Surface for SLAM
-//                Surface slamSurface = codecOutputSurface.getSurface();
-//                surfaces.add(slamSurface);
-//                previewBuilder.addTarget(slamSurface);
+                Surface slamSurface = codecOutputSurface.getSurface();
+                surfaces.add(slamSurface);
+                previewBuilder.addTarget(slamSurface);
 
                 cameraDevice.createCaptureSession(surfaces, new CameraCaptureSession.StateCallback() {
                     @Override
@@ -345,11 +345,12 @@ public class MainActivity extends AppCompatActivity {
 //                                doExtractTest();
 //                            }
 //                        });
-                        try {
-                            FrameExtractWrapper.runTest(MainActivity.this);
-                        } catch (Throwable throwable) {
-                            throwable.printStackTrace();
-                        }
+//                        try {
+//                            FrameExtractWrapper.runTest(MainActivity.this);
+//                        } catch (Throwable throwable) {
+//                            throwable.printStackTrace();
+//                        }
+                        doExtractTest();
                     }
 
                     @Override
@@ -1300,32 +1301,32 @@ public class MainActivity extends AppCompatActivity {
         int saveHeight = 480;
         codecOutputSurface = new CodecOutputSurface(videoSize.getWidth(), videoSize.getHeight());
     }
-
-    public void frameExtraction() throws Throwable {
-        FrameExtractWrapper.runTest(this);
-    }
-
-    private static class FrameExtractWrapper implements Runnable{
-        private Throwable mThrowable;
-        private MainActivity mActivity;
-        private FrameExtractWrapper(MainActivity test) {
-            mActivity = test;
-        }
-        public void run() {
-            try {
-                mActivity.doExtractTest();
-            } catch(Throwable th) {
-                mThrowable = th;
-            }
-        }
-        public static void runTest(MainActivity mainActivity) throws Throwable{
-            FrameExtractWrapper wrapper = new FrameExtractWrapper(mainActivity);
-            Thread th = new Thread(wrapper, "extract test");
-            th.start();
-            th.join();
-            if (wrapper.mThrowable != null) {
-                throw wrapper.mThrowable;
-            }
-        }
-    }
+//
+//    public void frameExtraction() throws Throwable {
+//        FrameExtractWrapper.runTest(this);
+//    }
+//
+//    private static class FrameExtractWrapper implements Runnable{
+//        private Throwable mThrowable;
+//        private MainActivity mActivity;
+//        private FrameExtractWrapper(MainActivity test) {
+//            mActivity = test;
+//        }
+//        public void run() {
+//            try {
+//                mActivity.doExtractTest();
+//            } catch(Throwable th) {
+//                mThrowable = th;
+//            }
+//        }
+//        public static void runTest(MainActivity mainActivity) throws Throwable{
+//            FrameExtractWrapper wrapper = new FrameExtractWrapper(mainActivity);
+//            Thread th = new Thread(wrapper, "extract test");
+//            th.start();
+//            th.join();
+//            if (wrapper.mThrowable != null) {
+//                throw wrapper.mThrowable;
+//            }
+//        }
+//    }
 }
