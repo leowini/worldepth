@@ -282,7 +282,7 @@ public class MainActivity extends AppCompatActivity {
                         return false;
                     case (MotionEvent.ACTION_UP):
                         if (recordingState) {
-                            stopRecording();
+                            //stopRecording();
                             recordingState = false;
                             return true;
                         }
@@ -300,7 +300,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             closePreviewSession();
             setUpMediaRecorder();
-            initCodec();
+            //initCodec();
             if (null == cameraDevice || !textureView.isAvailable() || null == previewSize) {
                 return;
             }
@@ -323,31 +323,26 @@ public class MainActivity extends AppCompatActivity {
                 previewBuilder.addTarget(recorderSurface);
 
                 //Set up Surface for SLAM
-                surfaces.add(mInputSurface);
-                previewBuilder.addTarget(mInputSurface);
+                Surface slamSurface = codecOutputSurface.getSurface();
+                surfaces.add(slamSurface);
+                previewBuilder.addTarget(slamSurface);
 
                 cameraDevice.createCaptureSession(surfaces, new CameraCaptureSession.StateCallback() {
                     @Override
                     public void onConfigured(@NonNull CameraCaptureSession cameraCaptureSession) {
                         previewSession = cameraCaptureSession;
                         updatePreview();
+//                        runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                // Start recording
+//                                mMediaRecorder.start();
+//                            }
+//                        });
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                // Start recording
-                                mMediaRecorder.start();
-                            }
-                        });
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    doExtract();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                } finally {
-                                    stopExtract();
-                                }
+                                doExtractTest();
                             }
                         });
                     }
@@ -1116,7 +1111,7 @@ public class MainActivity extends AppCompatActivity {
         // it contains a copy of the CSD-0/CSD-1 codec-specific data chunks. *CameraDevice
 //            String mime = format.getString(MediaFormat.KEY_MIME);
         mEncoder = MediaCodec.createEncoderByType(MIME_TYPE);
-        mEncoder.configure(format, codecOutputSurface.getSurface(), null, 0);
+        mEncoder.configure(format, /*codecOutputSurface.getSurface()*/null, null, 0);
         mInputSurface = mEncoder.createInputSurface();
         mEncoder.start();
     }
@@ -1235,6 +1230,40 @@ public class MainActivity extends AppCompatActivity {
                         decodeCount++;
                     }
                 }
+            }
+        }
+    }
+
+    private void doExtractTest() {
+        final int TIMEOUT_USEC = 10000;
+//        ByteBuffer[] mEncoderInputBuffers = mEncoder.getInputBuffers();
+        MediaCodec.BufferInfo info = new MediaCodec.BufferInfo();
+        int inputChunk = 0;
+        int decodeCount = 0;
+        long frameSaveTime = 0;
+
+        boolean outputDone = false;
+        boolean inputDone = false;
+        while (!outputDone) {
+            if (VERBOSE) Log.d(TAG, "loop");
+            boolean doRender = (info.size != 0);
+            if (doRender) {
+                if (VERBOSE) Log.d(TAG, "awaiting decode of frame " + decodeCount);
+                codecOutputSurface.awaitNewImage();
+                codecOutputSurface.drawImage(true);
+
+                if (decodeCount < MAX_FRAMES) {
+                    File outputFile = new File(FILES_DIR,
+                            String.format("frame-%02d.png", decodeCount));
+                    long startWhen = System.nanoTime();
+                    try {
+                        codecOutputSurface.saveFrame(outputFile.toString());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    frameSaveTime += System.nanoTime() - startWhen;
+                }
+                decodeCount++;
             }
         }
     }
