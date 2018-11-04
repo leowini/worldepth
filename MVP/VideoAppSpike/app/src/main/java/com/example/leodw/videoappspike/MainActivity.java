@@ -299,8 +299,8 @@ public class MainActivity extends AppCompatActivity {
         CameraManager manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
         try {
             closePreviewSession();
-            setUpMediaRecorder();
-            //initCodec();
+            //setUpMediaRecorder();
+            initCodecTest();
             if (null == cameraDevice || !textureView.isAvailable() || null == previewSize) {
                 return;
             }
@@ -317,10 +317,10 @@ public class MainActivity extends AppCompatActivity {
                 surfaces.add(previewSurface);
                 previewBuilder.addTarget(previewSurface);
 
-                // Set up Surface for the mMediaRecorder
-                Surface recorderSurface = mMediaRecorder.getSurface();
-                surfaces.add(recorderSurface);
-                previewBuilder.addTarget(recorderSurface);
+//                // Set up Surface for the mMediaRecorder
+//                Surface recorderSurface = mMediaRecorder.getSurface();
+//                surfaces.add(recorderSurface);
+//                previewBuilder.addTarget(recorderSurface);
 
                 //Set up Surface for SLAM
                 Surface slamSurface = codecOutputSurface.getSurface();
@@ -1284,5 +1284,13 @@ public class MainActivity extends AppCompatActivity {
 //                extractor.release();
 //                extractor = null;
 //            }
+    }
+
+    private void initCodecTest() throws IOException {
+        codecOutputSurface = null;
+        //MediaExtractor extractor = null;
+        int saveWidth = 640;
+        int saveHeight = 480;
+        codecOutputSurface = new CodecOutputSurface(videoSize.getWidth(), videoSize.getHeight());
     }
 }
