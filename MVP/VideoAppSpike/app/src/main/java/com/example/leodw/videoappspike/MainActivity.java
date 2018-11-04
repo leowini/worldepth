@@ -323,9 +323,9 @@ public class MainActivity extends AppCompatActivity {
 //                previewBuilder.addTarget(recorderSurface);
 
                 //Set up Surface for SLAM
-                Surface slamSurface = codecOutputSurface.getSurface();
-                surfaces.add(slamSurface);
-                previewBuilder.addTarget(slamSurface);
+//                Surface slamSurface = codecOutputSurface.getSurface();
+//                surfaces.add(slamSurface);
+//                previewBuilder.addTarget(slamSurface);
 
                 cameraDevice.createCaptureSession(surfaces, new CameraCaptureSession.StateCallback() {
                     @Override
@@ -339,12 +339,17 @@ public class MainActivity extends AppCompatActivity {
 //                                mMediaRecorder.start();
 //                            }
 //                        });
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                doExtractTest();
-                            }
-                        });
+//                        runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                doExtractTest();
+//                            }
+//                        });
+                        try {
+                            FrameExtractWrapper.runTest(MainActivity.this);
+                        } catch (Throwable throwable) {
+                            throwable.printStackTrace();
+                        }
                     }
 
                     @Override
@@ -1244,10 +1249,11 @@ public class MainActivity extends AppCompatActivity {
 
         boolean outputDone = false;
         boolean inputDone = false;
+        Log.d(TAG, "Extracting.......");
         while (!outputDone) {
             if (VERBOSE) Log.d(TAG, "loop");
-            boolean doRender = (info.size != 0);
-            if (doRender) {
+            //boolean doRender = (info.size != 0);
+            if (true) {
                 if (VERBOSE) Log.d(TAG, "awaiting decode of frame " + decodeCount);
                 codecOutputSurface.awaitNewImage();
                 codecOutputSurface.drawImage(true);
@@ -1261,6 +1267,7 @@ public class MainActivity extends AppCompatActivity {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                    Log.d(TAG, "Image Saved!");
                     frameSaveTime += System.nanoTime() - startWhen;
                 }
                 decodeCount++;
@@ -1292,5 +1299,33 @@ public class MainActivity extends AppCompatActivity {
         int saveWidth = 640;
         int saveHeight = 480;
         codecOutputSurface = new CodecOutputSurface(videoSize.getWidth(), videoSize.getHeight());
+    }
+
+    public void frameExtraction() throws Throwable {
+        FrameExtractWrapper.runTest(this);
+    }
+
+    private static class FrameExtractWrapper implements Runnable{
+        private Throwable mThrowable;
+        private MainActivity mActivity;
+        private FrameExtractWrapper(MainActivity test) {
+            mActivity = test;
+        }
+        public void run() {
+            try {
+                mActivity.doExtractTest();
+            } catch(Throwable th) {
+                mThrowable = th;
+            }
+        }
+        public static void runTest(MainActivity mainActivity) throws Throwable{
+            FrameExtractWrapper wrapper = new FrameExtractWrapper(mainActivity);
+            Thread th = new Thread(wrapper, "extract test");
+            th.start();
+            th.join();
+            if (wrapper.mThrowable != null) {
+                throw wrapper.mThrowable;
+            }
+        }
     }
 }
