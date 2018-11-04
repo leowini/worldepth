@@ -1121,25 +1121,6 @@ public class MainActivity extends AppCompatActivity {
         mInputSurface = mEncoder.createInputSurface();
         mEncoder.start();
     }
-    /*            doExtract(/*extractor, trackIndex,*/ /*inputSurface, mEncoder, codecOutputSurface);
-        } finally {
-            // release everything we grabbed
-            if (codecOutputSurface != null) {
-                inputSurface.release();
-                codecOutputSurface.release();
-                codecOutputSurface = null;
-            }
-            if (mEncoder != null) {
-                mEncoder.stop();
-                mEncoder.release();
-                mEncoder = null;
-            }
-//            if (extractor != null) {
-//                extractor.release();
-//                extractor = null;
-//            }
-        }
-    } */
 
     /**
      * Work loop.
