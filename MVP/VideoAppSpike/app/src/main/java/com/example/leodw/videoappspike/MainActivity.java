@@ -81,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String MIME_TYPE = "video/avc";
     private SlamOutputSurface mSlamOutputSurface;
+    private SurfaceTexture mSlamSurfaceTexture;
 
     private static final File FILES_DIR = Environment.getExternalStorageDirectory();
     private static final int MAX_FRAMES = 10;
@@ -171,7 +172,6 @@ public class MainActivity extends AppCompatActivity {
             camera = null;
         }
     };
-    private MediaCodec.BufferInfo mBufferInfo;
 
     private static Size chooseOptimalSize(Size[] choices, int width, int height, Size aspectRatio) {
         // Collect the supported resolutions that are at least as big as the preview Surface
@@ -504,6 +504,9 @@ public class MainActivity extends AppCompatActivity {
         private SurfaceTexture mSurfaceTexture;
         private Surface mSurface;
 
+        private EGLSurfaceTextureListener mListener;
+        private Handler mListenerHandler;
+
         private EGLDisplay mEGLDisplay = EGL14.EGL_NO_DISPLAY;
         private EGLContext mEGLContext = EGL14.EGL_NO_CONTEXT;
         private EGLSurface mEGLSurface = EGL14.EGL_NO_SURFACE;
@@ -527,6 +530,12 @@ public class MainActivity extends AppCompatActivity {
             mWidth = width;
             mHeight = height;
 
+//            eglSetup();
+//            makeCurrent();
+//            setup();
+        }
+
+        public void configure() {
             eglSetup();
             makeCurrent();
             setup();
@@ -776,6 +785,15 @@ public class MainActivity extends AppCompatActivity {
                 throw new RuntimeException(msg + ": EGL error: 0x" + Integer.toHexString(error));
             }
         }
+
+        /**
+         * Configure the listener for the EglSurface creation and the handler used to receive the
+         * callback.
+         */
+        public void setListener(EGLSurfaceTextureListener listener, Handler handler) {
+            EGLSurfaceTextureListener mListener = listener;
+            Handler mListenerHandler = handler;
+        }
     }
 
     /**
@@ -997,8 +1015,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void doExtractTest() {
+        mSlamOutputSurface.configure();
         int decodeCount = 0;
-
         boolean outputDone = false;
         Log.d(TAG, "Extracting.......");
         while (!outputDone) {
@@ -1030,18 +1048,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-//    /**
-//     * Tests extraction from an MP4 to a series of PNG files.
-//     * <p>
-//     * We scale the video to 640x480 for the PNG just to demonstrate that we can scale the
-//     * video with the GPU.  If the input video has a different aspect ratio, we could preserve
-//     * it by adjusting the GL viewport to get letterboxing or pillarboxing, but generally if
-//     * you're extracting frames you don't want black bars.
-//     */
-
     private void initCodecTest() throws IOException {
         mSlamOutputSurface = null;
         mSlamOutputSurface = new SlamOutputSurface(/*videoSize.getWidth()*/1920, /*videoSize.getHeight()*/1080);
+        mSlamOutputSurface.setListener({ (SurfaceTexture texture ->
+                mSlamSurfaceTexture = texture
+        }, new Handler(Looper.getMainLooper()));
+    }
+
+    public interface EGLSurfaceTextureListener {
+        void onSurfaceTextureReady(SurfaceTexture surfaceTexture);
     }
 
     private static class ExtractWrapper implements Runnable {
