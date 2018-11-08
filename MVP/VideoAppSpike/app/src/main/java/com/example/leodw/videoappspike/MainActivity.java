@@ -262,12 +262,6 @@ public class MainActivity extends AppCompatActivity {
         textureView = (AutoFitTextureView) findViewById(R.id.textureView);
         assert textureView != null;
         captureBtn = (Button) findViewById(R.id.captureBtn);
-//        //captureBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                takePicture();
-//            }
-//        });
         captureBtn.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -294,6 +288,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startRecording() {
+        initOutputSurface();
+        mSlamOutputSurface.setListener(texture -> {
+            mSlamSurfaceTexture = texture;
+            startCameraRecording();
+        }, Handler(Looper.getMainLooper())
+    }
+
+    private void startCameraRecording() {
         if (cameraDevice == null) return;
         CameraManager manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
         try {
@@ -503,6 +505,7 @@ public class MainActivity extends AppCompatActivity {
         private MainActivity.STextureRender mTextureRender;
         private SurfaceTexture mSurfaceTexture;
         private Surface mSurface;
+        private int decodeCount = 0;
 
         private EGLSurfaceTextureListener mListener;
         private Handler mListenerHandler;
@@ -530,12 +533,6 @@ public class MainActivity extends AppCompatActivity {
             mWidth = width;
             mHeight = height;
 
-//            eglSetup();
-//            makeCurrent();
-//            setup();
-        }
-
-        public void configure() {
             eglSetup();
             makeCurrent();
             setup();
@@ -717,7 +714,19 @@ public class MainActivity extends AppCompatActivity {
                 }
                 mFrameAvailable = true;
                 mFrameSyncObject.notifyAll();
+
             }
+            drawImage(true);
+            File outputFile = new File(FILES_DIR,
+                    String.format("frame-%02d.png", decodeCount));
+            long startWhen = System.nanoTime();
+            try {
+                saveFrame(outputFile.toString());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Log.d(TAG, "Image Saved!");
+            decodeCount++;
         }
 
         /**
@@ -1051,7 +1060,7 @@ public class MainActivity extends AppCompatActivity {
     private void initCodecTest() throws IOException {
         mSlamOutputSurface = null;
         mSlamOutputSurface = new SlamOutputSurface(/*videoSize.getWidth()*/1920, /*videoSize.getHeight()*/1080);
-        mSlamOutputSurface.setListener({ (SurfaceTexture texture ->
+        mSlamOutputSurface.setListener({ texture ->
                 mSlamSurfaceTexture = texture
         }, new Handler(Looper.getMainLooper()));
     }
