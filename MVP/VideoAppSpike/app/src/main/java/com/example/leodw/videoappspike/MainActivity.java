@@ -79,8 +79,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String MIME_TYPE = "video/avc";
     private Renderer mRenderer;
-    private SurfaceTexture mSurfaceTexture;
-    private Surface mSurface;
+    private SurfaceTexture mSlamOutputSurface;
 //    private SlamOutputSurface mSlamOutputSurface;
 //    private ExtractWrapper wrapper;
 //    private EGLSurfaceTextureListener mListener;
@@ -278,19 +277,18 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
-        mRenderer = new Renderer(new GLRenderer(this));
-        mRenderer.setListener((texture) -> {
-            mSurfaceTexture = texture;
-            startCameraRecording(texture);
-        }, new Handler(Looper.getMainLooper()));
     }
 
     private void startRecording() {
-        mRenderer.startRecording(1920,1080);
+        mRenderer = new Renderer();
+        mRenderer.setListener( texture -> {
+            mSlamOutputSurface = texture;
+            startCameraRecording();
+        }, new Handler(Looper.getMainLooper()));
+        mRenderer.start(1920,1080);
     }
 
-    private void startCameraRecording(SurfaceTexture surfaceTexture) {
+    private void startCameraRecording() {
         if (cameraDevice == null) return;
         CameraManager manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
         closePreviewSession();
@@ -311,9 +309,9 @@ public class MainActivity extends AppCompatActivity {
             previewBuilder.addTarget(previewSurface);
 
             //Set up Surface for SLAM
-            mSurface = new Surface(mSurfaceTexture);
-            surfaces.add(mSurface);
-            previewBuilder.addTarget(mSurface);
+            Surface slamOutputSurface = new Surface(mSlamOutputSurface);
+            surfaces.add(slamOutputSurface);
+            previewBuilder.addTarget(slamOutputSurface);
 
             cameraDevice.createCaptureSession(surfaces, new CameraCaptureSession.StateCallback() {
                 @Override
