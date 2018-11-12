@@ -206,16 +206,11 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
 
     private void dispose() {
         if (mEGLDisplay != EGL14.EGL_NO_DISPLAY) {
-            //Timber.d("Disposing EGL resources");
             boolean released;
             released = EGL14.eglTerminate(mEGLDisplay);
-            //Timber.d("eglTerminate: %b", released);
             released = EGL14.eglMakeCurrent(mEGLDisplay, EGL14.EGL_NO_SURFACE, EGL14.EGL_NO_SURFACE, EGL14.EGL_NO_CONTEXT);
-            //Timber.d("eglMakeCurrent NONE: %b", released);
             released = EGL14.eglDestroyContext(mEGLDisplay, mEGLContext);
-            //Timber.d("eglDestroyContext: %b", released);
             released = EGL14.eglReleaseThread();
-            //Timber.d("eglReleaseThread: %b", released);
         }
 
         mEGLDisplay = EGL14.EGL_NO_DISPLAY;

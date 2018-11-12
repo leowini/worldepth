@@ -75,7 +75,6 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "CameraActivity";
-    private static final boolean VERBOSE = false;           // lots of logging
 
     private Renderer mRenderer;
     private SurfaceTexture mSlamOutputSurface;
@@ -112,8 +111,6 @@ public class MainActivity extends AppCompatActivity {
     private Semaphore mCameraOpenCloseLock = new Semaphore(1);
     private Size mPreviewSize;
 
-    //Save to File
-    private File file;
     private static final int REQUEST_CAMERA_PERMISSION = 200;
     private Handler mBackgroundHandler;
     private HandlerThread mBackgroundThread;
@@ -212,9 +209,7 @@ public class MainActivity extends AppCompatActivity {
 
                         @Override
                         public void onConfigureFailed(@NonNull CameraCaptureSession session) {
-                            if (null != MainActivity.this) {
-                                Toast.makeText(MainActivity.this, "Failed", Toast.LENGTH_SHORT).show();
-                            }
+                            Toast.makeText(MainActivity.this, "Failed", Toast.LENGTH_SHORT).show();
                         }
                     }, mBackgroundHandler);
         } catch (CameraAccessException e) {
@@ -270,7 +265,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void startRecording() {
         mRenderer = new Renderer();
-        mRenderer.setOnSurfaceTextureReadyListener( texture -> {
+        mRenderer.setOnSurfaceTextureReadyListener(texture -> {
             mSlamOutputSurface = texture;
             startCameraRecording();
         }, new Handler(Looper.getMainLooper()));
@@ -278,7 +273,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "preview height: " + mPreviewSize.getHeight());
         Log.d(TAG, "textureView width: " + textureView.getWidth());
         Log.d(TAG, "textureView height: " + textureView.getHeight());
-        mRenderer.start(textureView.getWidth(),textureView.getHeight());
+        mRenderer.start(textureView.getWidth(), textureView.getHeight());
     }
 
     private void startCameraRecording() {
@@ -320,16 +315,12 @@ public class MainActivity extends AppCompatActivity {
             }, mBackgroundHandler);
         } catch (CameraAccessException e) {
             e.printStackTrace();
-        } catch (Throwable throwable) {
-            throwable.printStackTrace();
         }
     }
 
 
     private void stopRecording() {
-        if (null != MainActivity.this) {
-            Log.d(TAG, "Video saved: " + nextVideoAbsolutePath);
-        }
+        Log.d(TAG, "Video saved: " + nextVideoAbsolutePath);
         nextVideoAbsolutePath = null;
         startPreview();
     }
