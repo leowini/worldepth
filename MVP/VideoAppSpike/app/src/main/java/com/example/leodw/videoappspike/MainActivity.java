@@ -77,16 +77,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "CameraActivity";
     private static final boolean VERBOSE = false;           // lots of logging
 
-    private static final String MIME_TYPE = "video/avc";
     private Renderer mRenderer;
     private SurfaceTexture mSlamOutputSurface;
-//    private SlamOutputSurface mSlamOutputSurface;
-//    private ExtractWrapper wrapper;
-//    private EGLSurfaceTextureListener mListener;
-//    private Handler mListenerHandler;
-
-    private static final File FILES_DIR = Environment.getExternalStorageDirectory();
-    private static final int MAX_FRAMES = 10;
 
     private Button captureBtn;
     private AutoFitTextureView textureView;
@@ -118,9 +110,7 @@ public class MainActivity extends AppCompatActivity {
     private CameraCaptureSession mPreviewSession;
     private CaptureRequest.Builder mPreviewBuilder;
     private Semaphore mCameraOpenCloseLock = new Semaphore(1);
-    private Size videoSize;
     private Size mPreviewSize;
-    //private MediaRecorder mMediaRecorder = new MediaRecorder();
 
     //Save to File
     private File file;
@@ -202,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         try {
-            closemPreviewSession();
+            closePreviewSession();
             SurfaceTexture texture = textureView.getSurfaceTexture();
             assert texture != null;
             texture.setDefaultBufferSize(textureView.getWidth(), textureView.getHeight());
@@ -294,12 +284,12 @@ public class MainActivity extends AppCompatActivity {
     private void startCameraRecording() {
         if (cameraDevice == null) return;
         CameraManager manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
-        closemPreviewSession();
+        closePreviewSession();
         if (null == cameraDevice || !textureView.isAvailable() || null == mPreviewSize) {
             return;
         }
         try {
-            closemPreviewSession();
+            closePreviewSession();
             SurfaceTexture texture = textureView.getSurfaceTexture();
             assert texture != null;
             texture.setDefaultBufferSize(textureView.getWidth(), textureView.getHeight());
@@ -337,6 +327,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void stopRecording() {
+        mRenderer.stop();
         if (null != MainActivity.this) {
 //            Toast.makeText(MainActivity.this, "Video saved: " + nextVideoAbsolutePath,
 //                    Toast.LENGTH_SHORT).show();
@@ -385,15 +376,11 @@ public class MainActivity extends AppCompatActivity {
     private void closeCamera() {
         try {
             mCameraOpenCloseLock.acquire();
-            closemPreviewSession();
+            closePreviewSession();
             if (null != cameraDevice) {
                 cameraDevice.close();
                 cameraDevice = null;
             }
-//            if (null != mMediaRecorder) {
-//                mMediaRecorder.release();
-//                mMediaRecorder = null;
-//            }
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
@@ -446,7 +433,7 @@ public class MainActivity extends AppCompatActivity {
         mBackgroundHandler = new Handler(mBackgroundThread.getLooper());
     }
 
-    private void closemPreviewSession() {
+    private void closePreviewSession() {
         if (mPreviewSession != null) {
             mPreviewSession.close();
             mPreviewSession = null;

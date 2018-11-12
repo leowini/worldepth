@@ -33,7 +33,6 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
     private EglSurfaceTextureListener mListener;
     private Handler mListenerHandler;
     private final int mSurfaceWidth = 640, mSurfaceHeight = 480;
-    //    private IGLRenderer rendererx;
     private STextureRender renderer;
     private int decodeCount = 1;
     private static final File FILES_DIR = Environment.getExternalStorageDirectory();
@@ -42,10 +41,6 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
     private EGLDisplay mEGLDisplay;
     private EGLSurface mEGLSurface;
     private EGLContext mEGLContext;
-
-//    public Renderer(GLRenderer renderer) {
-//        this.renderer = renderer;
-//    }
 
     @Override
     public void onFrameAvailable(SurfaceTexture surfaceTexture) {
