@@ -327,10 +327,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void stopRecording() {
-        mRenderer.stop();
         if (null != MainActivity.this) {
-//            Toast.makeText(MainActivity.this, "Video saved: " + nextVideoAbsolutePath,
-//                    Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Video saved: " + nextVideoAbsolutePath);
         }
         nextVideoAbsolutePath = null;

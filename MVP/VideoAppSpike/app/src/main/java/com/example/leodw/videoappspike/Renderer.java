@@ -14,7 +14,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import android.view.Surface;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -27,7 +26,6 @@ import java.util.concurrent.Semaphore;
 
 public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
     private static final String TAG = "Renderer";
-    //    private final EglHelper mEglHelper = new EglHelper();
     private SurfaceTexture mEglSurfaceTexture;
     private RenderThread mRenderThread;
     private EglSurfaceTextureListener mListener;
@@ -83,10 +81,11 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
     }
 
     public void start(int width, int height) {
+        if (width <= 0 || height <= 0) {
+            throw new IllegalArgumentException();
+        }
         mRenderThread = new RenderThread();
         mRenderThread.start();
-//        mSurfaceWidth = width;
-//        mSurfaceHeight = height;
     }
 
     public void stop() {
