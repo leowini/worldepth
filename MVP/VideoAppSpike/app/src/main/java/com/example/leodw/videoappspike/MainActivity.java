@@ -256,27 +256,24 @@ public class MainActivity extends AppCompatActivity {
         textureView = (AutoFitTextureView) findViewById(R.id.textureView);
         assert textureView != null;
         captureBtn = (Button) findViewById(R.id.captureBtn);
-        captureBtn.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case (MotionEvent.ACTION_DOWN):
-                        if (!mRecordingState) {
-                            startRecording();
-                            mRecordingState = true;
-                            return true;
-                        }
-                        return false;
-                    case (MotionEvent.ACTION_UP):
-                        if (mRecordingState) {
-                            stopRecording();
-                            mRecordingState = false;
-                            return true;
-                        }
-                        return false;
-                    default:
-                        return false;
-                }
+        captureBtn.setOnTouchListener((v, event) -> {
+            switch (event.getAction()) {
+                case (MotionEvent.ACTION_DOWN):
+                    if (!mRecordingState) {
+                        startRecording();
+                        mRecordingState = true;
+                        return true;
+                    }
+                    return false;
+                case (MotionEvent.ACTION_UP):
+                    if (mRecordingState) {
+                        stopRecording();
+                        mRecordingState = false;
+                        return true;
+                    }
+                    return false;
+                default:
+                    return false;
             }
         });
     }

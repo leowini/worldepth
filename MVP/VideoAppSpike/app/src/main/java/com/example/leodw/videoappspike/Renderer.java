@@ -97,13 +97,10 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
     public void stop() {
         if (mRenderThread == null) return;
 
-        mRenderThread.handler.post(new Runnable() {
-            @Override
-            public void run() {
-                Looper looper = Looper.myLooper();
-                if (looper != null) {
-                    looper.quit();
-                }
+        mRenderThread.handler.post(() -> {
+            Looper looper = Looper.myLooper();
+            if (looper != null) {
+                looper.quit();
             }
         });
         mRenderThread = null;
