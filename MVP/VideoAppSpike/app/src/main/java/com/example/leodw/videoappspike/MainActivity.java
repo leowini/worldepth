@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
     private Button captureBtn;
     private AutoFitTextureView textureView;
 
-    private boolean recordingState;
+    private boolean mRecordingState;
 
     private Integer sensorOrientation;
     private static final int SENSOR_ORIENTATION_DEFAULT_DEGREES = 90;
@@ -115,11 +115,11 @@ public class MainActivity extends AppCompatActivity {
 
     private String cameraId;
     private CameraDevice cameraDevice;
-    private CameraCaptureSession previewSession;
-    private CaptureRequest.Builder previewBuilder;
-    private Semaphore cameraOpenCloseLock = new Semaphore(1);
+    private CameraCaptureSession mPreviewSession;
+    private CaptureRequest.Builder mPreviewBuilder;
+    private Semaphore mCameraOpenCloseLock = new Semaphore(1);
     private Size videoSize;
-    private Size previewSize;
+    private Size mPreviewSize;
     //private MediaRecorder mMediaRecorder = new MediaRecorder();
 
     //Save to File
@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
         public void onOpened(@NonNull CameraDevice camera) {
             cameraDevice = camera;
             startPreview();
-            cameraOpenCloseLock.release();
+            mCameraOpenCloseLock.release();
             if (null != textureView) {
                 configureTransform(textureView.getWidth(), textureView.getHeight());
             }
@@ -175,6 +175,8 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+
+    //This method is failing to find a suitable Size, returning choices[0] which is 4032 by 3024
     private static Size chooseOptimalSize(Size[] choices, int width, int height, TextureView aspectRatio) {
         // Collect the supported resolutions that are at least as big as the preview Surface
         List<Size> bigEnough = new ArrayList<>();
@@ -196,25 +198,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startPreview() {
-        if (null == cameraDevice || !textureView.isAvailable() || null == previewSize) {
+        if (null == cameraDevice || !textureView.isAvailable() || null == mPreviewSize) {
             return;
         }
         try {
-            closePreviewSession();
+            closemPreviewSession();
             SurfaceTexture texture = textureView.getSurfaceTexture();
             assert texture != null;
             texture.setDefaultBufferSize(textureView.getWidth(), textureView.getHeight());
-            previewBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
+            mPreviewBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
 
             final Surface previewSurface = new Surface(texture);
-            previewBuilder.addTarget(previewSurface);
+            mPreviewBuilder.addTarget(previewSurface);
 
             cameraDevice.createCaptureSession(Collections.singletonList(previewSurface),
                     new CameraCaptureSession.StateCallback() {
 
                         @Override
                         public void onConfigured(@NonNull CameraCaptureSession session) {
-                            previewSession = session;
+                            mPreviewSession = session;
                             updatePreview();
                         }
 
@@ -233,11 +235,11 @@ public class MainActivity extends AppCompatActivity {
     private void updatePreview() {
         if (cameraDevice == null)
             return;
-        setUpCaptureRequestBuilder(previewBuilder);
+        setUpCaptureRequestBuilder(mPreviewBuilder);
         HandlerThread thread = new HandlerThread("CameraPreview");
         thread.start();
         try {
-            previewSession.setRepeatingRequest(previewBuilder.build(), null, mBackgroundHandler);
+            mPreviewSession.setRepeatingRequest(mPreviewBuilder.build(), null, mBackgroundHandler);
         } catch (CameraAccessException e1) {
             e1.printStackTrace();
         }
@@ -259,16 +261,16 @@ public class MainActivity extends AppCompatActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case (MotionEvent.ACTION_DOWN):
-                        if (!recordingState) {
+                        if (!mRecordingState) {
                             startRecording();
-                            recordingState = true;
+                            mRecordingState = true;
                             return true;
                         }
                         return false;
                     case (MotionEvent.ACTION_UP):
-                        if (recordingState) {
+                        if (mRecordingState) {
                             stopRecording();
-                            recordingState = false;
+                            mRecordingState = false;
                             return true;
                         }
                         return false;
@@ -281,42 +283,46 @@ public class MainActivity extends AppCompatActivity {
 
     private void startRecording() {
         mRenderer = new Renderer();
-        mRenderer.setListener( texture -> {
+        mRenderer.setOnSurfaceTextureReadyListener( texture -> {
             mSlamOutputSurface = texture;
             startCameraRecording();
         }, new Handler(Looper.getMainLooper()));
-        mRenderer.start(1920,1080);
+        Log.d(TAG, "preview width: " + mPreviewSize.getWidth());
+        Log.d(TAG, "preview height: " + mPreviewSize.getHeight());
+        Log.d(TAG, "textureView width: " + textureView.getWidth());
+        Log.d(TAG, "textureView height: " + textureView.getHeight());
+        mRenderer.start(textureView.getWidth(),textureView.getHeight());
     }
 
     private void startCameraRecording() {
         if (cameraDevice == null) return;
         CameraManager manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
-        closePreviewSession();
-        if (null == cameraDevice || !textureView.isAvailable() || null == previewSize) {
+        closemPreviewSession();
+        if (null == cameraDevice || !textureView.isAvailable() || null == mPreviewSize) {
             return;
         }
         try {
-            closePreviewSession();
+            closemPreviewSession();
             SurfaceTexture texture = textureView.getSurfaceTexture();
             assert texture != null;
-            texture.setDefaultBufferSize(previewSize.getWidth(), previewSize.getHeight());
-            previewBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_RECORD);
+            texture.setDefaultBufferSize(textureView.getWidth(), textureView.getHeight());
+            mPreviewBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_RECORD);
             List<Surface> surfaces = new ArrayList<>();
 
             // Set up Surface for the camera preview
             Surface previewSurface = new Surface(texture);
             surfaces.add(previewSurface);
-            previewBuilder.addTarget(previewSurface);
+            mPreviewBuilder.addTarget(previewSurface);
 
             //Set up Surface for SLAM
             Surface slamOutputSurface = new Surface(mSlamOutputSurface);
             surfaces.add(slamOutputSurface);
-            previewBuilder.addTarget(slamOutputSurface);
+            mPreviewBuilder.addTarget(slamOutputSurface);
 
             cameraDevice.createCaptureSession(surfaces, new CameraCaptureSession.StateCallback() {
                 @Override
                 public void onConfigured(@NonNull CameraCaptureSession cameraCaptureSession) {
-                    previewSession = cameraCaptureSession;
+                    mPreviewSession = cameraCaptureSession;
                     updatePreview();
                 }
 
@@ -335,8 +341,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void stopRecording() {
         if (null != MainActivity.this) {
-            Toast.makeText(MainActivity.this, "Video saved: " + nextVideoAbsolutePath,
-                    Toast.LENGTH_SHORT).show();
+//            Toast.makeText(MainActivity.this, "Video saved: " + nextVideoAbsolutePath,
+//                    Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Video saved: " + nextVideoAbsolutePath);
         }
         nextVideoAbsolutePath = null;
@@ -347,7 +353,7 @@ public class MainActivity extends AppCompatActivity {
         CameraManager manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
         try {
             Log.d(TAG, "tryAcquire");
-            if (!cameraOpenCloseLock.tryAcquire(2500, TimeUnit.MILLISECONDS)) {
+            if (!mCameraOpenCloseLock.tryAcquire(2500, TimeUnit.MILLISECONDS)) {
                 throw new RuntimeException("Time out waiting to lock camera opening.");
             }
             cameraId = manager.getCameraIdList()[0];
@@ -355,8 +361,7 @@ public class MainActivity extends AppCompatActivity {
             StreamConfigurationMap map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
             sensorOrientation = characteristics.get(CameraCharacteristics.SENSOR_ORIENTATION);
             assert map != null;
-            //videoSize = chooseVideoSize(map.getOutputSizes(MediaRecorder.class));
-            previewSize = chooseOptimalSize(map.getOutputSizes(SurfaceTexture.class), width, height, textureView);
+            mPreviewSize = chooseOptimalSize(map.getOutputSizes(SurfaceTexture.class), width, height, textureView);
             //check real-time permissions
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, new String[]{
@@ -367,9 +372,9 @@ public class MainActivity extends AppCompatActivity {
             }
             int orientation = getResources().getConfiguration().orientation;
             if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                textureView.setAspectRatio(previewSize.getWidth(), previewSize.getHeight());
+                textureView.setAspectRatio(mPreviewSize.getWidth(), mPreviewSize.getHeight());
             } else {
-                textureView.setAspectRatio(previewSize.getHeight(), previewSize.getWidth());
+                textureView.setAspectRatio(mPreviewSize.getHeight(), mPreviewSize.getWidth());
             }
             configureTransform(width, height);
             manager.openCamera(cameraId, stateCallback, null);
@@ -382,8 +387,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void closeCamera() {
         try {
-            cameraOpenCloseLock.acquire();
-            closePreviewSession();
+            mCameraOpenCloseLock.acquire();
+            closemPreviewSession();
             if (null != cameraDevice) {
                 cameraDevice.close();
                 cameraDevice = null;
@@ -395,7 +400,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
-            cameraOpenCloseLock.release();
+            mCameraOpenCloseLock.release();
         }
     }
 
@@ -444,29 +449,29 @@ public class MainActivity extends AppCompatActivity {
         mBackgroundHandler = new Handler(mBackgroundThread.getLooper());
     }
 
-    private void closePreviewSession() {
-        if (previewSession != null) {
-            previewSession.close();
-            previewSession = null;
+    private void closemPreviewSession() {
+        if (mPreviewSession != null) {
+            mPreviewSession.close();
+            mPreviewSession = null;
         }
     }
 
     private void configureTransform(int viewWidth, int viewHeight) {
-        if (null == textureView || null == previewSize) {
+        if (null == textureView || null == mPreviewSize) {
             return;
         }
         int rotation = getWindowManager().getDefaultDisplay().getRotation();
         Matrix matrix = new Matrix();
         RectF viewRect = new RectF(0, 0, viewWidth, viewHeight);
-        RectF bufferRect = new RectF(0, 0, previewSize.getHeight(), previewSize.getWidth());
+        RectF bufferRect = new RectF(0, 0, mPreviewSize.getHeight(), mPreviewSize.getWidth());
         float centerX = viewRect.centerX();
         float centerY = viewRect.centerY();
         if (Surface.ROTATION_90 == rotation || Surface.ROTATION_270 == rotation) {
             bufferRect.offset(centerX - bufferRect.centerX(), centerY - bufferRect.centerY());
             matrix.setRectToRect(viewRect, bufferRect, Matrix.ScaleToFit.FILL);
             float scale = Math.max(
-                    (float) viewHeight / previewSize.getHeight(),
-                    (float) viewWidth / previewSize.getWidth());
+                    (float) viewHeight / mPreviewSize.getHeight(),
+                    (float) viewWidth / mPreviewSize.getWidth());
             matrix.postScale(scale, scale, centerX, centerY);
             matrix.postRotate(90 * (rotation - 2), centerX, centerY);
         }

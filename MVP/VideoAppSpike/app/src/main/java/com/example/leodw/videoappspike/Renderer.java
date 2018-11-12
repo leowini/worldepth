@@ -32,7 +32,7 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
     private RenderThread mRenderThread;
     private EglSurfaceTextureListener mListener;
     private Handler mListenerHandler;
-    private final int mSurfaceWidth = 1920, mSurfaceHeight = 1080;
+    private final int mSurfaceWidth = 640, mSurfaceHeight = 480;
     //    private IGLRenderer rendererx;
     private STextureRender renderer;
     private int decodeCount = 1;
@@ -84,11 +84,14 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
         } finally {
             if (bos != null) bos.close();
         }
+        Log.d(TAG, "Saved" + mSurfaceWidth + "x" + mSurfaceHeight + " frame as '" + filename + "'");
     }
 
     public void start(int width, int height) {
         mRenderThread = new RenderThread();
         mRenderThread.start();
+//        mSurfaceWidth = width;
+//        mSurfaceHeight = height;
     }
 
     public void stop() {
@@ -106,7 +109,7 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
         mRenderThread = null;
     }
 
-    public void setListener(EglSurfaceTextureListener listener, Handler handler) {
+    public void setOnSurfaceTextureReadyListener(EglSurfaceTextureListener listener, Handler handler) {
         mListener = listener;
         mListenerHandler = handler;
     }
@@ -227,6 +230,7 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
         mEGLDisplay = EGL14.EGL_NO_DISPLAY;
         mEGLContext = EGL14.EGL_NO_CONTEXT;
         mEGLSurface = EGL14.EGL_NO_SURFACE;
+        renderer = null;
         mEglSurfaceTexture = null;
     }
 
@@ -475,12 +479,6 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
             }
         }
     }
-//
-//    public interface IGLRenderer {
-//        void surfaceCreated(SurfaceTexture eglSurfaceTexture, int surfaceWidth, int surfaceHeight);
-//        void onFrameAvailable(SurfaceTexture eglSurfaceTexture);
-//        void onSurfaceDestroyed(SurfaceTexture eglSurfaceTexture);
-//    }
 
     /**
      * Checks for EGL errors.
