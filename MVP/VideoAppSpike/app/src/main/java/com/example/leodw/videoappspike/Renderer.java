@@ -1,12 +1,25 @@
 package com.example.leodw.videoappspike;
 
+import android.graphics.Bitmap;
 import android.graphics.SurfaceTexture;
+import android.opengl.EGL14;
+import android.opengl.EGLConfig;
+import android.opengl.EGLContext;
+import android.opengl.EGLDisplay;
+import android.opengl.EGLSurface;
 import android.opengl.GLES11Ext;
 import android.opengl.GLES20;
+import android.opengl.Matrix;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.Surface;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
@@ -14,33 +27,75 @@ import java.util.concurrent.Semaphore;
 
 public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
     private static final String TAG = "Renderer";
-    private final EglHelper mEglHelper = new EglHelper();
+//    private final EglHelper mEglHelper = new EglHelper();
     private SurfaceTexture mEglSurfaceTexture;
     private RenderThread mRenderThread;
     private EglSurfaceTextureListener mListener;
     private Handler mListenerHandler;
-    private int mSurfaceWidth, mSurfaceHeight;
-    private STextureRender mTextureRender;
+    private final int mSurfaceWidth = 1920, mSurfaceHeight = 1080;
+//    private IGLRenderer rendererx;
+    private STextureRender renderer;
+    private int decodeCount = 0;
+    private static final File FILES_DIR = Environment.getExternalStorageDirectory();
+    private ByteBuffer mPixelBuf;                       // used by saveFrame()
+
+    private EGLDisplay mEGLDisplay;
+    private EGLSurface mEGLSurface;
+    private EGLContext mEGLContext;
+
+//    public Renderer(GLRenderer renderer) {
+//        this.renderer = renderer;
+//    }
 
     @Override
     public void onFrameAvailable(SurfaceTexture surfaceTexture) {
-        mTextureRender.onFrameAvailable(mEglSurfaceTexture);
-        mEglHelper.makeCurrent();
-        mEglHelper.swapBuffers();
+        Log.d(TAG, "frame available");
+        // Latch the data.
+        renderer.checkGlError("before updateTexImage");
+        mEglSurfaceTexture.updateTexImage();
+
+        renderer.drawFrame(mEglSurfaceTexture, true);
+
+        File outputFile = new File(FILES_DIR,
+                String.format("frame-%02d.png", decodeCount));
+        try {
+            saveFrame(outputFile.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Log.d(TAG, "Image Saved!");
+        decodeCount++;
+    }
+
+    private void saveFrame(String filename) throws IOException {
+        mPixelBuf.rewind();
+        GLES20.glReadPixels(0, 0, mSurfaceWidth, mSurfaceHeight, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE,
+                mPixelBuf);
+
+        BufferedOutputStream bos = null;
+        try {
+            bos = new BufferedOutputStream(new FileOutputStream(filename));
+            Bitmap bmp = Bitmap.createBitmap(mSurfaceWidth, mSurfaceHeight, Bitmap.Config.ARGB_8888);
+            mPixelBuf.rewind();
+            bmp.copyPixelsFromBuffer(mPixelBuf);
+            bmp.compress(Bitmap.CompressFormat.PNG, 90, bos);
+            bmp.recycle();
+        } finally {
+            if (bos != null) bos.close();
+        }
     }
 
     public void start(int width, int height) {
         mRenderThread = new RenderThread();
         mRenderThread.start();
-        mSurfaceWidth = width;
-        mSurfaceHeight = height;
     }
 
     public void stop() {
         if (mRenderThread == null) return;
 
         mRenderThread.handler.post(new Runnable() {
-            @Override public void run() {
+            @Override
+            public void run() {
                 Looper looper = Looper.myLooper();
                 if (looper != null) {
                     looper.quit();
@@ -56,14 +111,105 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
     }
 
     private void configure() {
-        mEglSurfaceTexture = mEglHelper.makeSurface();
-        mTextureRender.onSurfaceCreated(mEglSurfaceTexture, mSurfaceWidth, mSurfaceHeight);
+        eglSetup();
+        makeCurrent();
+        setup();
         mEglSurfaceTexture.setOnFrameAvailableListener(this, mRenderThread.handler);
         mListenerHandler.post(() -> mListener.onSurfaceTextureReady(mEglSurfaceTexture));
     }
 
+    private void eglSetup() {
+        mEGLDisplay = EGL14.eglGetDisplay(EGL14.EGL_DEFAULT_DISPLAY);
+        if (mEGLDisplay == EGL14.EGL_NO_DISPLAY) {
+            throw new RuntimeException("unable to get EGL14 display");
+        }
+        int[] version = new int[2];
+        if (!EGL14.eglInitialize(mEGLDisplay, version, 0, version, 1)) {
+            mEGLDisplay = null;
+            throw new RuntimeException("unable to initialize EGL14");
+        }
+
+        // Configure EGL for pbuffer and OpenGL ES 2.0, 24-bit RGB.
+        int[] attribList = {
+                EGL14.EGL_RED_SIZE, 8,
+                EGL14.EGL_GREEN_SIZE, 8,
+                EGL14.EGL_BLUE_SIZE, 8,
+                EGL14.EGL_ALPHA_SIZE, 8,
+                EGL14.EGL_RENDERABLE_TYPE, EGL14.EGL_OPENGL_ES2_BIT,
+                EGL14.EGL_SURFACE_TYPE, EGL14.EGL_PBUFFER_BIT,
+                EGL14.EGL_NONE
+        };
+        EGLConfig[] configs = new EGLConfig[1];
+        int[] numConfigs = new int[1];
+        if (!EGL14.eglChooseConfig(mEGLDisplay, attribList, 0, configs, 0, configs.length,
+                numConfigs, 0)) {
+            throw new RuntimeException("unable to find RGB888+recordable ES2 EGL config");
+        }
+
+        // Configure context for OpenGL ES 2.0.
+        int[] attrib_list = {
+                EGL14.EGL_CONTEXT_CLIENT_VERSION, 2,
+                EGL14.EGL_NONE
+        };
+        mEGLContext = EGL14.eglCreateContext(mEGLDisplay, configs[0], EGL14.EGL_NO_CONTEXT,
+                attrib_list, 0);
+        checkEglError("eglCreateContext");
+        if (mEGLContext == null) {
+            throw new RuntimeException("null context");
+        }
+
+        // Create a pbuffer surface.
+        int[] surfaceAttribs = {
+                EGL14.EGL_WIDTH, mSurfaceWidth,
+                EGL14.EGL_HEIGHT, mSurfaceHeight,
+                EGL14.EGL_NONE
+        };
+        mEGLSurface = EGL14.eglCreatePbufferSurface(mEGLDisplay, configs[0], surfaceAttribs, 0);
+        checkEglError("eglCreatePbufferSurface");
+        if (mEGLSurface == null) {
+            throw new RuntimeException("surface was null");
+        }
+    }
+
+    /**
+     * Makes our EGL context and surface current.
+     */
+    public void makeCurrent() {
+        if (!EGL14.eglMakeCurrent(mEGLDisplay, mEGLSurface, mEGLSurface, mEGLContext)) {
+            throw new RuntimeException("eglMakeCurrent failed");
+        }
+    }
+
+    /**
+     * Creates interconnected instances of TextureRender, SurfaceTexture, and Surface.
+     */
+    private void setup() {
+        renderer = new Renderer.STextureRender();
+        renderer.surfaceCreated();
+
+        Log.d(TAG, "textureID=" + renderer.getTextureId());
+        mEglSurfaceTexture = new SurfaceTexture(renderer.getTextureId());
+
+        // This doesn't work if this object is created on the thread that CTS started for
+        // these test cases.
+        //
+        // The CTS-created thread has a Looper, and the SurfaceTexture constructor will
+        // create a Handler that uses it.  The "frame available" message is delivered
+        // there, but since we're not a Looper-based thread we'll never see it.  For
+        // this to do anything useful, CodecOutputSurface must be created on a thread without
+        // a Looper, so that SurfaceTexture uses the main application Looper instead.
+        //
+        // Java language note: passing "this" out of a constructor is generally unwise,
+        // but we should be able to get away with it here.
+        mEglSurfaceTexture.setOnFrameAvailableListener(this);
+
+        //mSurface = new Surface(mEglSurfaceTexture);
+
+        mPixelBuf = ByteBuffer.allocateDirect(mSurfaceWidth * mSurfaceHeight * 4);
+        mPixelBuf.order(ByteOrder.LITTLE_ENDIAN);
+    }
+
     private void dispose() {
-        mTextureRender.onSurfaceDestroyed(mEglSurfaceTexture);
         mEglHelper.destroySurface();
     }
 
@@ -72,7 +218,7 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
     }
 
     private class RenderThread extends Thread {
-        private Semaphore eglContextReadyLock  = new Semaphore(0);
+        private Semaphore eglContextReadyLock = new Semaphore(0);
         private Handler handler;
 
         @Override
@@ -96,7 +242,7 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
     /**
      * Code for rendering a texture onto a surface using OpenGL ES 2.0.
      */
-    private class STextureRender {
+    private static class STextureRender {
         private static final int FLOAT_SIZE_BYTES = 4;
         private static final int TRIANGLE_VERTICES_DATA_STRIDE_BYTES = 5 * FLOAT_SIZE_BYTES;
         private static final int TRIANGLE_VERTICES_DATA_POS_OFFSET = 0;
@@ -105,8 +251,8 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
                 // X, Y, Z, U, V
                 -1.0f, -1.0f, 0, 0.f, 0.f,
                 1.0f, -1.0f, 0, 1.f, 0.f,
-                -1.0f, 1.0f, 0, 0.f, 1.f,
-                1.0f, 1.0f, 0, 1.f, 1.f,
+                -1.0f,  1.0f, 0, 0.f, 1.f,
+                1.0f,  1.0f, 0, 1.f, 1.f,
         };
 
         private FloatBuffer mTriangleVertices;
@@ -147,7 +293,7 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
                     .order(ByteOrder.nativeOrder()).asFloatBuffer();
             mTriangleVertices.put(mTriangleVerticesData).position(0);
 
-            android.opengl.Matrix.setIdentityM(mSTMatrix, 0);
+            Matrix.setIdentityM(mSTMatrix, 0);
         }
 
         public int getTextureId() {
@@ -189,7 +335,7 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
             GLES20.glEnableVertexAttribArray(maTextureHandle);
             checkGlError("glEnableVertexAttribArray maTextureHandle");
 
-            android.opengl.Matrix.setIdentityM(mMVPMatrix, 0);
+            Matrix.setIdentityM(mMVPMatrix, 0);
             GLES20.glUniformMatrix4fv(muMVPMatrixHandle, 1, false, mMVPMatrix, 0);
             GLES20.glUniformMatrix4fv(muSTMatrixHandle, 1, false, mSTMatrix, 0);
 
@@ -304,10 +450,26 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
             }
         }
 
-        public void checkLocation(int location, String label) {
+        public static void checkLocation(int location, String label) {
             if (location < 0) {
                 throw new RuntimeException("Unable to locate '" + label + "' in program");
             }
+        }
+    }
+//
+//    public interface IGLRenderer {
+//        void surfaceCreated(SurfaceTexture eglSurfaceTexture, int surfaceWidth, int surfaceHeight);
+//        void onFrameAvailable(SurfaceTexture eglSurfaceTexture);
+//        void onSurfaceDestroyed(SurfaceTexture eglSurfaceTexture);
+//    }
+
+    /**
+     * Checks for EGL errors.
+     */
+    private void checkEglError(String msg) {
+        int error;
+        if ((error = EGL14.eglGetError()) != EGL14.EGL_SUCCESS) {
+            throw new RuntimeException(msg + ": EGL error: 0x" + Integer.toHexString(error));
         }
     }
 }

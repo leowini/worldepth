@@ -58,26 +58,14 @@ class EglHelper {
         EGL14.eglQueryContext(eglDisplay, eglContext, EGL14.EGL_CONTEXT_CLIENT_VERSION, values, 0);
         //Timber.d("EGLContext created, client version %d", values[0]);
 
-//        // Prepare the surface
-//        int[] surfaceAttributes = {
-//                EGL14.EGL_NONE //Null
-//        };
-//        eglSurface = EGL14.eglCreateWindowSurface(eglDisplay, eglConfig, surfaceTexture, surfaceAttributes, 0);
-//        checkEGLError("eglCreateWindowSurface");
-//        if (!EGL14.eglMakeCurrent(eglDisplay, eglSurface, eglSurface, eglContext)) {
-//            throw new RuntimeException("eglMakeCurrent failed");
-//        }
-
-        // Create a pbuffer surface.
-        int[] surfaceAttribs = {
-                EGL14.EGL_WIDTH, width,
-                EGL14.EGL_HEIGHT, height,
-                EGL14.EGL_NONE
+        // Prepare the surface
+        int[] surfaceAttributes = {
+                EGL14.EGL_NONE //Null
         };
-        eglSurface = EGL14.eglCreatePbufferSurface(mEGLDisplay, configs[0], surfaceAttribs, 0);
-        checkEGLError("eglCreatePbufferSurface");
-        if (eglSurface == null) {
-            throw new RuntimeException("surface was null");
+        eglSurface = EGL14.eglCreateWindowSurface(eglDisplay, eglConfig, surfaceTexture, surfaceAttributes, 0);
+        checkEGLError("eglCreateWindowSurface");
+        if (!EGL14.eglMakeCurrent(eglDisplay, eglSurface, eglSurface, eglContext)) {
+            throw new RuntimeException("eglMakeCurrent failed");
         }
 
         //Create eglTextures
@@ -163,5 +151,70 @@ class EglHelper {
         if ((error = EGL14.eglGetError()) != EGL14.EGL_SUCCESS) {
             throw new RuntimeException(msg + ": EGL error: 0x" + Integer.toHexString(error));
         }
+    }
+
+    /**
+     * Prepares EGL.  We want a GLES 2.0 context and a surface that supports pbuffer.
+     */
+    public SurfaceTexture eglSetup(int width, int height) {
+        eglDisplay = EGL14.eglGetDisplay(EGL14.EGL_DEFAULT_DISPLAY);
+        if (eglDisplay == EGL14.EGL_NO_DISPLAY) {
+            throw new RuntimeException("unable to get EGL14 display");
+        }
+        int[] version = new int[2];
+        if (!EGL14.eglInitialize(eglDisplay, version, 0, version, 1)) {
+            eglDisplay = null;
+            throw new RuntimeException("unable to initialize EGL14");
+        }
+
+        // Configure EGL for pbuffer and OpenGL ES 2.0, 24-bit RGB.
+        int[] attribList = {
+                EGL14.EGL_RED_SIZE, 8,
+                EGL14.EGL_GREEN_SIZE, 8,
+                EGL14.EGL_BLUE_SIZE, 8,
+                EGL14.EGL_ALPHA_SIZE, 8,
+                EGL14.EGL_RENDERABLE_TYPE, EGL14.EGL_OPENGL_ES2_BIT,
+                EGL14.EGL_SURFACE_TYPE, EGL14.EGL_PBUFFER_BIT,
+                EGL14.EGL_NONE
+        };
+        EGLConfig[] configs = new EGLConfig[1];
+        int[] numConfigs = new int[1];
+        if (!EGL14.eglChooseConfig(eglDisplay, attribList, 0, configs, 0, configs.length,
+                numConfigs, 0)) {
+            throw new RuntimeException("unable to find RGB888+recordable ES2 EGL config");
+        }
+
+        // Configure context for OpenGL ES 2.0.
+        int[] attrib_list = {
+                EGL14.EGL_CONTEXT_CLIENT_VERSION, 2,
+                EGL14.EGL_NONE
+        };
+        eglContext = EGL14.eglCreateContext(eglDisplay, configs[0], EGL14.EGL_NO_CONTEXT,
+                attrib_list, 0);
+        checkEGLError("eglCreateContext");
+        if (eglContext == null) {
+            throw new RuntimeException("null context");
+        }
+
+        // Create a pbuffer surface.
+        int[] surfaceAttribs = {
+                EGL14.EGL_WIDTH, width,
+                EGL14.EGL_HEIGHT, height,
+                EGL14.EGL_NONE
+        };
+        eglSurface = EGL14.eglCreatePbufferSurface(eglDisplay, configs[0], surfaceAttribs, 0);
+        checkEGLError("eglCreatePbufferSurface");
+        if (eglSurface == null) {
+            throw new RuntimeException("surface was null");
+        }
+        if (!EGL14.eglMakeCurrent(eglDisplay, eglSurface, eglSurface, eglContext)) {
+            throw new RuntimeException("eglMakeCurrent failed");
+        }
+
+        //Create eglTextures
+        GLES20.glGenTextures(eglTextures.length, eglTextures, 0);
+        GlUtil.checkGLError("Texture bind");
+        eglSurfaceTexture = new SurfaceTexture(eglTextures[0]);
+        return eglSurfaceTexture;
     }
 }

@@ -5,8 +5,6 @@ import android.graphics.SurfaceTexture;
 import android.opengl.GLES20;
 import android.renderscript.Matrix4f;
 
-import com.example.leodw.videoappspike.Renderer;
-
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
@@ -40,7 +38,7 @@ public class GLRenderer implements Renderer.IGLRenderer {
     }
 
     @Override
-    public void initShader(SurfaceTexture eglSurfaceTexture, int surfaceWidth, int surfaceHeight) {
+    public void surfaceCreated(SurfaceTexture eglSurfaceTexture, int surfaceWidth, int surfaceHeight) {
         this.surfaceWidth = surfaceWidth;
         this.surfaceHeight = surfaceHeight;
 
@@ -94,7 +92,6 @@ public class GLRenderer implements Renderer.IGLRenderer {
         GlUtil.checkGLError("getLocations");
     }
 
-    //@Override
     public void onSurfaceChanged(SurfaceTexture eglSurfaceTexture, int surfaceWidth, int surfaceHeight) {
         this.surfaceWidth = surfaceWidth;
         this.surfaceHeight = surfaceHeight;
@@ -131,7 +128,7 @@ public class GLRenderer implements Renderer.IGLRenderer {
         GLES20.glDrawElements(GLES20.GL_TRIANGLES, drawOrderBuffer.remaining(), GLES20.GL_UNSIGNED_SHORT, drawOrderBuffer);
     }
 
-    @Override public void stop(SurfaceTexture eglSurfaceTexture) {
+    @Override public void onSurfaceDestroyed(SurfaceTexture eglSurfaceTexture) {
         //We have nothing to dispose
     }
 }
