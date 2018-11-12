@@ -27,15 +27,15 @@ import java.util.concurrent.Semaphore;
 
 public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
     private static final String TAG = "Renderer";
-//    private final EglHelper mEglHelper = new EglHelper();
+    //    private final EglHelper mEglHelper = new EglHelper();
     private SurfaceTexture mEglSurfaceTexture;
     private RenderThread mRenderThread;
     private EglSurfaceTextureListener mListener;
     private Handler mListenerHandler;
     private final int mSurfaceWidth = 1920, mSurfaceHeight = 1080;
-//    private IGLRenderer rendererx;
+    //    private IGLRenderer rendererx;
     private STextureRender renderer;
-    private int decodeCount = 0;
+    private int decodeCount = 1;
     private static final File FILES_DIR = Environment.getExternalStorageDirectory();
     private ByteBuffer mPixelBuf;                       // used by saveFrame()
 
@@ -55,16 +55,17 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
         mEglSurfaceTexture.updateTexImage();
 
         renderer.drawFrame(mEglSurfaceTexture, true);
-
-        File outputFile = new File(FILES_DIR,
-                String.format("frame-%02d.png", decodeCount));
-        try {
-            saveFrame(outputFile.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (decodeCount <= 10) {
+            File outputFile = new File(FILES_DIR,
+                    String.format("frame-%02d.png", decodeCount));
+            try {
+                saveFrame(outputFile.toString());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Log.d(TAG, "Image Saved!");
+            decodeCount++;
         }
-        Log.d(TAG, "Image Saved!");
-        decodeCount++;
     }
 
     private void saveFrame(String filename) throws IOException {
@@ -210,8 +211,26 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
     }
 
     private void dispose() {
-        mEglHelper.destroySurface();
+        if (mEGLDisplay != EGL14.EGL_NO_DISPLAY) {
+            //Timber.d("Disposing EGL resources");
+            boolean released;
+            released = EGL14.eglTerminate(mEGLDisplay);
+            //Timber.d("eglTerminate: %b", released);
+            released = EGL14.eglMakeCurrent(mEGLDisplay, EGL14.EGL_NO_SURFACE, EGL14.EGL_NO_SURFACE, EGL14.EGL_NO_CONTEXT);
+            //Timber.d("eglMakeCurrent NONE: %b", released);
+            released = EGL14.eglDestroyContext(mEGLDisplay, mEGLContext);
+            //Timber.d("eglDestroyContext: %b", released);
+            released = EGL14.eglReleaseThread();
+            //Timber.d("eglReleaseThread: %b", released);
+        }
+
+        mEGLDisplay = EGL14.EGL_NO_DISPLAY;
+        mEGLContext = EGL14.EGL_NO_CONTEXT;
+        mEGLSurface = EGL14.EGL_NO_SURFACE;
+        mEglSurfaceTexture = null;
     }
+
+
 
     public interface EglSurfaceTextureListener {
         void onSurfaceTextureReady(SurfaceTexture surfaceTexture);
@@ -251,8 +270,8 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
                 // X, Y, Z, U, V
                 -1.0f, -1.0f, 0, 0.f, 0.f,
                 1.0f, -1.0f, 0, 1.f, 0.f,
-                -1.0f,  1.0f, 0, 0.f, 1.f,
-                1.0f,  1.0f, 0, 1.f, 1.f,
+                -1.0f, 1.0f, 0, 0.f, 1.f,
+                1.0f, 1.0f, 0, 1.f, 1.f,
         };
 
         private FloatBuffer mTriangleVertices;
