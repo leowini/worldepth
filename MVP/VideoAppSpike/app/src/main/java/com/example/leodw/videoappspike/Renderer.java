@@ -30,7 +30,7 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
     private RenderThread mRenderThread;
     private EglSurfaceTextureListener mListener;
     private Handler mListenerHandler;
-    private final int mSurfaceWidth = 640, mSurfaceHeight = 480;
+    private int mSurfaceWidth, mSurfaceHeight;
     private STextureRender renderer;
     private int decodeCount = 1;
     private static final File FILES_DIR = Environment.getExternalStorageDirectory();
@@ -47,7 +47,7 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
         renderer.checkGlError("before updateTexImage");
         mEglSurfaceTexture.updateTexImage();
 
-        renderer.drawFrame(mEglSurfaceTexture, true);
+        renderer.drawFrame(mEglSurfaceTexture, false);
         if (decodeCount <= 10) {
             File outputFile = new File(FILES_DIR,
                     String.format("frame-%02d.png", decodeCount));
@@ -86,6 +86,8 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
         }
         mRenderThread = new RenderThread();
         mRenderThread.start();
+        mSurfaceWidth = width;
+        mSurfaceHeight = height;
     }
 
     public void stop() {
