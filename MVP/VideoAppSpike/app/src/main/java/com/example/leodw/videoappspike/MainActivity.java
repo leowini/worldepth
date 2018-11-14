@@ -4,7 +4,9 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.ImageFormat;
 import android.graphics.Matrix;
+import android.graphics.Point;
 import android.graphics.RectF;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
@@ -15,6 +17,7 @@ import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CameraMetadata;
 import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.params.StreamConfigurationMap;
+import android.media.ImageReader;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -32,6 +35,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -45,13 +49,12 @@ public class MainActivity extends AppCompatActivity {
     private SurfaceTexture mSlamOutputSurface;
 
     private Button captureBtn;
-    private AutoFitTextureView textureView;
+    private AutoFitTextureView mTextureView;
 
     private boolean mRecordingState;
 
     private Integer sensorOrientation;
-    private static final int SENSOR_ORIENTATION_DEFAULT_DEGREES = 90;
-    private static final int SENSOR_ORIENTATION_INVERSE_DEGREES = 270;
+
     private static final SparseIntArray DEFAULT_ORIENTATIONS = new SparseIntArray();
     private static final SparseIntArray INVERSE_ORIENTATIONS = new SparseIntArray();
 
@@ -75,6 +78,15 @@ public class MainActivity extends AppCompatActivity {
     private CaptureRequest.Builder mPreviewBuilder;
     private Semaphore mCameraOpenCloseLock = new Semaphore(1);
     private Size mPreviewSize;
+    /**
+     * Max preview width that is guaranteed by Camera2 API
+     */
+    private static final int MAX_PREVIEW_WIDTH = 1920;
+
+    /**
+     * Max preview height that is guaranteed by Camera2 API
+     */
+    private static final int MAX_PREVIEW_HEIGHT = 1080;
 
     private static final int REQUEST_CAMERA_PERMISSION = 200;
     private Handler mBackgroundHandler;
@@ -110,9 +122,6 @@ public class MainActivity extends AppCompatActivity {
             cameraDevice = camera;
             startPreview();
             mCameraOpenCloseLock.release();
-            if (null != textureView) {
-                configureTransform(textureView.getWidth(), textureView.getHeight());
-            }
         }
 
         @Override
@@ -127,22 +136,33 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-
-    //This method is failing to find a suitable Size, returning choices[0] which is 4032 by 3024
-    private static Size chooseOptimalSize(Size[] choices, int width, int height, TextureView aspectRatio) {
+    private static Size chooseOptimalSize(Size[] choices, int mTextureViewWidth,
+                                          int mTextureViewHeight, int maxWidth, int maxHeight, Size aspectRatio) {
         // Collect the supported resolutions that are at least as big as the preview Surface
         List<Size> bigEnough = new ArrayList<>();
+        // Collect the supported resolutions that are smaller than the preview Surface
+        List<Size> notBigEnough = new ArrayList<>();
         int w = aspectRatio.getWidth();
         int h = aspectRatio.getHeight();
         for (Size option : choices) {
-            if (option.getHeight() == option.getWidth() * h / w &&
-                    option.getWidth() >= width && option.getHeight() >= height) {
-                bigEnough.add(option);
+            if (option.getWidth() <= maxWidth && option.getHeight() <= maxHeight &&
+                    option.getHeight() == option.getWidth() * h / w) {
+                if (option.getWidth() >= mTextureViewWidth &&
+                        option.getHeight() >= mTextureViewHeight) {
+                    bigEnough.add(option);
+                }
+                else {
+                    notBigEnough.add(option);
+                }
             }
         }
-        // Pick the smallest of those, assuming we found any
+
+        // Pick the smallest of those big enough. If there is no one big enough, pick the
+        // largest of those not big enough.
         if (bigEnough.size() > 0) {
             return Collections.min(bigEnough, new CompareSizesByArea());
+        } else if (notBigEnough.size() > 0) {
+            return Collections.max(notBigEnough, new CompareSizesByArea());
         } else {
             Log.e(TAG, "Couldn't find any suitable preview size");
             return choices[0];
@@ -150,14 +170,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startPreview() {
-        if (null == cameraDevice || !textureView.isAvailable() || null == mPreviewSize) {
+        if (null == cameraDevice || !mTextureView.isAvailable() || null == mPreviewSize) {
             return;
         }
         try {
             closePreviewSession();
-            SurfaceTexture texture = textureView.getSurfaceTexture();
+            SurfaceTexture texture = mTextureView.getSurfaceTexture();
             assert texture != null;
-            texture.setDefaultBufferSize(textureView.getWidth(), textureView.getHeight());
+            texture.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
             mPreviewBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
 
             final Surface previewSurface = new Surface(texture);
@@ -203,8 +223,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        textureView = (AutoFitTextureView) findViewById(R.id.textureView);
-        assert textureView != null;
+        mTextureView = (AutoFitTextureView) findViewById(R.id.textureView);
+        assert mTextureView != null;
         captureBtn = (Button) findViewById(R.id.captureBtn);
         captureBtn.setOnTouchListener((v, event) -> {
             switch (event.getAction()) {
@@ -236,23 +256,23 @@ public class MainActivity extends AppCompatActivity {
         }, new Handler(Looper.getMainLooper()));
         Log.d(TAG, "preview width: " + mPreviewSize.getWidth());
         Log.d(TAG, "preview height: " + mPreviewSize.getHeight());
-        Log.d(TAG, "textureView width: " + textureView.getWidth());
-        Log.d(TAG, "textureView height: " + textureView.getHeight());
-        mRenderer.start(textureView.getWidth(), textureView.getHeight());
+        Log.d(TAG, "mTextureView width: " + mTextureView.getWidth());
+        Log.d(TAG, "mTextureView height: " + mTextureView.getHeight());
+        mRenderer.start(mTextureView.getWidth(), mTextureView.getHeight());
     }
 
     private void startCameraRecording() {
         if (cameraDevice == null) return;
         CameraManager manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
         closePreviewSession();
-        if (null == cameraDevice || !textureView.isAvailable() || null == mPreviewSize) {
+        if (null == cameraDevice || !mTextureView.isAvailable() || null == mPreviewSize) {
             return;
         }
         try {
             closePreviewSession();
-            SurfaceTexture texture = textureView.getSurfaceTexture();
+            SurfaceTexture texture = mTextureView.getSurfaceTexture();
             assert texture != null;
-            texture.setDefaultBufferSize(textureView.getWidth(), textureView.getHeight());
+            texture.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
             mPreviewBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_RECORD);
             List<Surface> surfaces = new ArrayList<>();
 
@@ -262,6 +282,7 @@ public class MainActivity extends AppCompatActivity {
             mPreviewBuilder.addTarget(previewSurface);
 
             //Set up Surface for SLAM
+            mSlamOutputSurface.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
             Surface slamOutputSurface = new Surface(mSlamOutputSurface);
             surfaces.add(slamOutputSurface);
             mPreviewBuilder.addTarget(slamOutputSurface);
@@ -300,9 +321,55 @@ public class MainActivity extends AppCompatActivity {
             cameraId = manager.getCameraIdList()[0];
             CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraId);
             StreamConfigurationMap map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
-            sensorOrientation = characteristics.get(CameraCharacteristics.SENSOR_ORIENTATION);
             assert map != null;
-            mPreviewSize = chooseOptimalSize(map.getOutputSizes(SurfaceTexture.class), width, height, textureView);
+            //Largest available size
+            Size largest = Collections.max(
+                    Arrays.asList(map.getOutputSizes(ImageFormat.JPEG)),
+                    new CompareSizesByArea());
+            // Find out if we need to swap dimension to get the preview size relative to sensor
+            // coordinate.
+            int displayRotation = getWindowManager().getDefaultDisplay().getRotation();
+            sensorOrientation = characteristics.get(CameraCharacteristics.SENSOR_ORIENTATION);
+            boolean swappedDimensions = false;
+            switch (displayRotation) {
+                case Surface.ROTATION_0:
+                case Surface.ROTATION_180:
+                    if (sensorOrientation == 90 || sensorOrientation == 270) {
+                        swappedDimensions = true;
+                    }
+                    break;
+                case Surface.ROTATION_90:
+                case Surface.ROTATION_270:
+                    if (sensorOrientation == 0 || sensorOrientation == 180) {
+                        swappedDimensions = true;
+                    }
+                    break;
+                default: Log.e(TAG, "Display rotation is invalid: " + displayRotation);
+            }
+            Point displaySize = new Point();
+            getWindowManager().getDefaultDisplay().getSize(displaySize);
+            int rotatedPreviewWidth = width;
+            int rotatedPreviewHeight = height;
+            int maxPreviewWidth = displaySize.x;
+            int maxPreviewHeight = displaySize.y;
+
+            if (swappedDimensions) {
+                rotatedPreviewWidth = height;
+                rotatedPreviewHeight = width;
+                maxPreviewWidth = displaySize.y;
+                maxPreviewHeight = displaySize.x;
+            }
+
+            if (maxPreviewWidth > MAX_PREVIEW_WIDTH) {
+                maxPreviewWidth = MAX_PREVIEW_WIDTH;
+            }
+
+            if (maxPreviewHeight > MAX_PREVIEW_HEIGHT) {
+                maxPreviewHeight = MAX_PREVIEW_HEIGHT;
+            }
+
+            mPreviewSize = chooseOptimalSize(map.getOutputSizes(SurfaceTexture.class), rotatedPreviewWidth, rotatedPreviewHeight, maxPreviewWidth, maxPreviewHeight, largest);
+            Log.d(TAG, "open preview size: " + mPreviewSize.getWidth() + "x" + mPreviewSize.getHeight());
             //check real-time permissions
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, new String[]{
@@ -313,9 +380,9 @@ public class MainActivity extends AppCompatActivity {
             }
             int orientation = getResources().getConfiguration().orientation;
             if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                textureView.setAspectRatio(mPreviewSize.getWidth(), mPreviewSize.getHeight());
+                mTextureView.setAspectRatio(mPreviewSize.getWidth(), mPreviewSize.getHeight());
             } else {
-                textureView.setAspectRatio(mPreviewSize.getHeight(), mPreviewSize.getWidth());
+                mTextureView.setAspectRatio(mPreviewSize.getHeight(), mPreviewSize.getWidth());
             }
             configureTransform(width, height);
             manager.openCamera(cameraId, stateCallback, null);
@@ -355,10 +422,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         startBackgroundThread();
-        if (textureView.isAvailable())
-            openCamera(textureView.getWidth(), textureView.getHeight());
+        if (mTextureView.isAvailable())
+            openCamera(mTextureView.getWidth(), mTextureView.getHeight());
         else
-            textureView.setSurfaceTextureListener(textureListener);
+            mTextureView.setSurfaceTextureListener(textureListener);
     }
 
     @Override
@@ -394,7 +461,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void configureTransform(int viewWidth, int viewHeight) {
-        if (null == textureView || null == mPreviewSize) {
+        if (null == mTextureView || null == mPreviewSize) {
             return;
         }
         int rotation = getWindowManager().getDefaultDisplay().getRotation();
@@ -412,7 +479,7 @@ public class MainActivity extends AppCompatActivity {
             matrix.postScale(scale, scale, centerX, centerY);
             matrix.postRotate(90 * (rotation - 2), centerX, centerY);
         }
-        textureView.setTransform(matrix);
+        mTextureView.setTransform(matrix);
     }
 
     static class CompareSizesByArea implements Comparator<Size> {

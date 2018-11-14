@@ -72,7 +72,7 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
             Bitmap bmp = Bitmap.createBitmap(mSurfaceWidth, mSurfaceHeight, Bitmap.Config.ARGB_8888);
             mPixelBuf.rewind();
             bmp.copyPixelsFromBuffer(mPixelBuf);
-            bmp.compress(Bitmap.CompressFormat.PNG, 90, bos);
+            bmp.compress(Bitmap.CompressFormat.PNG, 100, bos);
             bmp.recycle();
         } finally {
             if (bos != null) bos.close();
@@ -88,6 +88,8 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
         mRenderThread.start();
         mSurfaceWidth = width;
         mSurfaceHeight = height;
+        Log.d(TAG, "Slam width: " + mSurfaceWidth);
+        Log.d(TAG, "Slam height: " + mSurfaceHeight);
     }
 
     public void stop() {
