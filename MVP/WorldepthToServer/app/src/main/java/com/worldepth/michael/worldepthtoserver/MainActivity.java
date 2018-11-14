@@ -1,5 +1,7 @@
 package com.worldepth.michael.worldepthtoserver;
 
+import android.graphics.Point;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.TextView;
 import android.support.design.widget.FloatingActionButton;
@@ -9,6 +11,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import java.io.File;
+import java.util.*;
+
+import java.lang.reflect.Array;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,7 +39,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Snackbar.make(view, "Sending to database", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-                fb.writeToDatabase("message", "hello");
+                Point point = new Point(5,2);
+                fb.writeToDatabase("message", point);
             }
         });
 
