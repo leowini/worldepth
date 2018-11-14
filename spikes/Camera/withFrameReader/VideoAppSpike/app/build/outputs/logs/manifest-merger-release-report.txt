@@ -1,0 +1,170 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/src/main/AndroidManifest.xml:2:1-26:12
+INJECTED from /Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/src/main/AndroidManifest.xml:2:1-26:12
+INJECTED from /Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/src/main/AndroidManifest.xml:2:1-26:12
+INJECTED from /Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/src/main/AndroidManifest.xml:2:1-26:12
+MERGED from [com.android.support:appcompat-v7:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/appcompat-v7-28.0.0.aar/7aede86c8a73ea1cf3a3faa70aa84cc1/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support.constraint:constraint-layout:1.1.3] /Users/michael/.gradle/caches/transforms-1/files-1.1/constraint-layout-1.1.3.aar/8867df4ef9a95ba2b3933edf097a2607/AndroidManifest.xml:2:1-11:12
+MERGED from [com.android.support:support-fragment:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/support-fragment-28.0.0.aar/48396a6ca6c7ee94808abd44d2dd6611/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:animated-vector-drawable:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/animated-vector-drawable-28.0.0.aar/f02ec423dec40ba725b230effd27b169/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-core-ui:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/support-core-ui-28.0.0.aar/012fb68acd92b4a41676b39d7565e66a/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-core-utils:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/support-core-utils-28.0.0.aar/a246494e7c2dd7751bac316e3efc67b0/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-vector-drawable:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/support-vector-drawable-28.0.0.aar/6d5cb578934567326679ce6b9da98acd/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:loader:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/loader-28.0.0.aar/1217ddd00535a9bdddd7e4df133bed14/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:viewpager:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/viewpager-28.0.0.aar/ce91fffe5830e3ee59aaca47b3c471df/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:coordinatorlayout:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/coordinatorlayout-28.0.0.aar/1b3e3af755b4ceaec872e8367fe62167/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:drawerlayout:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/drawerlayout-28.0.0.aar/20de9aa0a17d007c76ba28ee58c36865/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:slidingpanelayout:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/slidingpanelayout-28.0.0.aar/78f34da0fc97e65d49e6c2d9c98a0a23/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:customview:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/customview-28.0.0.aar/d75212ad75035025701dbef73a636813/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:swiperefreshlayout:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/swiperefreshlayout-28.0.0.aar/553e9f1fe836da47791b5a28a554bd3f/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:asynclayoutinflater:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/asynclayoutinflater-28.0.0.aar/60851b4d464f7f65ca2f0663df2a9e03/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-compat:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/support-compat-28.0.0.aar/303ae8eb588ab12967cb4d93fd4f7076/AndroidManifest.xml:17:1-24:12
+MERGED from [com.android.support:versionedparcelable:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/versionedparcelable-28.0.0.aar/17f5164b47e61fa9d12e0e9b3ee8da17/AndroidManifest.xml:17:1-25:12
+MERGED from [com.android.support:cursoradapter:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/cursoradapter-28.0.0.aar/3aa8f57938b078ef46a380d07f2d4758/AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.lifecycle:runtime:1.1.1] /Users/michael/.gradle/caches/transforms-1/files-1.1/runtime-1.1.1.aar/86f9c92ced1e7ae43ad93878f9223845/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:documentfile:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/documentfile-28.0.0.aar/6228d1b7d3daf200226bd64b20594840/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:localbroadcastmanager:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/localbroadcastmanager-28.0.0.aar/43de33fbf3aa9136a052cbac42d1465f/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:print:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/print-28.0.0.aar/295d7279a2ceecc80e5d5d890be6fa63/AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.lifecycle:viewmodel:1.1.1] /Users/michael/.gradle/caches/transforms-1/files-1.1/viewmodel-1.1.1.aar/dd4eb92502199eca7a4b45baefc79b04/AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.lifecycle:livedata:1.1.1] /Users/michael/.gradle/caches/transforms-1/files-1.1/livedata-1.1.1.aar/dee1722c6b3173fae4572f7672cfe55d/AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.lifecycle:livedata-core:1.1.1] /Users/michael/.gradle/caches/transforms-1/files-1.1/livedata-core-1.1.1.aar/60ca8fd0e58f00e986760c6e93721fff/AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.core:runtime:1.1.1] /Users/michael/.gradle/caches/transforms-1/files-1.1/runtime-1.1.1.aar/85294c0f3a19f184317aa6795163425e/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:interpolator:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/interpolator-28.0.0.aar/9cccb7a489af7a022899a98f1d6a07aa/AndroidManifest.xml:17:1-22:12
+INJECTED from /Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/src/main/AndroidManifest.xml:2:1-26:12
+INJECTED from /Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/src/main/AndroidManifest.xml:2:1-26:12
+INJECTED from /Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/src/main/AndroidManifest.xml:2:1-26:12
+	package
+		ADDED from /Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/src/main/AndroidManifest.xml:3:5-46
+		INJECTED from /Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/src/main/AndroidManifest.xml
+		INJECTED from /Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/src/main/AndroidManifest.xml
+	android:versionName
+		INJECTED from /Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/src/main/AndroidManifest.xml
+		ADDED from /Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/src/main/AndroidManifest.xml:2:1-26:12
+		INJECTED from /Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/src/main/AndroidManifest.xml
+	android:versionCode
+		INJECTED from /Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/src/main/AndroidManifest.xml
+		ADDED from /Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/src/main/AndroidManifest.xml:2:1-26:12
+		INJECTED from /Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/src/main/AndroidManifest.xml:2:11-69
+uses-permission#android.permission.CAMERA
+ADDED from /Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/src/main/AndroidManifest.xml:5:5-64
+	android:name
+		ADDED from /Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/src/main/AndroidManifest.xml:5:22-62
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from /Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/src/main/AndroidManifest.xml:6:5-80
+	android:name
+		ADDED from /Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/src/main/AndroidManifest.xml:6:22-78
+uses-permission#android.permission.RECORD_AUDIO
+ADDED from /Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/src/main/AndroidManifest.xml:7:5-70
+	android:name
+		ADDED from /Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/src/main/AndroidManifest.xml:7:22-68
+uses-permission#android.hardware.camera2.full
+ADDED from /Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/src/main/AndroidManifest.xml:8:5-68
+	android:name
+		ADDED from /Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/src/main/AndroidManifest.xml:8:22-66
+application
+ADDED from /Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/src/main/AndroidManifest.xml:10:5-24:19
+MERGED from [com.android.support.constraint:constraint-layout:1.1.3] /Users/michael/.gradle/caches/transforms-1/files-1.1/constraint-layout-1.1.3.aar/8867df4ef9a95ba2b3933edf097a2607/AndroidManifest.xml:9:5-20
+MERGED from [com.android.support.constraint:constraint-layout:1.1.3] /Users/michael/.gradle/caches/transforms-1/files-1.1/constraint-layout-1.1.3.aar/8867df4ef9a95ba2b3933edf097a2607/AndroidManifest.xml:9:5-20
+MERGED from [com.android.support:support-compat:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/support-compat-28.0.0.aar/303ae8eb588ab12967cb4d93fd4f7076/AndroidManifest.xml:22:5-94
+MERGED from [com.android.support:support-compat:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/support-compat-28.0.0.aar/303ae8eb588ab12967cb4d93fd4f7076/AndroidManifest.xml:22:5-94
+MERGED from [com.android.support:versionedparcelable:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/versionedparcelable-28.0.0.aar/17f5164b47e61fa9d12e0e9b3ee8da17/AndroidManifest.xml:22:5-23:19
+MERGED from [com.android.support:versionedparcelable:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/versionedparcelable-28.0.0.aar/17f5164b47e61fa9d12e0e9b3ee8da17/AndroidManifest.xml:22:5-23:19
+	android:appComponentFactory
+		ADDED from [com.android.support:support-compat:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/support-compat-28.0.0.aar/303ae8eb588ab12967cb4d93fd4f7076/AndroidManifest.xml:22:18-91
+	android:supportsRtl
+		ADDED from /Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/src/main/AndroidManifest.xml:15:9-35
+	android:label
+		ADDED from /Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/src/main/AndroidManifest.xml:13:9-41
+	android:roundIcon
+		ADDED from /Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/src/main/AndroidManifest.xml:14:9-54
+	android:icon
+		ADDED from /Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/src/main/AndroidManifest.xml:12:9-43
+	android:allowBackup
+		ADDED from /Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/src/main/AndroidManifest.xml:11:9-35
+	android:theme
+		ADDED from /Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/src/main/AndroidManifest.xml:16:9-40
+activity#com.example.leodw.videoappspike.MainActivity
+ADDED from /Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/src/main/AndroidManifest.xml:17:9-23:20
+	android:name
+		ADDED from /Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/src/main/AndroidManifest.xml:17:19-47
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from /Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/src/main/AndroidManifest.xml:18:13-22:29
+action#android.intent.action.MAIN
+ADDED from /Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/src/main/AndroidManifest.xml:19:17-69
+	android:name
+		ADDED from /Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/src/main/AndroidManifest.xml:19:25-66
+category#android.intent.category.LAUNCHER
+ADDED from /Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/src/main/AndroidManifest.xml:21:17-77
+	android:name
+		ADDED from /Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/src/main/AndroidManifest.xml:21:27-74
+uses-sdk
+INJECTED from /Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/src/main/AndroidManifest.xml
+INJECTED from /Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/src/main/AndroidManifest.xml
+MERGED from [com.android.support:appcompat-v7:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/appcompat-v7-28.0.0.aar/7aede86c8a73ea1cf3a3faa70aa84cc1/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:appcompat-v7:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/appcompat-v7-28.0.0.aar/7aede86c8a73ea1cf3a3faa70aa84cc1/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support.constraint:constraint-layout:1.1.3] /Users/michael/.gradle/caches/transforms-1/files-1.1/constraint-layout-1.1.3.aar/8867df4ef9a95ba2b3933edf097a2607/AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support.constraint:constraint-layout:1.1.3] /Users/michael/.gradle/caches/transforms-1/files-1.1/constraint-layout-1.1.3.aar/8867df4ef9a95ba2b3933edf097a2607/AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-fragment:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/support-fragment-28.0.0.aar/48396a6ca6c7ee94808abd44d2dd6611/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-fragment:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/support-fragment-28.0.0.aar/48396a6ca6c7ee94808abd44d2dd6611/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:animated-vector-drawable:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/animated-vector-drawable-28.0.0.aar/f02ec423dec40ba725b230effd27b169/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:animated-vector-drawable:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/animated-vector-drawable-28.0.0.aar/f02ec423dec40ba725b230effd27b169/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-ui:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/support-core-ui-28.0.0.aar/012fb68acd92b4a41676b39d7565e66a/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-ui:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/support-core-ui-28.0.0.aar/012fb68acd92b4a41676b39d7565e66a/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-utils:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/support-core-utils-28.0.0.aar/a246494e7c2dd7751bac316e3efc67b0/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-utils:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/support-core-utils-28.0.0.aar/a246494e7c2dd7751bac316e3efc67b0/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/support-vector-drawable-28.0.0.aar/6d5cb578934567326679ce6b9da98acd/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/support-vector-drawable-28.0.0.aar/6d5cb578934567326679ce6b9da98acd/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:loader:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/loader-28.0.0.aar/1217ddd00535a9bdddd7e4df133bed14/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:loader:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/loader-28.0.0.aar/1217ddd00535a9bdddd7e4df133bed14/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:viewpager:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/viewpager-28.0.0.aar/ce91fffe5830e3ee59aaca47b3c471df/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:viewpager:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/viewpager-28.0.0.aar/ce91fffe5830e3ee59aaca47b3c471df/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:coordinatorlayout:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/coordinatorlayout-28.0.0.aar/1b3e3af755b4ceaec872e8367fe62167/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:coordinatorlayout:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/coordinatorlayout-28.0.0.aar/1b3e3af755b4ceaec872e8367fe62167/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:drawerlayout:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/drawerlayout-28.0.0.aar/20de9aa0a17d007c76ba28ee58c36865/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:drawerlayout:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/drawerlayout-28.0.0.aar/20de9aa0a17d007c76ba28ee58c36865/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:slidingpanelayout:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/slidingpanelayout-28.0.0.aar/78f34da0fc97e65d49e6c2d9c98a0a23/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:slidingpanelayout:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/slidingpanelayout-28.0.0.aar/78f34da0fc97e65d49e6c2d9c98a0a23/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:customview:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/customview-28.0.0.aar/d75212ad75035025701dbef73a636813/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:customview:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/customview-28.0.0.aar/d75212ad75035025701dbef73a636813/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:swiperefreshlayout:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/swiperefreshlayout-28.0.0.aar/553e9f1fe836da47791b5a28a554bd3f/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:swiperefreshlayout:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/swiperefreshlayout-28.0.0.aar/553e9f1fe836da47791b5a28a554bd3f/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:asynclayoutinflater:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/asynclayoutinflater-28.0.0.aar/60851b4d464f7f65ca2f0663df2a9e03/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:asynclayoutinflater:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/asynclayoutinflater-28.0.0.aar/60851b4d464f7f65ca2f0663df2a9e03/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-compat:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/support-compat-28.0.0.aar/303ae8eb588ab12967cb4d93fd4f7076/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-compat:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/support-compat-28.0.0.aar/303ae8eb588ab12967cb4d93fd4f7076/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:versionedparcelable:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/versionedparcelable-28.0.0.aar/17f5164b47e61fa9d12e0e9b3ee8da17/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:versionedparcelable:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/versionedparcelable-28.0.0.aar/17f5164b47e61fa9d12e0e9b3ee8da17/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:cursoradapter:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/cursoradapter-28.0.0.aar/3aa8f57938b078ef46a380d07f2d4758/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:cursoradapter:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/cursoradapter-28.0.0.aar/3aa8f57938b078ef46a380d07f2d4758/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:runtime:1.1.1] /Users/michael/.gradle/caches/transforms-1/files-1.1/runtime-1.1.1.aar/86f9c92ced1e7ae43ad93878f9223845/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:runtime:1.1.1] /Users/michael/.gradle/caches/transforms-1/files-1.1/runtime-1.1.1.aar/86f9c92ced1e7ae43ad93878f9223845/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:documentfile:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/documentfile-28.0.0.aar/6228d1b7d3daf200226bd64b20594840/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:documentfile:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/documentfile-28.0.0.aar/6228d1b7d3daf200226bd64b20594840/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:localbroadcastmanager:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/localbroadcastmanager-28.0.0.aar/43de33fbf3aa9136a052cbac42d1465f/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:localbroadcastmanager:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/localbroadcastmanager-28.0.0.aar/43de33fbf3aa9136a052cbac42d1465f/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:print:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/print-28.0.0.aar/295d7279a2ceecc80e5d5d890be6fa63/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:print:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/print-28.0.0.aar/295d7279a2ceecc80e5d5d890be6fa63/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:viewmodel:1.1.1] /Users/michael/.gradle/caches/transforms-1/files-1.1/viewmodel-1.1.1.aar/dd4eb92502199eca7a4b45baefc79b04/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:viewmodel:1.1.1] /Users/michael/.gradle/caches/transforms-1/files-1.1/viewmodel-1.1.1.aar/dd4eb92502199eca7a4b45baefc79b04/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:livedata:1.1.1] /Users/michael/.gradle/caches/transforms-1/files-1.1/livedata-1.1.1.aar/dee1722c6b3173fae4572f7672cfe55d/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:livedata:1.1.1] /Users/michael/.gradle/caches/transforms-1/files-1.1/livedata-1.1.1.aar/dee1722c6b3173fae4572f7672cfe55d/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:livedata-core:1.1.1] /Users/michael/.gradle/caches/transforms-1/files-1.1/livedata-core-1.1.1.aar/60ca8fd0e58f00e986760c6e93721fff/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:livedata-core:1.1.1] /Users/michael/.gradle/caches/transforms-1/files-1.1/livedata-core-1.1.1.aar/60ca8fd0e58f00e986760c6e93721fff/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.core:runtime:1.1.1] /Users/michael/.gradle/caches/transforms-1/files-1.1/runtime-1.1.1.aar/85294c0f3a19f184317aa6795163425e/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.core:runtime:1.1.1] /Users/michael/.gradle/caches/transforms-1/files-1.1/runtime-1.1.1.aar/85294c0f3a19f184317aa6795163425e/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:interpolator:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/interpolator-28.0.0.aar/9cccb7a489af7a022899a98f1d6a07aa/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:interpolator:28.0.0] /Users/michael/.gradle/caches/transforms-1/files-1.1/interpolator-28.0.0.aar/9cccb7a489af7a022899a98f1d6a07aa/AndroidManifest.xml:20:5-44
+INJECTED from /Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/src/main/AndroidManifest.xml
+INJECTED from /Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/src/main/AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from /Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/src/main/AndroidManifest.xml
+		ADDED from /Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/src/main/AndroidManifest.xml
+		INJECTED from /Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/src/main/AndroidManifest.xml
+		ADDED from /Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/src/main/AndroidManifest.xml
+		INJECTED from /Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/src/main/AndroidManifest.xml
