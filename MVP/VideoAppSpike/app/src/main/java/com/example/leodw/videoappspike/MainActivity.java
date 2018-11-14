@@ -136,6 +136,17 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    /**
+     * This goes through each possible camera output size and chooses the smallest
+     * size of the sizes that are bigger than the TextureView and smaller than the display dimensions.
+     * @param choices
+     * @param mTextureViewWidth
+     * @param mTextureViewHeight
+     * @param maxWidth
+     * @param maxHeight
+     * @param aspectRatio
+     * @return
+     */
     private static Size chooseOptimalSize(Size[] choices, int mTextureViewWidth,
                                           int mTextureViewHeight, int maxWidth, int maxHeight, Size aspectRatio) {
         // Collect the supported resolutions that are at least as big as the preview Surface
@@ -169,6 +180,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * starts the camera preview
+     */
     private void startPreview() {
         if (null == cameraDevice || !mTextureView.isAvailable() || null == mPreviewSize) {
             return;
@@ -202,6 +216,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Updates the camera preview on the background thread
+      */
     private void updatePreview() {
         if (cameraDevice == null)
             return;
@@ -248,6 +265,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Configures the renderer on the render thread and sets a callback to startCameraRecording()
+     * when the SurfaceTexture is configured.
+     */
     private void startRecording() {
         mRenderer = new Renderer();
         mRenderer.setOnSurfaceTextureReadyListener(texture -> {
@@ -447,6 +468,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * The camera preview runs on this thread
+     */
     private void startBackgroundThread() {
         mBackgroundThread = new HandlerThread("Camera Background");
         mBackgroundThread.start();

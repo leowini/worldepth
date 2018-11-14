@@ -61,6 +61,11 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
         }
     }
 
+    /**
+     * Saves the drawn frame
+     * @param filename
+     * @throws IOException
+     */
     private void saveFrame(String filename) throws IOException {
         mPixelBuf.rewind();
         GLES20.glReadPixels(0, 0, mSurfaceWidth, mSurfaceHeight, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE,
@@ -80,6 +85,11 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
         Log.d(TAG, "Saved" + mSurfaceWidth + "x" + mSurfaceHeight + " frame as '" + filename + "'");
     }
 
+    /**
+     * Starts the Renderthread and initializes the render dimensions
+     * @param width
+     * @param height
+     */
     public void start(int width, int height) {
         if (width <= 0 || height <= 0) {
             throw new IllegalArgumentException();
@@ -109,6 +119,9 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
         mListenerHandler = handler;
     }
 
+    /**
+     * Configures the mEglSurfaceTexture and sends it to the main thread to use for mSlamOutputSurface
+     */
     private void configure() {
         eglSetup();
         makeCurrent();
@@ -224,8 +237,9 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
         mEglSurfaceTexture = null;
     }
 
-
-
+    /**
+     * Functional interface that contains the onSurfaceTextureReady method
+     */
     public interface EglSurfaceTextureListener {
         void onSurfaceTextureReady(SurfaceTexture surfaceTexture);
     }
