@@ -32,15 +32,18 @@ public class FirebaseWrapper {
         return database;
     }
 
+    //Get firebase storageReference object
     public StorageReference getStorageReference() { return mStorageRef; }
 
-    //Write to the firebase database
+    //Write to the firebase database with serializable data
     public void writeToDatabase(String location, Object message) {
         DatabaseReference myRef = database.getReference(location); //location for message
         myRef.setValue(message); //sending the "message" object
         Log.d(TAG,"Wrote to Database");
     }
 
+
+    //upload a file object to our Firebase Cloud Storage
     public void uploadFile(Uri file) {
         final StorageReference fileRef = mStorageRef.child("Bursts");
 
