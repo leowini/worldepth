@@ -15,6 +15,8 @@ import com.example.leodw.worldepth.R;
 
 
 public class LoadingFragment extends Fragment {
+
+    private static final String TAG = "LoadingFragment";
     private LoadingViewModel mLoadingViewModel;
 
     @Nullable

@@ -16,6 +16,9 @@ import com.example.leodw.worldepth.databinding.CameraFragmentBinding;
 import com.example.leodw.worldepth.R;
 
 public class CameraFragment extends Fragment {
+
+    private static final String TAG = "CameraFragment";
+
     private CameraViewModel mCameraViewModel;
 
     @Nullable

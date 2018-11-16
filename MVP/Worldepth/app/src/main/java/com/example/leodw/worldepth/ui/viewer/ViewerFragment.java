@@ -15,6 +15,9 @@ import com.example.leodw.worldepth.databinding.ViewerFragmentBinding;
 import com.example.leodw.worldepth.R;
 
 public class ViewerFragment extends Fragment {
+
+    private static final String TAG = "ViewerFragment";
+
     private ViewerViewModel mViewerViewModel;
 
     @Nullable
