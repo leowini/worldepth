@@ -1,5 +1,8 @@
 package com.example.leodw.worldepth.ui.loading;
 
+import android.databinding.DataBindingUtil;
+import android.databinding.BindingAdapter;
+import com.example.leodw.worldepth.databinding.LoadingFragmentBinding;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,13 +13,17 @@ import android.view.ViewGroup;
 
 import com.example.leodw.worldepth.R;
 
+
 public class LoadingFragment extends Fragment {
     private LoadingViewModel mLoadingViewModel;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.loading_fragment, container, false);
+        LoadingFragmentBinding loadingFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.loading_fragment, container, false);
+        View view = loadingFragmentBinding.getRoot();
+        loadingFragmentBinding.setViewModel(new LoadingViewModel());
+        loadingFragmentBinding.executePendingBindings();
         return view;
     }
 }

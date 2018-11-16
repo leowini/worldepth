@@ -7,6 +7,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.databinding.BindingAdapter;
+import android.databinding.DataBindingUtil;
+
+import com.example.leodw.worldepth.MainActivity;
+import com.example.leodw.worldepth.databinding.CameraFragmentBinding;
 
 import com.example.leodw.worldepth.R;
 
@@ -16,7 +21,10 @@ public class CameraFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.camera_fragment, container, false);
+        CameraFragmentBinding cameraFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.camera_fragment, container, false);
+        View view = cameraFragmentBinding.getRoot();
+        cameraFragmentBinding.setViewModel(new CameraViewModel());
+        cameraFragmentBinding.executePendingBindings();
         return view;
     }
 }
