@@ -19,17 +19,17 @@ public class FirebaseWrapper {
     //Debug TAG
     private static final String TAG = "worldepth";
 
-    private FirebaseDatabase database; //Instance of database
+    private FirebaseDatabase mDatabase; //Instance of database
     private StorageReference mStorageRef;
 
     public FirebaseWrapper() { //Constructor
-        database = FirebaseDatabase.getInstance();
+        mDatabase = FirebaseDatabase.getInstance();
         mStorageRef = FirebaseStorage.getInstance().getReference();
     }
 
     //Get firebase database object
     public FirebaseDatabase getFirebaseDatabase() {
-        return database;
+        return mDatabase;
     }
 
     //Get firebase storageReference object
@@ -37,7 +37,7 @@ public class FirebaseWrapper {
 
     //Write to the firebase database with serializable data
     public void writeToDatabase(String location, Object message) {
-        DatabaseReference myRef = database.getReference(location); //location for message
+        DatabaseReference myRef = mDatabase.getReference(location); //location for message
         myRef.setValue(message); //sending the "message" object
         Log.d(TAG,"Wrote to Database");
     }
@@ -45,7 +45,7 @@ public class FirebaseWrapper {
 
     //upload a file object to our Firebase Cloud Storage
     public void uploadFile(Uri file) {
-        final StorageReference fileRef = mStorageRef.child("Bursts");
+        final StorageReference fileRef = mStorageRef.child("Bursts"); //Path to where files are placed
 
         fileRef.putFile(file)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
