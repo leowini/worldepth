@@ -32,6 +32,12 @@ public class CameraFragment extends Fragment {
         return view;
     }
 
+    /**
+     * When the CameraViewModel sets its CaptureButtonOnTouchListener, this method sets the actual CaptureButton's OnTouchListener
+     * to viewModel.CaptureButtonOnTouchListener.
+     * @param view
+     * @param onTouchListener
+     */
     @BindingAdapter("onTouchListener")
     public static void setOnTouchListener(View view, View.OnTouchListener onTouchListener) {
         if (onTouchListener != null)
