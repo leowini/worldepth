@@ -102,7 +102,7 @@ public class CameraViewModel extends AndroidViewModel {
     //Video file
     private String nextVideoAbsolutePath;
 
-    TextureView.SurfaceTextureListener textureListener = new TextureView.SurfaceTextureListener() {
+    public TextureView.SurfaceTextureListener textureListener = new TextureView.SurfaceTextureListener() {
         @Override
         public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
             openCamera(width, height);
@@ -443,8 +443,8 @@ public class CameraViewModel extends AndroidViewModel {
         startBackgroundThread();
         if (mTextureView.isAvailable())
             openCamera(mTextureView.getWidth(), mTextureView.getHeight());
-        else
-            mTextureView.setSurfaceTextureListener(textureListener);
+//        else
+//            setTextureViewSurfaceTextureListener(textureListener);
     }
 
     protected void onPause() {

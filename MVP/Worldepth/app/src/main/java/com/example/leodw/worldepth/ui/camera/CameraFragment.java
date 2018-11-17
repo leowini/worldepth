@@ -4,12 +4,14 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.pm.PackageManager;
 import android.databinding.BindingAdapter;
+import android.graphics.SurfaceTexture;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
+import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.databinding.DataBindingUtil;
@@ -48,6 +50,14 @@ public class CameraFragment extends Fragment {
     public static void setOnTouchListener(View view, View.OnTouchListener onTouchListener) {
         if (onTouchListener != null)
             view.setOnTouchListener(onTouchListener);
+    }
+
+    @BindingAdapter("surfaceTextureListener")
+    public static void setSurfaceTextureListener(View view, TextureView.SurfaceTextureListener surfaceTextureListener) {
+        if (surfaceTextureListener != null) {
+            TextureView st = (TextureView) view;
+            st.setSurfaceTextureListener(surfaceTextureListener);
+        }
     }
 
     @Override
