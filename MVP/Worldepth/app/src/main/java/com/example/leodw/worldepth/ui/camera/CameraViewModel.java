@@ -429,16 +429,6 @@ public class CameraViewModel {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_CAMERA_PERMISSION) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Can't use camera without permission", Toast.LENGTH_SHORT).show();
-                finish();
-            }
-        }
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
         startBackgroundThread();

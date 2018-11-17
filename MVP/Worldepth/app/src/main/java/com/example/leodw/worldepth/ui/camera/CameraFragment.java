@@ -1,5 +1,6 @@
 package com.example.leodw.worldepth.ui.camera;
 
+import android.content.pm.PackageManager;
 import android.databinding.BindingAdapter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,6 +11,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.databinding.DataBindingUtil;
+import android.widget.Toast;
 
 import com.example.leodw.worldepth.databinding.CameraFragmentBinding;
 
@@ -36,4 +38,13 @@ public class CameraFragment extends Fragment {
             view.setOnTouchListener(onTouchListener);
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_CAMERA_PERMISSION) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(getContext(), "Can't use camera without permission", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        }
+    }
 }
