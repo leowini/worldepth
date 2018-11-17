@@ -1,8 +1,11 @@
 package com.example.leodw.worldepth.ui.camera;
 
 import android.Manifest;
-import android.arch.lifecycle.ViewModel;
+import android.app.Activity;
+import android.app.Application;
+import android.arch.lifecycle.AndroidViewModel;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.databinding.BaseObservable;
@@ -34,6 +37,8 @@ import android.view.TextureView;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.leodw.worldepth.ui.MainActivity;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -42,7 +47,11 @@ import java.util.List;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
-public class CameraViewModel extends ViewModel {
+/**
+ * CameraViewModel extends AndroidViewModel, which allows us to call getApplication(),
+ * from which we can get system services.
+ */
+public class CameraViewModel extends AndroidViewModel {
     private static final String TAG = "CameraViewModel";
 
     private Renderer mRenderer;
@@ -77,6 +86,7 @@ public class CameraViewModel extends ViewModel {
     private CaptureRequest.Builder mPreviewBuilder;
     private Semaphore mCameraOpenCloseLock = new Semaphore(1);
     private Size mPreviewSize;
+    private static final int REQUEST_CAMERA_PERMISSION = 200;
     /**
      * Max preview width that is guaranteed by Camera2 API
      */
@@ -244,7 +254,8 @@ public class CameraViewModel extends ViewModel {
         builder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO);
     }
 
-    public CameraViewModel() {
+    public CameraViewModel(Application application) {
+        super(application);
 //        mTextureView = (AutoFitTextureView) textureView;
 //        assert mTextureView != null;
         setCaptureButtonOnTouchListener((v, event) -> {
@@ -332,7 +343,7 @@ public class CameraViewModel extends ViewModel {
     }
 
     private void openCamera(int width, int height) {
-        CameraManager manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
+        CameraManager manager = (CameraManager) getApplication().getSystemService(Context.CAMERA_SERVICE);
         try {
             Log.d(TAG, "tryAcquire");
             if (!mCameraOpenCloseLock.tryAcquire(2500, TimeUnit.MILLISECONDS)) {
@@ -391,14 +402,14 @@ public class CameraViewModel extends ViewModel {
             mPreviewSize = chooseOptimalSize(map.getOutputSizes(SurfaceTexture.class), rotatedPreviewWidth, rotatedPreviewHeight, maxPreviewWidth, maxPreviewHeight, largest);
             Log.d(TAG, "open preview size: " + mPreviewSize.getWidth() + "x" + mPreviewSize.getHeight());
             //check real-time permissions
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.checkSelfPermission(getApplication(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, new String[]{
                         Manifest.permission.CAMERA,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE
                 }, REQUEST_CAMERA_PERMISSION);
                 return;
             }
-            int orientation = getResources().getConfiguration().orientation;
+            int orientation = getApplication().getResources().getConfiguration().orientation;
             if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 mTextureView.setAspectRatio(mPreviewSize.getWidth(), mPreviewSize.getHeight());
             } else {
@@ -429,7 +440,6 @@ public class CameraViewModel extends ViewModel {
     }
 
     protected void onResume() {
-        super.onResume();
         startBackgroundThread();
         if (mTextureView.isAvailable())
             openCamera(mTextureView.getWidth(), mTextureView.getHeight());
@@ -440,7 +450,6 @@ public class CameraViewModel extends ViewModel {
     protected void onPause() {
         closeCamera();
         stopBackgroundThread();
-        super.onPause();
     }
 
     private void stopBackgroundThread() {
@@ -471,11 +480,11 @@ public class CameraViewModel extends ViewModel {
         }
     }
 
-    private void configureTransform(int viewWidth, int viewHeight, int rotation) {
+    private void configureTransform(int viewWidth, int viewHeight) {
         if (null == mTextureView || null == mPreviewSize) {
             return;
         }
-        //int rotation = getWindowManager().getDefaultDisplay().getRotation();
+        int rotation = getWindowManager().getDefaultDisplay().getRotation();
         Matrix matrix = new Matrix();
         RectF viewRect = new RectF(0, 0, viewWidth, viewHeight);
         RectF bufferRect = new RectF(0, 0, mPreviewSize.getHeight(), mPreviewSize.getWidth());

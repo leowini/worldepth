@@ -1,5 +1,7 @@
 package com.example.leodw.worldepth.ui.camera;
 
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.pm.PackageManager;
 import android.databinding.BindingAdapter;
 import android.os.Bundle;
@@ -23,12 +25,15 @@ public class CameraFragment extends Fragment {
 
     private static final int REQUEST_CAMERA_PERMISSION = 200;
 
+    private CameraViewModel mCameraViewModel;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        mCameraViewModel = ViewModelProviders.of(this).get(CameraViewModel.class);
         CameraFragmentBinding cameraFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.camera_fragment, container, false);
         View view = cameraFragmentBinding.getRoot();
-        cameraFragmentBinding.setViewModel(new CameraViewModel());
+        cameraFragmentBinding.setViewModel(mCameraViewModel);
         cameraFragmentBinding.executePendingBindings();
         return view;
     }
@@ -58,10 +63,12 @@ public class CameraFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        mCameraViewModel.onResume();
     }
 
     @Override
     public void onPause() {
+        mCameraViewModel.onPause();
         super.onPause();
     }
 }
