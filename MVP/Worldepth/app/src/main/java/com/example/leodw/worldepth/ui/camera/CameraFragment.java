@@ -19,8 +19,6 @@ public class CameraFragment extends Fragment {
 
     private static final String TAG = "CameraFragment";
 
-    private CameraViewModel mCameraViewModel;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

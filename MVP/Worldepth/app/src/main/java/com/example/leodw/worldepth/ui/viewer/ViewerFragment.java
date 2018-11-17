@@ -18,8 +18,6 @@ public class ViewerFragment extends Fragment {
 
     private static final String TAG = "ViewerFragment";
 
-    private ViewerViewModel mViewerViewModel;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
