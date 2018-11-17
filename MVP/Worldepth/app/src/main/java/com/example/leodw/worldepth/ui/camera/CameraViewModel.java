@@ -1,6 +1,7 @@
 package com.example.leodw.worldepth.ui.camera;
 
 import android.Manifest;
+import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -41,7 +42,7 @@ import java.util.List;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
-public class CameraViewModel {
+public class CameraViewModel extends ViewModel {
     private static final String TAG = "CameraViewModel";
 
     private Renderer mRenderer;
