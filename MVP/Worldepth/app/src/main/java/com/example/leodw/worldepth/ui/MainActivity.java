@@ -1,10 +1,10 @@
-package com.example.leodw.worldepth;
+package com.example.leodw.worldepth.ui;
 
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.TextView;
 
+import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.ui.camera.CameraFragment;
 import com.example.leodw.worldepth.ui.loading.LoadingFragment;
 import com.example.leodw.worldepth.ui.viewer.ViewerFragment;
@@ -41,10 +41,4 @@ public class MainActivity extends AppCompatActivity {
     public void setmViewPager(int fragmentIndex) {
         mViewPager.setCurrentItem(fragmentIndex);
     }
-
-    /**
-     * A native method that is implemented by the 'native-lib' native library,
-     * which is packaged with this application.
-     */
-    public native String stringFromJNI();
 }

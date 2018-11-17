@@ -7,10 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 
-import com.example.leodw.worldepth.MainActivity;
 import com.example.leodw.worldepth.databinding.CameraFragmentBinding;
 
 import com.example.leodw.worldepth.R;

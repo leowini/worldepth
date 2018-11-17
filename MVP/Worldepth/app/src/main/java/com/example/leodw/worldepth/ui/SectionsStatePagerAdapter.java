@@ -1,4 +1,4 @@
-package com.example.leodw.worldepth;
+package com.example.leodw.worldepth.ui;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
