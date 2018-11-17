@@ -54,7 +54,7 @@ public class CameraViewModel {
     private SurfaceTexture mSlamOutputSurface;
 
     private Button mCaptureButton;
-    public View.OnTouchListener onTouchListener;
+    public View.OnTouchListener CaptureButtonOnTouchListener;
     private AutoFitTextureView mTextureView;
 
     private boolean mRecordingState;
@@ -142,8 +142,8 @@ public class CameraViewModel {
         }
     };
 
-    public void setOnTouchListener(View.OnTouchListener onTouchListener) {
-        this.onTouchListener = onTouchListener;
+    public void setCaptureButtonOnTouchListener(View.OnTouchListener onTouchListener) {
+        this.CaptureButtonOnTouchListener = onTouchListener;
     }
 
     /**
@@ -219,7 +219,8 @@ public class CameraViewModel {
 
                         @Override
                         public void onConfigureFailed(@NonNull CameraCaptureSession session) {
-                            Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show();
+                            Log.d(TAG, "CaptureSession onConfigureFailed");
+                            //Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show();
                         }
                     }, mBackgroundHandler);
         } catch (CameraAccessException e) {
@@ -250,8 +251,7 @@ public class CameraViewModel {
     public CameraViewModel(TextureView textureView, Button captureButton) {
         mTextureView = (AutoFitTextureView) textureView;
         assert mTextureView != null;
-        mCaptureButton = (Button) captureButton;
-        mCaptureButton.setOnTouchListener((v, event) -> {
+        setCaptureButtonOnTouchListener((v, event) -> {
             switch (event.getAction()) {
                 case (MotionEvent.ACTION_DOWN):
                     if (!mRecordingState) {
@@ -260,7 +260,6 @@ public class CameraViewModel {
                         return true;
                     }
                     return false;
-
                 case (MotionEvent.ACTION_UP):
                     if (mRecordingState) {
                         stopRecording();
@@ -293,7 +292,6 @@ public class CameraViewModel {
 
     private void startCameraRecording() {
         if (cameraDevice == null) return;
-        CameraManager manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
         closePreviewSession();
         if (null == cameraDevice || !mTextureView.isAvailable() || null == mPreviewSize) {
             return;
@@ -414,7 +412,7 @@ public class CameraViewModel {
             } else {
                 mTextureView.setAspectRatio(mPreviewSize.getHeight(), mPreviewSize.getWidth());
             }
-            configureTransform(width, height);
+            configureTransform(width, height, rotation);
             manager.openCamera(cameraId, stateCallback, null);
         } catch (CameraAccessException e) {
             e.printStackTrace();
@@ -493,11 +491,11 @@ public class CameraViewModel {
         }
     }
 
-    private void configureTransform(int viewWidth, int viewHeight) {
+    private void configureTransform(int viewWidth, int viewHeight, int rotation) {
         if (null == mTextureView || null == mPreviewSize) {
             return;
         }
-        int rotation = getWindowManager().getDefaultDisplay().getRotation();
+        //int rotation = getWindowManager().getDefaultDisplay().getRotation();
         Matrix matrix = new Matrix();
         RectF viewRect = new RectF(0, 0, viewWidth, viewHeight);
         RectF bufferRect = new RectF(0, 0, mPreviewSize.getHeight(), mPreviewSize.getWidth());

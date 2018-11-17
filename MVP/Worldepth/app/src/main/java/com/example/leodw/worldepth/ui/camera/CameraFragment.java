@@ -26,6 +26,7 @@ public class CameraFragment extends Fragment {
         View view = cameraFragmentBinding.getRoot();
         cameraFragmentBinding.setViewModel(new CameraViewModel(view.findViewById(R.id.textureView), view.findViewById(R.id.captureButton)));
         cameraFragmentBinding.executePendingBindings();
+        int rotation = getActivity().getWindowManager().getDefaultDisplay().getRotation();
         return view;
     }
 
@@ -34,4 +35,5 @@ public class CameraFragment extends Fragment {
         if (onTouchListener != null)
             view.setOnTouchListener(onTouchListener);
     }
+
 }
