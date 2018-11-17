@@ -1,6 +1,6 @@
 package com.example.leodw.worldepth.ui.camera;
+
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -19,8 +19,6 @@ import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CameraMetadata;
 import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.params.StreamConfigurationMap;
-import android.opengl.GLSurfaceView;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
@@ -33,11 +31,7 @@ import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
-
-import com.example.leodw.worldepth.R;
-import com.example.leodw.worldepth.ui.MainActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
