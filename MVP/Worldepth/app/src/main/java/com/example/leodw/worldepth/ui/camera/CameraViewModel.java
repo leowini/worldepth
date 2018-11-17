@@ -86,7 +86,6 @@ public class CameraViewModel {
      */
     private static final int MAX_PREVIEW_HEIGHT = 1080;
 
-    private static final int REQUEST_CAMERA_PERMISSION = 200;
     private Handler mBackgroundHandler;
     private HandlerThread mBackgroundThread;
     //Video file
@@ -428,7 +427,6 @@ public class CameraViewModel {
         }
     }
 
-    @Override
     protected void onResume() {
         super.onResume();
         startBackgroundThread();
@@ -438,7 +436,6 @@ public class CameraViewModel {
             mTextureView.setSurfaceTextureListener(textureListener);
     }
 
-    @Override
     protected void onPause() {
         closeCamera();
         stopBackgroundThread();

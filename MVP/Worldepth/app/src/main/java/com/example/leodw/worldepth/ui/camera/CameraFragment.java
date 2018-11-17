@@ -21,6 +21,8 @@ public class CameraFragment extends Fragment {
 
     private static final String TAG = "CameraFragment";
 
+    private static final int REQUEST_CAMERA_PERMISSION = 200;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -28,7 +30,6 @@ public class CameraFragment extends Fragment {
         View view = cameraFragmentBinding.getRoot();
         cameraFragmentBinding.setViewModel(new CameraViewModel());
         cameraFragmentBinding.executePendingBindings();
-        int rotation = getActivity().getWindowManager().getDefaultDisplay().getRotation();
         return view;
     }
 
@@ -52,5 +53,15 @@ public class CameraFragment extends Fragment {
                 finish();
             }
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 }
