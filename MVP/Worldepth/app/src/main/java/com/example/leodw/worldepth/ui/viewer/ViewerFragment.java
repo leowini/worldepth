@@ -22,7 +22,9 @@ public class ViewerFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewerFragmentBinding viewerFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.viewer_fragment, container, false);
-        View view = inflater.inflate(R.layout.viewer_fragment, container, false);
+        View view = viewerFragmentBinding.getRoot();
+        viewerFragmentBinding.setViewModel(new ViewerViewModel());
+        viewerFragmentBinding.executePendingBindings();
         return view;
     }
 }
