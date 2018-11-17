@@ -48,7 +48,6 @@ public class CameraViewModel {
     private SurfaceTexture mSlamOutputSurface;
 
     public View.OnTouchListener CaptureButtonOnTouchListener;
-    private AutoFitTextureView mTextureView;
 
     private boolean mRecordingState;
 
@@ -135,6 +134,10 @@ public class CameraViewModel {
         }
     };
 
+    /**
+     * Sets the OnTouchListener for the CaptureButton
+     * @param onTouchListener
+     */
     public void setCaptureButtonOnTouchListener(View.OnTouchListener onTouchListener) {
         this.CaptureButtonOnTouchListener = onTouchListener;
     }
@@ -241,9 +244,9 @@ public class CameraViewModel {
         builder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO);
     }
 
-    public CameraViewModel(TextureView textureView) {
-        mTextureView = (AutoFitTextureView) textureView;
-        assert mTextureView != null;
+    public CameraViewModel() {
+//        mTextureView = (AutoFitTextureView) textureView;
+//        assert mTextureView != null;
         setCaptureButtonOnTouchListener((v, event) -> {
             switch (event.getAction()) {
                 case (MotionEvent.ACTION_DOWN):
@@ -276,10 +279,6 @@ public class CameraViewModel {
             mSlamOutputSurface = texture;
             startCameraRecording();
         }, new Handler(Looper.getMainLooper()));
-        Log.d(TAG, "preview width: " + mPreviewSize.getWidth());
-        Log.d(TAG, "preview height: " + mPreviewSize.getHeight());
-        Log.d(TAG, "mTextureView width: " + mTextureView.getWidth());
-        Log.d(TAG, "mTextureView height: " + mTextureView.getHeight());
         mRenderer.start(mTextureView.getWidth(), mTextureView.getHeight());
     }
 
