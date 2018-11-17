@@ -114,6 +114,10 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
         mRenderThread = null;
     }
 
+    /**
+     * This sets the listener for when the mEglSurfaceTexture is ready to be sent
+     * back to the CameraViewModel.
+     */
     public void setOnSurfaceTextureReadyListener(EglSurfaceTextureListener listener, Handler handler) {
         mListener = listener;
         mListenerHandler = handler;
