@@ -50,7 +50,7 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
 public class CameraFragment extends Fragment {
-    private static final String TAG = "CameraActivity";
+    private static final String TAG = "CameraFragment";
 
     private Renderer mRenderer;
     private SurfaceTexture mSlamOutputSurface;
@@ -270,6 +270,7 @@ public class CameraFragment extends Fragment {
                     if (mRecordingState) {
                         stopRecording();
                         mRecordingState = false;
+                        ((MainActivity) getActivity()).setmViewPager(1);
                         return true;
                     }
                     return false;
