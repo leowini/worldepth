@@ -450,7 +450,7 @@ public class CameraFragment extends Fragment {
         if (requestCode == REQUEST_CAMERA_PERMISSION) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(getActivity(), "Can't use camera without permission", Toast.LENGTH_SHORT).show();
-                finish();
+                getActivity().finish();
             }
         }
     }
