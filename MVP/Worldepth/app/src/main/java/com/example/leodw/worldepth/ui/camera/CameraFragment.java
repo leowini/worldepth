@@ -24,7 +24,7 @@ public class CameraFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         CameraFragmentBinding cameraFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.camera_fragment, container, false);
         View view = cameraFragmentBinding.getRoot();
-        cameraFragmentBinding.setViewModel(new CameraViewModel(view.findViewById(R.id.textureView), view.findViewById(R.id.captureButton)));
+        cameraFragmentBinding.setViewModel(new CameraViewModel(view.findViewById(R.id.textureView)));
         cameraFragmentBinding.executePendingBindings();
         int rotation = getActivity().getWindowManager().getDefaultDisplay().getRotation();
         return view;

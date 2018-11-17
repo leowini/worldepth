@@ -53,7 +53,6 @@ public class CameraViewModel {
     private Renderer mRenderer;
     private SurfaceTexture mSlamOutputSurface;
 
-    private Button mCaptureButton;
     public View.OnTouchListener CaptureButtonOnTouchListener;
     private AutoFitTextureView mTextureView;
 
@@ -248,7 +247,7 @@ public class CameraViewModel {
         builder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO);
     }
 
-    public CameraViewModel(TextureView textureView, Button captureButton) {
+    public CameraViewModel(TextureView textureView) {
         mTextureView = (AutoFitTextureView) textureView;
         assert mTextureView != null;
         setCaptureButtonOnTouchListener((v, event) -> {
