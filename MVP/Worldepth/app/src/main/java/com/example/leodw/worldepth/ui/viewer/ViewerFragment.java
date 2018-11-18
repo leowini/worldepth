@@ -18,23 +18,21 @@ import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
+import com.example.leodw.worldepth.ui.viewer.obj.ObjModel;
+import com.example.leodw.worldepth.ui.viewer.ply.PlyModel;
+import com.example.leodw.worldepth.ui.viewer.stl.StlModel;
+import com.example.leodw.worldepth.ui.viewer.util.Util;
 import com.example.leodw.worldepth.R;
 
 import java.io.IOException;
 import java.io.InputStream;
 
-import com.example.leodw.worldepth.ui.viewer.obj.ObjModel;
-import com.example.leodw.worldepth.ui.viewer.ply.PlyModel;
-import com.example.leodw.worldepth.ui.viewer.stl.StlModel;
-import com.example.leodw.worldepth.ui.viewer.util.Util;
 
-import java.io.IOException;
-import java.io.InputStream;
 
 public class ViewerFragment extends Fragment {
 
@@ -95,9 +93,9 @@ public class ViewerFragment extends Fragment {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         getActivity().getMenuInflater().inflate(R.menu.menu_main, menu);
-        return super.onCreateOptionsMenu(menu);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
