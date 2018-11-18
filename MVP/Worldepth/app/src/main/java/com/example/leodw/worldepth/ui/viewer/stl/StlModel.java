@@ -2,8 +2,8 @@ package com.example.leodw.worldepth.ui.viewer.stl;
 
 import android.support.annotation.NonNull;
 
-import com.worldepth.modelviewer.ArrayModel;
-import com.worldepth.modelviewer.util.Util;
+import com.example.leodw.worldepth.ui.viewer.ArrayModel;
+import com.example.leodw.worldepth.ui.viewer.util.Util;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import static com.worldepth.modelviewer.util.Util.readIntLe;
+import static com.example.leodw.worldepth.ui.viewer.util.Util.readIntLe;
 
 public class StlModel extends ArrayModel {
     private static final int HEADER_SIZE = 80;

@@ -4,10 +4,10 @@ import android.opengl.GLES20;
 import android.opengl.Matrix;
 import android.support.annotation.NonNull;
 
-import com.worldepth.modelviewer.R;
-import com.worldepth.modelviewer.IndexedModel;
-import com.worldepth.modelviewer.Light;
-import com.worldepth.modelviewer.util.Util;
+import com.example.leodw.worldepth.R;
+import com.example.leodw.worldepth.ui.viewer.IndexedModel;
+import com.example.leodw.worldepth.ui.viewer.Light;
+import com.example.leodw.worldepth.ui.viewer.util.Util;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -19,7 +19,7 @@ import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.worldepth.modelviewer.util.Util.readIntLe;
+import static com.example.leodw.worldepth.ui.viewer.util.Util.readIntLe;
 
 public class PlyModel extends IndexedModel {
 

@@ -5,7 +5,6 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -16,18 +15,13 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContentResolverCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.databinding.BindingAdapter;
-import android.databinding.DataBindingUtil;
 import android.widget.Toast;
-
-import com.example.leodw.worldepth.databinding.ViewerFragmentBinding;
 
 import com.example.leodw.worldepth.R;
 
@@ -48,16 +42,6 @@ public class ViewerFragment extends Fragment {
 
     private ViewerViewModel mViewerViewModel;
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ViewerFragmentBinding viewerFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.viewer_fragment, container, false);
-        View view = viewerFragmentBinding.getRoot();
-        viewerFragmentBinding.setViewModel(new ViewerViewModel());
-        viewerFragmentBinding.executePendingBindings();
-        return view;
-    }
-
     private static final int READ_PERMISSION_REQUEST = 100;
     private static final int OPEN_DOCUMENT_REQUEST = 101;
 
@@ -69,10 +53,14 @@ public class ViewerFragment extends Fragment {
     @Nullable private ModelSurfaceView modelView;
     private ViewGroup containerView;
 
+    @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        return inflater.inflate(R.layout.camera_fragment, container, false);
+    }
+
+    @Override
+    public void onViewCreated(final View view, Bundle savedInstanceState) {
         app = ModelViewerApplication.getInstance();
 
         containerView = getView().findViewById(R.id.container_view);
@@ -82,16 +70,16 @@ public class ViewerFragment extends Fragment {
     }
 
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
         createNewModelView(app.getCurrentModel());
         if (app.getCurrentModel() != null) {
-            setTitle(app.getCurrentModel().getTitle());
+            getActivity().setTitle(app.getCurrentModel().getTitle());
         }
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
         if (modelView != null) {
             modelView.onPause();
@@ -99,7 +87,7 @@ public class ViewerFragment extends Fragment {
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         if (modelView != null) {
             modelView.onResume();
@@ -108,7 +96,7 @@ public class ViewerFragment extends Fragment {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getActivity().getMenuInflater().inflate(R.menu.menu_main, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -135,7 +123,7 @@ public class ViewerFragment extends Fragment {
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     beginOpenModel();
                 } else {
-                    Toast.makeText(this, R.string.read_permission_failed, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), R.string.read_permission_failed, Toast.LENGTH_SHORT).show();
                 }
                 break;
             default:
@@ -147,7 +135,7 @@ public class ViewerFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
         if (requestCode == OPEN_DOCUMENT_REQUEST && resultCode == RESULT_OK && resultData.getData() != null) {
             Uri uri = resultData.getData();
-            grantUriPermission(getPackageName(), uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            getActivity().grantUriPermission(getActivity().getPackageName(), uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
             beginLoadModel(uri);
         }
     }
@@ -222,13 +210,13 @@ public class ViewerFragment extends Fragment {
         }
 
         protected void onPostExecute(Model model) {
-            if (isDestroyed()) {
+            if (getActivity().isDestroyed()) {
                 return;
             }
             if (model != null) {
                 setCurrentModel(model);
             } else {
-                Toast.makeText(getApplicationContext(), R.string.open_model_error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity().getApplicationContext(), R.string.open_model_error, Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -253,14 +241,14 @@ public class ViewerFragment extends Fragment {
 
     private void setCurrentModel(@NonNull Model model) {
         createNewModelView(model);
-        Toast.makeText(getApplicationContext(), R.string.open_model_success, Toast.LENGTH_SHORT).show();
-        setTitle(model.getTitle());
+        Toast.makeText(getActivity().getApplicationContext(), R.string.open_model_success, Toast.LENGTH_SHORT).show();
+        getActivity().setTitle(model.getTitle());
     }
 
 
     private void loadSampleModel() {
         try {
-            InputStream stream = getApplicationContext().getAssets()
+            InputStream stream = getActivity().getApplicationContext().getAssets()
                     .open(SAMPLE_MODELS[sampleModelIndex++ % SAMPLE_MODELS.length]);
             setCurrentModel(new StlModel(stream));
             stream.close();
