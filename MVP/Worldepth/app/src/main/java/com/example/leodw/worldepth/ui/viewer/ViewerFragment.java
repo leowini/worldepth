@@ -131,7 +131,7 @@ public class ViewerFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
-        if (requestCode == OPEN_DOCUMENT_REQUEST && resultCode == RESULT_OK && resultData.getData() != null) {
+        if (requestCode == OPEN_DOCUMENT_REQUEST && resultCode == getActivity().RESULT_OK && resultData.getData() != null) {
             Uri uri = resultData.getData();
             getActivity().grantUriPermission(getActivity().getPackageName(), uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
             beginLoadModel(uri);

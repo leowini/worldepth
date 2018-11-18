@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RawRes;
 import android.util.Log;
 
-import com.worldepth.modelviewer.ModelViewerApplication;
+import com.example.leodw.worldepth.ui.viewer.ModelViewerApplication;
 
 import java.io.Closeable;
 import java.io.IOException;

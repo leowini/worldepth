@@ -4,7 +4,9 @@ import android.opengl.GLES20;
 import android.opengl.Matrix;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import com.worldepth.modelviewer.util.Util;
+
+import com.example.leodw.worldepth.R;
+import com.example.leodw.worldepth.ui.viewer.util.Util;
 import java.nio.FloatBuffer;
 
 public class ArrayModel extends Model {
