@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.example.leodw.worldepth.R;
+import com.example.leodw.worldepth.data.FirebaseWrapper;
 import com.example.leodw.worldepth.ui.camera.CameraFragment;
 import com.example.leodw.worldepth.ui.loading.LoadingFragment;
 import com.example.leodw.worldepth.ui.viewer.ViewerFragment;
@@ -15,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
 
     private SectionsStatePagerAdapter mSectionsStatePagerAdapter;
     private ViewPager mViewPager;
+    private FirebaseWrapper fb;
 
     // Used to load the 'native-lib' library on application startup.
     static {
@@ -29,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         mSectionsStatePagerAdapter = new SectionsStatePagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.container);
         setupViewPager(mViewPager);
+        fb = new FirebaseWrapper();
     }
 
     private void setupViewPager(ViewPager viewPager) {
