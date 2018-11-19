@@ -1,0 +1,117 @@
+{
+  "project_info": {
+    "project_number": "800685503392",
+    "firebase_url": "https://worldepth.firebaseio.com",
+    "project_id": "worldepth",
+    "storage_bucket": "worldepth.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:800685503392:android:861fbea74a408ebe",
+        "android_client_info": {
+          "package_name": "com.example.leodw.worldepth"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "800685503392-hmhn3f0n8vvv7f4vg00srtob9fqdque8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAu8Amx8Hqs3cEPwieTtNMv41uEGTavFxE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:800685503392:android:3d4574c8752494dd",
+        "android_client_info": {
+          "package_name": "com.michael.worldepthtoserver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "800685503392-hmhn3f0n8vvv7f4vg00srtob9fqdque8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAu8Amx8Hqs3cEPwieTtNMv41uEGTavFxE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:800685503392:android:130dcb2f06a581f1",
+        "android_client_info": {
+          "package_name": "com.worldepth.michael.worldepthtoserver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "800685503392-89r6f85fb5586av0etkt87lt83mvka5j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.worldepth.michael.worldepthtoserver",
+            "certificate_hash": "d85c6f76bc3e16580337b3726890a4535b5cfc71"
+          }
+        },
+        {
+          "client_id": "800685503392-hmhn3f0n8vvv7f4vg00srtob9fqdque8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAu8Amx8Hqs3cEPwieTtNMv41uEGTavFxE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "800685503392-hmhn3f0n8vvv7f4vg00srtob9fqdque8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
