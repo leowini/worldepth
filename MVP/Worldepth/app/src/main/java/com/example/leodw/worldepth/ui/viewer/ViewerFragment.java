@@ -16,6 +16,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContentResolverCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -54,14 +55,14 @@ public class ViewerFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.camera_fragment, container, false);
+        return inflater.inflate(R.layout.viewer_fragment, container, false);
     }
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         app = ModelViewerApplication.getInstance();
 
-        containerView = getView().findViewById(R.id.container_view);
+        containerView = view.findViewById(R.id.container_view);
         if (getActivity().getIntent().getData() != null && savedInstanceState == null) {
             beginLoadModel(getActivity().getIntent().getData());
         }
