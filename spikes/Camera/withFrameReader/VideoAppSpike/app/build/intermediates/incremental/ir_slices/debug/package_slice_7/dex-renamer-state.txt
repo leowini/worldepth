@@ -1,4 +1,0 @@
-#Tue Oct 23 09:36:33 PDT 2018
-base.0=/Users/michael/realWorldepth/Spikes/Camera/withFrameReader/VideoAppSpike/app/build/intermediates/transforms/dexMerger/debug/7
-path.0=classes.dex
-renamed.0=classes.dex

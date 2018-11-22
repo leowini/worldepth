@@ -1,1 +1,0 @@
-[{"outputType":{"type":"MERGED_MANIFESTS"},"apkInfo":{"type":"MAIN","splits":[],"versionCode":1,"versionName":"1.0","enabled":true,"outputFile":"feature-debug.apk","fullName":"debugFeature","baseName":"debug"},"path":"AndroidManifest.xml","properties":{"packageId":"com.example.leodw.cameraappspike.app","split":"","minSdkVersion":"26"}}]

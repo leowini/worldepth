@@ -1,7 +1,0 @@
-#Internal package file, do not edit.
-#Wed Oct 03 18:12:36 MST 2018
-0.baseType=DIRECTORY
-0.base=C\:\\git\\worldepth2\\Spikes\\CameraAppSpike\\feature\\build\\intermediates\\transforms\\dexMerger\\feature\\debug\\0
-0.path=classes.dex
-0.set=DEX
-count=1
