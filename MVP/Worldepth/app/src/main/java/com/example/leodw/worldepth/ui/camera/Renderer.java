@@ -57,7 +57,8 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
 
         renderer.drawFrame(mEglSurfaceTexture, false);
 
-        mSlam.sendFrameToSlam(mEglSurfaceTexture);
+        Bitmap bmp = getBitmap();
+        mSlam.sendFrameToSlam(bmp);
 //        if (decodeCount <= 10) {
 //            File outputFile = new File(FILES_DIR,
 //                    String.format("frame-%02d.png", decodeCount));
@@ -71,8 +72,22 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
 //        }
     }
 
+    public Bitmap getBitmap() {
+        mPixelBuf.rewind();
+        GLES20.glReadPixels(0, 0, mSurfaceWidth, mSurfaceHeight, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE,
+                mPixelBuf);
+
+        BufferedOutputStream bos = null;
+        Bitmap bmp = Bitmap.createBitmap(mSurfaceWidth, mSurfaceHeight, Bitmap.Config.ARGB_8888);
+        mPixelBuf.rewind();
+        bmp.copyPixelsFromBuffer(mPixelBuf);
+        bmp.recycle();
+        return bmp;
+    }
+
     /**
      * Saves the drawn frame
+     *
      * @param filename
      * @throws IOException
      */
@@ -97,6 +112,7 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
 
     /**
      * Starts the Renderthread and initializes the render dimensions
+     *
      * @param width
      * @param height
      */
@@ -509,6 +525,6 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
     }
 
     public interface FrameListener {
-        void sendFrameToSlam(SurfaceTexture frame);
+        void sendFrameToSlam(Bitmap frame);
     }
 }
