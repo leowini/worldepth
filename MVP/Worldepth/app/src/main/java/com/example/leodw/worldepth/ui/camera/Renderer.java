@@ -57,7 +57,7 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
 
         renderer.drawFrame(mEglSurfaceTexture, false);
 
-        mSlam.onFrameAvailable(mEglSurfaceTexture);
+        mSlam.sendFrameToSlam(mEglSurfaceTexture);
 //        if (decodeCount <= 10) {
 //            File outputFile = new File(FILES_DIR,
 //                    String.format("frame-%02d.png", decodeCount));
@@ -509,6 +509,6 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
     }
 
     public interface FrameListener {
-        void onFrameAvailable(SurfaceTexture frame);
+        void sendFrameToSlam(SurfaceTexture frame);
     }
 }
