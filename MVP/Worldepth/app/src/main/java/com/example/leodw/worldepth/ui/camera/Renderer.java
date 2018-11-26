@@ -15,6 +15,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
+import com.example.leodw.worldepth.slam.Slam;
+
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -48,6 +50,14 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
         mEglSurfaceTexture.updateTexImage();
 
         renderer.drawFrame(mEglSurfaceTexture, false);
+
+        Slam.FrameListener frameListener = new Slam.FrameListener() {
+            @Override
+            public void onFrameAvailable() {
+                se
+            }
+        }
+
         if (decodeCount <= 10) {
             File outputFile = new File(FILES_DIR,
                     String.format("frame-%02d.png", decodeCount));
