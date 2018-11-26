@@ -72,6 +72,10 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
 //        }
     }
 
+    /**
+     * calls glReadPixels to create a bitmap
+     * @return
+     */
     public Bitmap getBitmap() {
         mPixelBuf.rewind();
         GLES20.glReadPixels(0, 0, mSurfaceWidth, mSurfaceHeight, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE,
