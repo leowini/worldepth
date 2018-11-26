@@ -42,6 +42,12 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
     private EGLSurface mEGLSurface;
     private EGLContext mEGLContext;
 
+    private Slam mSlam;
+
+    public Renderer(Slam slam) {
+        this.mSlam = slam;
+    }
+
     @Override
     public void onFrameAvailable(SurfaceTexture surfaceTexture) {
         Log.d(TAG, "frame available");
@@ -51,17 +57,18 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
 
         renderer.drawFrame(mEglSurfaceTexture, false);
 
-        if (decodeCount <= 10) {
-            File outputFile = new File(FILES_DIR,
-                    String.format("frame-%02d.png", decodeCount));
-            try {
-                saveFrame(outputFile.toString());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            Log.d(TAG, "Image Saved!");
-            decodeCount++;
-        }
+        mSlam.onFrameAvailable(mEglSurfaceTexture);
+//        if (decodeCount <= 10) {
+//            File outputFile = new File(FILES_DIR,
+//                    String.format("frame-%02d.png", decodeCount));
+//            try {
+//                saveFrame(outputFile.toString());
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            Log.d(TAG, "Image Saved!");
+//            decodeCount++;
+//        }
     }
 
     /**
@@ -499,5 +506,9 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
         if ((error = EGL14.eglGetError()) != EGL14.EGL_SUCCESS) {
             throw new RuntimeException(msg + ": EGL error: 0x" + Integer.toHexString(error));
         }
+    }
+
+    public interface FrameListener {
+        void onFrameAvailable(SurfaceTexture frame);
     }
 }

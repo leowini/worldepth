@@ -2,26 +2,17 @@ package com.example.leodw.worldepth.slam;
 
 import android.graphics.SurfaceTexture;
 
-public class Slam {
-    private FrameListener mFrameListener;
+import com.example.leodw.worldepth.ui.camera.Renderer;
 
-    public Slam() {
-        setOnFrameAvailableListener(frame -> {
-            SurfaceTexture slamFrame = frame;
-            sendSlam(slamFrame);
-        });
-    }
+public class Slam implements Renderer.FrameListener {
 
     void sendSlam(SurfaceTexture frame) {
 
     }
 
-    void setOnFrameAvailableListener(FrameListener frameListener) {
-        this.mFrameListener = frameListener;
-    }
-
-    public interface FrameListener {
-        void onFrameAvailable(SurfaceTexture frame);
+    @Override
+    public void onFrameAvailable(SurfaceTexture frame) {
+        sendSlam(frame);
     }
 
 }
