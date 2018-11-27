@@ -39,6 +39,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.leodw.worldepth.R;
+import com.example.leodw.worldepth.slam.Slam;
 import com.example.leodw.worldepth.ui.MainActivity;
 
 import java.util.ArrayList;
@@ -270,7 +271,7 @@ public class CameraFragment extends Fragment {
                     if (mRecordingState) {
                         stopRecording();
                         mRecordingState = false;
-                        ((MainActivity) getActivity()).setmViewPager(1);
+                        ((MainActivity) getActivity()).setViewPager(1);
                         return true;
                     }
                     return false;
@@ -285,7 +286,7 @@ public class CameraFragment extends Fragment {
      * when the SurfaceTexture is configured.
      */
     private void startRecording() {
-        mRenderer = new Renderer();
+        mRenderer = new Renderer(new Slam());
         mRenderer.setOnSurfaceTextureReadyListener(texture -> {
             mSlamOutputSurface = texture;
             startCameraRecording();

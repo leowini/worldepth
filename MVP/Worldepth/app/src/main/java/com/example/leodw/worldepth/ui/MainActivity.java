@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
     }
 
-    public void setmViewPager(int fragmentIndex) {
+    public void setViewPager(int fragmentIndex) {
         mViewPager.setCurrentItem(fragmentIndex);
     }
 }

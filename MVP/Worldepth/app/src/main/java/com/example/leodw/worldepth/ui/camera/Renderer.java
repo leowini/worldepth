@@ -15,6 +15,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
+import com.example.leodw.worldepth.slam.Slam;
+
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -40,6 +42,12 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
     private EGLSurface mEGLSurface;
     private EGLContext mEGLContext;
 
+    private Slam mSlam;
+
+    public Renderer(Slam slam) {
+        this.mSlam = slam;
+    }
+
     @Override
     public void onFrameAvailable(SurfaceTexture surfaceTexture) {
         Log.d(TAG, "frame available");
@@ -48,21 +56,42 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
         mEglSurfaceTexture.updateTexImage();
 
         renderer.drawFrame(mEglSurfaceTexture, false);
-        if (decodeCount <= 10) {
-            File outputFile = new File(FILES_DIR,
-                    String.format("frame-%02d.png", decodeCount));
-            try {
-                saveFrame(outputFile.toString());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            Log.d(TAG, "Image Saved!");
-            decodeCount++;
-        }
+
+        Bitmap bmp = getBitmap();
+        mSlam.sendFrameToSlam(bmp);
+//        if (decodeCount <= 10) {
+//            File outputFile = new File(FILES_DIR,
+//                    String.format("frame-%02d.png", decodeCount));
+//            try {
+//                saveFrame(outputFile.toString());
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            Log.d(TAG, "Image Saved!");
+//            decodeCount++;
+//        }
+    }
+
+    /**
+     * calls glReadPixels to create a bitmap
+     * @return
+     */
+    public Bitmap getBitmap() {
+        mPixelBuf.rewind();
+        GLES20.glReadPixels(0, 0, mSurfaceWidth, mSurfaceHeight, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE,
+                mPixelBuf);
+
+        BufferedOutputStream bos = null;
+        Bitmap bmp = Bitmap.createBitmap(mSurfaceWidth, mSurfaceHeight, Bitmap.Config.ARGB_8888);
+        mPixelBuf.rewind();
+        bmp.copyPixelsFromBuffer(mPixelBuf);
+        bmp.recycle();
+        return bmp;
     }
 
     /**
      * Saves the drawn frame
+     *
      * @param filename
      * @throws IOException
      */
@@ -87,6 +116,7 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
 
     /**
      * Starts the Renderthread and initializes the render dimensions
+     *
      * @param width
      * @param height
      */
@@ -496,5 +526,9 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
         if ((error = EGL14.eglGetError()) != EGL14.EGL_SUCCESS) {
             throw new RuntimeException(msg + ": EGL error: 0x" + Integer.toHexString(error));
         }
+    }
+
+    public interface FrameListener {
+        void sendFrameToSlam(Bitmap frame);
     }
 }
