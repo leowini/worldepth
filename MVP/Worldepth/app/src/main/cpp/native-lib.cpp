@@ -15,5 +15,6 @@ Java_com_example_leodw_worldepth_slam_Slam_passImage(JNIEnv *env, jobject instan
 
     // TODO
     jclass cls = env->GetObjectClass(img);
+
     return env->NewStringUTF("Got the image!");
 }
