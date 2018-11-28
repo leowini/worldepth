@@ -12,8 +12,8 @@ Java_com_example_leodw_worldepth_MainActivity_stringFromJNI(
 
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_example_leodw_worldepth_slam_Slam_passImage(JNIEnv *env, jobject instance, jbyteArray img) {
+Java_com_example_leodw_worldepth_slam_Slam_passImage(JNIEnv *env, jobject instance, jint width, jint height, jbyteArray img) {
     jbyte* _img  = env->GetByteArrayElements(img, 0);
-    cv::Mat mimg(rows, cols, CV_8UC1, (unsigned char *)_img);
+    cv::Mat mimg(width, height, CV_8UC1, (unsigned char *)_img);
     env->ReleaseByteArrayElements(img, _img, 0);
 }
