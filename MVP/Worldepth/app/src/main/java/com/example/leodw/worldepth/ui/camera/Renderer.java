@@ -85,7 +85,7 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
         Bitmap bmp = Bitmap.createBitmap(mSurfaceWidth, mSurfaceHeight, Bitmap.Config.ARGB_8888);
         mPixelBuf.rewind();
         bmp.copyPixelsFromBuffer(mPixelBuf);
-        bmp.recycle();
+//        bmp.recycle();
         return bmp;
     }
 
