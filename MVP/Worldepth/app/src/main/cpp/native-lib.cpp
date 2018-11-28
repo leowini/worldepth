@@ -1,5 +1,6 @@
 #include <jni.h>
 #include <string>
+#include <opencv2/core/core.hpp>
 
 extern "C" JNIEXPORT jstring JNICALL
 Java_com_example_leodw_worldepth_MainActivity_stringFromJNI(
@@ -10,11 +11,9 @@ Java_com_example_leodw_worldepth_MainActivity_stringFromJNI(
 }
 
 extern "C"
-JNIEXPORT jstring JNICALL
-Java_com_example_leodw_worldepth_slam_Slam_passImage(JNIEnv *env, jobject instance, jobject img) {
-
-    // TODO
-    jclass cls = env->GetObjectClass(img);
-
-    return env->NewStringUTF("Got the image!");
+JNIEXPORT void JNICALL
+Java_com_example_leodw_worldepth_slam_Slam_passImage(JNIEnv *env, jobject instance, jbyteArray img) {
+    jbyte* _img  = env->GetByteArrayElements(img, 0);
+    cv::Mat mimg(rows, cols, CV_8UC1, (unsigned char *)_img);
+    env->ReleaseByteArrayElements(img, _img, 0);
 }
