@@ -36,7 +36,8 @@ public class Slam extends Thread implements Renderer.OnBitmapFrameAvailableListe
     }
 
     /**
-     * Waits for frames to feed into SLAM
+     * Waits for frames to feed into SLAM - I think my code is currently broken because this needs
+     * to run on the thread that creates the Slam class instance.
      */
     public void awaitNewImage() {
         final int TIMEOUT_MS = 2500;
