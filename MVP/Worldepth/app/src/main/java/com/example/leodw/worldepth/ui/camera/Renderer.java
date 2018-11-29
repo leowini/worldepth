@@ -43,6 +43,7 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
     private EGLContext mEGLContext;
 
     private Slam mSlam;
+    private OnBitmapFrameAvailableListener mOnBitmapFrameAvailableListener;
 
     public Renderer(Slam slam) {
         this.mSlam = slam;
@@ -58,7 +59,8 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
         renderer.drawFrame(mEglSurfaceTexture, false);
 
         Bitmap bmp = getBitmap();
-        mSlam.sendFrameToSlam(bmp);
+        //post to Slam thread (I think)
+        mOnBitmapFrameAvailableListener.onBitmapFrameAvailable(bmp);
 //        if (decodeCount <= 10) {
 //            File outputFile = new File(FILES_DIR,
 //                    String.format("frame-%02d.png", decodeCount));
