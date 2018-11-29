@@ -6,9 +6,12 @@ import android.util.Log;
 import com.example.leodw.worldepth.ui.camera.Renderer;
 
 import java.io.ByteArrayOutputStream;
+import java.util.Queue;
 
-public class Slam extends Thread implements Renderer.OnBitmapFrameAvailableListener {
+public class Slam implements Renderer.OnBitmapFrameAvailableListener {
     public static final String TAG = "Slam";
+
+    private Queue<Bitmap> mBitmapQueue;
 
     private Object mFrameSyncObject; //guards mFrameAvailable
     private boolean mFrameAvailable;
@@ -20,18 +23,15 @@ public class Slam extends Thread implements Renderer.OnBitmapFrameAvailableListe
         passImage(frame.getWidth(), frame.getHeight(), byteArray);
     }
 
-    @Override
-    public void run() {
-        doSlam();
-    }
-
     /**
      * This will run in the background.
      */
     private void doSlam() {
-        while(true /*!slamDone*/) {
-            awaitNewImage();
-            //sendFrameToSlam();
+        while(true) {
+            while (!mBitmapQueue.isEmpty()) {
+                //sendFrameToSlam();
+            }
+            //awaitNewImage();
         }
     }
 
@@ -67,6 +67,7 @@ public class Slam extends Thread implements Renderer.OnBitmapFrameAvailableListe
             if (mFrameAvailable) {
                 throw new RuntimeException("mFrameAvailable already set, frame could be dropped");
             }
+            mBitmapQueue.add(bmp);
             mFrameAvailable = true;
             mFrameSyncObject.notifyAll();
         }
@@ -78,4 +79,11 @@ public class Slam extends Thread implements Renderer.OnBitmapFrameAvailableListe
         return stream.toByteArray();
     }
 
+    private void startSlamThread() {
+
+    }
+
+    private void stopSlamThread() {
+
+    }
 }
