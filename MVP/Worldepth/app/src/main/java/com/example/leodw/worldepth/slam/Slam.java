@@ -7,7 +7,7 @@ import com.example.leodw.worldepth.ui.camera.Renderer;
 
 import java.io.ByteArrayOutputStream;
 
-public class Slam implements Renderer.OnBitmapFrameAvailableListener {
+public class Slam extends Thread implements Renderer.OnBitmapFrameAvailableListener {
     public static final String TAG = "Slam";
 
     private Object mFrameSyncObject; //guards mFrameAvailable
@@ -18,6 +18,11 @@ public class Slam implements Renderer.OnBitmapFrameAvailableListener {
     public void sendFrameToSlam(Bitmap frame) {
         byte[] byteArray = bitmapToByteArray(frame);
         passImage(frame.getWidth(), frame.getHeight(), byteArray);
+    }
+
+    @Override
+    public void run() {
+        doSlam();
     }
 
     /**
