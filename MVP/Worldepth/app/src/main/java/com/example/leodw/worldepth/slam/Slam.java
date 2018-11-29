@@ -20,6 +20,9 @@ public class Slam implements Renderer.OnBitmapFrameAvailableListener {
         passImage(frame.getWidth(), frame.getHeight(), byteArray);
     }
 
+    /**
+     * This will run in the background.
+     */
     private void doSlam() {
         while(true /*!slamDone*/) {
             awaitNewImage();
