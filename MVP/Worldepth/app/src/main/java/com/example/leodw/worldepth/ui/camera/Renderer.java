@@ -528,7 +528,7 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
         }
     }
 
-    public interface FrameListener {
-        void sendFrameToSlam(Bitmap frame);
+    public interface OnBitmapFrameAvailableListener {
+        void onBitmapFrameAvailable(Bitmap frame);
     }
 }
