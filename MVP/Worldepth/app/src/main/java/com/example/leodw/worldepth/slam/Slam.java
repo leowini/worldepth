@@ -1,7 +1,8 @@
 package com.example.leodw.worldepth.slam;
 
 import android.graphics.Bitmap;
-import android.util.Log;
+import android.os.Handler;
+import android.os.HandlerThread;
 
 import com.example.leodw.worldepth.ui.camera.Renderer;
 
@@ -11,12 +12,19 @@ import java.util.Queue;
 public class Slam implements Renderer.OnBitmapFrameAvailableListener {
     public static final String TAG = "Slam";
 
+    private HandlerThread mBackgroundThread;
+    private Handler mBackgroundHandler;
+
     private Queue<Bitmap> mBitmapQueue;
 
     private Object mFrameSyncObject; //guards mFrameAvailable
     private boolean mFrameAvailable;
 
     public native void passImage(int width, int height, byte[] img);
+
+    public Slam() {
+        startSlamThread();
+    }
 
     public void sendFrameToSlam(Bitmap frame) {
         byte[] byteArray = bitmapToByteArray(frame);
@@ -80,7 +88,9 @@ public class Slam implements Renderer.OnBitmapFrameAvailableListener {
     }
 
     private void startSlamThread() {
-
+        mBackgroundThread = new HandlerThread("Slam Background");
+        mBackgroundThread.start();
+        mBackgroundHandler = new Handler(mBackgroundThread.getLooper());
     }
 
     private void stopSlamThread() {

@@ -47,7 +47,6 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
 
     public Renderer(Slam slam) {
         this.mSlam = slam;
-        slam.run();
     }
 
     @Override
