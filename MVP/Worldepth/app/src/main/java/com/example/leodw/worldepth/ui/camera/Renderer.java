@@ -44,6 +44,7 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
 
     private Slam mSlam;
     private OnBitmapFrameAvailableListener mOnBitmapFrameAvailableListener;
+    private Handler mOnBitmapFrameAvailableListenerHandler;
 
     public Renderer(Slam slam) {
         this.mSlam = slam;
@@ -154,6 +155,11 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
         mListener = listener;
         mListenerHandler = handler;
     }
+
+//    public void setOnBitmapFrameAvailableListener(OnBitmapFrameAvailableListener listener, Handler handler) {
+//        this.mOnBitmapFrameAvailableListener = listener;
+//        this.mOnBitmapFrameAvailableListenerHandler = handler;
+//    }
 
     /**
      * Configures the mEglSurfaceTexture and sends it to the main thread to use for mSlamOutputSurface

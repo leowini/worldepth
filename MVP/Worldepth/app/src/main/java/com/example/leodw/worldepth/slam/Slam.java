@@ -3,11 +3,13 @@ package com.example.leodw.worldepth.slam;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.os.Looper;
 
 import com.example.leodw.worldepth.ui.camera.Renderer;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Queue;
+import java.util.concurrent.Semaphore;
 
 public class Slam implements Renderer.OnBitmapFrameAvailableListener {
     public static final String TAG = "Slam";
@@ -37,9 +39,9 @@ public class Slam implements Renderer.OnBitmapFrameAvailableListener {
     private void doSlam() {
         while(true) {
             while (!mBitmapQueue.isEmpty()) {
-                //sendFrameToSlam();
+                sendFrameToSlam(mBitmapQueue.remove());
             }
-            //awaitNewImage();
+            awaitNewImage();
         }
     }
 
@@ -94,6 +96,15 @@ public class Slam implements Renderer.OnBitmapFrameAvailableListener {
     }
 
     private void stopSlamThread() {
+        mBackgroundThread.quitSafely();
+        try {
+            mBackgroundThread.join();
+            mBackgroundThread = null;
+            mBackgroundHandler = null;
 
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
+
 }
