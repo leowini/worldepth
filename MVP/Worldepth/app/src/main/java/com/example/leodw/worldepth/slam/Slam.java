@@ -35,7 +35,7 @@ public class Slam implements Renderer.OnBitmapFrameAvailableListener {
     }
 
     /**
-     * This will run in the background on the mSlamThread.
+     * This will run in the background on the mSlamThread. The while(true) loop needs to be fixed.
      */
     private void doSlam() {
         while(true) {
