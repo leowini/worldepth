@@ -44,7 +44,6 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
 
     private Slam mSlam;
     private OnBitmapFrameAvailableListener mOnBitmapFrameAvailableListener;
-    private Handler mOnBitmapFrameAvailableListenerHandler;
 
     public Renderer(Slam slam) {
         this.mSlam = slam;
@@ -62,7 +61,7 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
         Bitmap bmp = getBitmap();
 
         //Post to Slam thread.
-        mOnBitmapFrameAvailableListenerHandler.post(() -> mOnBitmapFrameAvailableListener.onBitmapFrameAvailable(bmp));
+        mSlam.mBackgroundHandler.post(() -> mOnBitmapFrameAvailableListener.onBitmapFrameAvailable(bmp));
 
 //        if (decodeCount <= 10) {
 //            File outputFile = new File(FILES_DIR,

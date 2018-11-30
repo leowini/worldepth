@@ -15,7 +15,7 @@ public class Slam implements Renderer.OnBitmapFrameAvailableListener {
     public static final String TAG = "Slam";
 
     private HandlerThread mBackgroundThread;
-    private Handler mBackgroundHandler;
+    public Handler mBackgroundHandler;
 
     private Queue<Bitmap> mBitmapQueue;
 
@@ -104,6 +104,18 @@ public class Slam implements Renderer.OnBitmapFrameAvailableListener {
 
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+    }
+
+    private class SlamThread implements Runnable {
+
+        public SlamThread() {
+
+        }
+
+        @Override
+        public void run() {
+            doSlam();
         }
     }
 
