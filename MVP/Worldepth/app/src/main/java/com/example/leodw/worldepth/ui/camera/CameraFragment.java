@@ -535,4 +535,5 @@ public class CameraFragment extends Fragment {
                     (long) rhs.getWidth() * rhs.getHeight());
         }
     }
+
 }
