@@ -60,8 +60,10 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
         renderer.drawFrame(mEglSurfaceTexture, false);
 
         Bitmap bmp = getBitmap();
-        //post to Slam thread (I think)
-        mOnBitmapFrameAvailableListener.onBitmapFrameAvailable(bmp);
+
+        //Post to Slam thread.
+        mOnBitmapFrameAvailableListenerHandler.post(() -> mOnBitmapFrameAvailableListener.onBitmapFrameAvailable(bmp));
+
 //        if (decodeCount <= 10) {
 //            File outputFile = new File(FILES_DIR,
 //                    String.format("frame-%02d.png", decodeCount));
