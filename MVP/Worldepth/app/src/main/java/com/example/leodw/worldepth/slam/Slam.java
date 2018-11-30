@@ -101,7 +101,7 @@ public class Slam implements Renderer.OnBitmapFrameAvailableListener {
         mSlamHandler = new Handler(mSlamThread.getLooper());
     }
 
-    private void stopSlamThread() {
+    public void stopSlamThread() {
         mSlamThread.quitSafely();
         try {
             mSlamThread.join();
