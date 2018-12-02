@@ -112,6 +112,7 @@ public class Slam /*implements Renderer.OnBitmapFrameAvailableListener*/ {
         });
         mSlamThread.quitSafely();
         try {
+            //The SlamThread isn't joining :(
             mSlamThread.join();
             mSlamThread = null;
             mSlamHandler = null;
