@@ -46,6 +46,7 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
     private Slam mSlam;
     //private OnBitmapFrameAvailableListener mOnBitmapFrameAvailableListener;
 
+    private final Bitmap mPoisonPillBitmap = Bitmap.createBitmap(1,1,Bitmap.Config.ARGB_8888);
     private final BlockingQueue<Bitmap> mQueue;
 
     public Renderer(Slam slam, BlockingQueue<Bitmap> q) {
@@ -151,6 +152,12 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
                 looper.quit();
             }
         });
+        //Put end of data signal on the queue.
+        try {
+            mQueue.put(mPoisonPillBitmap);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         mSlam.stopSlamThread();
         mRenderThread = null;
     }

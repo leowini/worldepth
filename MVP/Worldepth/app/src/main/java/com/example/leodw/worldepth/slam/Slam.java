@@ -3,13 +3,7 @@ package com.example.leodw.worldepth.slam;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.HandlerThread;
-import android.os.Looper;
-
-import com.example.leodw.worldepth.ui.camera.Renderer;
-
 import java.io.ByteArrayOutputStream;
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.concurrent.BlockingQueue;
 
 public class Slam /*implements Renderer.OnBitmapFrameAvailableListener*/ {
@@ -18,10 +12,11 @@ public class Slam /*implements Renderer.OnBitmapFrameAvailableListener*/ {
     private HandlerThread mSlamThread;
     public Handler mSlamHandler;
 
+    private final Bitmap mPoisonPillBitmap = Bitmap.createBitmap(1,1,Bitmap.Config.ARGB_8888);
     private final BlockingQueue<Bitmap> mQueue;
 
-    private Object mFrameSyncObject = new Object(); //guards mFrameAvailable
-    private boolean mFrameAvailable;
+//    private Object mFrameSyncObject = new Object(); //guards mFrameAvailable
+//    private boolean mFrameAvailable;
 
     public native void passImageToSlam(int width, int height, byte[] img);
 
@@ -44,19 +39,9 @@ public class Slam /*implements Renderer.OnBitmapFrameAvailableListener*/ {
      * This will run in the background on the mSlamThread.
      */
     private void doSlam() {
-        /*
-        while(true) {
-            while (!mBitmapQueue.isEmpty()) {
-                sendFrameToSlam(mBitmapQueue.remove());
-            }
-            //awaitNewImage();
-        }
-        */
-
-
         try {
             Bitmap bmp = mQueue.take();
-            while (!bmp.equals("*")) {
+            while (!bmp.equals(mPoisonPillBitmap)) {
                 sendFrameToSlam(bmp);
                 bmp = mQueue.take();
             }
@@ -117,8 +102,6 @@ public class Slam /*implements Renderer.OnBitmapFrameAvailableListener*/ {
     }
 
     public void stopSlamThread() {
-        //Put end of data signal on the queue.
-        mQueue.put("*");
         mSlamThread.quitSafely();
         try {
             mSlamThread.join();
