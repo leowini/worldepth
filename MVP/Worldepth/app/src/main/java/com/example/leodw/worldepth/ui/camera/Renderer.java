@@ -61,7 +61,7 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
         Bitmap bmp = getBitmap();
 
         //Post to Slam thread.
-        mOnBitmapFrameAvailableListener.onBitmapFrameAvailable(bmp);
+        //mOnBitmapFrameAvailableListener.onBitmapFrameAvailable(bmp);
 
 //        if (decodeCount <= 10) {
 //            File outputFile = new File(FILES_DIR,
