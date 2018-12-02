@@ -153,14 +153,6 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
                 looper.quit();
             }
         });
-        //Put end of data signal on the queue.
-        mRenderThread.getHandler().post(() -> {
-            try {
-                mQueue.put(mPoisonPillBitmap);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        });
         mSlam.stopSlamThread();
         mRenderThread = null;
     }
