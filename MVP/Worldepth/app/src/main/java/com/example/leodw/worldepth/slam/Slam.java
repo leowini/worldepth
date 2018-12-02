@@ -102,6 +102,7 @@ public class Slam /*implements Renderer.OnBitmapFrameAvailableListener*/ {
     }
 
     public void signalImageQueueEnd() {
+        //Put the end of data signal on the queue on the SlamThread.
         mSlamHandler.post(() -> {
             try {
                 mQueue.put(mPoisonPillBitmap);
