@@ -101,6 +101,9 @@ public class Slam /*implements Renderer.OnBitmapFrameAvailableListener*/ {
         mSlamHandler = new Handler(mSlamThread.getLooper());
     }
 
+    /**
+     * Put the end of data signal on mQueue on the SlamThread.
+     */
     public void signalImageQueueEnd() {
         //Put the end of data signal on the queue on the SlamThread.
         mSlamHandler.post(() -> {
@@ -113,14 +116,6 @@ public class Slam /*implements Renderer.OnBitmapFrameAvailableListener*/ {
     }
 
     public void stopSlamThread() {
-        //Put the end of data signal on the queue on the SlamThread.
-        mSlamHandler.post(() -> {
-           try {
-               mQueue.put(mPoisonPillBitmap);
-           } catch (Exception e) {
-               e.printStackTrace();
-           }
-        });
         mSlamThread.quitSafely();
         try {
             //The SlamThread isn't joining :(
