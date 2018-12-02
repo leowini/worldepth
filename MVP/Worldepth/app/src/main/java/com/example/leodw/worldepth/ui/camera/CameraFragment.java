@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.graphics.ImageFormat;
 import android.graphics.Matrix;
 import android.graphics.Point;
@@ -47,6 +48,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
@@ -287,7 +290,8 @@ public class CameraFragment extends Fragment {
      * when the SurfaceTexture is configured.
      */
     private void startRecording() {
-        mRenderer = new Renderer(new Slam());
+        BlockingQueue<Bitmap> q = new LinkedBlockingQueue<Bitmap>();
+        mRenderer = new Renderer(new Slam(q), q);
         mRenderer.setOnSurfaceTextureReadyListener(texture -> {
             mSlamOutputSurface = texture;
             startCameraRecording();

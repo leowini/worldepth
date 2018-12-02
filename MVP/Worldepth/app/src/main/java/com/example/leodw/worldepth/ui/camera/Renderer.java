@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Semaphore;
 
 public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
@@ -43,9 +44,12 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
     private EGLContext mEGLContext;
 
     private Slam mSlam;
-    private OnBitmapFrameAvailableListener mOnBitmapFrameAvailableListener;
+    //private OnBitmapFrameAvailableListener mOnBitmapFrameAvailableListener;
 
-    public Renderer(Slam slam) {
+    private final BlockingQueue<Bitmap> mQueue;
+
+    public Renderer(Slam slam, BlockingQueue<Bitmap> q) {
+        this.mQueue = q;
         this.mSlam = slam;
     }
 
@@ -60,8 +64,11 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
 
         Bitmap bmp = getBitmap();
 
-        //Post to Slam thread.
-        //mOnBitmapFrameAvailableListener.onBitmapFrameAvailable(bmp);
+        try {
+            mQueue.put(bmp);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 //        if (decodeCount <= 10) {
 //            File outputFile = new File(FILES_DIR,
@@ -537,7 +544,8 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
         }
     }
 
-    public interface OnBitmapFrameAvailableListener {
+    /*public interface OnBitmapFrameAvailableListener {
         void onBitmapFrameAvailable(Bitmap frame);
     }
+    */
 }

@@ -10,21 +10,23 @@ import com.example.leodw.worldepth.ui.camera.Renderer;
 import java.io.ByteArrayOutputStream;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.concurrent.BlockingQueue;
 
-public class Slam implements Renderer.OnBitmapFrameAvailableListener {
+public class Slam /*implements Renderer.OnBitmapFrameAvailableListener*/ {
     public static final String TAG = "Slam";
 
     private HandlerThread mSlamThread;
     public Handler mSlamHandler;
 
-    private Queue<Bitmap> mBitmapQueue = new LinkedList<Bitmap>();
+    private final BlockingQueue<Bitmap> mQueue;
 
     private Object mFrameSyncObject = new Object(); //guards mFrameAvailable
     private boolean mFrameAvailable;
 
     public native void passImageToSlam(int width, int height, byte[] img);
 
-    public Slam() {
+    public Slam(BlockingQueue<Bitmap> q) {
+        this.mQueue = q;
         startSlamThread();
         mSlamHandler.post(() -> doSlam());
     }
@@ -42,50 +44,65 @@ public class Slam implements Renderer.OnBitmapFrameAvailableListener {
      * This will run in the background on the mSlamThread.
      */
     private void doSlam() {
+        /*
         while(true) {
             while (!mBitmapQueue.isEmpty()) {
                 sendFrameToSlam(mBitmapQueue.remove());
             }
-            awaitNewImage();
+            //awaitNewImage();
         }
-    }
+        */
 
-    /**
-     * Waits for a new Bitmap when the queue is empty. It might be timing out
-     */
-    private void awaitNewImage() {
-        final int TIMEOUT_MS = 2500;
 
-        synchronized (mFrameSyncObject) {
-            while (!mFrameAvailable) {
-                try {
-                    // Wait for onFrameAvailable() to signal us.  Use a timeout to avoid
-                    // stalling the test if it doesn't arrive.
-                    mFrameSyncObject.wait(TIMEOUT_MS);
-                    if (!mFrameAvailable) {
-                        // TODO: if "spurious wakeup", continue while loop
-                        throw new RuntimeException("frame wait timed out");
-                    }
-                } catch (InterruptedException ie) {
-                    // shouldn't happen
-                    throw new RuntimeException(ie);
-                }
+        try {
+            Bitmap bmp = mQueue.take();
+            while (!bmp.equals("*")) {
+                sendFrameToSlam(bmp);
+                bmp = mQueue.take();
             }
-            mFrameAvailable = false;
+        }
+        catch (Exception e) {
+            System.out.println
+                    (Thread.currentThread().getName() + " " + e.getMessage());
         }
     }
 
-    @Override
-    public void onBitmapFrameAvailable(Bitmap bmp) {
-        mSlamHandler.post(() -> mBitmapQueue.add(bmp));
-        synchronized (mFrameSyncObject) {
-            if (mFrameAvailable) {
-                throw new RuntimeException("mFrameAvailable already set, frame could be dropped");
-            }
-            mFrameAvailable = true;
-            mFrameSyncObject.notifyAll();
-        }
-    }
+//    /**
+//     * Waits for a new Bitmap when the queue is empty. It might be timing out
+//     */
+//    private void awaitNewImage() {
+//        final int TIMEOUT_MS = 2500;
+//
+//        synchronized (mFrameSyncObject) {
+//            while (!mFrameAvailable) {
+//                try {
+//                    // Wait for onFrameAvailable() to signal us.  Use a timeout to avoid
+//                    // stalling the test if it doesn't arrive.
+//                    mFrameSyncObject.wait(TIMEOUT_MS);
+//                    if (!mFrameAvailable) {
+//                        // TODO: if "spurious wakeup", continue while loop
+//                        throw new RuntimeException("frame wait timed out");
+//                    }
+//                } catch (InterruptedException ie) {
+//                    // shouldn't happen
+//                    throw new RuntimeException(ie);
+//                }
+//            }
+//            mFrameAvailable = false;
+//        }
+//    }
+
+//    @Override
+//    public void onBitmapFrameAvailable(Bitmap bmp) {
+//        mSlamHandler.post(() -> mBitmapQueue.add(bmp));
+//        synchronized (mFrameSyncObject) {
+//            if (mFrameAvailable) {
+//                throw new RuntimeException("mFrameAvailable already set, frame could be dropped");
+//            }
+//            mFrameAvailable = true;
+//            mFrameSyncObject.notifyAll();
+//        }
+//    }
 
     private byte[] bitmapToByteArray(Bitmap bmp) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -100,6 +117,8 @@ public class Slam implements Renderer.OnBitmapFrameAvailableListener {
     }
 
     public void stopSlamThread() {
+        //Put end of data signal on the queue.
+        mQueue.put("*");
         mSlamThread.quitSafely();
         try {
             mSlamThread.join();
