@@ -50,6 +50,9 @@ public class Slam implements Renderer.OnBitmapFrameAvailableListener {
         }
     }
 
+    /**
+     * Waits for a new Bitmap when the queue is empty. It might be timing out
+     */
     private void awaitNewImage() {
         final int TIMEOUT_MS = 2500;
 
