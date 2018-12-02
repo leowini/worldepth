@@ -9,8 +9,8 @@ import java.util.concurrent.BlockingQueue;
 public class Slam {
     public static final String TAG = "Slam";
 
-    private HandlerThread mSlamThread;
-    public Handler mSlamHandler;
+    private HandlerThread mSlamSenderThread;
+    public Handler mSlamSenderHandler;
 
     private final Bitmap mPoisonPillBitmap = Bitmap.createBitmap(1,1,Bitmap.Config.ARGB_8888);
     private final BlockingQueue<Bitmap> mQueue;
@@ -20,7 +20,7 @@ public class Slam {
     public Slam(BlockingQueue<Bitmap> q) {
         this.mQueue = q;
         startSlamThread();
-        mSlamHandler.post(() -> doSlam());
+        mSlamSenderHandler.post(() -> doSlam());
     }
 
     /**
@@ -33,7 +33,7 @@ public class Slam {
     }
 
     /**
-     * This will run in the background on the mSlamThread.
+     * This will run in the background on the SlamSenderThread.
      */
     private void doSlam() {
         try {
@@ -56,17 +56,17 @@ public class Slam {
     }
 
     private void startSlamThread() {
-        mSlamThread = new HandlerThread("Slam Background");
-        mSlamThread.start();
-        mSlamHandler = new Handler(mSlamThread.getLooper());
+        mSlamSenderThread = new HandlerThread("Slam Background");
+        mSlamSenderThread.start();
+        mSlamSenderHandler = new Handler(mSlamSenderThread.getLooper());
     }
 
     /**
-     * Put the end of data signal on mQueue on the SlamThread.
+     * Put the end of data signal on mQueue on the SlamSenderThread.
      */
     public void signalImageQueueEnd() {
         //Put the end of data signal on the queue on the SlamThread.
-        mSlamHandler.post(() -> {
+        mSlamSenderHandler.post(() -> {
             try {
                 mQueue.put(mPoisonPillBitmap);
             } catch (Exception e) {
@@ -76,12 +76,12 @@ public class Slam {
     }
 
     public void stopSlamThread() {
-        mSlamThread.quitSafely();
+        mSlamSenderThread.quitSafely();
         try {
             //The SlamThread isn't joining :(
-            mSlamThread.join();
-            mSlamThread = null;
-            mSlamHandler = null;
+            mSlamSenderThread.join();
+            mSlamSenderThread = null;
+            mSlamSenderHandler = null;
 
         } catch (InterruptedException e) {
             e.printStackTrace();
