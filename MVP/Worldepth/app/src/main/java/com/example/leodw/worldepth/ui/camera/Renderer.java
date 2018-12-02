@@ -145,7 +145,7 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
         Log.d(TAG, "Slam height: " + mSurfaceHeight);
     }
 
-    public void stop() {
+    public void stopRenderThread() {
         if (mRenderThread == null) return;
         mRenderThread.handler.post(() -> {
             Looper looper = Looper.myLooper();
@@ -153,7 +153,7 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
                 looper.quit();
             }
         });
-        mSlam.stopSlamThread();
+        mSlam.signalImageQueueEnd();
         mRenderThread = null;
     }
 

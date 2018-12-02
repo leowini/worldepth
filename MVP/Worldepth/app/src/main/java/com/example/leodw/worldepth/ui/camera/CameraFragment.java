@@ -275,7 +275,7 @@ public class CameraFragment extends Fragment {
                         stopRecording();
                         mRecordingState = false;
                         ((MainActivity) getActivity()).setViewPager(1);
-                        mRenderer.stop();
+                        mRenderer.stopRenderThread();
                         return true;
                     }
                     return false;
