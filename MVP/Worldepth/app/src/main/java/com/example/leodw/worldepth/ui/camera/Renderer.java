@@ -310,10 +310,6 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
             dispose();
         }
 
-        Handler getHandler() {
-            return handler;
-        }
-
         Handler blockingHandler() {
             //Block until the EGL context is ready to accept messages
             eglContextReadyLock.acquireUninterruptibly();
