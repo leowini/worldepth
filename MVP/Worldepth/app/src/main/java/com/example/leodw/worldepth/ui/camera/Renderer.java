@@ -43,15 +43,13 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
     private EGLSurface mEGLSurface;
     private EGLContext mEGLContext;
 
-    private Slam mSlam;
     //private OnBitmapFrameAvailableListener mOnBitmapFrameAvailableListener;
 
     private final Bitmap mPoisonPillBitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
     private final BlockingQueue<Bitmap> mQueue;
 
-    public Renderer(Slam slam, BlockingQueue<Bitmap> q) {
+    public Renderer(BlockingQueue<Bitmap> q) {
         this.mQueue = q;
-        this.mSlam = slam;
     }
 
     @Override
@@ -153,7 +151,6 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
                 looper.quit();
             }
         });
-        mSlam.signalImageQueueEnd();
         mRenderThread = null;
     }
 
@@ -546,8 +543,4 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
         }
     }
 
-    /*public interface OnBitmapFrameAvailableListener {
-        void onBitmapFrameAvailable(Bitmap frame);
-    }
-    */
 }

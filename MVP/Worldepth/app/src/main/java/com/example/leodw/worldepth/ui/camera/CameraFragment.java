@@ -57,6 +57,7 @@ public class CameraFragment extends Fragment {
     private static final String TAG = "CameraFragment";
 
     private Renderer mRenderer;
+    private Slam mSlam;
     private SurfaceTexture mSlamOutputSurface;
 
     private Button captureBtn;
@@ -276,6 +277,7 @@ public class CameraFragment extends Fragment {
                         mRecordingState = false;
                         ((MainActivity) getActivity()).setViewPager(1);
                         mRenderer.stopRenderThread();
+                        mSlam.signalImageQueueEnd();
                         return true;
                     }
                     return false;
@@ -292,15 +294,16 @@ public class CameraFragment extends Fragment {
     private void startRecording() {
         //Queue for images to send to Slam.
         BlockingQueue<Bitmap> q = new LinkedBlockingQueue<Bitmap>();
-        mRenderer = new Renderer(new Slam(q), q);
+        mSlam = new Slam(q);
+        mRenderer = new Renderer(q);
         mRenderer.setOnSurfaceTextureReadyListener(texture -> {
             mSlamOutputSurface = texture;
             startCameraRecording();
         }, new Handler(Looper.getMainLooper()));
-        Log.d(TAG, "preview width: " + mPreviewSize.getWidth());
-        Log.d(TAG, "preview height: " + mPreviewSize.getHeight());
-        Log.d(TAG, "mTextureView width: " + mTextureView.getWidth());
-        Log.d(TAG, "mTextureView height: " + mTextureView.getHeight());
+//        Log.d(TAG, "preview width: " + mPreviewSize.getWidth());
+//        Log.d(TAG, "preview height: " + mPreviewSize.getHeight());
+//        Log.d(TAG, "mTextureView width: " + mTextureView.getWidth());
+//        Log.d(TAG, "mTextureView height: " + mTextureView.getHeight());
         mRenderer.start(mTextureView.getWidth(), mTextureView.getHeight());
     }
 
