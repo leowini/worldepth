@@ -10,7 +10,6 @@ import com.example.leodw.worldepth.ui.camera.Renderer;
 import java.io.ByteArrayOutputStream;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.concurrent.Semaphore;
 
 public class Slam implements Renderer.OnBitmapFrameAvailableListener {
     public static final String TAG = "Slam";
