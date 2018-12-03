@@ -10,11 +10,16 @@
 
 
 #include <opencv2/core/mat.hpp>
+
 #include "ORBExtractor.h"
 #include "ORBVocabulary.h"
+#include "MapPoint.h"
 
 namespace SLAM
 {
+
+    class KeyFrame;
+    class MapPoint;
 
 #define FRAME_GRID_ROWS 48
 #define FRAME_GRID_COLS 64
@@ -27,11 +32,11 @@ public:
     Frame();
 
     //constructor by reference
-    Frame(Frame &frame);
+    Frame(const Frame &frame);
 
     //constructor by image, needs ORB descriptors
-    Frame(cv::Mat & im, const double & timestamp, ORBextractor * extractor, ORBVocabulary * voc,
-          cv::Mat & K, cv::Mat & distCoef, const float & bf, const float & thDepth);
+    Frame(const cv::Mat &imGray, const double &timeStamp, ORBextractor* extractor,
+                 ORBVocabulary* voc, cv::Mat &K, cv::Mat &distCoef, const float &bf, const float &thDepth);
 
     void ExtractORB(const cv::Mat & im);
 
@@ -58,7 +63,7 @@ public:
     // and fill variables of the MapPoint to be used by the tracking
     // DO THIS AFTER MAPPOINT
     //*******************************
-    //bool isInFrustum(MapPoint* pMP, float viewingCosLimit);
+    bool isInFrustum(MapPoint* pMP, float viewingCosLimit);
     //*******************************
 
     // Compute the cell of a keypoint (return false if outside the grid)
@@ -97,7 +102,7 @@ public:
 
     // Stereo baseline in meters.
     //I don' think we need this, but i'm not sure, I'll leave it here
-    // float mb;
+     float mb;
 
     // Threshold close/far points. Close points are inserted from 1 view.
     // Far points are inserted as in the monocular case from 2 views.
@@ -115,8 +120,8 @@ public:
     // Corresponding stereo coordinate and depth for each keypoint.
     // "Monocular" keypoints have a negative value.
     //I also don't think we need these, but I'll keep them in in case
-    // std::vector<float> mvuRight;
-    // std::vector<float> mvDepth;
+     std::vector<float> mvuRight;
+     std::vector<float> mvDepth;
 
     // Bag of Words Vector structures.
     DBoW2::BowVector mBowVec;
@@ -128,7 +133,7 @@ public:
     // MapPoints associated to keypoints, NULL pointer if no association.
     //DO THIS AFTER MAPPOINT
     //**********************************
-    // std::vector<MapPoint*> mvpMapPoints;
+    std::vector<MapPoint*> mvpMapPoints;
     //**********************************
 
     // Flag to identify outlier associations.
@@ -149,7 +154,7 @@ public:
     // Reference Keyframe.
     //DO THIS AFTER KEYFRAME
     //************************
-    // KeyFrame* mpReferenceKF;
+    KeyFrame* mpReferenceKF;
     //************************
 
     // Scale pyramid info.
@@ -175,6 +180,8 @@ private:
 
     // Computes image bounds for the undistorted image (called in the constructor).
     void ComputeImageBounds(const cv::Mat & im);
+
+    void UndistortKeyPoints();
 
     // Assign keypoints to the grid for speed up feature matching (called in the constructor).
     //I assume this uses DBOW and FORB
