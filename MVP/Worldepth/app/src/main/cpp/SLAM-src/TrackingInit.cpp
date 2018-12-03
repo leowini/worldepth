@@ -9,7 +9,8 @@ namespace SLAM
 {
     TrackingInit::TrackingInit() {
         isProcessing = true;
-        //std::thread consume (TrackingInit::processing);
+        std::thread consume (&TrackingInit::processing, this);
+        consume.join();
     }
 
     void TrackingInit::sendToFrameList(SLAM::Frame frame) {
@@ -17,7 +18,7 @@ namespace SLAM
     }
 
     void TrackingInit::processing() {
-        while (isProcessing) {
+        while (TrackingInit::isProcessing) {
             TrackingInit::sendToProcess();
         }
     }
