@@ -8,7 +8,7 @@
 
 #include <opencv2/features2d/features2d.hpp>
 #include "Converter.h"
-#include "ORBmatcher.h"
+#include "ORBMatcher.h"
 #include <thread>
 
 namespace SLAM {

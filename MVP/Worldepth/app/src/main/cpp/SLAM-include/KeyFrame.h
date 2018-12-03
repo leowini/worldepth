@@ -9,7 +9,7 @@
 #include "DBoW2/BowVector.h"
 #include "DBoW2/FeatureVector.h"
 #include "ORBVocabulary.h"
-#include "ORBextractor.h"
+#include "ORBExtractor.h"
 #include "Frame.h"
 #include <set>
 //#include "KeyFrameDatabase.h"

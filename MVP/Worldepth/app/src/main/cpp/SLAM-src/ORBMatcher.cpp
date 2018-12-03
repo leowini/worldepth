@@ -2,7 +2,7 @@
 // Created by Soren Dahl on 12/2/18.
 //
 
-#include "ORBmatcher.h"
+#include "ORBMatcher.h"
 
 #include<limits.h>
 
