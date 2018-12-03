@@ -13,12 +13,14 @@ public class Slam {
     public Handler mSlamSenderHandler;
 
     private final Bitmap mPoisonPillBitmap = Bitmap.createBitmap(1,1,Bitmap.Config.ARGB_8888);
-    private final BlockingQueue<Bitmap> mQueue;
+    private final BlockingQueue<Bitmap> mFrameQueue;
+    private final BlockingQueue<Long> mTimeQueue;
 
-    public native void passImageToSlam(int width, int height, byte[] img);
+    public native void passImageToSlam(int width, int height, byte[] img, long timeStamp);
 
-    public Slam(BlockingQueue<Bitmap> q) {
-        this.mQueue = q;
+    public Slam(BlockingQueue<Bitmap> q, BlockingQueue<Long> t) {
+        this.mFrameQueue = q;
+        this.mTimeQueue = t;
         startSlamThread();
         mSlamSenderHandler.post(() -> doSlam());
     }
@@ -27,9 +29,9 @@ public class Slam {
      * Converts the bitmap frame to a byte array and sends it to the C++ code.
      * @param frame
      */
-    public void sendFrameToSlam(Bitmap frame) {
+    public void sendFrameToSlam(Bitmap frame, Long timeStamp) {
         byte[] byteArray = bitmapToByteArray(frame);
-        passImageToSlam(frame.getWidth(), frame.getHeight(), byteArray);
+        passImageToSlam(frame.getWidth(), frame.getHeight(), byteArray, timeStamp);
     }
 
     /**
@@ -37,10 +39,12 @@ public class Slam {
      */
     private void doSlam() {
         try {
-            Bitmap bmp = mQueue.take();
+            Bitmap bmp = mFrameQueue.take();
+            Long timeStamp = mTimeQueue.take();
             while (!bmp.equals(mPoisonPillBitmap)) {
-                sendFrameToSlam(bmp);
-                bmp = mQueue.take();
+                sendFrameToSlam(bmp, timeStamp);
+                bmp = mFrameQueue.take();
+                timeStamp = mTimeQueue.take();
             }
         }
         catch (Exception e) {
@@ -68,7 +72,7 @@ public class Slam {
         //Put the end of data signal on the queue on the SlamThread.
         mSlamSenderHandler.post(() -> {
             try {
-                mQueue.put(mPoisonPillBitmap);
+                mFrameQueue.put(mPoisonPillBitmap);
             } catch (Exception e) {
                 e.printStackTrace();
             }
