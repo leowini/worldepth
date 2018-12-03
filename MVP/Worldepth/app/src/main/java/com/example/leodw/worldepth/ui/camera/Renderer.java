@@ -46,14 +46,17 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
     //private OnBitmapFrameAvailableListener mOnBitmapFrameAvailableListener;
 
     private final Bitmap mPoisonPillBitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
-    private final BlockingQueue<Bitmap> mQueue;
+    private final BlockingQueue<Bitmap> mFrameQueue;
+    private final BlockingQueue<Long> mTimeQueue;
 
-    public Renderer(BlockingQueue<Bitmap> q) {
-        this.mQueue = q;
+    public Renderer(BlockingQueue<Bitmap> q, BlockingQueue<Long> t) {
+        this.mFrameQueue = q;
+        this.mTimeQueue = t;
     }
 
     @Override
     public void onFrameAvailable(SurfaceTexture surfaceTexture) {
+        long frameTimeStamp = surfaceTexture.getTimestamp();
         Log.d(TAG, "frame available");
         // Latch the data.
         renderer.checkGlError("before updateTexImage");
@@ -62,9 +65,9 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
         renderer.drawFrame(mEglSurfaceTexture, false);
 
         Bitmap bmp = getBitmap();
-
         try {
-            mQueue.put(bmp);
+            mFrameQueue.put(bmp);
+            mTimeQueue.put(frameTimeStamp);
         } catch (Exception e) {
             e.printStackTrace();
         }
