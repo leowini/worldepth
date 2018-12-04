@@ -45,9 +45,9 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
 
     private final Bitmap mPoisonPillBitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
 
-    private final BlockingQueue<TimeFramePair> mQueue;
+    private final BlockingQueue<TimeFramePair<Bitmap, Long>> mQueue;
 
-    public Renderer(BlockingQueue<TimeFramePair> q) {
+    public Renderer(BlockingQueue<TimeFramePair<Bitmap, Long>> q) {
         this.mQueue = q;
     }
 
