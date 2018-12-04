@@ -37,20 +37,21 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
     private STextureRender renderer;
     private int decodeCount = 1;
     private static final File FILES_DIR = Environment.getExternalStorageDirectory();
-    private ByteBuffer mPixelBuf;                       // used by saveFrame()
+    private ByteBuffer mPixelBuf; // used by saveFrame()
 
     private EGLDisplay mEGLDisplay;
     private EGLSurface mEGLSurface;
     private EGLContext mEGLContext;
 
-    //private OnBitmapFrameAvailableListener mOnBitmapFrameAvailableListener;
-
     private final Bitmap mPoisonPillBitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
     private final BlockingQueue<Bitmap> mFrameQueue;
     private final BlockingQueue<Long> mTimeQueue;
 
-    public Renderer(BlockingQueue<Bitmap> q, BlockingQueue<Long> t) {
-        this.mFrameQueue = q;
+    private final BlockingQueue<TimeFramePair> mQueue;
+
+    public Renderer(BlockingQueue<TimeFramePair> q, BlockingQueue<Bitmap> fq, BlockingQueue<Long> t) {
+        this.mQueue = q;
+        this.mFrameQueue = fq;
         this.mTimeQueue = t;
     }
 
@@ -66,6 +67,7 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
 
         Bitmap bmp = getBitmap();
         try {
+            mQueue.put(new TimeFramePair(bmp, frameTimeStamp));
             mFrameQueue.put(bmp);
             mTimeQueue.put(frameTimeStamp);
         } catch (Exception e) {

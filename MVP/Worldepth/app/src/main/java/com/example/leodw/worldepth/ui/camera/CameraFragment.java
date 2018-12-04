@@ -292,19 +292,16 @@ public class CameraFragment extends Fragment {
      * when the SurfaceTexture is configured.
      */
     private void startRecording() {
-        //Queues for images and timestamps to send to Slam.
-        BlockingQueue<Bitmap> q = new LinkedBlockingQueue<Bitmap>();
+        //Queue for images and timestamps to send to Slam.
+        BlockingQueue<TimeFramePair> q = new LinkedBlockingQueue<TimeFramePair>();
+        BlockingQueue<Bitmap> fq = new LinkedBlockingQueue<Bitmap>();
         BlockingQueue<Long> t = new LinkedBlockingQueue<Long>();
-        mSlam = new Slam(q, t);
-        mRenderer = new Renderer(q, t);
+        mSlam = new Slam(q, fq, t);
+        mRenderer = new Renderer(q, fq, t);
         mRenderer.setOnSurfaceTextureReadyListener(texture -> {
             mSlamOutputSurface = texture;
             startCameraRecording();
         }, new Handler(Looper.getMainLooper()));
-//        Log.d(TAG, "preview width: " + mPreviewSize.getWidth());
-//        Log.d(TAG, "preview height: " + mPreviewSize.getHeight());
-//        Log.d(TAG, "mTextureView width: " + mTextureView.getWidth());
-//        Log.d(TAG, "mTextureView height: " + mTextureView.getHeight());
         mRenderer.start(mTextureView.getWidth(), mTextureView.getHeight());
     }
 

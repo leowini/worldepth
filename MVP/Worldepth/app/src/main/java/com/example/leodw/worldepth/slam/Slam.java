@@ -3,6 +3,9 @@ package com.example.leodw.worldepth.slam;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.HandlerThread;
+
+import com.example.leodw.worldepth.ui.camera.TimeFramePair;
+
 import java.io.ByteArrayOutputStream;
 import java.util.concurrent.BlockingQueue;
 
@@ -15,11 +18,13 @@ public class Slam {
     private final Bitmap mPoisonPillBitmap = Bitmap.createBitmap(1,1,Bitmap.Config.ARGB_8888);
     private final BlockingQueue<Bitmap> mFrameQueue;
     private final BlockingQueue<Long> mTimeQueue;
+    private final BlockingQueue<TimeFramePair> mQueue;
 
     public native void passImageToSlam(int width, int height, byte[] img, long timeStamp);
 
-    public Slam(BlockingQueue<Bitmap> q, BlockingQueue<Long> t) {
-        this.mFrameQueue = q;
+    public Slam(BlockingQueue<TimeFramePair> q, BlockingQueue<Bitmap> fq, BlockingQueue<Long> t) {
+        this.mQueue = q;
+        this.mFrameQueue = fq;
         this.mTimeQueue = t;
         startSlamThread();
         mSlamSenderHandler.post(() -> doSlam());
