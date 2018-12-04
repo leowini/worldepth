@@ -148,7 +148,7 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
         //Put the end of data signal on mQueue on the SlamSenderThread.
         mRenderThread.handler.post(() -> {
             try {
-                mQueue.put(new TimeFramePair<Bitmap, Long>(mPoisonPillBitmap, (long)0));
+                mQueue.put(new TimeFramePair<Bitmap, Long>(mPoisonPillBitmap, (long) 0));
                 Log.d(TAG, "PoisonPill queued!");
             } catch (InterruptedException e) {
                 e.printStackTrace();

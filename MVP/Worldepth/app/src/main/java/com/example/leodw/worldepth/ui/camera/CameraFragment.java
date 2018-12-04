@@ -294,9 +294,9 @@ public class CameraFragment extends Fragment {
         //Queue for images and timestamps to send to Slam.
         BlockingQueue<TimeFramePair<Bitmap, Long>> q = new LinkedBlockingQueue<TimeFramePair<Bitmap, Long>>();
         //Poison pill to signal end of queue.
-        Bitmap poisonPillBitmap = Bitmap.createBitmap(1,1,Bitmap.Config.ARGB_8888);
-        mSlam = new Slam(q, poisonPillBitmap);
-        mRenderer = new Renderer(q, poisonPillBitmap);
+        Bitmap poisonPill = Bitmap.createBitmap(1,1,Bitmap.Config.ARGB_8888);
+        mSlam = new Slam(q, poisonPill);
+        mRenderer = new Renderer(q, poisonPill);
         mRenderer.setOnSurfaceTextureReadyListener(texture -> {
             mSlamOutputSurface = texture;
             startCameraRecording();
