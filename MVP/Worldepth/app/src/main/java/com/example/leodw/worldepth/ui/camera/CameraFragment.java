@@ -292,10 +292,11 @@ public class CameraFragment extends Fragment {
      * when the SurfaceTexture is configured.
      */
     private void startRecording() {
-        //Queue for images to send to Slam.
+        //Queues for images and timestamps to send to Slam.
         BlockingQueue<Bitmap> q = new LinkedBlockingQueue<Bitmap>();
-        mSlam = new Slam(q);
-        mRenderer = new Renderer(q);
+        BlockingQueue<Long> t = new LinkedBlockingQueue<Long>();
+        mSlam = new Slam(q, t);
+        mRenderer = new Renderer(q, t);
         mRenderer.setOnSurfaceTextureReadyListener(texture -> {
             mSlamOutputSurface = texture;
             startCameraRecording();
