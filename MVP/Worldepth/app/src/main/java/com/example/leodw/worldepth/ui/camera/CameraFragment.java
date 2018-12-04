@@ -277,7 +277,6 @@ public class CameraFragment extends Fragment {
                         mRecordingState = false;
                         ((MainActivity) getActivity()).setViewPager(1);
                         mRenderer.stopRenderThread();
-                        mSlam.signalImageQueueEnd();
                         return true;
                     }
                     return false;
@@ -294,8 +293,10 @@ public class CameraFragment extends Fragment {
     private void startRecording() {
         //Queue for images and timestamps to send to Slam.
         BlockingQueue<TimeFramePair<Bitmap, Long>> q = new LinkedBlockingQueue<TimeFramePair<Bitmap, Long>>();
-        mSlam = new Slam(q);
-        mRenderer = new Renderer(q);
+        //Poison pill to signal end of queue.
+        Bitmap poisonPillBitmap = Bitmap.createBitmap(1,1,Bitmap.Config.ARGB_8888);
+        mSlam = new Slam(q, poisonPillBitmap);
+        mRenderer = new Renderer(q, poisonPillBitmap);
         mRenderer.setOnSurfaceTextureReadyListener(texture -> {
             mSlamOutputSurface = texture;
             startCameraRecording();

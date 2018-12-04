@@ -43,12 +43,13 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
     private EGLSurface mEGLSurface;
     private EGLContext mEGLContext;
 
-    private final Bitmap mPoisonPillBitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
+    private final Bitmap mPoisonPillBitmap;
 
     private final BlockingQueue<TimeFramePair<Bitmap, Long>> mQueue;
 
-    public Renderer(BlockingQueue<TimeFramePair<Bitmap, Long>> q) {
+    public Renderer(BlockingQueue<TimeFramePair<Bitmap, Long>> q, Bitmap mPoisonPillBitmap) {
         this.mQueue = q;
+        this.mPoisonPillBitmap = mPoisonPillBitmap;
     }
 
     @Override
@@ -144,6 +145,15 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
 
     public void stopRenderThread() {
         if (mRenderThread == null) return;
+        //Put the end of data signal on mQueue on the SlamSenderThread.
+        mRenderThread.handler.post(() -> {
+            try {
+                mQueue.put(new TimeFramePair<Bitmap, Long>(mPoisonPillBitmap, (long)0));
+                Log.d(TAG, "PoisonPill queued!");
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
         mRenderThread.handler.post(() -> {
             Looper looper = Looper.myLooper();
             if (looper != null) {
