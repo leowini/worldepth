@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Semaphore;
 
 public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
@@ -42,14 +43,20 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
     private EGLSurface mEGLSurface;
     private EGLContext mEGLContext;
 
-    private Slam mSlam;
+    //private OnBitmapFrameAvailableListener mOnBitmapFrameAvailableListener;
 
-    public Renderer(Slam slam) {
-        this.mSlam = slam;
+    private final Bitmap mPoisonPillBitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
+    private final BlockingQueue<Bitmap> mFrameQueue;
+    private final BlockingQueue<Long> mTimeQueue;
+
+    public Renderer(BlockingQueue<Bitmap> q, BlockingQueue<Long> t) {
+        this.mFrameQueue = q;
+        this.mTimeQueue = t;
     }
 
     @Override
     public void onFrameAvailable(SurfaceTexture surfaceTexture) {
+        long frameTimeStamp = surfaceTexture.getTimestamp();
         Log.d(TAG, "frame available");
         // Latch the data.
         renderer.checkGlError("before updateTexImage");
@@ -58,7 +65,13 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
         renderer.drawFrame(mEglSurfaceTexture, false);
 
         Bitmap bmp = getBitmap();
-        mSlam.sendFrameToSlam(bmp);
+        try {
+            mFrameQueue.put(bmp);
+            mTimeQueue.put(frameTimeStamp);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 //        if (decodeCount <= 10) {
 //            File outputFile = new File(FILES_DIR,
 //                    String.format("frame-%02d.png", decodeCount));
@@ -74,6 +87,7 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
 
     /**
      * calls glReadPixels to create a bitmap
+     *
      * @return
      */
     public Bitmap getBitmap() {
@@ -132,9 +146,8 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
         Log.d(TAG, "Slam height: " + mSurfaceHeight);
     }
 
-    public void stop() {
+    public void stopRenderThread() {
         if (mRenderThread == null) return;
-
         mRenderThread.handler.post(() -> {
             Looper looper = Looper.myLooper();
             if (looper != null) {
@@ -152,6 +165,11 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
         mListener = listener;
         mListenerHandler = handler;
     }
+
+//    public void setOnBitmapFrameAvailableListener(OnBitmapFrameAvailableListener listener, Handler handler) {
+//        this.mOnBitmapFrameAvailableListener = listener;
+//        this.mOnBitmapFrameAvailableListenerHandler = handler;
+//    }
 
     /**
      * Configures the mEglSurfaceTexture and sends it to the main thread to use for mSlamOutputSurface
@@ -528,7 +546,4 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
         }
     }
 
-    public interface FrameListener {
-        void sendFrameToSlam(Bitmap frame);
-    }
 }

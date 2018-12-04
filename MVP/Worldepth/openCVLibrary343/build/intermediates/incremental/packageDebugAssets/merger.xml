@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+<<<<<<< HEAD
 <merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/sorendahl/Dev/worldepth/MVP/Worldepth/openCVLibrary343/src/main/assets"/><source path="/Users/sorendahl/Dev/worldepth/MVP/Worldepth/openCVLibrary343/build/intermediates/shader_assets/debug/compileDebugShaders/out"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/sorendahl/Dev/worldepth/MVP/Worldepth/openCVLibrary343/src/debug/assets"/></dataSet></merger>
+=======
+<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\git\worldepth2\MVP\Worldepth\openCVLibrary343\src\main\assets"/><source path="C:\git\worldepth2\MVP\Worldepth\openCVLibrary343\build\intermediates\shader_assets\debug\compileDebugShaders\out"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\git\worldepth2\MVP\Worldepth\openCVLibrary343\src\debug\assets"/></dataSet></merger>
+>>>>>>> fec9b93e77b70c7f7bebcf8e6ac318dd86854a36
