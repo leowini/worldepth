@@ -3,7 +3,6 @@ package com.example.leodw.worldepth.slam;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.HandlerThread;
-import android.util.Log;
 
 import com.example.leodw.worldepth.ui.camera.TimeFramePair;
 
@@ -47,14 +46,12 @@ public class Slam {
             Bitmap bmp = timeFramePair.getFrame();
             Long time = timeFramePair.getTime();
             while (!bmp.equals(mPoisonPillBitmap)) {
-                Log.d(TAG, "FrameCount: " + frameCount);
                 sendFrameToSlam(bmp, time);
                 timeFramePair = mQueue.take();
                 bmp = timeFramePair.getFrame();
                 time = timeFramePair.getTime();
                 frameCount++;
             }
-            Log.d(TAG, "Made it to the end!!!");
         }
         catch (Exception e) {
             System.out.println

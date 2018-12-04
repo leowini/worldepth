@@ -349,7 +349,6 @@ public class CameraFragment extends Fragment {
 
 
     private void stopRecording() {
-        Log.d(TAG, "Video saved: " + nextVideoAbsolutePath);
         nextVideoAbsolutePath = null;
         startPreview();
     }
@@ -357,7 +356,6 @@ public class CameraFragment extends Fragment {
     private void openCamera(int width, int height) {
         CameraManager manager = (CameraManager) getActivity().getSystemService(Context.CAMERA_SERVICE);
         try {
-            Log.d(TAG, "tryAcquire");
             if (!mCameraOpenCloseLock.tryAcquire(2500, TimeUnit.MILLISECONDS)) {
                 throw new RuntimeException("Time out waiting to lock camera opening.");
             }
@@ -413,7 +411,6 @@ public class CameraFragment extends Fragment {
             }
 
             mPreviewSize = chooseOptimalSize(map.getOutputSizes(SurfaceTexture.class), rotatedPreviewWidth, rotatedPreviewHeight, maxPreviewWidth, maxPreviewHeight, largest);
-            Log.d(TAG, "open preview size: " + mPreviewSize.getWidth() + "x" + mPreviewSize.getHeight());
             //check real-time permissions
             if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(getActivity(), new String[]{

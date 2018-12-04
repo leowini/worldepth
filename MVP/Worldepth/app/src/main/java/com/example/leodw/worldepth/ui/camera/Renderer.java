@@ -55,7 +55,6 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
     @Override
     public void onFrameAvailable(SurfaceTexture surfaceTexture) {
         long frameTimeStamp = surfaceTexture.getTimestamp();
-        Log.d(TAG, "frame available");
         // Latch the data.
         renderer.checkGlError("before updateTexImage");
         mEglSurfaceTexture.updateTexImage();
@@ -122,7 +121,6 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
         } finally {
             if (bos != null) bos.close();
         }
-        Log.d(TAG, "Saved" + mSurfaceWidth + "x" + mSurfaceHeight + " frame as '" + filename + "'");
     }
 
     /**
@@ -139,8 +137,6 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
         mRenderThread.start();
         mSurfaceWidth = width;
         mSurfaceHeight = height;
-        Log.d(TAG, "Slam width: " + mSurfaceWidth);
-        Log.d(TAG, "Slam height: " + mSurfaceHeight);
     }
 
     public void stopRenderThread() {
@@ -149,7 +145,6 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
         mRenderThread.handler.post(() -> {
             try {
                 mQueue.put(new TimeFramePair<Bitmap, Long>(mPoisonPillBitmap, (long) 0));
-                Log.d(TAG, "PoisonPill queued!");
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -256,8 +251,6 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
     private void setup() {
         renderer = new Renderer.STextureRender();
         renderer.surfaceCreated();
-
-        Log.d(TAG, "textureID=" + renderer.getTextureId());
         mEglSurfaceTexture = new SurfaceTexture(renderer.getTextureId());
 
         // This doesn't work if this object is created on the thread that CTS started for
