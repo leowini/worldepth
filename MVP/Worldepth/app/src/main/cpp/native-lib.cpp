@@ -15,5 +15,7 @@ JNIEXPORT void JNICALL
 Java_com_example_leodw_worldepth_slam_Slam_passImageToSlam(JNIEnv *env, jobject instance, jint width, jint height, jbyteArray img, jlong timeStamp) {
     jbyte* _img  = env->GetByteArrayElements(img, 0);
     cv::Mat mimg(width, height, CV_8UC1, (unsigned char *)_img);
+    double tframe = (double) timeStamp;
+    //SLAM.TrackMonocular(mimg, tframe);
     env->ReleaseByteArrayElements(img, _img, 0);
 }
