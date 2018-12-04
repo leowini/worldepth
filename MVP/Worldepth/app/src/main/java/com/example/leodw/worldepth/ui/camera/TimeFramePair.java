@@ -1,20 +1,20 @@
 package com.example.leodw.worldepth.ui.camera;
 
-public class TimeFramePair<Bitmap,Long> {
+public class TimeFramePair<L,R> {
 
-    private final Bitmap left;
-    private final Long right;
+    private final L left;
+    private final R right;
 
-    public TimeFramePair(Bitmap left, Long right) {
+    public TimeFramePair(L left, R right) {
         this.left = left;
         this.right = right;
     }
 
-    public Bitmap getFrame() {
+    public L getFrame() {
         return left;
     }
 
-    public Long getTime() {
+    public R getTime() {
         return right;
     }
 

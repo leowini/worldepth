@@ -16,16 +16,12 @@ public class Slam {
     public Handler mSlamSenderHandler;
 
     private final Bitmap mPoisonPillBitmap = Bitmap.createBitmap(1,1,Bitmap.Config.ARGB_8888);
-    private final BlockingQueue<Bitmap> mFrameQueue;
-    private final BlockingQueue<Long> mTimeQueue;
     private final BlockingQueue<TimeFramePair> mQueue;
 
     public native void passImageToSlam(int width, int height, byte[] img, long timeStamp);
 
-    public Slam(BlockingQueue<TimeFramePair> q, BlockingQueue<Bitmap> fq, BlockingQueue<Long> t) {
+    public Slam(BlockingQueue<TimeFramePair> q) {
         this.mQueue = q;
-        this.mFrameQueue = fq;
-        this.mTimeQueue = t;
         startSlamThread();
         mSlamSenderHandler.post(() -> doSlam());
     }
@@ -44,12 +40,14 @@ public class Slam {
      */
     private void doSlam() {
         try {
-            Bitmap bmp = mFrameQueue.take();
-            Long timeStamp = mTimeQueue.take();
+            TimeFramePair<Bitmap, Long> timeFramePair = mQueue.take();
+            Bitmap bmp = timeFramePair.getFrame();
+            Long time = timeFramePair.getTime();
             while (!bmp.equals(mPoisonPillBitmap)) {
-                sendFrameToSlam(bmp, timeStamp);
-                bmp = mFrameQueue.take();
-                timeStamp = mTimeQueue.take();
+                sendFrameToSlam(bmp, time);
+                timeFramePair = mQueue.take();
+                bmp = timeFramePair.getFrame();
+                time = timeFramePair.getTime();
             }
         }
         catch (Exception e) {
@@ -77,7 +75,7 @@ public class Slam {
         //Put the end of data signal on the queue on the SlamThread.
         mSlamSenderHandler.post(() -> {
             try {
-                mFrameQueue.put(mPoisonPillBitmap);
+                mQueue.put(new TimeFramePair<Bitmap, Long>(mPoisonPillBitmap, (long)0));
             } catch (Exception e) {
                 e.printStackTrace();
             }

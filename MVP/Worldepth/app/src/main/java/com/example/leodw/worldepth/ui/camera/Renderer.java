@@ -44,15 +44,11 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
     private EGLContext mEGLContext;
 
     private final Bitmap mPoisonPillBitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
-    private final BlockingQueue<Bitmap> mFrameQueue;
-    private final BlockingQueue<Long> mTimeQueue;
 
     private final BlockingQueue<TimeFramePair> mQueue;
 
-    public Renderer(BlockingQueue<TimeFramePair> q, BlockingQueue<Bitmap> fq, BlockingQueue<Long> t) {
+    public Renderer(BlockingQueue<TimeFramePair> q) {
         this.mQueue = q;
-        this.mFrameQueue = fq;
-        this.mTimeQueue = t;
     }
 
     @Override
@@ -67,9 +63,7 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
 
         Bitmap bmp = getBitmap();
         try {
-            mQueue.put(new TimeFramePair(bmp, frameTimeStamp));
-            mFrameQueue.put(bmp);
-            mTimeQueue.put(frameTimeStamp);
+            mQueue.put(new TimeFramePair<Bitmap, Long>(bmp, frameTimeStamp));
         } catch (Exception e) {
             e.printStackTrace();
         }
