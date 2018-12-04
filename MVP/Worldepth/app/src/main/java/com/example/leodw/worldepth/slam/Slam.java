@@ -86,7 +86,6 @@ public class Slam {
             mSlamSenderThread.join();
             mSlamSenderThread = null;
             mSlamSenderHandler = null;
-
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
