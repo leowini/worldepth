@@ -14,7 +14,7 @@ namespace SLAM
     }
 
     void TrackingInit::sendToFrameList(SLAM::Frame frame) {
-        FrameList.push_back(frame);
+        mFrame.push_back(frame);
     }
 
     void TrackingInit::processing() {
@@ -24,10 +24,10 @@ namespace SLAM
     }
 
     void TrackingInit::sendToProcess() {
-        Frame coolFrame = FrameList[0];
+        Frame coolFrame = mFrame[0];
 
         //call function on FrameList[0]
 
-        FrameList.erase(FrameList.begin());
+        mFrame.erase(mFrame.begin());
     }
 }

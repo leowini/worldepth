@@ -27,7 +27,7 @@ namespace SLAM
         void sendToFrameList(Frame frame);
     private:
         //Stores processed frames
-        std::vector<Frame> FrameList;
+        std::vector<Frame> mFrame;
 
         //Whether or not images are being captured for SLAM processing
         bool isProcessing;
