@@ -45,6 +45,8 @@ add_library( # Sets the name of the library.
         ${SLAM-SRC}/Map.cpp
         ${SLAM-SRC}/ORBMatcher.cpp
         ${SLAM-SRC}/FrameList.cpp
+        ${SLAM-SRC}/randomMap.cpp
+        ${SLAM-SRC}/Tracking.cpp
         )
 
 add_library( lib_opencv SHARED IMPORTED)

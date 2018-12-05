@@ -277,7 +277,6 @@ public class CameraFragment extends Fragment {
                         mRecordingState = false;
                         ((MainActivity) getActivity()).setViewPager(1);
                         mRenderer.stopRenderThread();
-                        mSlam.signalImageQueueEnd();
                         return true;
                     }
                     return false;
@@ -292,19 +291,16 @@ public class CameraFragment extends Fragment {
      * when the SurfaceTexture is configured.
      */
     private void startRecording() {
-        //Queues for images and timestamps to send to Slam.
-        BlockingQueue<Bitmap> q = new LinkedBlockingQueue<Bitmap>();
-        BlockingQueue<Long> t = new LinkedBlockingQueue<Long>();
-        mSlam = new Slam(q, t);
-        mRenderer = new Renderer(q, t);
+        //Queue for images and timestamps to send to Slam.
+        BlockingQueue<TimeFramePair<Bitmap, Long>> q = new LinkedBlockingQueue<TimeFramePair<Bitmap, Long>>();
+        //Poison pill to signal end of queue.
+        Bitmap poisonPill = Bitmap.createBitmap(1,1,Bitmap.Config.ARGB_8888);
+        mSlam = new Slam(q, poisonPill);
+        mRenderer = new Renderer(q, poisonPill);
         mRenderer.setOnSurfaceTextureReadyListener(texture -> {
             mSlamOutputSurface = texture;
             startCameraRecording();
         }, new Handler(Looper.getMainLooper()));
-//        Log.d(TAG, "preview width: " + mPreviewSize.getWidth());
-//        Log.d(TAG, "preview height: " + mPreviewSize.getHeight());
-//        Log.d(TAG, "mTextureView width: " + mTextureView.getWidth());
-//        Log.d(TAG, "mTextureView height: " + mTextureView.getHeight());
         mRenderer.start(mTextureView.getWidth(), mTextureView.getHeight());
     }
 
@@ -353,7 +349,6 @@ public class CameraFragment extends Fragment {
 
 
     private void stopRecording() {
-        Log.d(TAG, "Video saved: " + nextVideoAbsolutePath);
         nextVideoAbsolutePath = null;
         startPreview();
     }
@@ -361,7 +356,6 @@ public class CameraFragment extends Fragment {
     private void openCamera(int width, int height) {
         CameraManager manager = (CameraManager) getActivity().getSystemService(Context.CAMERA_SERVICE);
         try {
-            Log.d(TAG, "tryAcquire");
             if (!mCameraOpenCloseLock.tryAcquire(2500, TimeUnit.MILLISECONDS)) {
                 throw new RuntimeException("Time out waiting to lock camera opening.");
             }
@@ -417,7 +411,6 @@ public class CameraFragment extends Fragment {
             }
 
             mPreviewSize = chooseOptimalSize(map.getOutputSizes(SurfaceTexture.class), rotatedPreviewWidth, rotatedPreviewHeight, maxPreviewWidth, maxPreviewHeight, largest);
-            Log.d(TAG, "open preview size: " + mPreviewSize.getWidth() + "x" + mPreviewSize.getHeight());
             //check real-time permissions
             if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(getActivity(), new String[]{

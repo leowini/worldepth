@@ -8,14 +8,14 @@
 namespace SLAM
 {
     FrameList::FrameList() {
-        //new FrameList();
     }
 
-    void FrameList::addFrame(SLAM::Frame frame) {
+    void FrameList::addFrame(Frame *frame) {
+
         frameDatabase.push_back(frame);
     }
 
-    void FrameList::addKeyFrame(SLAM::KeyFrame keyFrame) {
+    void FrameList::addKeyFrame(KeyFrame *keyFrame) {
         keyFrameDatabase.push_back(keyFrame);
     }
 
@@ -27,11 +27,11 @@ namespace SLAM
         keyFrameDatabase.erase(keyFrameDatabase.begin() + pos);
     }
 
-    std::vector<Frame> FrameList::getFrameDatabase() {
+    std::vector<Frame*> FrameList::getFrameDatabase() {
         return frameDatabase;
     }
 
-    std::vector<KeyFrame> FrameList::getKeyFrameDatabase() {
+    std::vector<KeyFrame*> FrameList::getKeyFrameDatabase() {
         return keyFrameDatabase;
     }
 

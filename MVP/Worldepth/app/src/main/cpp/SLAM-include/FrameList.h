@@ -5,8 +5,6 @@
 #ifndef WORLDEPTH_FRAMELIST_H
 #define WORLDEPTH_FRAMELIST_H
 
-
-#include <opencv2/core/mat.hpp>
 #include <list>
 #include <vector>
 #include <thread>
@@ -22,10 +20,10 @@ namespace SLAM
         FrameList();
 
         //Add a frame
-        void addFrame(Frame frame);
+        void addFrame(Frame* frame);
 
         //Add a KeyFrame
-        void addKeyFrame(KeyFrame keyFrame);
+        void addKeyFrame(KeyFrame* keyFrame);
 
         //Remove a frame
         void removeFrame(int pos);
@@ -33,9 +31,9 @@ namespace SLAM
         //Remove a KeyFrame
         void removeKeyFrame(int pos);
 
-        std::vector<Frame> getFrameDatabase();
+        std::vector<Frame*> getFrameDatabase();
 
-        std::vector<KeyFrame> getKeyFrameDatabase();
+        std::vector<KeyFrame*> getKeyFrameDatabase();
 
         //checks if frame list is empty
         bool isFrameListEmpty();
@@ -44,10 +42,10 @@ namespace SLAM
         bool isKeyFrameListEmpty();
     private:
         //Frame List
-        std::vector<Frame> frameDatabase;
+        std::vector<Frame*> frameDatabase;
 
         //KeyFrame List
-        std::vector<KeyFrame> keyFrameDatabase;
+        std::vector<KeyFrame*> keyFrameDatabase;
     };
 
 }
