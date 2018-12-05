@@ -13,11 +13,7 @@
 
 namespace SLAM {
 
-//Call this method with a file and a map to output the map coords to the file
-    void writeMap(ofstream file, string filename, Map *pMap);
-
-//Call this method to generate a random map with 1000 points, returns the pointer to the map
-    Map* randomMap();
+void makeMapAndWrite(string &filename, size_t num);
 
 }
 
