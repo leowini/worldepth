@@ -36,16 +36,10 @@ namespace SLAM
     }
 
     bool FrameList::isFrameListEmpty() {
-        if (static_cast<int>(FrameList::frameDatabase.size()) < 1) {
-            return true;
-        }
-        return false;
+        return static_cast<int>(FrameList::frameDatabase.size()) < 1;
     }
 
     bool FrameList::isKeyFrameListEmpty() {
-        if (static_cast<int>(FrameList::keyFrameDatabase.size()) < 1) {
-            return true;
-        }
-        return false;
+        return static_cast<int>(FrameList::keyFrameDatabase.size()) < 1;
     }
 }
