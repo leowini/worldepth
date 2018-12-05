@@ -3,7 +3,8 @@
 
 # Sets the minimum version of CMake required to build the native library.
 
-
+set(SLAM-SRC ${PROJECT_SOURCE_DIR}/src/main/cpp/SLAM-src)
+set(DBoW2 ${PROJECT_SOURCE_DIR}/src/main/cpp/DBoW2)
 
 cmake_minimum_required(VERSION 3.4.1)
 
@@ -13,6 +14,18 @@ cmake_minimum_required(VERSION 3.4.1)
 # Gradle automatically packages shared libraries with your APK.
 
 include_directories(${PROJECT_SOURCE_DIR}/src/main/cpp/opencv-include)
+include_directories(${PROJECT_SOURCE_DIR}/src/main/cpp/SLAM-include)
+include_directories(${DBoW2})
+
+add_library(lib_DBoW2
+        SHARED
+
+        ${DBoW2}/DBoW2/BowVector.cpp
+        ${DBoW2}/DBoW2/FORB.cpp
+        ${DBoW2}/DBoW2/FeatureVector.cpp
+        ${DBoW2}/DBoW2/ScoringObject.cpp
+        ${DBoW2}/DUtils/Random.cpp
+        ${DBoW2}/DUtils/Timestamp.cpp)
 
 add_library( # Sets the name of the library.
         native-lib
@@ -21,7 +34,19 @@ add_library( # Sets the name of the library.
         SHARED
 
         # Provides a relative path to your source file(s).
-        src/main/cpp/native-lib.cpp)
+        src/main/cpp/native-lib.cpp
+        ${SLAM-SRC}/Frame.cpp
+        ${SLAM-SRC}/ORBExtractor.cpp
+        ${SLAM-SRC}/fast_score.cpp
+        ${SLAM-SRC}/TrackingInit.cpp
+        ${SLAM-SRC}/Converter.cpp
+        ${SLAM-SRC}/KeyFrame.cpp
+        ${SLAM-SRC}/MapPoint.cpp
+        ${SLAM-SRC}/Map.cpp
+        ${SLAM-SRC}/ORBMatcher.cpp
+        ${SLAM-SRC}/randomMap.cpp
+        ${SLAM-SRC}/Tracking.cpp
+        )
 
 add_library( lib_opencv SHARED IMPORTED)
 set_target_properties(lib_opencv PROPERTIES IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/src/main/jniLibs/${ANDROID_ABI}/libopencv_java3.so)
@@ -40,6 +65,9 @@ find_library( # Sets the name of the path variable.
         # you want CMake to locate.
         log)
 
+target_link_libraries(lib_DBoW2
+        lib_opencv)
+
 # Specifies libraries CMake should link to your target library. You
 # can link multiple libraries, such as libraries you define in this
 # build script, prebuilt third-party libraries, or system libraries.
@@ -50,4 +78,5 @@ target_link_libraries( # Specifies the target library.
         # Links the target library to the log library
         # included in the NDK.
         ${log-lib}
+        lib_DBoW2
         lib_opencv)
