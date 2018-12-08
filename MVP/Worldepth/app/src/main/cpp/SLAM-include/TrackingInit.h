@@ -16,6 +16,8 @@
 #include "Frame.h"
 #include "FrameList.h"
 #include "KeyFrame.h"
+#include "Map.h"
+#include "Tracking.h"
 
 namespace SLAM
 {
@@ -30,6 +32,8 @@ namespace SLAM
 
         //Send keyFrames to KeyFrameList
         void sendToKeyFrameList(KeyFrame* keyFrame);
+
+        cv::Mat beginTracking(cv::Mat cim, double timeStamp);
     private:
         //Stores processed frames
         FrameList frameList;

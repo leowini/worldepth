@@ -8,10 +8,10 @@
 namespace SLAM
 {
     FrameList::FrameList() {
+
     }
 
     void FrameList::addFrame(Frame *frame) {
-
         frameDatabase.push_back(frame);
     }
 

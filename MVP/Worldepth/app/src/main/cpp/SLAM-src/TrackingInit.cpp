@@ -4,6 +4,7 @@
 
 #include "TrackingInit.h"
 #include <thread>
+#include "Tracking.h"
 
 namespace SLAM
 {
@@ -33,5 +34,9 @@ namespace SLAM
         frameList.getFrameDatabase()[0];
 
         //call function on FrameList[0]
+    }
+
+    cv::Mat beginTracking(cv::Mat cim, double timeStamp) {
+
     }
 }
