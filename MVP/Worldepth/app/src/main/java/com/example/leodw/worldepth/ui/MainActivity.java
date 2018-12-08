@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         setupViewPager(mViewPager);
         fb = new FirebaseWrapper();
+        //updateUI(fb.getFirebaseUser());
     }
 
     private void setupViewPager(ViewPager viewPager) {

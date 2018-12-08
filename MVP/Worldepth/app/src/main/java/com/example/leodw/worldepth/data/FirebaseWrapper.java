@@ -4,10 +4,15 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.net.Uri;
+import android.widget.Toast;
 
 //Firebase imports needed
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -20,11 +25,15 @@ public class FirebaseWrapper {
     private static final String TAG = "worldepth";
 
     private FirebaseDatabase mDatabase; //Instance of database
-    private StorageReference mStorageRef;
+    private StorageReference mStorageRef; //Instace of storage reference
+    private FirebaseAuth mAuth; //Instance of Authentication checker
+    private FirebaseUser currentUser;
 
     public FirebaseWrapper() { //Constructor
         mDatabase = FirebaseDatabase.getInstance();
         mStorageRef = FirebaseStorage.getInstance().getReference();
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
     }
 
     //Get firebase database object
@@ -42,6 +51,9 @@ public class FirebaseWrapper {
         Log.d(TAG,"Wrote to Database");
     }
 
+    public FirebaseUser getFirebaseUser() {
+        return currentUser;
+    }
 
     //upload a file object to our Firebase Cloud Storage
     public void uploadFile(Uri file) {
@@ -64,4 +76,25 @@ public class FirebaseWrapper {
                     }
                 });
     }
+
+    /* mAuth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        @Override
+        public void onComplete(@NonNull Task<AuthResult> task) {
+            if (task.isSuccessful()) {
+                // Sign in success, update UI with the signed-in user's information
+                Log.d(TAG, "createUserWithEmail:success");
+                FirebaseUser user = mAuth.getCurrentUser();
+                updateUI(user);
+            } else {
+                // If sign in fails, display a message to the user.
+                Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
+                        Toast.LENGTH_SHORT).show();
+                updateUI(null);
+            }
+
+            // ...
+        }
+    }); */
 }
