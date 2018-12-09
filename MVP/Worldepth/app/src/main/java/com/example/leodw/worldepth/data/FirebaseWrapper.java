@@ -1,20 +1,27 @@
 package com.example.leodw.worldepth.data;
 
 import android.os.Environment;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.net.Uri;
 import android.widget.Toast;
 
 //Firebase imports needed
+import com.example.leodw.worldepth.ui.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -44,57 +51,35 @@ public class FirebaseWrapper {
     //Get firebase storageReference object
     public StorageReference getStorageReference() { return mStorageRef; }
 
-    //Write to the firebase database with serializable data
-    public void writeToDatabase(String location, Object message) {
-        DatabaseReference myRef = mDatabase.getReference(location); //location for message
-        myRef.setValue(message); //sending the "message" object
-        Log.d(TAG,"Wrote to Database");
-    }
-
     public FirebaseUser getFirebaseUser() {
         return currentUser;
     }
 
-    //upload a file object to our Firebase Cloud Storage
-    public void uploadFile(Uri file) {
-        final StorageReference fileRef = mStorageRef.child("Bursts"); //Path to where files are placed
+    public FirebaseAuth getFirebaseAuth() { return mAuth; }
 
-        fileRef.putFile(file)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        // Get a URL to the uploaded content
-                        com.google.android.gms.tasks.Task<android.net.Uri> downloadUrl = fileRef.getDownloadUrl();
-                        Log.d(TAG, downloadUrl.toString());
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        // Handle unsuccessful uploads
-                        Log.d(TAG, "Error: " + exception.getMessage());
-                    }
-                });
+    //Write to the firebase database with serializable data
+    public void writeToDatabase(String location, Object message) {
+        DatabaseReference myRef = mDatabase.getReference(location); //location for message
+        myRef.setValue(message); //sending the "message" object
+        attachReader(myRef);
+        Log.d(TAG,"Wrote to Database");
     }
 
-    /* mAuth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-        @Override
-        public void onComplete(@NonNull Task<AuthResult> task) {
-            if (task.isSuccessful()) {
-                // Sign in success, update UI with the signed-in user's information
-                Log.d(TAG, "createUserWithEmail:success");
-                FirebaseUser user = mAuth.getCurrentUser();
-                updateUI(user);
-            } else {
-                // If sign in fails, display a message to the user.
-                Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
-                        Toast.LENGTH_SHORT).show();
-                updateUI(null);
+    private void attachReader(DatabaseReference dbRef) {
+        dbRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                String value = dataSnapshot.getValue(String.class);
+                Log.d(TAG, "Value is: " + value);
             }
 
-            // ...
-        }
-    }); */
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
+    }
 }
