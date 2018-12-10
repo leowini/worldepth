@@ -9,12 +9,17 @@ namespace SLAM
 {
     TrackingInit::TrackingInit() {
         isProcessing = true;
+        frameList = FrameList();
         std::thread consume (&TrackingInit::processing, this);
         consume.join();
     }
 
-    void TrackingInit::sendToFrameList(SLAM::Frame frame) {
-        FrameList.push_back(frame);
+    void TrackingInit::sendToFrameList(Frame *frame) {
+        frameList.addFrame(frame);
+    }
+
+    void TrackingInit::sendToKeyFrameList(SLAM::KeyFrame *keyFrame) {
+        frameList.addKeyFrame(keyFrame);
     }
 
     void TrackingInit::processing() {
@@ -24,10 +29,9 @@ namespace SLAM
     }
 
     void TrackingInit::sendToProcess() {
-        Frame coolFrame = FrameList[0];
+
+        frameList.getFrameDatabase()[0];
 
         //call function on FrameList[0]
-
-        FrameList.erase(FrameList.begin());
     }
 }

@@ -44,6 +44,7 @@ add_library( # Sets the name of the library.
         ${SLAM-SRC}/MapPoint.cpp
         ${SLAM-SRC}/Map.cpp
         ${SLAM-SRC}/ORBMatcher.cpp
+        ${SLAM-SRC}/FrameList.cpp
         ${SLAM-SRC}/randomMap.cpp
         ${SLAM-SRC}/Tracking.cpp
         )
