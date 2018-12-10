@@ -35,6 +35,7 @@ public class FirebaseWrapper {
     private StorageReference mStorageRef; //Instace of storage reference
     private FirebaseAuth mAuth; //Instance of Authentication checker
     private FirebaseUser currentUser;
+    //TODO: create list of database references by location
 
     public FirebaseWrapper() { //Constructor
         mDatabase = FirebaseDatabase.getInstance();
