@@ -67,14 +67,11 @@ public class SignInFragment extends Fragment {
 
     public void createNewAccount(String email, String password) {
         FirebaseAuth _auth = mFb.getFirebaseAuth();
-        _auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    ((MainActivity) getActivity()).setViewPager(1);
-                } else {
-                    Log.d(TAG, "createNewAccount:failed", task.getException());
-                }
+        _auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                ((MainActivity) getActivity()).setViewPager(1);
+            } else {
+                Log.d(TAG, "createNewAccount:failed", task.getException());
             }
         });
     }
