@@ -9,7 +9,7 @@ import com.example.leodw.worldepth.data.FirebaseWrapper;
 import com.example.leodw.worldepth.ui.camera.CameraFragment;
 import com.example.leodw.worldepth.ui.loading.LoadingFragment;
 import com.example.leodw.worldepth.ui.login.LoginFragment;
-import com.example.leodw.worldepth.ui.signin.SignInFragment;
+import com.example.leodw.worldepth.ui.signup.SignUpFragment;
 import com.example.leodw.worldepth.ui.viewer.ViewerFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         SectionsStatePagerAdapter adapter = new SectionsStatePagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new SignInFragment(), "SignIn_Fragment");
+        adapter.addFragment(new SignUpFragment(), "SignUp_Fragment");
         adapter.addFragment(new LoginFragment(), "Login_Fragment");
         adapter.addFragment(new CameraFragment(), "Camera_Fragment");
         adapter.addFragment(new LoadingFragment(), "Loading_Fragment");
