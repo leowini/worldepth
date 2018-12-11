@@ -8,6 +8,7 @@ import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.data.FirebaseWrapper;
 import com.example.leodw.worldepth.ui.camera.CameraFragment;
 import com.example.leodw.worldepth.ui.loading.LoadingFragment;
+import com.example.leodw.worldepth.ui.signin.SignInFragment;
 import com.example.leodw.worldepth.ui.viewer.ViewerFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -16,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
     private SectionsStatePagerAdapter mSectionsStatePagerAdapter;
     private ViewPager mViewPager;
-    private FirebaseWrapper fb;
+    static private FirebaseWrapper fb;
 
     // Used to load the 'native-lib' library on application startup.
     static {
@@ -32,10 +33,12 @@ public class MainActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         setupViewPager(mViewPager);
         fb = new FirebaseWrapper();
+        //updateUI(fb.getFirebaseUser());
     }
 
     private void setupViewPager(ViewPager viewPager) {
         SectionsStatePagerAdapter adapter = new SectionsStatePagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new SignInFragment(), "SignIn_Fragment");
         adapter.addFragment(new CameraFragment(), "Camera_Fragment");
         adapter.addFragment(new LoadingFragment(), "Loading_Fragment");
         adapter.addFragment(new ViewerFragment(), "Viewer_Fragment");
@@ -44,5 +47,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void setViewPager(int fragmentIndex) {
         mViewPager.setCurrentItem(fragmentIndex);
+    }
+
+    public FirebaseWrapper getFirebaseWrapper(){
+        return this.fb;
     }
 }
