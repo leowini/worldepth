@@ -13,8 +13,6 @@ import android.widget.Button;
 import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.data.FirebaseWrapper;
 import com.example.leodw.worldepth.ui.MainActivity;
-import com.example.leodw.worldepth.ui.signin.SignInFragment;
-import com.example.leodw.worldepth.ui.signin.SignInViewModel;
 
 public class LoginFragment extends Fragment {
     private static final String TAG = "LoginFragment";
@@ -25,7 +23,7 @@ public class LoginFragment extends Fragment {
 
     private FirebaseWrapper mFb;
 
-    public static SignInFragment newInstance() { return new SignInFragment(); }
+    public static LoginFragment newInstance() { return new LoginFragment(); }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
