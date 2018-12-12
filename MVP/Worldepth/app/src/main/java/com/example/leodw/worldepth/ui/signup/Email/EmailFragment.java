@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.data.FirebaseWrapper;
@@ -20,6 +21,7 @@ public class EmailFragment extends Fragment {
 
     private EmailViewModel mViewModel;
     private FirebaseWrapper mFb;
+    private EditText mEmailInput;
 
 
     public static EmailFragment newInstance() {
@@ -42,5 +44,6 @@ public class EmailFragment extends Fragment {
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
+        mEmailInput = (EditText) view.findViewById(R.id.emailInput);
     }
 }

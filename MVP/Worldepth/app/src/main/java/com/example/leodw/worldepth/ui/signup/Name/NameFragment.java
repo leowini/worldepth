@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.data.FirebaseWrapper;
@@ -20,6 +21,7 @@ public class NameFragment extends Fragment {
 
     private NameViewModel mViewModel;
     private FirebaseWrapper mFb;
+    EditText mNameInput;
 
 
     public static NameFragment newInstance() {
@@ -42,5 +44,6 @@ public class NameFragment extends Fragment {
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
+        mNameInput = (EditText) view.findViewById(R.id.nameInput);
     }
 }

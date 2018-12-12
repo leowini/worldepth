@@ -25,6 +25,7 @@ public class PhoneFragment extends Fragment {
 
     private PhoneViewModel mViewModel;
     private FirebaseWrapper mFb;
+    private EditText mPhoneInput;
 
 
     public static PhoneFragment newInstance() {
@@ -47,5 +48,6 @@ public class PhoneFragment extends Fragment {
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
+        mPhoneInput = (EditText) view.findViewById(R.id.phoneInput);
     }
 }

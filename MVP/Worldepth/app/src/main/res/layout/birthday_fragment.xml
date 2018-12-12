@@ -9,7 +9,7 @@
     tools:context=".ui.signup.Birthday.BirthdayFragment">
 
     <EditText
-        android:id="@+id/phoneInput"
+        android:id="@+id/birthdayInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
