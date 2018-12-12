@@ -14,6 +14,8 @@
 #include <vector>
 #include <thread>
 #include "Frame.h"
+#include "FrameList.h"
+#include "KeyFrame.h"
 
 namespace SLAM
 {
@@ -24,10 +26,13 @@ namespace SLAM
         TrackingInit();
 
         //Send frames to FrameList
-        void sendToFrameList(Frame frame);
+        void sendToFrameList(Frame* frame);
+
+        //Send keyFrames to KeyFrameList
+        void sendToKeyFrameList(KeyFrame* keyFrame);
     private:
         //Stores processed frames
-        std::vector<Frame> FrameList;
+        FrameList frameList;
 
         //Whether or not images are being captured for SLAM processing
         bool isProcessing;
