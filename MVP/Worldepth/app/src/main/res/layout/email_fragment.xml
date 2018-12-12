@@ -4,8 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.signup.Email.EmailFragment">
 
+    <TextView
+        android:id="@+id/emailInputText"
+        android:text="Enter your email: "/>
+
     <EditText
-        app:layout_constraintBottom_toTopOf="@+id/passwordInput"
+        android:id="@+id/emailInput"
+        app:layout_constraintBottom_toTopOf="@+id/emailInputText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"

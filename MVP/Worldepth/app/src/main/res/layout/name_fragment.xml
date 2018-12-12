@@ -4,8 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.signup.Name.NameFragment">
 
+    <TextView
+        android:id="@+id/nameInputText"
+        android:text="Enter your Name"/>
+
     <EditText
-        app:layout_constraintBottom_toTopOf="@+id/passwordInput"
+        android:id="@+id/nameInput"
+        app:layout_constraintBottom_toTopOf="@+id/nameInputText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
