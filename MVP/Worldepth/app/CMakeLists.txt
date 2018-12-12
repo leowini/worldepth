@@ -88,6 +88,9 @@ add_library( # Sets the name of the library.
         ${SLAM-SRC}/randomMap.cpp
         ${SLAM-SRC}/Tracking.cpp
         ${SLAM-SRC}/LocalMapping.cpp
+        ${SLAM-SRC}/LoopClosing.cpp
+        ${SLAM-SRC}/Optimizer.cpp
+        ${SLAM-SRC}/Sim3Solver.cpp
         )
 
 add_library( lib_opencv SHARED IMPORTED)
@@ -120,5 +123,6 @@ target_link_libraries( # Specifies the target library.
         # Links the target library to the log library
         # included in the NDK.
         ${log-lib}
+        lib_g2o
         lib_DBoW2
         lib_opencv)

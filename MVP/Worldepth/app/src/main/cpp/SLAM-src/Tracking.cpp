@@ -14,8 +14,8 @@
 #include"Map.h"
 //#include"Initializer.h"
 
-//#include"Optimizer.h"
-//#include"PnPsolver.h"
+#include"Optimizer.h"
+#include"PnPSolver.h"
 
 #include<iostream>
 
@@ -27,8 +27,8 @@ using namespace std;
 namespace SLAM
 {
 
-    Tracking::Tracking(/*System *pSys,*/ ORBVocabulary* pVoc,  Map *pMap, /*KeyFrameDatabase* pKFDB,*/ const string &strSettingPath, const int sensor):
-            mState(NO_IMAGES_YET), mSensor(sensor), mbOnlyTracking(false), mbVO(false), mpORBVocabulary(pVoc),
+    Tracking::Tracking(/*System *pSys,*/ ORBVocabulary* pVoc,  Map *pMap, /*KeyFrameDatabase* pKFDB,*/ const string &strSettingPath):
+            mState(NO_IMAGES_YET), mbOnlyTracking(false), mbVO(false), mpORBVocabulary(pVoc),
             /*mpKeyFrameDB(pKFDB), mpInitializer(static_cast<Initializer*>(NULL)), mpSystem(pSys), */
             mpMap(pMap), mnLastRelocFrameId(0)
     {
@@ -114,19 +114,19 @@ namespace SLAM
 
     }
 
-    /*DO THIS AFTER LOCAL MAPPING
+    ///*DO THIS AFTER LOCAL MAPPING
     void Tracking::SetLocalMapper(LocalMapping *pLocalMapper)
     {
         mpLocalMapper=pLocalMapper;
     }
-     */
+    // */
 
-    /* DO THIS AFTER LOOP CLOSING
+    ///* DO THIS AFTER LOOP CLOSING
     void Tracking::SetLoopClosing(LoopClosing *pLoopClosing)
     {
         mpLoopClosing=pLoopClosing;
     }
-     */
+     //*/
 
     cv::Mat Tracking::GrabImageMonocular(const cv::Mat &im, const double &timestamp)
     {
@@ -518,7 +518,7 @@ namespace SLAM
         // Bundle Adjustment
         cout << "New Map created with " << mpMap->MapPointsInMap() << " points" << endl;
 
-        //Optimizer::GlobalBundleAdjustemnt(mpMap,20);
+        Optimizer::GlobalBundleAdjustemnt(mpMap,20);
 
         // Set median depth to 1
         float medianDepth = pKFini->ComputeSceneMedianDepth(2);
@@ -547,8 +547,8 @@ namespace SLAM
             }
         }
 
-        //mpLocalMapper->InsertKeyFrame(pKFini);
-        //mpLocalMapper->InsertKeyFrame(pKFcur);
+        mpLocalMapper->InsertKeyFrame(pKFini);
+        mpLocalMapper->InsertKeyFrame(pKFcur);
 
         mCurrentFrame.SetPose(pKFcur->GetPose());
         mnLastKeyFrameId=mCurrentFrame.mnId;
@@ -564,7 +564,7 @@ namespace SLAM
 
         mpMap->SetReferenceMapPoints(mvpLocalMapPoints);
 
-        //mpMapDrawer->SetCurrentCameraPose(pKFcur->GetPose());
+
 
         mpMap->mvpKeyFrameOrigins.push_back(pKFini);
 
@@ -607,7 +607,7 @@ namespace SLAM
         mCurrentFrame.mvpMapPoints = vpMapPointMatches;
         mCurrentFrame.SetPose(mLastFrame.mTcw);
 
-        //Optimizer::PoseOptimization(&mCurrentFrame);
+        Optimizer::PoseOptimization(&mCurrentFrame);
 
         // Discard outliers
         int nmatchesMap = 0;
@@ -699,7 +699,7 @@ namespace SLAM
             if(vDepthIdx[j].first>mThDepth && nPoints>100)
                 break;
         }
-             */
+             */ //None of this should execute because it is all for stereo/rgbd
     }
 
     bool Tracking::TrackWithMotionModel()
@@ -731,7 +731,7 @@ namespace SLAM
             return false;
 
         // Optimize frame pose with all matches
-        //Optimizer::PoseOptimization(&mCurrentFrame);
+        Optimizer::PoseOptimization(&mCurrentFrame);
 
         // Discard outliers
         int nmatchesMap = 0;
@@ -773,7 +773,7 @@ namespace SLAM
         SearchLocalPoints();
 
         // Optimize Pose
-        //Optimizer::PoseOptimization(&mCurrentFrame);
+        Optimizer::PoseOptimization(&mCurrentFrame);
         mnMatchesInliers = 0;
 
         // Update MapPoints Statistics
@@ -815,10 +815,10 @@ namespace SLAM
             return false;
 
         // If Local Mapping is freezed by a Loop Closure do not insert keyframes
-        /*
+
         if(mpLocalMapper->isStopped() || mpLocalMapper->stopRequested())
             return false;
-            */
+
 
         const int nKFs = mpMap->KeyFramesInMap();
 
@@ -833,7 +833,7 @@ namespace SLAM
         int nRefMatches = mpReferenceKF->TrackedMapPoints(nMinObs);
 
         // Local Mapping accept keyframes?
-        //bool bLocalMappingIdle = mpLocalMapper->AcceptKeyFrames();
+        bool bLocalMappingIdle = mpLocalMapper->AcceptKeyFrames();
 
         // Check how many "close" points are being tracked and how many could be potentially created.
         int nNonTrackedClose = 0;
@@ -855,7 +855,7 @@ namespace SLAM
         // Condition 1b: More than "MinFrames" have passed and Local Mapping is idle
         const bool c1b = (mCurrentFrame.mnId>=mnLastKeyFrameId+mMinFrames /*&& bLocalMappingIdle*/);
         //Condition 1c: tracking is weak
-        const bool c1c =  false/*mSensor!=System::MONOCULAR && (mnMatchesInliers<nRefMatches*0.25 || bNeedToInsertClose) */;
+        const bool c1c =  false/*mSensor!=System::MONOCULAR && (mnMatchesInliers<nRefMatches*0.25 || bNeedToInsertClose) */; //this is always false
         // Condition 2: Few tracked points compared to reference keyframe. Lots of visual odometry compared to map matches.
         const bool c2 = ((mnMatchesInliers<nRefMatches*thRefRatio|| bNeedToInsertClose) && mnMatchesInliers>15);
 
@@ -863,18 +863,18 @@ namespace SLAM
         {
             // If the mapping accepts keyframes, insert keyframe.
             // Otherwise send a signal to interrupt BA
-            /*
+
             if(bLocalMappingIdle)
             {
                 return true;
             }
             else
             {
-                //mpLocalMapper->InterruptBA();
+                mpLocalMapper->InterruptBA();
 
                     return false;
             }
-             */
+
             return false;
         }
         else
@@ -883,10 +883,10 @@ namespace SLAM
 
     void Tracking::CreateNewKeyFrame()
     {
-        /*
+
         if(!mpLocalMapper->SetNotStop(true))
             return;
-            */
+
 
         KeyFrame* pKF = new KeyFrame(mCurrentFrame,mpMap/*,mpKeyFrameDB*/);
 
@@ -895,9 +895,9 @@ namespace SLAM
 
 
 
-        //mpLocalMapper->InsertKeyFrame(pKF);
+        mpLocalMapper->InsertKeyFrame(pKF);
 
-        //mpLocalMapper->SetNotStop(false);
+        mpLocalMapper->SetNotStop(false);
 
         mnLastKeyFrameId = mCurrentFrame.mnId;
         mpLastKeyFrame = pKF;
@@ -1274,12 +1274,12 @@ namespace SLAM
 
         // Reset Local Mapping
         cout << "Reseting Local Mapper...";
-        //mpLocalMapper->RequestReset();
+        mpLocalMapper->RequestReset();
         cout << " done" << endl;
 
         // Reset Loop Closing
         cout << "Reseting Loop Closing...";
-        //mpLoopClosing->RequestReset();
+        mpLoopClosing->RequestReset();
         cout << " done" << endl;
 
         // Clear BoW Database
