@@ -21,7 +21,7 @@ public class SignupOrLogin extends Fragment {
 
     private SignupOrLoginViewModel mViewModel;
     private FirebaseWrapper mFb;
-    private Button mSignupButton;
+    private Button mSignUpButton;
     private Button mLoginButton;
 
 
@@ -45,7 +45,17 @@ public class SignupOrLogin extends Fragment {
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
-        mSignupButton = (Button) view.findViewById(R.id.goToSignup);
+        mSignUpButton = (Button) view.findViewById(R.id.goToSignup);
         mLoginButton = (Button) view.findViewById(R.id.goToLogin);
+        mSignUpButton.setOnClickListener(view1 -> goToSignup());
+        mLoginButton.setOnClickListener(view2 -> goToLogin());
+    }
+
+    private void goToSignup() {
+        ((MainActivity) getActivity()).setViewPagerByTitle("Signup_Fragment");
+    }
+
+    private void goToLogin() {
+        ((MainActivity) getActivity()).setViewPagerByTitle("Login_Fragment");
     }
 }
