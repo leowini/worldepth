@@ -134,3 +134,7 @@ fastlane/readme.md
 
 #Soren's Mac Thingies
 *.DS_STORE
+
+# opencv files
+merger.xml
+compile-file-map.properties
