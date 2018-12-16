@@ -54,6 +54,26 @@ public class StartScreenFragment extends Fragment {
                 ((MainActivity) getActivity()).setViewPager(2); //sign up page
             }
         });
+
+        Button goToViewer = view.findViewById(R.id.goToViewer);
+        Log.d(TAG, "onCreateView: started");
+        goToViewer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(), "Going to viewer", Toast.LENGTH_SHORT).show();
+                ((MainActivity) getActivity()).setViewPager(9); //sign up page
+            }
+        });
+
+        Button goToCamera = view.findViewById(R.id.goToCamera);
+        Log.d(TAG, "onCreateView: started");
+        goToCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(), "Going to camera", Toast.LENGTH_SHORT).show();
+                ((MainActivity) getActivity()).setViewPager(7); //sign up page
+            }
+        });
         return view;
     }
 
