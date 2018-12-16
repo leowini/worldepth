@@ -48,6 +48,5 @@ public class PhoneFragment extends Fragment {
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
-        mPhoneInput = (EditText) view.findViewById(R.id.phoneInput);
     }
 }

@@ -44,6 +44,5 @@ public class BirthdayFragment extends Fragment {
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
-        mBirthdayInput = (EditText) view.findViewById(R.id.birthdayInput);
     }
 }

@@ -32,22 +32,11 @@ public class StartSignupFragment extends Fragment {
         return new StartSignupFragment();
     }
 
+    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.phone_fragment, container, false);
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(StartSignupViewModel.class);
-        mFb = ((MainActivity)this.getActivity()).getFirebaseWrapper();
-        // TODO: Use the ViewModel
-    }
-
-    @Override
-    public void onViewCreated(final View view, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.start_signup_fragment, container, false);
         Button emailSignup = view.findViewById(R.id.emailSignup);
         Log.d(TAG, "onCreateView: started");
         emailSignup.setOnClickListener(new View.OnClickListener() {
@@ -67,5 +56,19 @@ public class StartSignupFragment extends Fragment {
                 ((MainActivity) getActivity()).setViewPager(4); //phone page
             }
         });
+        return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mViewModel = ViewModelProviders.of(this).get(StartSignupViewModel.class);
+        mFb = ((MainActivity)this.getActivity()).getFirebaseWrapper();
+        // TODO: Use the ViewModel
+    }
+
+    @Override
+    public void onViewCreated(final View view, Bundle savedInstanceState) {
+
     }
 }
