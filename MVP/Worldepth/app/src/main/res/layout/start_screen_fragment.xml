@@ -5,7 +5,7 @@
     android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.signup.StartSignup.StartSignupFragment">
+    tools:context=".ui.signup.StartScreen.StartScreenFragment">
 
     <Button
         android:id="@+id/goToSignIn"

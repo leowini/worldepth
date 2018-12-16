@@ -44,6 +44,5 @@ public class NameFragment extends Fragment {
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
-        mNameInput = (EditText) view.findViewById(R.id.nameInput);
     }
 }

@@ -44,17 +44,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        mPagerAdapter.addFragment(new StartScreenFragment(), "StartScreen_Fragment");   //0
-        mPagerAdapter.addFragment(new LoginFragment(), "Login_Fragment");               //1
-        mPagerAdapter.addFragment(new StartSignupFragment(), "StartSignup_Fragment");   //2
-        mPagerAdapter.addFragment(new EmailFragment(), "Email_Fragment");               //3
-        mPagerAdapter.addFragment(new PhoneFragment(), "Phone_Fragment");               //4
-        mPagerAdapter.addFragment(new NameFragment(), "Name_Fragment");                 //5
-        mPagerAdapter.addFragment(new BirthdayFragment(), "Birthday_Fragment");         //6
-        mPagerAdapter.addFragment(new CameraFragment(), "Camera_Fragment");             //7
-        mPagerAdapter.addFragment(new LoadingFragment(), "Loading_Fragment");           //8
-        mPagerAdapter.addFragment(new ViewerFragment(), "Viewer_Fragment");             //9
-        viewPager.setAdapter(mPagerAdapter);
+        SectionsStatePagerAdapter adapter = new SectionsStatePagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new StartScreenFragment(), "StartScreen_Fragment");   //0
+        adapter.addFragment(new LoginFragment(), "Login_Fragment");               //1
+        adapter.addFragment(new StartSignupFragment(), "StartSignup_Fragment");   //2
+        adapter.addFragment(new EmailFragment(), "Email_Fragment");               //3
+        adapter.addFragment(new PhoneFragment(), "Phone_Fragment");               //4
+        adapter.addFragment(new NameFragment(), "Name_Fragment");                 //5
+        adapter.addFragment(new BirthdayFragment(), "Birthday_Fragment");         //6
+        adapter.addFragment(new CameraFragment(), "Camera_Fragment");             //7
+        adapter.addFragment(new LoadingFragment(), "Loading_Fragment");           //8
+        adapter.addFragment(new ViewerFragment(), "Viewer_Fragment");             //9
+        viewPager.setAdapter(adapter);
     }
 
     public void setViewPager(int fragmentIndex) {
