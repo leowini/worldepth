@@ -25,14 +25,37 @@
     <Button
         android:id="@+id/goToSignUp"
         style="@style/Widget.AppCompat.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"
+        android:ems="10"
+        android:text="@string/signUp"
+        android:textSize="25sp"
+        app:layout_constraintStart_toStartOf="@id/signInButton"
+        app:layout_constraintTop_toBottomOf="@id/signInButton" />
+
+    <Button
+        android:id="@+id/goToViewer"
+        style="@style/Widget.AppCompat.Button"
         android:textSize="25sp"
         android:ems="10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="200dp"
-        android:text="@string/signUp"
-        app:layout_constraintStart_toStartOf="@id/signInButton"
-        app:layout_constraintTop_toBottomOf="@id/signInButton" />
+        android:text="@string/viewer"
+        app:layout_constraintStart_toStartOf="@id/goToSignUp"
+        app:layout_constraintTop_toBottomOf="@id/goToSignUp" />
 
+    <Button
+        android:id="@+id/goToCamera"
+        style="@style/Widget.AppCompat.Button"
+        android:textSize="25sp"
+        android:ems="10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:text="@string/camera"
+        app:layout_constraintStart_toStartOf="@id/goToViewer"
+        app:layout_constraintTop_toBottomOf="@id/goToViewer" />
 
 </android.support.constraint.ConstraintLayout>

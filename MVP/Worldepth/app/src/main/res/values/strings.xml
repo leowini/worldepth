@@ -21,4 +21,6 @@
     <string name="phoneSignup">Sign up with phone</string>
     <string name="signIn">Sign in</string>
     <string name="signUp">Sign up</string>
+    <string name="viewer">Viewer</string>
+    <string name="camera">Camera</string>
 </resources>
