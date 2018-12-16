@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.example.leodw.worldepth.ui.viewer.obj.ObjModel;
 import com.example.leodw.worldepth.ui.viewer.ply.PlyModel;
 import com.example.leodw.worldepth.ui.viewer.stl.StlModel;
+import com.example.leodw.worldepth.ui.viewer.text.TxtModel;
 import com.example.leodw.worldepth.ui.viewer.util.Util;
 import com.example.leodw.worldepth.R;
 
@@ -45,7 +46,7 @@ public class ViewerFragment extends Fragment {
     private static final int OPEN_DOCUMENT_REQUEST = 101;
 
     private static final String[] SAMPLE_MODELS
-            = new String[] { "Dragon2.stl", "Roadster.stl"};
+            = new String[] { "Dragon2.stl", "Roadster.stl", "SLAM.txt"};
     private static int sampleModelIndex;
 
     private ModelViewerApplication app;
@@ -253,10 +254,13 @@ public class ViewerFragment extends Fragment {
 
     private void loadSampleModel() {
         try {
-            InputStream stream = getActivity().getApplicationContext().getAssets()
-                    .open(SAMPLE_MODELS[sampleModelIndex++ % SAMPLE_MODELS.length]);
-            setCurrentModel(new StlModel(stream));
-            stream.close();
+            //InputStream stream = getActivity().getApplicationContext().getAssets()
+            //        .open(SAMPLE_MODELS[sampleModelIndex++ % SAMPLE_MODELS.length]);
+            InputStream txtStream = getActivity().getApplicationContext().getAssets()
+                    .open("SLAM.txt");
+            //setCurrentModel(new StlModel(stream));
+            setCurrentModel(new TxtModel(txtStream));
+            txtStream.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

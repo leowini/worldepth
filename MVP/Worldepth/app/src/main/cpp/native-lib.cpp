@@ -1,6 +1,7 @@
 #include <jni.h>
 #include <string>
 #include <opencv2/core/core.hpp>
+#include <RandomMap.h>
 
 extern "C" JNIEXPORT jstring JNICALL
 Java_com_example_leodw_worldepth_MainActivity_stringFromJNI(
@@ -18,4 +19,12 @@ Java_com_example_leodw_worldepth_slam_Slam_passImageToSlam(JNIEnv *env, jobject 
     double tframe = (double) timeStamp;
     //SLAM.TrackMonocular(mimg, tframe);
     env->ReleaseByteArrayElements(img, _img, 0);
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+        Java_com_example_leodw_worldepth_ui_loading_LoadingFragment_randomMap(JNIEnv *env, jobject instance)
+{
+    string path = "assets/SLAM.txt";
+    SLAM::makeMapAndWrite(path, 1000);
 }

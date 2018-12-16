@@ -47,7 +47,7 @@ namespace SLAM {
         KeyFrame emptykf(empty, pmap);
         putPointsInMap(num, emptykf, *pmap);
         ofstream file;
-        file.open(filename);
+        file.open(filename, std::ofstream::trunc);
         writeMap(file, *pmap);
 
         pmap->clear();

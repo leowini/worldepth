@@ -99,6 +99,7 @@ public class TxtModel extends IndexedModel {
             x = Float.parseFloat(lineArr[0]);
             y = Float.parseFloat(lineArr[1]);
             z = Float.parseFloat(lineArr[2]);
+
             vertices.add(x);
             vertices.add(y);
             vertices.add(z);
@@ -114,5 +115,8 @@ public class TxtModel extends IndexedModel {
         this.centerMassZ = (float)(centerMassZ / vertexCount);
     }
 
-
+    @Override
+    protected void drawFunc() {
+        GLES20.glDrawArrays(GLES20.GL_POINTS, 0, vertexCount);
+    }
 }

@@ -16,13 +16,18 @@ import com.example.leodw.worldepth.R;
 
 public class LoadingFragment extends Fragment {
 
+
     private static final String TAG = "LoadingFragment";
 
     private LoadingViewModel mLoadingViewModel;
 
+    public native void randomMap();
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        //create the random map and write to file
+        randomMap();
         LoadingFragmentBinding loadingFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.loading_fragment, container, false);
         View view = loadingFragmentBinding.getRoot();
         loadingFragmentBinding.setViewModel(new LoadingViewModel());
