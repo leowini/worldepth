@@ -55,11 +55,7 @@ public class SectionsStatePagerAdapter extends FragmentStatePagerAdapter {
      * @return
      */
     public Integer getFragmentNumber(Fragment fragment){
-        if(mFragmentNumbers.containsKey(fragment)){
-            return mFragmentNumbers.get(fragment);
-        }else{
-            return null;
-        }
+        return mFragmentNumbers.getOrDefault(fragment, null);
     }
 
     /**
@@ -68,11 +64,7 @@ public class SectionsStatePagerAdapter extends FragmentStatePagerAdapter {
      * @return
      */
     public String getFragmentName(Integer fragmentNumber){
-        if(mFragmentNames.containsKey(fragmentNumber)){
-            return mFragmentNames.get(fragmentNumber);
-        }else{
-            return null;
-        }
+        return mFragmentNames.getOrDefault(fragmentNumber, null);
     }
 
 
