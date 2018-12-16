@@ -21,7 +21,7 @@ public class NameFragment extends Fragment {
 
     private NameViewModel mViewModel;
     private FirebaseWrapper mFb;
-    EditText mNameInput;
+    private EditText mNameInput;
 
 
     public static NameFragment newInstance() {

@@ -1,4 +1,4 @@
-package com.example.leodw.worldepth.ui.signup.Birthday;
+package com.example.leodw.worldepth.ui.signup.Login;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
@@ -13,37 +13,38 @@ import android.widget.EditText;
 import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.data.FirebaseWrapper;
 import com.example.leodw.worldepth.ui.MainActivity;
-import com.example.leodw.worldepth.ui.signup.Name.NameViewModel;
 import com.example.leodw.worldepth.ui.signup.Phone.PhoneFragment;
+import com.example.leodw.worldepth.ui.signup.Phone.PhoneViewModel;
 
-public class BirthdayFragment extends Fragment {
-    private static final String TAG = "BirthdayFragment";
+public class LoginFragment extends Fragment {
+    private static final String TAG = "LoginFragment";
 
-    private BirthdayViewModel mViewModel;
+    private LoginViewModel mViewModel;
     private FirebaseWrapper mFb;
-    private EditText mBirthdayInput;
+    private EditText mPasswordInput;
+    private EditText mConfirmPassword;
 
 
-    public static BirthdayFragment newInstance() {
-        return new BirthdayFragment();
+    public static LoginFragment newInstance() {
+        return new LoginFragment();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.birthday_fragment, container, false);
+        return inflater.inflate(R.layout.login_fragment, container, false);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(BirthdayViewModel.class);
+        mViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
         mFb = ((MainActivity)this.getActivity()).getFirebaseWrapper();
         // TODO: Use the ViewModel
     }
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
-        mBirthdayInput = (EditText) view.findViewById(R.id.birthdayInput);
+        mPasswordInput = (EditText) view.findViewById(R.id.passwordInput);
     }
 }
