@@ -15,7 +15,7 @@
 
 #include <thread>
 #include <mutex>
-#include "Thirdparty/g2o/g2o/types/types_seven_dof_expmap.h"
+#include "types/types_seven_dof_expmap.h"
 
 namespace SLAM
 {
@@ -35,7 +35,7 @@ namespace SLAM
 
     public:
 
-        LoopClosing(Map* pMap, KeyFrameDatabase* pDB, ORBVocabulary* pVoc,const bool bFixScale);
+        LoopClosing(Map* pMap, /*KeyFrameDatabase* pDB,*/ ORBVocabulary* pVoc);
 
         void SetTracker(Tracking* pTracker);
 
@@ -124,7 +124,7 @@ namespace SLAM
         std::thread* mpThreadGBA;
 
         // Fix scale in the stereo/RGB-D case
-        bool mbFixScale;
+        //bool mbFixScale;
 
 
         bool mnFullBAIdx;

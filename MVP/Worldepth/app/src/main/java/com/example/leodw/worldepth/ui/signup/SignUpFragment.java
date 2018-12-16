@@ -1,4 +1,4 @@
-package com.example.leodw.worldepth.ui.signin;
+package com.example.leodw.worldepth.ui.signup;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
@@ -22,17 +22,17 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class SignInFragment extends Fragment {
+public class SignUpFragment extends Fragment {
 
     private static final String TAG = "SignInFragment";
 
-    private SignInViewModel mViewModel;
+    private SignUpViewModel mViewModel;
     private Button signIn;
     private FirebaseWrapper mFb;
 
 
-    public static SignInFragment newInstance() {
-        return new SignInFragment();
+    public static SignUpFragment newInstance() {
+        return new SignUpFragment();
     }
 
     @Override
@@ -44,7 +44,7 @@ public class SignInFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(SignInViewModel.class);
+        mViewModel = ViewModelProviders.of(this).get(SignUpViewModel.class);
         mFb = ((MainActivity)this.getActivity()).getFirebaseWrapper();
         // TODO: Use the ViewModel
     }

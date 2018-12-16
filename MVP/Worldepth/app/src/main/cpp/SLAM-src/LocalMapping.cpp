@@ -4,9 +4,9 @@
 
 
 #include "LocalMapping.h"
-//#include "LoopClosing.h"
-#include "ORBmatcher.h"
-//#include "Optimizer.h"
+#include "LoopClosing.h"
+#include "ORBMatcher.h"
+#include "Optimizer.h"
 
 #include <unistd.h>
 #include<mutex>
@@ -20,12 +20,12 @@ namespace SLAM
     {
     }
 
-    /*
+
     void LocalMapping::SetLoopCloser(LoopClosing* pLoopCloser)
     {
         mpLoopCloser = pLoopCloser;
     }
-     */
+
 
     void LocalMapping::SetTracker(Tracking *pTracker)
     {

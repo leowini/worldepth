@@ -7,7 +7,7 @@
 
 #include "KeyFrame.h"
 #include "Map.h"
-//#include "LoopClosing.h"
+#include "LoopClosing.h"
 #include "Tracking.h"
 #include "KeyFrameDatabase.h"
 
@@ -18,7 +18,7 @@ namespace SLAM
 {
 
     class Tracking;
-    //class LoopClosing;
+    class LoopClosing;
     class Map;
 
     class LocalMapping
@@ -26,7 +26,7 @@ namespace SLAM
     public:
         LocalMapping(Map* pMap, const float bMonocular);
 
-        //void SetLoopCloser(LoopClosing* pLoopCloser);
+        void SetLoopCloser(LoopClosing* pLoopCloser);
 
         void SetTracker(Tracking* pTracker);
 
@@ -85,7 +85,7 @@ namespace SLAM
 
         Map* mpMap;
 
-        //LoopClosing* mpLoopCloser;
+        LoopClosing* mpLoopCloser;
         Tracking* mpTracker;
 
         std::list<KeyFrame*> mlNewKeyFrames;
