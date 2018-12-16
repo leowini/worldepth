@@ -6,4 +6,19 @@
     <string name="open_model">Open model…</string>
     <string name="open_model_success">Model loaded successfully.</string>
     <string name="open_model_error">Failed to load model.</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="PWReq1">-Password must be at least 8 characters long</string>
+    <string name="PWReq2">-Password cannot be over 20 characters long</string>
+    <string name="PWReq3">-Password must have uppercase and lowercase letters</string>
+    <string name="PWReq4">-Password must contain numbers</string>
+    <string name="PWReq5">-Passwords must match</string>
+    <string name="firstName">First name</string>
+    <string name="lastName">Last name</string>
+    <string name="backButton">Back</string>
+    <string name="emailSignup">Sign up with email</string>
+    <string name="phoneSignup">Sign up with phone</string>
+    <string name="signIn">Sign in</string>
+    <string name="signUp">Sign up</string>
 </resources>

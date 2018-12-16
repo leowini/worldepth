@@ -14,6 +14,8 @@ import com.example.leodw.worldepth.ui.signup.Email.EmailFragment;
 import com.example.leodw.worldepth.ui.signup.Name.NameFragment;
 import com.example.leodw.worldepth.ui.signup.Phone.PhoneFragment;
 import com.example.leodw.worldepth.ui.signup.SignUpFragment;
+import com.example.leodw.worldepth.ui.signup.StartScreen.StartScreenFragment;
+import com.example.leodw.worldepth.ui.signup.StartSignup.StartSignupFragment;
 import com.example.leodw.worldepth.ui.viewer.ViewerFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -42,16 +44,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        mPagerAdapter.addFragment(new SignUpFragment(), "SignUp_Fragment");
-        mPagerAdapter.addFragment(new PhoneFragment(), "Phone_Fragment");
-        mPagerAdapter.addFragment(new BirthdayFragment(), "Birthday_Fragment");
-        mPagerAdapter.addFragment(new NameFragment(), "Name_Fragment");
-        mPagerAdapter.addFragment(new EmailFragment(), "Email_Fragment");
-        mPagerAdapter.addFragment(new LoginFragment(), "Login_Fragment");
-        mPagerAdapter.addFragment(new CameraFragment(), "Camera_Fragment");
-        mPagerAdapter.addFragment(new LoadingFragment(), "Loading_Fragment");
-        mPagerAdapter.addFragment(new ViewerFragment(), "Viewer_Fragment");
-        viewPager.setAdapter(mPagerAdapter);
+        mPagerAdapter.addFragment(new StartScreenFragment(), "StartScreen_Fragment");   //0
+        mPagerAdapter.addFragment(new LoginFragment(), "Login_Fragment");               //1
+        mPagerAdapter.addFragment(new StartSignupFragment(), "StartSignup_Fragment");   //2
+        mPagerAdapter.addFragment(new EmailFragment(), "Email_Fragment");               //3
+        mPagerAdapter.addFragment(new PhoneFragment(), "Phone_Fragment");               //4
+        mPagerAdapter.addFragment(new NameFragment(), "Name_Fragment");                 //5
+        mPagerAdapter.addFragment(new BirthdayFragment(), "Birthday_Fragment");         //6
+        mPagerAdapter.addFragment(new CameraFragment(), "Camera_Fragment");             //7
+        mPagerAdapter.addFragment(new LoadingFragment(), "Loading_Fragment");           //8
+        mPagerAdapter.addFragment(new ViewerFragment(), "Viewer_Fragment");             //9
+        mViewPager.setAdapter(mPagerAdapter);
     }
 
     public void setViewPager(int fragmentIndex) {
