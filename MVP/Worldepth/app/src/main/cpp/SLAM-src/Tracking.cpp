@@ -27,8 +27,8 @@ using namespace std;
 namespace SLAM
 {
 
-    Tracking::Tracking(/*System *pSys,*/ ORBVocabulary* pVoc,  Map *pMap, /*KeyFrameDatabase* pKFDB,*/ const string &strSettingPath, const int sensor):
-            mState(NO_IMAGES_YET), mSensor(sensor), mbOnlyTracking(false), mbVO(false), mpORBVocabulary(pVoc),
+    Tracking::Tracking(TrackingInit* trackingInit, ORBVocabulary* pVoc,  Map *pMap, /*KeyFrameDatabase* pKFDB,*/ const string &strSettingPath):
+            mState(NO_IMAGES_YET), mbOnlyTracking(false), mbVO(false), mpORBVocabulary(pVoc),
             /*mpKeyFrameDB(pKFDB), mpInitializer(static_cast<Initializer*>(NULL)), mpSystem(pSys), */
             mpMap(pMap), mnLastRelocFrameId(0)
     {

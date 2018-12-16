@@ -18,14 +18,18 @@
 #include "KeyFrame.h"
 #include "Map.h"
 #include "Tracking.h"
+#include "ORBVocabulary.h"
+#include "LocalMapping.h"
 
 namespace SLAM
 {
+    class Map;
+    class Tracking;
 
     class TrackingInit {
     public:
         //basic constructor
-        TrackingInit();
+        TrackingInit(const string &strVocFile, const string &strSettingsFile);
 
         //Send frames to FrameList
         void sendToFrameList(Frame* frame);
@@ -33,10 +37,22 @@ namespace SLAM
         //Send keyFrames to KeyFrameList
         void sendToKeyFrameList(KeyFrame* keyFrame);
 
-        cv::Mat beginTracking(cv::Mat cim, double timeStamp);
+        cv::Mat beginTracking(cv::Mat im, double timeStamp);
     private:
         //Stores processed frames
-        FrameList frameList;
+        FrameList* frameList;
+
+        //Map lol
+        Map* map;
+
+        //ORB VOCAB
+        ORBVocabulary* mVocabulary;
+
+        Tracking* mTracker;
+
+        std::thread* mptLocalMapping;
+        std::thread* mptLoopClosing;
+        std::thread* mptTracking;
 
         //Whether or not images are being captured for SLAM processing
         bool isProcessing;

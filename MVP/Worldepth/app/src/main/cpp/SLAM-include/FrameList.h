@@ -13,6 +13,8 @@
 
 namespace SLAM
 {
+    class KeyFrame;
+    class Frame;
 
     class FrameList {
     public:
