@@ -6,7 +6,7 @@
 
 namespace SLAM
 {
-    TrackingInit::TrackingInit(const string &strVocFile, const string &strSettingsFile) {
+    TrackingInit::TrackingInit(string &strVocFile, string &strSettingsFile) {
         isProcessing = true;
 
         frameList = new FrameList();
@@ -24,7 +24,7 @@ namespace SLAM
 
         mTracker = new Tracking(this, mVocabulary, map, strSettingsFile);
 
-        mptTracking = new thread(&TrackingInit::processing, this);
+        mptTracking = new thread(&TrackingInit::beginTracking, this);
         //mptLoopClosing = new thread()
 
         //mptLocalMapping = new thread(&LocalMapping::Run, mpLocalMapper);
@@ -38,10 +38,10 @@ namespace SLAM
         frameList->addKeyFrame(keyFrame);
     }
 
-    void TrackingInit::processing() {
-        /* while (TrackingInit::isProcessing) {
+    /* void TrackingInit::processing() {
+        while (TrackingInit::isProcessing) {
             TrackingInit::sendToProcess();
-        } */
+        }
     }
 
     void TrackingInit::sendToProcess() {
@@ -49,16 +49,16 @@ namespace SLAM
         frameList->getFrameDatabase()[0];
 
         //call function on FrameList[0]
-    }
+    } */
 
-    cv::Mat beginTracking(const cv::Mat &im, const double &timeStamp) {
-        //cv::Mat Tcw = mTracker->GrabImageMonocular(im, timestamp);
+    cv::Mat TrackingInit::beginTracking(const cv::Mat im, const double timestamp) {
+        cv::Mat Tcw = mTracker->GrabImageMonocular(im, timestamp);
 
-        /* mTrackingState = mpTracker->mState;
-        mTrackedMapPoints = mpTracker->mCurrentFrame.mvpMapPoints;
-        mTrackedKeyPointsUn = mpTracker->mCurrentFrame.mvKeysUn;
+        mTrackingState = mTracker->mState;
+        mTrackedMapPoints = mTracker->mCurrentFrame.mvpMapPoints;
+        mTrackedKeyPointsUn = mTracker->mCurrentFrame.mvKeysUn;
 
-        return Tcw; */
+        return Tcw;
 
     }
 }

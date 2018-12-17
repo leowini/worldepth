@@ -29,7 +29,7 @@ namespace SLAM
     class TrackingInit {
     public:
         //basic constructor
-        TrackingInit(const string &strVocFile, const string &strSettingsFile);
+        TrackingInit(string &strVocFile, string &strSettingsFile);
 
         //Send frames to FrameList
         void sendToFrameList(Frame* frame);
@@ -37,7 +37,8 @@ namespace SLAM
         //Send keyFrames to KeyFrameList
         void sendToKeyFrameList(KeyFrame* keyFrame);
 
-        cv::Mat beginTracking(cv::Mat im, double timeStamp);
+        cv::Mat beginTracking(const cv::Mat im, const double timestamp);
+
     private:
         //Stores processed frames
         FrameList* frameList;
@@ -45,10 +46,10 @@ namespace SLAM
         //Map lol
         Map* map;
 
+        Tracking* mTracker;
+
         //ORB VOCAB
         ORBVocabulary* mVocabulary;
-
-        Tracking* mTracker;
 
         std::thread* mptLocalMapping;
         std::thread* mptLoopClosing;
@@ -62,6 +63,10 @@ namespace SLAM
 
         //While isProcessing is true, this will send frames to be processed
         void sendToProcess();
+
+        int mTrackingState;
+        std::vector<MapPoint*> mTrackedMapPoints;
+        std::vector<cv::KeyPoint> mTrackedKeyPointsUn;
     };
 
 }
