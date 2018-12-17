@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.signup.StartScreen.StartScreenFragment">
+
+    <Button
+        android:id="@+id/goToSignIn"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="100dp"
+        android:ems="10"
+        android:text="@string/signIn"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/goToSignUp"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"
+        android:ems="10"
+        android:text="@string/signUp"
+        android:textSize="25sp"
+        app:layout_constraintStart_toStartOf="@id/signInButton"
+        app:layout_constraintTop_toBottomOf="@id/signInButton" />
+
+    <Button
+        android:id="@+id/goToViewer"
+        style="@style/Widget.AppCompat.Button"
+        android:textSize="25sp"
+        android:ems="10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"
+        android:text="@string/viewer"
+        app:layout_constraintStart_toStartOf="@id/goToSignUp"
+        app:layout_constraintTop_toBottomOf="@id/goToSignUp" />
+
+    <Button
+        android:id="@+id/goToCamera"
+        style="@style/Widget.AppCompat.Button"
+        android:textSize="25sp"
+        android:ems="10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:text="@string/camera"
+        app:layout_constraintStart_toStartOf="@id/goToViewer"
+        app:layout_constraintTop_toBottomOf="@id/goToViewer" />
+
+</android.support.constraint.ConstraintLayout>
