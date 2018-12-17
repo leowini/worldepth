@@ -17,7 +17,7 @@ import com.example.leodw.worldepth.ui.signup.Name.NameViewModel;
 import com.example.leodw.worldepth.ui.signup.Phone.PhoneFragment;
 
 public class BirthdayFragment extends Fragment {
-    private static final String TAG = "PhoneFragment";
+    private static final String TAG = "BirthdayFragment";
 
     private BirthdayViewModel mViewModel;
     private FirebaseWrapper mFb;
@@ -44,6 +44,5 @@ public class BirthdayFragment extends Fragment {
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
-        mBirthdayInput = (EditText) view.findViewById(R.id.birthdayInput);
     }
 }

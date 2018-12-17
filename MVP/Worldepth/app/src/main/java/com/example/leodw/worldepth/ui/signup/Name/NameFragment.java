@@ -21,7 +21,7 @@ public class NameFragment extends Fragment {
 
     private NameViewModel mViewModel;
     private FirebaseWrapper mFb;
-    EditText mNameInput;
+    private EditText mNameInput;
 
 
     public static NameFragment newInstance() {
@@ -44,6 +44,5 @@ public class NameFragment extends Fragment {
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
-        mNameInput = (EditText) view.findViewById(R.id.nameInput);
     }
 }

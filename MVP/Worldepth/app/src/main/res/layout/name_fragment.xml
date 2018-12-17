@@ -2,19 +2,69 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     tools:context=".ui.signup.Name.NameFragment">
 
-    <TextView
-        android:id="@+id/nameInputText"
-        android:text="Enter your Name"/>
 
     <EditText
-        android:id="@+id/nameInput"
-        app:layout_constraintBottom_toTopOf="@+id/nameInputText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
+        android:id="@+id/firstName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/firstName"
+        android:inputType="text"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.SearchResult.Title"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.45"/>
 
+    <EditText
+        android:id="@+id/lastName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:ems="10"
+        android:hint="@string/lastName"
+        android:inputType="text"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.SearchResult.Title"
+        app:layout_constraintStart_toStartOf="@id/firstName"
+        app:layout_constraintTop_toBottomOf="@id/firstName"/>
+
+
+    <Button
+        android:id="@+id/continueButton"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="200dp"
+        android:layout_marginTop="130dp"
+        android:text="@string/signUp"
+        app:layout_constraintStart_toStartOf="@id/lastName"
+        app:layout_constraintTop_toBottomOf="@id/lastName" />
+
+    <Button
+        android:id="@+id/backButton"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="130dp"
+        android:text="@string/backButton"
+        app:layout_constraintStart_toStartOf="@id/lastName"
+        app:layout_constraintTop_toBottomOf="@id/lastName" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.05"
+        android:maxWidth="150dp"
+        android:adjustViewBounds ="true"/>
 </android.support.constraint.ConstraintLayout>

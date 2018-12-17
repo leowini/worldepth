@@ -17,7 +17,7 @@ import com.example.leodw.worldepth.ui.signup.Name.NameViewModel;
 import com.example.leodw.worldepth.ui.signup.Phone.PhoneFragment;
 
 public class EmailFragment extends Fragment {
-    private static final String TAG = "PhoneFragment";
+    private static final String TAG = "EmailFragment";
 
     private EmailViewModel mViewModel;
     private FirebaseWrapper mFb;
