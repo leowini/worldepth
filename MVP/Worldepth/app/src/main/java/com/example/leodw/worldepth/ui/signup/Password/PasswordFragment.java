@@ -87,7 +87,11 @@ public class PasswordFragment extends Fragment {
         _auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Toast.makeText(getActivity(), "Account created!", Toast.LENGTH_SHORT).show();
+<<<<<<< HEAD
                 ((MainActivity) getActivity()).setViewPager(6);
+=======
+                ((MainActivity) getActivity()).setViewPager(6); //name fragment
+>>>>>>> origin/master
             } else {
                 Log.d(TAG, "createNewAccount:failed", task.getException());
             }

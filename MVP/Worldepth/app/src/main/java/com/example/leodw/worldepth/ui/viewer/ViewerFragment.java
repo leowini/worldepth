@@ -23,7 +23,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
+
 import com.example.leodw.worldepth.ui.viewer.obj.ObjModel;
 import com.example.leodw.worldepth.ui.viewer.ply.PlyModel;
 import com.example.leodw.worldepth.ui.viewer.stl.StlModel;
@@ -32,7 +34,6 @@ import com.example.leodw.worldepth.R;
 
 import java.io.IOException;
 import java.io.InputStream;
-
 
 
 public class ViewerFragment extends Fragment {
@@ -45,17 +46,21 @@ public class ViewerFragment extends Fragment {
     private static final int OPEN_DOCUMENT_REQUEST = 101;
 
     private static final String[] SAMPLE_MODELS
-            = new String[] { "Dragon2.stl", "Roadster.stl"};
+            = new String[]{"Dragon2.stl", "Roadster.stl"};
     private static int sampleModelIndex;
 
     private ModelViewerApplication app;
-    @Nullable private ModelSurfaceView modelView;
+    @Nullable
+    private ModelSurfaceView modelView;
     private ViewGroup containerView;
+
+    private Button mOpenModel;
+    private Button mLoadSample;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
+        //setHasOptionsMenu(true);
     }
 
     @Nullable
@@ -72,6 +77,20 @@ public class ViewerFragment extends Fragment {
         if (getActivity().getIntent().getData() != null && savedInstanceState == null) {
             beginLoadModel(getActivity().getIntent().getData());
         }
+        mOpenModel = view.findViewById(R.id.openModelButton);
+        mLoadSample = view.findViewById(R.id.loadingNextButton);
+        mOpenModel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                checkReadPermissionThenOpen();
+            }
+        });
+        mLoadSample.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadSampleModel();
+            }
+        });
     }
 
     @Override
@@ -99,25 +118,25 @@ public class ViewerFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        getActivity().getMenuInflater().inflate(R.menu.menu_main, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
+//    @Override
+//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        getActivity().getMenuInflater().inflate(R.menu.menu_main, menu);
+//        super.onCreateOptionsMenu(menu, inflater);
+//    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_open_model:
-                checkReadPermissionThenOpen();
-                return true;
-            case R.id.menu_load_sample:
-                loadSampleModel();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.menu_open_model:
+//                checkReadPermissionThenOpen();
+//                return true;
+//            case R.id.menu_load_sample:
+//                loadSampleModel();
+//                return true;
+//            default:
+//                return super.onOptionsItemSelected(item);
+//        }
+//    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
