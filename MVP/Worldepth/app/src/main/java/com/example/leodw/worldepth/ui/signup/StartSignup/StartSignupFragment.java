@@ -71,4 +71,6 @@ public class StartSignupFragment extends Fragment {
     public void onViewCreated(final View view, Bundle savedInstanceState) {
 
     }
+
+
 }
