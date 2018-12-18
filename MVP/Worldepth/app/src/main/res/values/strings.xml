@@ -23,4 +23,6 @@
     <string name="signUp">Sign up</string>
     <string name="viewer">Viewer</string>
     <string name="camera">Camera</string>
+    <string name="nextButton">Next</string>
+    <string name="phoneIcon">Phone icon</string>
 </resources>

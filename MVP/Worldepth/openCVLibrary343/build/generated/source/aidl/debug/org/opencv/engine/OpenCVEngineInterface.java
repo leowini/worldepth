@@ -1,10 +1,6 @@
 /*
  * This file is auto-generated.  DO NOT MODIFY.
-<<<<<<< HEAD
- * Original file: /Users/michael/realWorldepth/MVP/Worldepth/openCVLibrary343/src/main/aidl/org/opencv/engine/OpenCVEngineInterface.aidl
-=======
- * Original file: /Users/sorendahl/Dev/worldepth/MVP/Worldepth/openCVLibrary343/src/main/aidl/org/opencv/engine/OpenCVEngineInterface.aidl
->>>>>>> origin/master
+ * Original file: C:\\git\\worldepth2\\MVP\\Worldepth\\openCVLibrary343\\src\\main\\aidl\\org\\opencv\\engine\\OpenCVEngineInterface.aidl
  */
 package org.opencv.engine;
 /**

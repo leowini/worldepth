@@ -5,10 +5,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.data.FirebaseWrapper;
@@ -21,9 +24,6 @@ public class LoginFragment extends Fragment {
 
     private LoginViewModel mViewModel;
     private FirebaseWrapper mFb;
-    private EditText mPasswordInput;
-    private EditText mConfirmPassword;
-
 
     public static LoginFragment newInstance() {
         return new LoginFragment();
@@ -32,7 +32,23 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.login_fragment, container, false);
+        View view = inflater.inflate(R.layout.login_fragment, container, false);
+        Button signInButton = view.findViewById(R.id.signInButton);
+        signInButton.setOnClickListener((view1) -> {
+                /*EditText username = view.findViewById(R.id.enterEmail);
+                String usernameString = username.getText().toString();
+                EditText password = view.findViewById(R.id.enterPassword);
+                String passwordString = password.getText().toString();
+                if (usernameString.length() > 0 && passwordString.length() > 0) { //if username and password not blank
+                    Toast.makeText(getActivity(), "Logging in", Toast.LENGTH_SHORT).show();
+                    ((MainActivity) getActivity()).setViewPager(7); //camera
+                } else {
+                    Toast.makeText(getActivity(), "Invalid email or password", Toast.LENGTH_SHORT).show();
+                }*/
+                Toast.makeText(getActivity(), "Logging in", Toast.LENGTH_SHORT).show();
+                ((MainActivity) getActivity()).setViewPager(8); //camera
+        });
+        return view;
     }
 
     @Override
@@ -45,6 +61,7 @@ public class LoginFragment extends Fragment {
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
-        mPasswordInput = (EditText) view.findViewById(R.id.passwordInput);
+
     }
+
 }
