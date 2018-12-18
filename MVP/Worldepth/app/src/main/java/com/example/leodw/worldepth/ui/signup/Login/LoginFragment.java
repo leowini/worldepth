@@ -45,8 +45,9 @@ public class LoginFragment extends Fragment {
                 } else {
                     Toast.makeText(getActivity(), "Invalid email or password", Toast.LENGTH_SHORT).show();
                 }*/
-                Toast.makeText(getActivity(), "Logging in", Toast.LENGTH_SHORT).show();
-                ((MainActivity) getActivity()).setViewPager(8); //camera
+            Toast.makeText(getActivity(), "Logging in", Toast.LENGTH_SHORT).show();
+            ((MainActivity) getActivity()).setLoginState(true);
+            ((MainActivity) getActivity()).setViewPagerByTitle("Camera_Fragment"); //camera
         });
         return view;
     }
@@ -55,7 +56,7 @@ public class LoginFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
-        mFb = ((MainActivity)this.getActivity()).getFirebaseWrapper();
+        mFb = ((MainActivity) this.getActivity()).getFirebaseWrapper();
         // TODO: Use the ViewModel
     }
 
