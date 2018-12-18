@@ -43,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
         mPagerAdapter = new SectionsStatePagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.container);
         setupViewPager(mViewPager);
+        String startFragment = (mLoginState) ? "StartScreen_Fragment" : "Camera_Fragment";
+        setViewPagerByTitle(startFragment);
         fb = new FirebaseWrapper();
         dt = new DataTransfer();
     }
