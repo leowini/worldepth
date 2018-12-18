@@ -17,12 +17,15 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Loading..."/>
+            android:textSize="50sp"
+            android:text="@string/loading" />
 
         <Button
-            android:id="@+id/backButton"
+            android:id="@+id/loadingNextButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:text="@string/nextButton" />
 
     </LinearLayout>
 

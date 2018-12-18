@@ -8,7 +8,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.data.FirebaseWrapper;
@@ -31,7 +33,13 @@ public class BirthdayFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.birthday_fragment, container, false);
+        View view = inflater.inflate(R.layout.birthday_fragment, container, false);
+        Button birthdayNextButton = view.findViewById(R.id.birthdayNextButton);
+        birthdayNextButton.setOnClickListener((view1) -> {
+            Toast.makeText(getActivity(), "Account created!", Toast.LENGTH_SHORT).show();
+            ((MainActivity) getActivity()).setViewPager(8); //camera page
+        });
+        return view;
     }
 
     @Override
