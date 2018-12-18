@@ -7,14 +7,11 @@
     android:layout_height="match_parent"
     tools:context=".ui.signup.StartSignup.StartSignupFragment">
 
-    <Button
+    <ImageView
         android:id="@+id/phoneSignup"
-        style="@style/Widget.AppCompat.Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:text="@string/phoneSignup"
-        android:textSize="25sp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/phone1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.50"
@@ -22,14 +19,11 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.05" />
 
-    <Button
+    <ImageView
         android:id="@+id/emailSignup"
-        style="@style/Widget.AppCompat.Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:text="@string/emailSignup"
-        android:textSize="25sp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/mail3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.50"
