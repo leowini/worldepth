@@ -89,4 +89,8 @@ public class MainActivity extends AppCompatActivity {
         outState.putBoolean("loginState", mLoginState);
         super.onSaveInstanceState(outState);
     }
+
+    public void setLoginState(boolean state) {
+        mLoginState = state;
+    }
 }

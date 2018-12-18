@@ -61,20 +61,18 @@ public class PasswordFragment extends Fragment {
         completeSignUp = view.findViewById(R.id.passwordNextButton);
         goBack = view.findViewById(R.id.passwordBackButton);
 
-        completeSignUp.setOnTouchListener((v, event) -> {
-            if (event.getAction() == MotionEvent.ACTION_DOWN) { //add null checks
+        completeSignUp.setOnClickListener((v) -> {
                 if (validPassword() && mPasswordInput.getText().toString().equals(mConfirmPassword.getText().toString())) {
                     for (int i = 0; i < mDt.size(); i++) {
                         if (mDt.getDataPair(i).getLocation() == 4) {
                             Toast.makeText(getActivity(), "Success!", Toast.LENGTH_SHORT).show();
                             createNewAccount(mDt.getDataPair(i).getData(), mPasswordInput.getText().toString());
-                            return true;
+
+                            //set login state
+                            ((MainActivity) getActivity()).setLoginState(true);
                         }
                     }
                 }
-                return true;
-            }
-            return false;
         });
     }
 
@@ -87,7 +85,7 @@ public class PasswordFragment extends Fragment {
         _auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Toast.makeText(getActivity(), "Account created!", Toast.LENGTH_SHORT).show();
-                ((MainActivity) getActivity()).setViewPager(6); //name fragment
+                ((MainActivity) getActivity()).setViewPagerByTitle("Name_Fragment"); //name fragment
             } else {
                 Log.d(TAG, "createNewAccount:failed", task.getException());
             }
