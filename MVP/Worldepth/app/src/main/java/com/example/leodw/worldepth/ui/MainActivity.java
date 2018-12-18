@@ -76,4 +76,8 @@ public class MainActivity extends AppCompatActivity {
     public DataTransfer getDataTransfer() { return this.dt; }
 
     public SectionsStatePagerAdapter getPagerAdapter() { return this.mPagerAdapter; }
+
+    public int getFragmentIndex(String fragmentTitle) {
+        return mPagerAdapter.getFragmentNumber(fragmentTitle);
+    }
 }
