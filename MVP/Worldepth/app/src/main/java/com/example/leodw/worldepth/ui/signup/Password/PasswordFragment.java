@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.data.DataTransfer;
@@ -54,13 +55,13 @@ public class PasswordFragment extends Fragment {
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
-        mPasswordInput = (EditText) view.findViewById(R.id.passwordInput);
-        mConfirmPassword = (EditText) view.findViewById(R.id.confirmPasswordInput);
+        mPasswordInput = view.findViewById(R.id.passwordInput);
+        mConfirmPassword = view.findViewById(R.id.confirmPasswordInput);
 
-        completeSignUp = (Button) view.findViewById(R.id.continueButton);
-        goBack = (Button) view.findViewById(R.id.backButton);
+        completeSignUp = view.findViewById(R.id.passwordNextButton);
+        goBack = view.findViewById(R.id.passwordBackButton);
 
-        completeSignUp.setOnTouchListener((v, event) -> {
+        /*completeSignUp.setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_DOWN) { //add null checks
                 if (validPassword() && mPasswordInput.getText().toString().equals(mConfirmPassword.getText().toString())) {
                     for (int i = 0; i < mDt.size(); i++) {
@@ -73,6 +74,10 @@ public class PasswordFragment extends Fragment {
                 return true;
             }
             return false;
+        });*/
+        completeSignUp.setOnClickListener((view1) -> {
+            Toast.makeText(getActivity(), "Success!", Toast.LENGTH_SHORT).show();
+            ((MainActivity) getActivity()).setViewPager(6); //name
         });
 
 
@@ -86,6 +91,7 @@ public class PasswordFragment extends Fragment {
         FirebaseAuth _auth = mFb.getFirebaseAuth();
         _auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
+                Toast.makeText(getActivity(), "Account created!", Toast.LENGTH_SHORT).show();
                 ((MainActivity) getActivity()).setViewPager(5);
             } else {
                 Log.d(TAG, "createNewAccount:failed", task.getException());

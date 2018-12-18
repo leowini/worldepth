@@ -39,7 +39,7 @@ public class PhoneFragment extends Fragment {
         Button phoneNextButton = view.findViewById(R.id.phoneNextButton);
         phoneNextButton.setOnClickListener((view1) -> {
             Toast.makeText(getActivity(), "Success!", Toast.LENGTH_SHORT).show();
-            ((MainActivity) getActivity()).setViewPager(5); //name page
+            ((MainActivity) getActivity()).setViewPager(6); //name page
         });
         return view;
     }
