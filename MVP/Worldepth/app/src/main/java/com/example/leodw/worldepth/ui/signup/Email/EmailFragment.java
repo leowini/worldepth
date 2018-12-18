@@ -54,15 +54,15 @@ public class EmailFragment extends Fragment{
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
-        mEmailInput = (EditText) view.findViewById(R.id.emailInput);
-        signUp = (Button) view.findViewById(R.id.signUpButton);
-        goBack = (Button) view.findViewById(R.id.backButton);
+        mEmailInput = view.findViewById(R.id.emailInput);
+        signUp = view.findViewById(R.id.emailNextButton);
+        goBack = view.findViewById(R.id.emailBackButton);
 
         signUp.setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_DOWN) { //add null checks
                 String email = mEmailInput.getText().toString();
                 mDt.addData(new DataPair(email, 4));
-                ((MainActivity) getActivity()).setViewPager(4);
+                ((MainActivity) getActivity()).setViewPager(4); //password fragment
                 return true;
             }
             return false;

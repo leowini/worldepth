@@ -54,11 +54,11 @@ public class PasswordFragment extends Fragment {
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
-        mPasswordInput = (EditText) view.findViewById(R.id.passwordInput);
-        mConfirmPassword = (EditText) view.findViewById(R.id.confirmPasswordInput);
+        mPasswordInput = view.findViewById(R.id.passwordInput);
+        mConfirmPassword = view.findViewById(R.id.confirmPasswordInput);
 
-        completeSignUp = (Button) view.findViewById(R.id.continueButton);
-        goBack = (Button) view.findViewById(R.id.backButton);
+        completeSignUp = view.findViewById(R.id.passwordNextButton);
+        goBack = view.findViewById(R.id.passwordBackButton);
 
         completeSignUp.setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_DOWN) { //add null checks
