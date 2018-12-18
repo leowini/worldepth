@@ -61,11 +61,12 @@ public class PasswordFragment extends Fragment {
         completeSignUp = view.findViewById(R.id.passwordNextButton);
         goBack = view.findViewById(R.id.passwordBackButton);
 
-        /*completeSignUp.setOnTouchListener((v, event) -> {
+        completeSignUp.setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_DOWN) { //add null checks
                 if (validPassword() && mPasswordInput.getText().toString().equals(mConfirmPassword.getText().toString())) {
                     for (int i = 0; i < mDt.size(); i++) {
                         if (mDt.getDataPair(i).getLocation() == 4) {
+                            Toast.makeText(getActivity(), "Success!", Toast.LENGTH_SHORT).show();
                             createNewAccount(mDt.getDataPair(i).getData(), mPasswordInput.getText().toString());
                             return true;
                         }
@@ -74,13 +75,7 @@ public class PasswordFragment extends Fragment {
                 return true;
             }
             return false;
-        });*/
-        completeSignUp.setOnClickListener((view1) -> {
-            Toast.makeText(getActivity(), "Success!", Toast.LENGTH_SHORT).show();
-            ((MainActivity) getActivity()).setViewPager(6); //name
         });
-
-
     }
 
     private boolean validPassword() {
@@ -92,7 +87,7 @@ public class PasswordFragment extends Fragment {
         _auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Toast.makeText(getActivity(), "Account created!", Toast.LENGTH_SHORT).show();
-                ((MainActivity) getActivity()).setViewPager(5);
+                ((MainActivity) getActivity()).setViewPager(6);
             } else {
                 Log.d(TAG, "createNewAccount:failed", task.getException());
             }
