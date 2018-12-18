@@ -78,7 +78,7 @@ public class ViewerFragment extends Fragment {
             beginLoadModel(getActivity().getIntent().getData());
         }
         mOpenModel = view.findViewById(R.id.openModelButton);
-        mLoadSample = view.findViewById(R.id.loadingNextButton);
+        mLoadSample = view.findViewById(R.id.loadSampleButton);
         mOpenModel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
