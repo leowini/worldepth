@@ -16,9 +16,9 @@
         android:hint="@string/firstName"
         android:inputType="text"
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.SearchResult.Title"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.45"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.45" />
 
     <EditText
         android:id="@+id/lastName"
@@ -30,7 +30,7 @@
         android:inputType="text"
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.SearchResult.Title"
         app:layout_constraintStart_toStartOf="@id/firstName"
-        app:layout_constraintTop_toBottomOf="@id/firstName"/>
+        app:layout_constraintTop_toBottomOf="@id/firstName" />
 
 
     <Button
@@ -58,13 +58,13 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/logo"
-        app:layout_constraintStart_toStartOf="parent"
+        android:adjustViewBounds="true"
+        android:maxWidth="150dp"
+        android:src="@drawable/name"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.05"
-        android:maxWidth="150dp"
-        android:adjustViewBounds ="true"/>
+        app:layout_constraintVertical_bias="0.05" />
 </android.support.constraint.ConstraintLayout>

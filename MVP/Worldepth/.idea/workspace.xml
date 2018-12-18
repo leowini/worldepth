@@ -11,7 +11,11 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="3def8977-5ef8-4840-a21b-d898f76e52e7" name="Default" comment="" />
+=======
+    <list default="true" id="74131c05-ebf9-4e67-b94c-26d558e4bc35" name="Default" comment="" />
+>>>>>>> origin/master
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -33,6 +37,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
+<<<<<<< HEAD
       <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/leodw/worldepth/ui/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -41,10 +46,18 @@
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
+=======
+      <file leaf-file-name="ViewerFragment.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/leodw/worldepth/ui/viewer/ViewerFragment.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1858">
+              <caret line="204" column="17" lean-forward="true" selection-start-line="204" selection-start-column="17" selection-end-line="204" selection-end-column="17" />
+>>>>>>> origin/master
             </state>
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
       <file leaf-file-name="SectionsStatePagerAdapter.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/leodw/worldepth/ui/SectionsStatePagerAdapter.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -56,10 +69,18 @@
                 <element signature="e#1321#1322#0" expanded="true" />
                 <element signature="e#1364#1365#0" expanded="true" />
               </folding>
+=======
+      <file leaf-file-name="styles.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/values/styles.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="45">
+              <caret line="3" column="70" selection-start-line="3" selection-start-column="70" selection-end-line="3" selection-end-column="70" />
+>>>>>>> origin/master
             </state>
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
       <file leaf-file-name="EmailFragment.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/leodw/worldepth/ui/signup/Email/EmailFragment.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -124,12 +145,21 @@
             <state />
           </provider>
           <provider editor-type-id="text-editor">
+=======
+      <file leaf-file-name="viewer_fragment.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/viewer_fragment.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state />
+          </provider>
+          <provider editor-type-id="android-designer2">
+>>>>>>> origin/master
             <state />
           </provider>
         </entry>
       </file>
     </leaf>
   </component>
+<<<<<<< HEAD
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -137,6 +167,8 @@
       </list>
     </option>
   </component>
+=======
+>>>>>>> origin/master
   <component name="GradleLocalSettings">
     <option name="myGradleHomes">
       <map>
@@ -3596,6 +3628,7 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
+<<<<<<< HEAD
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/leodw/worldepth/data/FirebaseWrapper.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/email_fragment.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/password_fragment.xml" />
@@ -3614,14 +3647,27 @@
     <option name="y" value="23" />
     <option name="width" value="1440" />
     <option name="height" value="827" />
+=======
+        <option value="$PROJECT_DIR$/app/src/main/res/values/styles.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/leodw/worldepth/ui/viewer/ViewerFragment.java" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" fullScreen="true">
+    <option name="width" value="1680" />
+    <option name="height" value="1050" />
+>>>>>>> origin/master
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+<<<<<<< HEAD
       <pane id="ProjectPane" />
       <pane id="PackagesPane" />
+=======
+>>>>>>> origin/master
       <pane id="Scope" />
       <pane id="AndroidView">
         <subPane>
@@ -3668,10 +3714,15 @@
               <item name="java" type="edd41e36:AndroidSourceTypeNode" />
               <item name="worldepth" type="cbb59c9e:AndroidPsiDirectoryNode" />
               <item name="ui" type="462c0819:PsiDirectoryNode" />
+<<<<<<< HEAD
+=======
+              <item name="viewer" type="462c0819:PsiDirectoryNode" />
+>>>>>>> origin/master
             </path>
             <path>
               <item name="Worldepth" type="1abcf292:AndroidViewProjectNode" />
               <item name="app" type="feadf853:AndroidModuleNode" />
+<<<<<<< HEAD
               <item name="java" type="edd41e36:AndroidSourceTypeNode" />
               <item name="worldepth" type="cbb59c9e:AndroidPsiDirectoryNode" />
               <item name="ui" type="462c0819:PsiDirectoryNode" />
@@ -3702,27 +3753,51 @@
               <item name="ui" type="462c0819:PsiDirectoryNode" />
               <item name="signup" type="462c0819:PsiDirectoryNode" />
               <item name="Password" type="462c0819:PsiDirectoryNode" />
+=======
+              <item name="res" type="d4f16f75:AndroidResFolderNode" />
+>>>>>>> origin/master
             </path>
             <path>
               <item name="Worldepth" type="1abcf292:AndroidViewProjectNode" />
               <item name="app" type="feadf853:AndroidModuleNode" />
               <item name="res" type="d4f16f75:AndroidResFolderNode" />
-            </path>
-            <path>
-              <item name="Worldepth" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="res" type="d4f16f75:AndroidResFolderNode" />
+<<<<<<< HEAD
+=======
               <item name="layout" type="ddeffd01:AndroidResFolderTypeNode" />
+>>>>>>> origin/master
+            </path>
+            <path>
+              <item name="Worldepth" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="res" type="d4f16f75:AndroidResFolderNode" />
+<<<<<<< HEAD
+              <item name="layout" type="ddeffd01:AndroidResFolderTypeNode" />
+=======
+              <item name="menu" type="ddeffd01:AndroidResFolderTypeNode" />
+>>>>>>> origin/master
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+<<<<<<< HEAD
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="android.sdk.path" value="$USER_HOME$/Library/Android/sdk" />
     <property name="device.picker.selection" value="Pixel_2_XL_API_26" />
+=======
+      <pane id="ProjectPane" />
+      <pane id="PackagesPane" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="SearchEverywhereHistoryKey" value="styl&#9;FILE&#9;file:///Users/sorendahl/Dev/worldepth/MVP/Worldepth/app/src/main/res/values/styles.xml" />
+    <property name="android.project.structure.last.selected" value="SDK Location" />
+    <property name="android.project.structure.proportion" value="0.15" />
+    <property name="android.sdk.path" value="$ANDROID_SDK$" />
+    <property name="device.picker.selection" value="Pixel_2_XL_API_27" />
+>>>>>>> origin/master
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="AndroidSdkUpdater" />
   </component>
@@ -3872,25 +3947,45 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
+<<<<<<< HEAD
       <changelist id="3def8977-5ef8-4840-a21b-d898f76e52e7" name="Default" comment="" />
       <created>1545066952407</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1545066952407</updated>
+=======
+      <changelist id="74131c05-ebf9-4e67-b94c-26d558e4bc35" name="Default" comment="" />
+      <created>1545101376923</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1545101376923</updated>
+>>>>>>> origin/master
     </task>
     <servers />
   </component>
   <component name="ToolWindowManager">
+<<<<<<< HEAD
     <frame x="0" y="23" width="1440" height="827" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Android Profiler" show_stripe_button="false" />
+=======
+    <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
+    <editor active="true" />
+    <layout>
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Android Profiler" />
+>>>>>>> origin/master
       <window_info anchor="right" id="Palette&#9;" />
       <window_info id="Image Layers" />
       <window_info id="Build Variants" side_tool="true" />
       <window_info anchor="right" id="Capture Analysis" />
       <window_info anchor="bottom" id="Event Log" side_tool="true" />
+<<<<<<< HEAD
+=======
+      <window_info anchor="right" id="Preview" />
+>>>>>>> origin/master
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info anchor="bottom" id="Version Control" show_stripe_button="false" />
       <window_info anchor="bottom" id="Terminal" />
@@ -3898,9 +3993,14 @@
       <window_info id="Captures" order="2" weight="0.25" />
       <window_info id="Capture Tool" />
       <window_info id="Designer" />
+<<<<<<< HEAD
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24964234" />
       <window_info anchor="right" id="Assistant" visible="true" weight="0.1874106" />
       <window_info anchor="bottom" id="Build" visible="true" weight="0.0" />
+=======
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24969475" />
+      <window_info anchor="bottom" id="Build" visible="true" weight="0.29128206" />
+>>>>>>> origin/master
       <window_info anchor="right" id="Gradle" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Theme Preview" />
@@ -3908,7 +4008,11 @@
       <window_info id="Favorites" side_tool="true" />
       <window_info anchor="right" id="Device File Explorer" side_tool="true" />
       <window_info anchor="bottom" id="Find" order="1" />
+<<<<<<< HEAD
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+=======
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+>>>>>>> origin/master
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -3920,6 +4024,7 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/leodw/worldepth/ui/camera/CameraFragment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-3608">
@@ -4067,6 +4172,27 @@
             <element signature="e#3082#3083#0" expanded="true" />
             <element signature="e#3109#3110#0" expanded="true" />
           </folding>
+=======
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/styles.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="70" selection-start-line="3" selection-start-column="70" selection-end-line="3" selection-end-column="70" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/viewer_fragment.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state />
+      </provider>
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/leodw/worldepth/ui/viewer/ViewerFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1858">
+          <caret line="204" column="17" lean-forward="true" selection-start-line="204" selection-start-column="17" selection-end-line="204" selection-end-column="17" />
+>>>>>>> origin/master
         </state>
       </provider>
     </entry>
