@@ -62,17 +62,17 @@ public class EmailFragment extends Fragment{
         signUp.setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_DOWN) { //add null checks
                 String email = mEmailInput.getText().toString();
+<<<<<<< HEAD
                 mDt.addData(new DataPair(email, ((MainActivity) getActivity()).getFragmentIndex("Password_Fragment"),
                         ((MainActivity) getActivity()).getFragmentIndex("Email_Fragment")));
+=======
+                mDt.addData(new DataPair(email, ((MainActivity) getActivity()).getFragmentIndex("Password_Fragment"), ((MainActivity) getActivity()).getFragmentIndex("Email_Fragment")));
+>>>>>>> e6250f030f9f35576918e6d668f3fe63425a3e3e
                 Toast.makeText(getActivity(), "Valid email!", Toast.LENGTH_SHORT).show();
                 ((MainActivity) getActivity()).setViewPager(4); //password fragment
                 return true;
             }
             return false;
         });
-        /*signUp.setOnClickListener((view1) -> {
-            Toast.makeText(getActivity(), "Valid email!", Toast.LENGTH_SHORT).show();
-            ((MainActivity) getActivity()).setViewPager(4); //password page
-        });*/
     }
 }
