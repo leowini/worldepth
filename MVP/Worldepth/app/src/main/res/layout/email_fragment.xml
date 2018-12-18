@@ -21,7 +21,7 @@
         app:layout_constraintVertical_bias="0.45"/>
 
     <Button
-        android:id="@+id/continueButton"
+        android:id="@+id/signUpButton"
         style="@style/Widget.AppCompat.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -29,7 +29,7 @@
         android:layout_marginTop="130dp"
         android:text="@string/signUp"
         app:layout_constraintStart_toStartOf="@id/emailInput"
-        app:layout_constraintTop_toBottomOf="@id/emailInput"/>
+        app:layout_constraintTop_toBottomOf="@id/emailInput" />
 
     <Button
         android:id="@+id/backButton"
