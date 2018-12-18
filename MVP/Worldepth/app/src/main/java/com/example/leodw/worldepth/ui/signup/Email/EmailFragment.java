@@ -59,16 +59,12 @@ public class EmailFragment extends Fragment{
         signUp = view.findViewById(R.id.emailNextButton);
         goBack = view.findViewById(R.id.emailBackButton);
 
-        signUp.setOnTouchListener((v, event) -> {
-            if (event.getAction() == MotionEvent.ACTION_DOWN) { //add null checks
+        signUp.setOnClickListener((view1) -> {
                 String email = mEmailInput.getText().toString();
                 mDt.addData(new DataPair(email, ((MainActivity) getActivity()).getFragmentIndex("Password_Fragment"),
                         ((MainActivity) getActivity()).getFragmentIndex("Email_Fragment")));
                 Toast.makeText(getActivity(), "Valid email!", Toast.LENGTH_SHORT).show();
                 ((MainActivity) getActivity()).setViewPager(4); //password fragment
-                return true;
-            }
-            return false;
         });
     }
 }
