@@ -48,8 +48,8 @@ public class PasswordFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(PasswordViewModel.class);
-        mFb = ((MainActivity)this.getActivity()).getFirebaseWrapper();
-        mDt = ((MainActivity)this.getActivity()).getDataTransfer();
+        mFb = ((MainActivity) this.getActivity()).getFirebaseWrapper();
+        mDt = ((MainActivity) this.getActivity()).getDataTransfer();
         // TODO: Use the ViewModel
     }
 
@@ -62,22 +62,98 @@ public class PasswordFragment extends Fragment {
         goBack = view.findViewById(R.id.passwordBackButton);
 
         completeSignUp.setOnClickListener((v) -> {
-                if (validPassword() && mPasswordInput.getText().toString().equals(mConfirmPassword.getText().toString())) {
-                    for (int i = 0; i < mDt.size(); i++) {
-                        if (mDt.getDataPair(i).getLocation() == 4) {
-                            Toast.makeText(getActivity(), "Success!", Toast.LENGTH_SHORT).show();
-                            createNewAccount(mDt.getDataPair(i).getData(), mPasswordInput.getText().toString());
+            if (validPassword() && mPasswordInput.getText().toString().equals(mConfirmPassword.getText().toString())) {
+                for (int i = 0; i < mDt.size(); i++) {
+                    if (mDt.getDataPair(i).getLocation() == 4) {
+                        Toast.makeText(getActivity(), "Success!", Toast.LENGTH_SHORT).show();
+                        createNewAccount(mDt.getDataPair(i).getData(), mPasswordInput.getText().toString());
 
-                            //set login state
-                            ((MainActivity) getActivity()).setLoginState(true);
-                        }
+                        //set login state
+                        ((MainActivity) getActivity()).setLoginState(true);
                     }
                 }
+            }
         });
     }
 
     private boolean validPassword() {
+        String password = mPasswordInput.getText().toString();
+        String confirmed = mConfirmPassword.getText().toString();
+        if (!checkPasswordLength(password)) {
+            Log.d(TAG, "Password must be between 8 and 20 characters long");
+            return false;
+        }
+        if (!containsNumbers(password)) {
+            Log.d(TAG, "Password must contain numbers");
+            return false;
+        }
+        if (!containsUpperAndLower(password)) {
+            Log.d(TAG, "Password must contain uppercase and lowercase characters");
+            return false;
+        }
+        if (containsIllegalChars(password)) {
+            Log.d(TAG, "Password contains an illegal character");
+            return false;
+        }
+        if (!doPasswordsMatch(password, confirmed)) {
+            Log.d(TAG, "Passwords must match");
+            return false;
+        }
+        return true;
         return !(mPasswordInput.getText().toString().equals(""));
+    }
+
+    /*checks for illegal characters. Only the following are permitted:
+-Lower and uppercase English letters (A-Z)
+-Digits of Hindu-Arabic number system (0-9)
+-' '(space), '!', '#', '$', '%', '&', '(', ')', '*', '+', '-', '.', '/', '[', ']', '^', '_', '`' */
+    private boolean containsIllegalChars(String password) {
+        for (int i = 0; i < password.length(); i++) {
+            int test = (int) (password.charAt(i)); //casting char into an int to check against ASCII
+            if (!((test >= 32 && test <= 126) && (test != 34 && test != 39 && test != 44 && test != 92)
+                    && !(test >= 58 && test <= 64))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //checks if password is acceptable length (between 8 and 20 chars)
+    private boolean checkPasswordLength(String password) {
+        return (password.length() >= 8 && password.length() <= 20);
+    }
+
+    //checks if passwords and confirmed password match
+    private boolean doPasswordsMatch(String password, String confirm) {
+        return password.equals(confirm);
+    }
+
+    //checks if the password contains numbers
+    private boolean containsNumbers(String password) {
+        for (int i = 0; i < password.length(); i++) {
+            int test = (int) (password.charAt(i)); //casting char into an int to check against ASCII
+            if (test >= 48 && test <= 57)
+                return true;
+        }
+        return false;
+    }
+
+    //checks if the password contains both uppercase and lowercase letters
+    private boolean containsUpperAndLower(String password) {
+        boolean upper = false;
+        boolean lower = false;
+        for (int i = 0; i < password.length(); i++) {
+            int test = (int) (password.charAt(i)); //casting char into an int to check against ASCII
+            if (test >= 65 && test <= 90) {
+                upper = true;
+            } else if (test >= 97 && test <= 122) {
+                lower = true;
+            }
+            if (upper && lower) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void createNewAccount(String email, String password) {
