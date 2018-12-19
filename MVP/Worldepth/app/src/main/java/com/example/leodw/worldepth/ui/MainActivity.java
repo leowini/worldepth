@@ -1,5 +1,6 @@
 package com.example.leodw.worldepth.ui;
 
+import android.content.SharedPreferences;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,6 +31,9 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean mLoginState;
 
+    private SharedPreferences mPreferences;
+    private String sharedPrefFile = "com.example.android.leodw.worldepth";
+
     // Used to load the 'native-lib' library on application startup.
     static {
         System.loadLibrary("native-lib");
@@ -39,11 +43,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mLoginState = savedInstanceState.getBoolean("loginState");
+        mPreferences = getSharedPreferences(sharedPrefFile, MODE_PRIVATE);
+        mLoginState = mPreferences.getBoolean("loginState", false);
         mPagerAdapter = new SectionsStatePagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.container);
         setupViewPager(mViewPager);
-        String startFragment = (mLoginState) ? "StartScreen_Fragment" : "Camera_Fragment";
+        String startFragment = (mLoginState) ? "Camera_Fragment" : "StartScreen_Fragment";
         setViewPagerByTitle(startFragment);
         fb = new FirebaseWrapper();
         dt = new DataTransfer();
@@ -86,10 +91,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        // Save state
-        outState.putBoolean("loginState", mLoginState);
-        super.onSaveInstanceState(outState);
+    protected void onPause() {
+        super.onPause();
+
+        SharedPreferences.Editor preferencesEditor = mPreferences.edit();
+        preferencesEditor.putBoolean("loginState", mLoginState);
+        preferencesEditor.apply();
     }
 
     public void setLoginState(boolean state) {
