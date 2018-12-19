@@ -65,9 +65,7 @@ public class PasswordFragment extends Fragment {
             if (validPassword()) {
                 for (int i = 0; i < mDt.size(); i++) {
                     if (mDt.getDataPair(i).getLocation() == 4) {
-
                         createNewAccount(mDt.getDataPair(i).getData(), mPasswordInput.getText().toString());
-                        Toast.makeText(getActivity(), "Success!", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
