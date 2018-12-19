@@ -23,7 +23,7 @@ import com.example.leodw.worldepth.ui.signup.Name.NameViewModel;
 import com.example.leodw.worldepth.ui.signup.Password.PasswordFragment;
 import com.example.leodw.worldepth.ui.signup.Phone.PhoneFragment;
 
-public class EmailFragment extends Fragment{
+public class EmailFragment extends Fragment {
     private static final String TAG = "EmailFragment";
 
     private EmailViewModel mViewModel;
@@ -48,8 +48,8 @@ public class EmailFragment extends Fragment{
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(EmailViewModel.class);
-        mFb = ((MainActivity)this.getActivity()).getFirebaseWrapper();
-        mDt = ((MainActivity)this.getActivity()).getDataTransfer();
+        mFb = ((MainActivity) this.getActivity()).getFirebaseWrapper();
+        mDt = ((MainActivity) this.getActivity()).getDataTransfer();
         // TODO: Use the ViewModel
     }
 
@@ -60,11 +60,17 @@ public class EmailFragment extends Fragment{
         goBack = view.findViewById(R.id.emailBackButton);
 
         signUp.setOnClickListener((view1) -> {
+            if (validEmail()) {
                 String email = mEmailInput.getText().toString();
                 mDt.addData(new DataPair(email, ((MainActivity) getActivity()).getFragmentIndex("Password_Fragment"),
                         ((MainActivity) getActivity()).getFragmentIndex("Email_Fragment")));
                 Toast.makeText(getActivity(), "Valid email!", Toast.LENGTH_SHORT).show();
-                ((MainActivity) getActivity()).setViewPager(4); //password fragment
+                ((MainActivity) getActivity()).setViewPagerByTitle("Password_Fragment"); //password fragment
+            }
         });
+    }
+
+    private boolean validEmail() {
+        return (mEmailInput.getText()!=null);
     }
 }
