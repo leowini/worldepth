@@ -8,10 +8,11 @@
     tools:context=".ui.signup.StartSignup.StartSignupFragment">
 
     <ImageView
+        android:elevation="3dp"
         android:id="@+id/phoneSignup"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:src="@drawable/phone1"
+        android:src="@drawable/greenphone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,12 +23,26 @@
         android:id="@+id/emailSignup"
         android:layout_width="200dp"
         android:layout_height="200dp"
+        android:elevation="2dp"
         android:src="@drawable/mail3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.749" />
+        app:layout_constraintVertical_bias="0.893" />
+
+    <ImageView
+        android:id="@+id/bigLogo"
+        android:layout_width="1000dp"
+        android:layout_height="1000dp"
+        android:elevation="1dp"
+        android:src="@drawable/logo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.313"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.533" />
 
 
 </android.support.constraint.ConstraintLayout>
