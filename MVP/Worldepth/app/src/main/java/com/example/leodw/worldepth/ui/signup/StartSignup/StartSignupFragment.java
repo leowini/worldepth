@@ -27,6 +27,9 @@ public class StartSignupFragment extends Fragment {
     private StartSignupViewModel mViewModel;
     private FirebaseWrapper mFb;
 
+    private Button mPhoneSignup;
+    private Button mEmailSignup;
+
 
     public static StartSignupFragment newInstance() {
         return new StartSignupFragment();
@@ -62,7 +65,10 @@ public class StartSignupFragment extends Fragment {
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
-
+        mPhoneSignup = view.findViewById(R.id.phoneSignup);
+        mEmailSignup = view.findViewById(R.id.emailSignup);
+        mPhoneSignup.setOnClickListener(v -> ((MainActivity)getActivity()).setViewPagerByTitle("Phone_Fragment"));
+        mEmailSignup.setOnClickListener(v -> ((MainActivity) getActivity()).setViewPagerByTitle("Email_Fragment"));
     }
 
 
