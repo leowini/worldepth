@@ -77,7 +77,7 @@ public class PasswordFragment extends Fragment {
     }
 
     private boolean validPassword() {
-        return true;
+        return (mPasswordInput.getText()!=null);
     }
 
     public void createNewAccount(String email, String password) {
