@@ -49,6 +49,12 @@ public class LoginFragment extends Fragment {
             ((MainActivity) getActivity()).setLoginState(true);
             ((MainActivity) getActivity()).setViewPagerByTitle("Camera_Fragment"); //camera
         });
+
+        Button loginBackButton = view.findViewById(R.id.loginBackButton);
+        loginBackButton.setOnClickListener((view2) -> {
+            Toast.makeText(getActivity(), "Going back", Toast.LENGTH_SHORT).show();
+            ((MainActivity) getActivity()).setViewPagerByTitle("StartScreen_Fragment"); //start screen fragment
+        });
         return view;
     }
 
