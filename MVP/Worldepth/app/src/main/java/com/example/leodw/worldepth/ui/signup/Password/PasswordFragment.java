@@ -165,7 +165,6 @@ public class PasswordFragment extends Fragment {
         FirebaseAuth _auth = mFb.getFirebaseAuth();
         _auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                Toast.makeText(getActivity(), "Account successfully created!", Toast.LENGTH_SHORT).show();
                 //set login state
                 ((MainActivity) getActivity()).setLoginState(true);
                 //go to camera fragment
