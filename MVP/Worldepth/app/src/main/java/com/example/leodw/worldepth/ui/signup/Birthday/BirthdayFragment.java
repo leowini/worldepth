@@ -42,10 +42,17 @@ public class BirthdayFragment extends Fragment {
         ArrayAdapter<String> LTRadapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, values);
         LTRadapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         spinner.setAdapter(LTRadapter);
+
         Button birthdayNextButton = view.findViewById(R.id.birthdayNextButton);
         birthdayNextButton.setOnClickListener((view1) -> {
             Toast.makeText(getActivity(), "Account created!", Toast.LENGTH_SHORT).show();
             ((MainActivity) getActivity()).setViewPager(8); //camera page
+        });
+
+        Button birthdayBackButton = view.findViewById(R.id.birthdayBackButton);
+        birthdayBackButton.setOnClickListener((view2) -> {
+            Toast.makeText(getActivity(), "Going back", Toast.LENGTH_SHORT).show();
+            ((MainActivity) getActivity()).setViewPagerByTitle("Password_Fragment"); //password
         });
         return view;
     }

@@ -65,8 +65,15 @@ public class EmailFragment extends Fragment {
                 mDt.addData(new DataPair(email, ((MainActivity) getActivity()).getFragmentIndex("Password_Fragment"),
                         ((MainActivity) getActivity()).getFragmentIndex("Email_Fragment")));
                 Toast.makeText(getActivity(), "Valid email!", Toast.LENGTH_SHORT).show();
+                mDt.addData(new DataPair("FromEmail", ((MainActivity) getActivity()).getFragmentIndex("Password_Fragment"),
+                        ((MainActivity) getActivity()).getFragmentIndex("Email_Fragment")));
                 ((MainActivity) getActivity()).setViewPagerByTitle("Password_Fragment"); //password fragment
             }
+        });
+
+        goBack.setOnClickListener((view2) -> {
+            Toast.makeText(getActivity(), "Going back", Toast.LENGTH_SHORT).show();
+            ((MainActivity) getActivity()).setViewPagerByTitle("StartSignup_Fragment"); //signup fragment
         });
     }
 

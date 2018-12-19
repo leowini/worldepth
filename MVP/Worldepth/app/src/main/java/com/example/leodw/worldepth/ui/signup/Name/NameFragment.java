@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.leodw.worldepth.R;
+import com.example.leodw.worldepth.data.DataTransfer;
 import com.example.leodw.worldepth.data.FirebaseWrapper;
 import com.example.leodw.worldepth.ui.MainActivity;
 import com.example.leodw.worldepth.ui.signup.Phone.PhoneFragment;
@@ -23,6 +24,7 @@ public class NameFragment extends Fragment {
 
     private NameViewModel mViewModel;
     private FirebaseWrapper mFb;
+    private DataTransfer mDt;
 
 
     public static NameFragment newInstance() {
@@ -33,10 +35,19 @@ public class NameFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.name_fragment, container, false);
+
         Button nameNextButton = view.findViewById(R.id.nameNextButton);
         nameNextButton.setOnClickListener((view1) -> {
             Toast.makeText(getActivity(), "Success!", Toast.LENGTH_SHORT).show();
-            ((MainActivity) getActivity()).setViewPager(7); //birthday page
+            ((MainActivity) getActivity()).setViewPagerByTitle("Password_Fragment"); //password
+        });
+
+        Button nameBackButton = view.findViewById(R.id.nameBackButton);
+        nameBackButton.setOnClickListener((view2) -> {
+            Toast.makeText(getActivity(), "Going back", Toast.LENGTH_SHORT).show();
+            //int lastLoc = getLastLocation();
+            //((MainActivity) getActivity()).setViewPager(lastLoc); //either phone or email fragment
+            ((MainActivity) getActivity()).setViewPagerByTitle("Phone_Fragment");
         });
         return view;
     }
@@ -52,4 +63,16 @@ public class NameFragment extends Fragment {
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
     }
+
+    /*private int getLastLocation() {
+        for (int i = mDt.size() - 1; i >= 0; i--) {
+            int temp = mDt.getDataPair(i).getSender();
+            if (temp == 5) {
+                return 5;
+            } else if (temp == 3) {
+                return 3;
+            }
+        }
+        return 0;
+    }*/
 }

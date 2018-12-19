@@ -17,6 +17,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.leodw.worldepth.R;
+import com.example.leodw.worldepth.data.DataPair;
+import com.example.leodw.worldepth.data.DataTransfer;
 import com.example.leodw.worldepth.data.FirebaseWrapper;
 import com.example.leodw.worldepth.ui.MainActivity;
 import com.example.leodw.worldepth.ui.signup.SignUpFragment;
@@ -28,7 +30,7 @@ public class PhoneFragment extends Fragment {
 
     private PhoneViewModel mViewModel;
     private FirebaseWrapper mFb;
-
+    private DataTransfer mDt;
 
     public static PhoneFragment newInstance() {
         return new PhoneFragment();
@@ -45,10 +47,19 @@ public class PhoneFragment extends Fragment {
         ArrayAdapter<String> LTRadapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, values);
         LTRadapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         spinner.setAdapter(LTRadapter);
+
         Button phoneNextButton = view.findViewById(R.id.phoneNextButton);
         phoneNextButton.setOnClickListener((view1) -> {
             Toast.makeText(getActivity(), "Success!", Toast.LENGTH_SHORT).show();
-            ((MainActivity) getActivity()).setViewPager(6); //name page
+            /*mDt.addData(new DataPair("FromPhone", ((MainActivity) getActivity()).getFragmentIndex("Password_Fragment"),
+                    ((MainActivity) getActivity()).getFragmentIndex("Phone_Fragment")));*/
+            ((MainActivity) getActivity()).setViewPagerByTitle("Name_Fragment"); //name page
+        });
+
+        Button phoneBackButton = view.findViewById(R.id.phoneBackButton);
+        phoneBackButton.setOnClickListener((view2) -> {
+            Toast.makeText(getActivity(), "Going back", Toast.LENGTH_SHORT).show();
+            ((MainActivity) getActivity()).setViewPagerByTitle("StartSignup_Fragment"); //signup
         });
         return view;
     }
