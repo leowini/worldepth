@@ -40,7 +40,7 @@ public class NameFragment extends Fragment {
         Button nameNextButton = view.findViewById(R.id.nameNextButton);
         nameNextButton.setOnClickListener((view1) -> {
             Toast.makeText(getActivity(), "Success!", Toast.LENGTH_SHORT).show();
-            ((MainActivity) getActivity()).setViewPagerByTitle("Password_Fragment"); //password
+            ((MainActivity) getActivity()).setViewPagerByTitle("Birthday_Fragment"); //birthday
         });
 
         Button nameBackButton = view.findViewById(R.id.nameBackButton);

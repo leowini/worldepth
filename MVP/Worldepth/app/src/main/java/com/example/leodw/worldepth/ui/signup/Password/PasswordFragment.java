@@ -65,13 +65,9 @@ public class PasswordFragment extends Fragment {
             if (validPassword()) {
                 for (int i = 0; i < mDt.size(); i++) {
                     if (mDt.getDataPair(i).getLocation() == 4) {
-                        Toast.makeText(getActivity(), "Success!", Toast.LENGTH_SHORT).show();
-                        createNewAccount(mDt.getDataPair(i).getData(), mPasswordInput.getText().toString());
 
-                        //set login state
-                        ((MainActivity) getActivity()).setLoginState(true);
-                      //go to camera fragment
-                      ((MainActivity) getActivity()).setViewPagerByTitle("Camera_Fragment");
+                        createNewAccount(mDt.getDataPair(i).getData(), mPasswordInput.getText().toString());
+                        Toast.makeText(getActivity(), "Success!", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -171,8 +167,10 @@ public class PasswordFragment extends Fragment {
         FirebaseAuth _auth = mFb.getFirebaseAuth();
         _auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                Toast.makeText(getActivity(), "Account created!", Toast.LENGTH_SHORT).show();
-                ((MainActivity) getActivity()).setViewPagerByTitle("Name_Fragment"); //name fragment
+                //set login state
+                ((MainActivity) getActivity()).setLoginState(true);
+                //go to camera fragment
+                ((MainActivity) getActivity()).setViewPagerByTitle("Camera_Fragment");
             } else {
                 Log.d(TAG, "createNewAccount:failed", task.getException());
             }

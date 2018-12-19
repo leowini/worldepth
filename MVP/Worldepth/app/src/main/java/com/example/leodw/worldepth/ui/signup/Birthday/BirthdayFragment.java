@@ -45,14 +45,13 @@ public class BirthdayFragment extends Fragment {
 
         Button birthdayNextButton = view.findViewById(R.id.birthdayNextButton);
         birthdayNextButton.setOnClickListener((view1) -> {
-            Toast.makeText(getActivity(), "Account created!", Toast.LENGTH_SHORT).show();
-            ((MainActivity) getActivity()).setViewPager(8); //camera page
+            ((MainActivity) getActivity()).setViewPagerByTitle("Password_Fragment");
         });
 
         Button birthdayBackButton = view.findViewById(R.id.birthdayBackButton);
         birthdayBackButton.setOnClickListener((view2) -> {
             Toast.makeText(getActivity(), "Going back", Toast.LENGTH_SHORT).show();
-            ((MainActivity) getActivity()).setViewPagerByTitle("Password_Fragment"); //password
+            ((MainActivity) getActivity()).setViewPagerByTitle("Name_Fragment");
         });
         return view;
     }
