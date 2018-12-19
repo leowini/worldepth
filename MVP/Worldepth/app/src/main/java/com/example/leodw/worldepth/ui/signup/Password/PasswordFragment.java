@@ -81,22 +81,27 @@ public class PasswordFragment extends Fragment {
         String confirmed = mConfirmPassword.getText().toString();
         if (!checkPasswordLength(password)) {
             Log.d(TAG, "Password must be between 8 and 20 characters long");
+            Toast.makeText(getActivity(), "Password must be between 8 and 20 characters long", Toast.LENGTH_SHORT).show();
             return false;
         }
         if (!containsNumbers(password)) {
             Log.d(TAG, "Password must contain numbers");
+            Toast.makeText(getActivity(), "Password must contain numbers", Toast.LENGTH_SHORT).show();
             return false;
         }
         if (!containsUpperAndLower(password)) {
             Log.d(TAG, "Password must contain uppercase and lowercase characters");
+            Toast.makeText(getActivity(), "Password must contain uppercase and lowercase characters", Toast.LENGTH_SHORT).show();
             return false;
         }
         if (containsIllegalChars(password)) {
             Log.d(TAG, "Password contains an illegal character");
+            Toast.makeText(getActivity(), "Password contains an illegal character", Toast.LENGTH_SHORT).show();
             return false;
         }
         if (!doPasswordsMatch(password, confirmed)) {
             Log.d(TAG, "Passwords must match");
+            Toast.makeText(getActivity(), "Passwords must match", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
