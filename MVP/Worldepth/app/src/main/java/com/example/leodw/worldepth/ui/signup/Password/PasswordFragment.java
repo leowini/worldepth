@@ -62,7 +62,7 @@ public class PasswordFragment extends Fragment {
         goBack = view.findViewById(R.id.passwordBackButton);
 
         completeSignUp.setOnClickListener((v) -> {
-            if (validPassword() && mPasswordInput.getText().toString().equals(mConfirmPassword.getText().toString())) {
+            if (validPassword()) {
                 for (int i = 0; i < mDt.size(); i++) {
                     if (mDt.getDataPair(i).getLocation() == 4) {
                         Toast.makeText(getActivity(), "Success!", Toast.LENGTH_SHORT).show();
@@ -100,7 +100,6 @@ public class PasswordFragment extends Fragment {
             return false;
         }
         return true;
-        return !(mPasswordInput.getText().toString().equals(""));
     }
 
     /*checks for illegal characters. Only the following are permitted:
