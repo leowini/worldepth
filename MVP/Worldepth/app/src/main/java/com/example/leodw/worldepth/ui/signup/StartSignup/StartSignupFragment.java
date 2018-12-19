@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.leodw.worldepth.R;
@@ -27,8 +28,8 @@ public class StartSignupFragment extends Fragment {
     private StartSignupViewModel mViewModel;
     private FirebaseWrapper mFb;
 
-    private Button mPhoneSignup;
-    private Button mEmailSignup;
+    private ImageView mPhoneSignup;
+    private ImageView mEmailSignup;
 
 
     public static StartSignupFragment newInstance() {
@@ -41,6 +42,7 @@ public class StartSignupFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.start_signup_fragment, container, false);
 
+        /*
         Button emailSignup = view.findViewById(R.id.emailSignup);
         emailSignup.setOnClickListener((view1) -> {
                 Toast.makeText(getActivity(), "Going to email sign up page", Toast.LENGTH_SHORT).show();
@@ -52,6 +54,7 @@ public class StartSignupFragment extends Fragment {
                 Toast.makeText(getActivity(), "Going to phone sign up page", Toast.LENGTH_SHORT).show();
                 ((MainActivity) getActivity()).setViewPager(5); //phone page
         });
+        */
         return view;
     }
 
