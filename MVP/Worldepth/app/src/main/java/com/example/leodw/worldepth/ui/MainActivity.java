@@ -28,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
     static private FirebaseWrapper fb;
     static private DataTransfer dt;
 
+    private boolean mLoginState;
+
     // Used to load the 'native-lib' library on application startup.
     static {
         System.loadLibrary("native-lib");
@@ -37,10 +39,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        mLoginState = savedInstanceState.getBoolean("loginState");
         mPagerAdapter = new SectionsStatePagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.container);
         setupViewPager(mViewPager);
+        String startFragment = (mLoginState) ? "StartScreen_Fragment" : "Camera_Fragment";
+        setViewPagerByTitle(startFragment);
         fb = new FirebaseWrapper();
         dt = new DataTransfer();
     }
@@ -79,5 +83,16 @@ public class MainActivity extends AppCompatActivity {
 
     public int getFragmentIndex(String fragmentTitle) {
         return mPagerAdapter.getFragmentNumber(fragmentTitle);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        // Save state
+        outState.putBoolean("loginState", mLoginState);
+        super.onSaveInstanceState(outState);
+    }
+
+    public void setLoginState(boolean state) {
+        mLoginState = state;
     }
 }
