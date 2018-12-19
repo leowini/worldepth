@@ -35,6 +35,7 @@ public class NameFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.name_fragment, container, false);
+        mDt = ((MainActivity) this.getActivity()).getDataTransfer();
 
         Button nameNextButton = view.findViewById(R.id.nameNextButton);
         nameNextButton.setOnClickListener((view1) -> {
@@ -45,9 +46,8 @@ public class NameFragment extends Fragment {
         Button nameBackButton = view.findViewById(R.id.nameBackButton);
         nameBackButton.setOnClickListener((view2) -> {
             Toast.makeText(getActivity(), "Going back", Toast.LENGTH_SHORT).show();
-            //int lastLoc = getLastLocation();
-            //((MainActivity) getActivity()).setViewPager(lastLoc); //either phone or email fragment
-            ((MainActivity) getActivity()).setViewPagerByTitle("Phone_Fragment");
+            int lastLoc = getLastLocation();
+            ((MainActivity) getActivity()).setViewPager(lastLoc); //either phone or email fragment
         });
         return view;
     }
@@ -64,15 +64,17 @@ public class NameFragment extends Fragment {
     public void onViewCreated(final View view, Bundle savedInstanceState) {
     }
 
-    /*private int getLastLocation() {
+    private int getLastLocation() {
         for (int i = mDt.size() - 1; i >= 0; i--) {
             int temp = mDt.getDataPair(i).getSender();
-            if (temp == 5) {
-                return 5;
-            } else if (temp == 3) {
-                return 3;
+            int phoneIndex = ((MainActivity) getActivity()).getFragmentIndex("Phone_Fragment");
+            int emailIndex = ((MainActivity) getActivity()).getFragmentIndex("Email_Fragment");
+            if (temp == phoneIndex) {
+                return phoneIndex;
+            } else if (temp == emailIndex) {
+                return emailIndex;
             }
         }
         return 0;
-    }*/
+    }
 }

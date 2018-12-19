@@ -67,7 +67,7 @@ public class EmailFragment extends Fragment {
                 Toast.makeText(getActivity(), "Valid email!", Toast.LENGTH_SHORT).show();
                 mDt.addData(new DataPair("FromEmail", ((MainActivity) getActivity()).getFragmentIndex("Password_Fragment"),
                         ((MainActivity) getActivity()).getFragmentIndex("Email_Fragment")));
-                ((MainActivity) getActivity()).setViewPagerByTitle("Password_Fragment"); //password fragment
+                ((MainActivity) getActivity()).setViewPagerByTitle("Name_Fragment"); //name fragment
             }
         });
 
