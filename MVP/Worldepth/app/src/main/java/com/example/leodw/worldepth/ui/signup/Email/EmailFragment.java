@@ -71,6 +71,6 @@ public class EmailFragment extends Fragment {
     }
 
     private boolean validEmail() {
-        return (mEmailInput.getText()!=null);
+        return !(mEmailInput.getText().toString().equals(""));
     }
 }
