@@ -70,6 +70,8 @@ public class PasswordFragment extends Fragment {
 
                         //set login state
                         ((MainActivity) getActivity()).setLoginState(true);
+                      //go to camera fragment
+                      ((MainActivity) getActivity()).setViewPagerByTitle("Camera_Fragment");
                     }
                 }
             }

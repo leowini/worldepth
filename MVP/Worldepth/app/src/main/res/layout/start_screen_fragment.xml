@@ -17,10 +17,9 @@
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.50"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.05" />
+        app:layout_constraintVertical_bias="0.67" />
 
     <Button
         android:id="@+id/goToSignIn"
@@ -32,39 +31,22 @@
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.50"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.95" />
-
-    <Button
-        android:id="@+id/goToViewer"
-        style="@style/Widget.AppCompat.Button"
-        android:textSize="25sp"
-        android:ems="10"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/viewer"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.50"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.35" />
+        app:layout_constraintVertical_bias="0.808" />
 
     <Button
         android:id="@+id/goToCamera"
         style="@style/Widget.AppCompat.Button"
-        android:textSize="25sp"
-        android:ems="10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/camera"
+        android:ems="10"
+        android:text="@string/guest"
+        android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.50"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.55" />
+        app:layout_constraintVertical_bias="0.947" />
 
 </android.support.constraint.ConstraintLayout>

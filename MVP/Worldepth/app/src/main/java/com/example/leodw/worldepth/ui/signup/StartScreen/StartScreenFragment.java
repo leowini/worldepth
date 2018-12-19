@@ -60,16 +60,11 @@ public class StartScreenFragment extends Fragment {
             ((MainActivity) getActivity()).setViewPager(2); //sign up page
         });
 
-        Button goToViewer = view.findViewById(R.id.goToViewer);
-        goToViewer.setOnClickListener((view3) -> {
-            Toast.makeText(getActivity(), "Going to viewer", Toast.LENGTH_SHORT).show();
-            ((MainActivity) getActivity()).setViewPager(10); //viewer page
-        });
-
         Button goToCamera = view.findViewById(R.id.goToCamera);
         goToCamera.setOnClickListener((view4) -> {
             Toast.makeText(getActivity(), "Going to camera", Toast.LENGTH_SHORT).show();
-            ((MainActivity) getActivity()).setViewPager(8); //camera page
+            ((MainActivity) getActivity()).setLoginState(true);
+            ((MainActivity) getActivity()).setViewPagerByTitle("Camera_Fragment"); //camera page
         });
     }
 }
