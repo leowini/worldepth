@@ -10,10 +10,15 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.leodw.worldepth.R;
+import com.example.leodw.worldepth.data.DataPair;
+import com.example.leodw.worldepth.data.DataTransfer;
 import com.example.leodw.worldepth.data.FirebaseWrapper;
 import com.example.leodw.worldepth.ui.MainActivity;
 import com.example.leodw.worldepth.ui.signup.SignUpFragment;
@@ -25,8 +30,7 @@ public class PhoneFragment extends Fragment {
 
     private PhoneViewModel mViewModel;
     private FirebaseWrapper mFb;
-    private EditText mPhoneInput;
-
+    private DataTransfer mDt;
 
     public static PhoneFragment newInstance() {
         return new PhoneFragment();
@@ -35,7 +39,30 @@ public class PhoneFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.phone_fragment, container, false);
+        View view = inflater.inflate(R.layout.phone_fragment, container, false);
+        mDt = ((MainActivity) this.getActivity()).getDataTransfer();
+
+        String [] values =
+                {"Country","+1 (US)"};
+        Spinner spinner = (Spinner) view.findViewById(R.id.phone_spinner);
+        ArrayAdapter<String> LTRadapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, values);
+        LTRadapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        spinner.setAdapter(LTRadapter);
+
+        Button phoneNextButton = view.findViewById(R.id.phoneNextButton);
+        phoneNextButton.setOnClickListener((view1) -> {
+            Toast.makeText(getActivity(), "Success!", Toast.LENGTH_SHORT).show();
+            mDt.addData(new DataPair("FromPhone", ((MainActivity) getActivity()).getFragmentIndex("Password_Fragment"),
+                    ((MainActivity) getActivity()).getFragmentIndex("Phone_Fragment")));
+            ((MainActivity) getActivity()).setViewPagerByTitle("Name_Fragment"); //name page
+        });
+
+        Button phoneBackButton = view.findViewById(R.id.phoneBackButton);
+        phoneBackButton.setOnClickListener((view2) -> {
+            Toast.makeText(getActivity(), "Going back", Toast.LENGTH_SHORT).show();
+            ((MainActivity) getActivity()).setViewPagerByTitle("StartSignup_Fragment"); //signup
+        });
+        return view;
     }
 
     @Override

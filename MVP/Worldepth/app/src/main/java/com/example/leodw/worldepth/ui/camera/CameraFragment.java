@@ -42,6 +42,7 @@ import android.widget.Toast;
 import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.slam.Slam;
 import com.example.leodw.worldepth.ui.MainActivity;
+import com.example.leodw.worldepth.ui.signup.StartScreen.StartScreenFragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -61,6 +62,7 @@ public class CameraFragment extends Fragment {
     private SurfaceTexture mSlamOutputSurface;
 
     private Button captureBtn;
+    private Button mSignOutButton;
     private AutoFitTextureView mTextureView;
 
     private boolean mRecordingState;
@@ -262,6 +264,7 @@ public class CameraFragment extends Fragment {
         mTextureView = (AutoFitTextureView) view.findViewById(R.id.textureView);
         assert mTextureView != null;
         captureBtn = (Button) view.findViewById(R.id.captureButton);
+        mSignOutButton = (Button) view.findViewById(R.id.signOutButton);
         captureBtn.setOnTouchListener((v, event) -> {
             switch (event.getAction()) {
                 case (MotionEvent.ACTION_DOWN):
@@ -282,6 +285,13 @@ public class CameraFragment extends Fragment {
                     return false;
                 default:
                     return false;
+            }
+        });
+        mSignOutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity) getActivity()).setLoginState(false);
+                ((MainActivity) getActivity()).setViewPagerByTitle("StartScreen_Fragment");
             }
         });
     }

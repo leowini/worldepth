@@ -82,7 +82,7 @@ captures/
 
 .idea/dictionaries
 
-.idea/libraries
+.idea/libraries/*
 
 .idea/caches
 

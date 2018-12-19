@@ -66,6 +66,8 @@ public class FirebaseWrapper {
         Log.d(TAG,"Wrote to Database");
     }
 
+
+
     private void attachReader(DatabaseReference dbRef) {
         dbRef.addValueEventListener(new ValueEventListener() {
             @Override

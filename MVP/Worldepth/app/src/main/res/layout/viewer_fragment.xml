@@ -9,5 +9,19 @@
     android:background="@color/colorWindowBackground"
     tools:context="com.example.leodw.worldepth.ui.viewer.ViewerFragment">
 
+    <Button
+        android:id="@+id/openModelButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="open"
+        />
+
+    <Button
+        android:id="@+id/loadSampleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="sample"
+        />
+
 </FrameLayout>
 

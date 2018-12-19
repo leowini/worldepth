@@ -69,7 +69,7 @@ public class SignUpFragment extends Fragment {
         FirebaseAuth _auth = mFb.getFirebaseAuth();
         _auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                ((MainActivity) getActivity()).setViewPager(1);
+                ((MainActivity) getActivity()).setViewPager(4);
             } else {
                 Log.d(TAG, "createNewAccount:failed", task.getException());
             }
