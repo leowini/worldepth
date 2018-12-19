@@ -28,4 +28,5 @@
     <string name="loading">Loading...</string>
     <string name="sign_out">Sign Out</string>
     <string name="guest">Guest</string>
+    <string name="must_have_upper_and_lower_case">Must have upper and lower case</string>
 </resources>
