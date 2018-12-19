@@ -39,11 +39,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mLoginState = savedInstanceState.getBoolean("loginState");
+        if(savedInstanceState != null) {
+            mLoginState = savedInstanceState.getBoolean("loginState");
+        } else {
+            setLoginState(false);
+        }
         mPagerAdapter = new SectionsStatePagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.container);
         setupViewPager(mViewPager);
-        String startFragment = (mLoginState) ? "StartScreen_Fragment" : "Camera_Fragment";
+        String startFragment = (mLoginState) ? "Camera_Fragment" : "StartScreen_Fragment";
         setViewPagerByTitle(startFragment);
         fb = new FirebaseWrapper();
         dt = new DataTransfer();
