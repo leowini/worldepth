@@ -14,10 +14,9 @@
         android:src="@drawable/phone1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.50"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.05" />
+        app:layout_constraintVertical_bias="0.278" />
 
     <ImageView
         android:id="@+id/emailSignup"
@@ -26,10 +25,9 @@
         android:src="@drawable/mail3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.50"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.95"  />
+        app:layout_constraintVertical_bias="0.596" />
 
 
 </android.support.constraint.ConstraintLayout>
