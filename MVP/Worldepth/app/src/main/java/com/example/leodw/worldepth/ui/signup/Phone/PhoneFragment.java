@@ -40,6 +40,7 @@ public class PhoneFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.phone_fragment, container, false);
+        mDt = ((MainActivity) this.getActivity()).getDataTransfer();
 
         String [] values =
                 {"Country","+1 (US)"};
@@ -51,8 +52,8 @@ public class PhoneFragment extends Fragment {
         Button phoneNextButton = view.findViewById(R.id.phoneNextButton);
         phoneNextButton.setOnClickListener((view1) -> {
             Toast.makeText(getActivity(), "Success!", Toast.LENGTH_SHORT).show();
-            /*mDt.addData(new DataPair("FromPhone", ((MainActivity) getActivity()).getFragmentIndex("Password_Fragment"),
-                    ((MainActivity) getActivity()).getFragmentIndex("Phone_Fragment")));*/
+            mDt.addData(new DataPair("FromPhone", ((MainActivity) getActivity()).getFragmentIndex("Password_Fragment"),
+                    ((MainActivity) getActivity()).getFragmentIndex("Phone_Fragment")));
             ((MainActivity) getActivity()).setViewPagerByTitle("Name_Fragment"); //name page
         });
 
