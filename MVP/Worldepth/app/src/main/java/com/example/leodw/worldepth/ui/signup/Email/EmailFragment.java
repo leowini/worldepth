@@ -1,5 +1,6 @@
 package com.example.leodw.worldepth.ui.signup.Email;
 
+import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.net.Uri;
 import android.os.Bundle;
@@ -32,6 +33,8 @@ public class EmailFragment extends Fragment {
     private EmailViewModel mViewModel;
     private FirebaseWrapper mFb;
     private EditText mEmailInput;
+    private EditText mServiceInput;
+    private EditText mSuffixInput;
     private Button signUp, goBack;
 
     private DataTransfer mDt;
@@ -59,6 +62,8 @@ public class EmailFragment extends Fragment {
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         mEmailInput = view.findViewById(R.id.emailInput);
+        mServiceInput = view.findViewById(R.id.emailService);
+        mSuffixInput = view.findViewById(R.id.emailSuffix);
         signUp = view.findViewById(R.id.emailNextButton);
         goBack = view.findViewById(R.id.emailBackButton);
 
@@ -73,7 +78,23 @@ public class EmailFragment extends Fragment {
                 if (mEmailInput.getText().toString().endsWith("@")) {
                     asteriskAdded();
                 }
-                if(mEmailInput.getText().toString().endsWith(".")) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        mServiceInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (mServiceInput.getText().toString().endsWith(".")) {
                     dotAdded();
                 }
             }
@@ -110,9 +131,23 @@ public class EmailFragment extends Fragment {
         EditText text = (EditText) getView().findViewById(R.id.emailInput);
         text.setText(text.getText().delete(text.length()-1,text.length()));
         getView().findViewById(R.id.asterisk).setVisibility(View.VISIBLE);
+        getView().findViewById(R.id.emailService).setVisibility(View.VISIBLE);
     }
 
     private void dotAdded() {
+        EditText serviceText = (EditText) getView().findViewById(R.id.emailService);
+        serviceText.setText(serviceText.getText().delete(serviceText.length()-1,serviceText.length()));
         getView().findViewById(R.id.dot).setVisibility(View.VISIBLE);
+        getView().findViewById(R.id.emailSuffix).setVisibility(View.VISIBLE);
+    }
+
+    private void asteriskDeleted() {
+        getView().findViewById(R.id.asterisk).setVisibility(View.INVISIBLE);
+        getView().findViewById(R.id.emailService).setVisibility(View.INVISIBLE);
+    }
+
+    private void dotDeleted() {
+        getView().findViewById(R.id.dot).setVisibility(View.INVISIBLE);
+        getView().findViewById(R.id.emailSuffix).setVisibility(View.INVISIBLE);
     }
 }

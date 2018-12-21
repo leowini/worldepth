@@ -20,6 +20,34 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintVertical_bias="0.45"/>
 
+    <EditText
+        android:id="@+id/emailService"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.SearchResult.Title"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.649"
+        tools:layout_editor_absoluteX="0dp"
+        tools:ignore="MissingConstraints"
+        android:visibility="invisible"/>
+
+    <EditText
+        android:id="@+id/emailSuffix"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.SearchResult.Title"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.828"
+        tools:layout_editor_absoluteX="0dp"
+        tools:ignore="MissingConstraints"
+        android:visibility="invisible"/>
+
     <Button
         android:id="@+id/emailNextButton"
         style="@style/Widget.AppCompat.Button"
@@ -62,13 +90,12 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:src="@drawable/asterisk1"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.483"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.498"
-        android:visibility="invisible"/>
+        app:layout_constraintVertical_bias="0.545" />
 
     <ImageView
         android:id="@+id/dot"
