@@ -70,7 +70,7 @@ public class EmailFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (mEmailInput.getText().toString().endsWith("@") {
+                if (mEmailInput.getText().toString().endsWith("@")) {
                     asteriskAdded();
                 }
                 if(mEmailInput.getText().toString().endsWith(".")) {
@@ -107,10 +107,12 @@ public class EmailFragment extends Fragment {
     }
 
     private void asteriskAdded() {
-        ImageView asterisk = getView().findViewById(R.id.asterisk);
+        EditText text = (EditText) getView().findViewById(R.id.emailInput);
+        text.setText(text.getText().delete(text.length()-1,text.length()));
+        getView().findViewById(R.id.asterisk).setVisibility(View.VISIBLE);
     }
 
     private void dotAdded() {
-
+        getView().findViewById(R.id.dot).setVisibility(View.VISIBLE);
     }
 }

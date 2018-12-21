@@ -58,6 +58,7 @@
         app:layout_constraintVertical_bias="0.05" />
 
     <ImageView
+        android:id="@+id/asterisk"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:src="@drawable/asterisk1"
@@ -69,6 +70,7 @@
         app:layout_constraintVertical_bias="0.498" />
 
     <ImageView
+        android:id="@+id/dot"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:src="@drawable/dot1"
