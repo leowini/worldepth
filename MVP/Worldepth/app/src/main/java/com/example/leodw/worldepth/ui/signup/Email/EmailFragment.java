@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
+import android.text.Selection;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -77,6 +78,8 @@ public class EmailFragment extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (mEmailInput.getText().toString().endsWith("@")) {
                     asteriskAdded();
+                    Selection.setSelection((Editable) mServiceInput.getText(), mServiceInput.getSelectionStart());
+                    mServiceInput.requestFocus();
                 }
             }
 
@@ -96,6 +99,8 @@ public class EmailFragment extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (mServiceInput.getText().toString().endsWith(".")) {
                     dotAdded();
+                    Selection.setSelection((Editable) mSuffixInput.getText(), mSuffixInput.getSelectionStart());
+                    mSuffixInput.requestFocus();
                 }
             }
 
