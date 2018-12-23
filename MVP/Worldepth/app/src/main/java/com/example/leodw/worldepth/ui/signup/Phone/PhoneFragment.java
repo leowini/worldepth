@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -30,6 +32,7 @@ public class PhoneFragment extends Fragment {
 
     private PhoneViewModel mViewModel;
     private FirebaseWrapper mFb;
+    private EditText mPhoneInput;
     private DataTransfer mDt;
 
     public static PhoneFragment newInstance() {
@@ -75,5 +78,49 @@ public class PhoneFragment extends Fragment {
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
+        mPhoneInput = (EditText) view.findViewById(R.id.number);
+        mPhoneInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length()==7 && count-before==1) {
+                    addParen();
+                }
+                if (s.length()==4 && count-before==1) {
+                    addDash();
+                }
+                if (s.length()==3 && before-count==1) {
+                    removeDash();
+                }
+                if (s.length()==6 && before-count==1) {
+                    removeParen();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+    }
+
+    private void addParen() {
+
+    }
+
+    private void addDash() {
+
+    }
+
+    private void removeDash() {
+
+    }
+
+    private void removeParen() {
+
     }
 }
