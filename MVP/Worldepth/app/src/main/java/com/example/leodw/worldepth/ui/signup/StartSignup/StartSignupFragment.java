@@ -23,7 +23,7 @@ import com.example.leodw.worldepth.ui.signup.SignUpFragment;
 import com.example.leodw.worldepth.ui.signup.SignUpViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class StartSignupFragment extends Fragment {
+public class  StartSignupFragment extends Fragment {
     private static final String TAG = "StartSignupFragment";
 
     private StartSignupViewModel mViewModel;
