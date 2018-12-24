@@ -290,8 +290,7 @@ public class CameraFragment extends Fragment {
         mSignOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity) getActivity()).setLoginState(false);
-                ((MainActivity) getActivity()).setViewPagerByTitle("StartScreen_Fragment");
+                ((MainActivity) getActivity()).setViewPagerByTitle("Settings_Fragment");
             }
         });
     }
