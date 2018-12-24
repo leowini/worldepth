@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.leodw.worldepth.R;
@@ -50,7 +51,7 @@ public class LoginFragment extends Fragment {
             ((MainActivity) getActivity()).setViewPagerByTitle("Camera_Fragment"); //camera
         });
 
-        Button loginBackButton = view.findViewById(R.id.loginBackButton);
+        ImageView loginBackButton = view.findViewById(R.id.loginBackButton);
         loginBackButton.setOnClickListener((view2) -> {
             Toast.makeText(getActivity(), "Going back", Toast.LENGTH_SHORT).show();
             ((MainActivity) getActivity()).setViewPagerByTitle("StartScreen_Fragment"); //start screen fragment
