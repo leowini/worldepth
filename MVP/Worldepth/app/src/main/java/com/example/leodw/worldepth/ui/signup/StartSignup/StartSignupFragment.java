@@ -1,6 +1,7 @@
 package com.example.leodw.worldepth.ui.signup.StartSignup;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -30,6 +31,8 @@ public class StartSignupFragment extends Fragment {
 
     private ImageView mPhoneSignup;
     private ImageView mEmailSignup;
+
+    private ImageView mBackToStart;
 
 
     public static StartSignupFragment newInstance() {
@@ -72,6 +75,8 @@ public class StartSignupFragment extends Fragment {
         mEmailSignup = view.findViewById(R.id.emailSignup);
         mPhoneSignup.setOnClickListener(v -> ((MainActivity)getActivity()).setViewPagerByTitle("Phone_Fragment"));
         mEmailSignup.setOnClickListener(v -> ((MainActivity) getActivity()).setViewPagerByTitle("Email_Fragment"));
+        mBackToStart = view.findViewById(R.id.signUpBackButton);
+        mBackToStart.setOnClickListener(v -> ((MainActivity) getActivity()).setViewPagerByTitle("StartScreen_Fragment"));
     }
 
 
