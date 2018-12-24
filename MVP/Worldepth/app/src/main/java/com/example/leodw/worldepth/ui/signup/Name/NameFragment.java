@@ -47,9 +47,8 @@ public class NameFragment extends Fragment {
 
         mNameBackButton = view.findViewById(R.id.nameBackButton);
         mNameBackButton.setOnClickListener((view2) -> {
-            Toast.makeText(getActivity(), "Going back", Toast.LENGTH_SHORT).show();
             int lastLoc = getLastLocation();
-            ((MainActivity) getActivity()).setViewPager(lastLoc); //either phone or email fragment
+            ((MainActivity) getActivity()).setViewPagerByTitle("StartSignup_Fragment"); //either phone or email fragment
         });
         return view;
     }

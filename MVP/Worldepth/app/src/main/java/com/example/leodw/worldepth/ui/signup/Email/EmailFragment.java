@@ -74,7 +74,6 @@ public class EmailFragment extends Fragment {
         });
 
         goBack.setOnClickListener((view2) -> {
-            Toast.makeText(getActivity(), "Going back", Toast.LENGTH_SHORT).show();
             ((MainActivity) getActivity()).setViewPagerByTitle("StartSignup_Fragment"); //signup fragment
         });
     }

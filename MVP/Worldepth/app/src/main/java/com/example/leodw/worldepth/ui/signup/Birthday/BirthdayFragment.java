@@ -50,7 +50,6 @@ public class BirthdayFragment extends Fragment {
 
         ImageView birthdayBackButton = view.findViewById(R.id.birthdayBackButton);
         birthdayBackButton.setOnClickListener((view2) -> {
-            Toast.makeText(getActivity(), "Going back", Toast.LENGTH_SHORT).show();
             ((MainActivity) getActivity()).setViewPagerByTitle("Name_Fragment");
         });
         return view;
