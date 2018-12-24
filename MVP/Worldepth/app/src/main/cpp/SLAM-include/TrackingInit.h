@@ -39,6 +39,9 @@ namespace SLAM
 
         cv::Mat beginTracking(const cv::Mat im, const double timestamp);
 
+        void Reset();
+
+        void Stop();
     private:
         //Stores processed frames
         FrameList* frameList;
@@ -51,12 +54,15 @@ namespace SLAM
         //ORB VOCAB
         ORBVocabulary* mVocabulary;
 
-        std::thread* mptLocalMapping;
-        std::thread* mptLoopClosing;
-        std::thread* mptTracking;
+        //std::thread* mtLocalMapping;
+        //std::thread* mtLoopClosing;
+        std::thread* mtTracking;
 
         //Whether or not images are being captured for SLAM processing
-        bool isProcessing;
+        bool mReset;
+
+        bool mActivateLocalizationMode;
+        bool mDeactivateLocalizationMode;
 
         //method called by processing thread
         void processing();

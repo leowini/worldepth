@@ -6,8 +6,7 @@
 
 namespace SLAM
 {
-    TrackingInit::TrackingInit(string &strVocFile, string &strSettingsFile) {
-        isProcessing = true;
+    TrackingInit::TrackingInit(string &strVocFile, string &strSettingsFile): mReset(false), mActivateLocalizationMode(false), mDeactivateLocalizationMode(false) {
 
         frameList = new FrameList();
 
@@ -23,11 +22,10 @@ namespace SLAM
         }
 
         mTracker = new Tracking(this, mVocabulary, map, strSettingsFile);
+        mtTracking = new thread(&TrackingInit::beginTracking, this);
+        //mtLoopClosing = new thread()
 
-        mptTracking = new thread(&TrackingInit::beginTracking, this);
-        //mptLoopClosing = new thread()
-
-        //mptLocalMapping = new thread(&LocalMapping::Run, mpLocalMapper);
+        //mtLocalMapping = new thread(&LocalMapping::Run, mpLocalMapper);
     }
 
     void TrackingInit::sendToFrameList(Frame *frame) {
@@ -50,6 +48,13 @@ namespace SLAM
 
         //call function on FrameList[0]
     } */
+    void TrackingInit::Reset() {
+        mReset = true;
+    }
+
+    void TrackingInit::Stop() {
+        //mtTracking->RequestFinish();
+    }
 
     cv::Mat TrackingInit::beginTracking(const cv::Mat im, const double timestamp) {
         cv::Mat Tcw = mTracker->GrabImageMonocular(im, timestamp);
