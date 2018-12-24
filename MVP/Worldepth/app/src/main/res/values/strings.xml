@@ -29,4 +29,10 @@
     <string name="sign_out">Sign Out</string>
     <string name="guest">Guest</string>
     <string name="must_have_upper_and_lower_case">Must have upper and lower case</string>
+    <string name="about">About</string>
+    <string name="notifications">Notifications</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="feedback">Feedback</string>
+    <string name="rate_us_on_the_app_store">Rate Us on the App Store</string>
+    <string name="account">Account</string>
 </resources>
