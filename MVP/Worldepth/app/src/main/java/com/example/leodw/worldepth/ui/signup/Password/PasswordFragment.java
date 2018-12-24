@@ -115,31 +115,45 @@ public class PasswordFragment extends Fragment {
         String password = mPasswordInput.getText().toString();
         String confirmed = mConfirmPassword.getText().toString();
         boolean validity = true;
+
         if (!checkPasswordLength(password)) {
-            Log.d(TAG, "Password must be between 8 and 20 characters long");
-            Toast.makeText(getActivity(), "Password must be between 8 and 20 characters long", Toast.LENGTH_SHORT).show();
+            getView().findViewById(R.id.atLeast8).setVisibility(View.VISIBLE);
+            getView().findViewById(R.id.over20).setVisibility(View.VISIBLE);
             validity = false;
+        } else {
+            getView().findViewById(R.id.atLeast8).setVisibility(View.INVISIBLE);
+            getView().findViewById(R.id.over20).setVisibility(View.INVISIBLE);
         }
+
         if (!containsNumbers(password)) {
-            Log.d(TAG, "Password must contain numbers");
-            Toast.makeText(getActivity(), "Password must contain numbers", Toast.LENGTH_SHORT).show();
+            getView().findViewById(R.id.containNumbers).setVisibility(View.VISIBLE);
             validity = false;
+        } else {
+            getView().findViewById(R.id.containNumbers).setVisibility(View.INVISIBLE);
         }
+
         if (!containsUpperAndLower(password)) {
-            Log.d(TAG, "Password must contain uppercase and lowercase characters");
-            Toast.makeText(getActivity(), "Password must contain uppercase and lowercase characters", Toast.LENGTH_SHORT).show();
+            getView().findViewById(R.id.upperLower).setVisibility(View.VISIBLE);
             validity = false;
+        } else {
+            getView().findViewById(R.id.upperLower).setVisibility(View.INVISIBLE);
         }
         if (containsIllegalChars(password)) {
-            Log.d(TAG, "Password contains an illegal character");
-            Toast.makeText(getActivity(), "Password contains an illegal character", Toast.LENGTH_SHORT).show();
+            getView().findViewById(R.id.passwordIllegalChars).setVisibility(View.VISIBLE);
             validity = false;
+        } else {
+            getView().findViewById(R.id.passwordIllegalChars).setVisibility(View.INVISIBLE);
         }
+
         if (!doPasswordsMatch(password, confirmed)) {
             Log.d(TAG, "Passwords must match");
             Toast.makeText(getActivity(), "Passwords must match", Toast.LENGTH_SHORT).show();
+            getView().findViewById(R.id.mustMatch).setVisibility(View.VISIBLE);
             validity = false;
+        } else {
+            getView().findViewById(R.id.mustMatch).setVisibility(View.INVISIBLE);
         }
+        
         return validity;
     }
 
