@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.leodw.worldepth.R;
@@ -32,7 +33,9 @@ public class PasswordFragment extends Fragment {
     private FirebaseWrapper mFb;
     private DataTransfer mDt;
     private EditText mPasswordInput, mConfirmPassword;
-    private Button completeSignUp, goBack;
+    private Button completeSignUp;
+    private ImageView goBack;
+    private String mEmail;
 
     public static PasswordFragment newInstance() {
         return new PasswordFragment();
@@ -106,7 +109,6 @@ public class PasswordFragment extends Fragment {
         });
 
         goBack.setOnClickListener((view2) -> {
-            Toast.makeText(getActivity(), "Going back", Toast.LENGTH_SHORT).show();
             ((MainActivity) getActivity()).setViewPagerByTitle("Name_Fragment"); //name
         });
     }

@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.leodw.worldepth.R;
@@ -26,6 +27,7 @@ public class NameFragment extends Fragment {
     private FirebaseWrapper mFb;
     private DataTransfer mDt;
 
+    private ImageView mNameBackButton;
 
     public static NameFragment newInstance() {
         return new NameFragment();
@@ -43,9 +45,8 @@ public class NameFragment extends Fragment {
             ((MainActivity) getActivity()).setViewPagerByTitle("Birthday_Fragment"); //birthday
         });
 
-        Button nameBackButton = view.findViewById(R.id.nameBackButton);
-        nameBackButton.setOnClickListener((view2) -> {
-            Toast.makeText(getActivity(), "Going back", Toast.LENGTH_SHORT).show();
+        mNameBackButton = view.findViewById(R.id.nameBackButton);
+        mNameBackButton.setOnClickListener((view2) -> {
             int lastLoc = getLastLocation();
             ((MainActivity) getActivity()).setViewPager(lastLoc); //either phone or email fragment
         });
