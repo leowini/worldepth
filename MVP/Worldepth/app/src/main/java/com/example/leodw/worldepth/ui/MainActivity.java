@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     
     private SectionsStatePagerAdapter mPagerAdapter;
-    private ViewPager mViewPager;
+    private SelectiveSwipingViewPager mViewPager;
     static private FirebaseWrapper fb;
     static private DataTransfer dt;
 
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         mPreferences = getSharedPreferences(sharedPrefFile, MODE_PRIVATE);
         mLoginState = mPreferences.getBoolean("loginState", false);
         mPagerAdapter = new SectionsStatePagerAdapter(getSupportFragmentManager());
-        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager = (SelectiveSwipingViewPager) findViewById(R.id.container);
         setupViewPager(mViewPager);
         String startFragment = (mLoginState) ? "Camera_Fragment" : "StartScreen_Fragment";
         setViewPagerByTitle(startFragment);
