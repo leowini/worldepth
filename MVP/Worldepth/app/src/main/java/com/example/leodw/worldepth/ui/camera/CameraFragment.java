@@ -62,7 +62,7 @@ public class CameraFragment extends Fragment {
     private SurfaceTexture mSlamOutputSurface;
 
     private Button captureBtn;
-    private Button mSignOutButton;
+    private Button mSettingsButton;
     private AutoFitTextureView mTextureView;
 
     private boolean mRecordingState;
@@ -264,7 +264,7 @@ public class CameraFragment extends Fragment {
         mTextureView = (AutoFitTextureView) view.findViewById(R.id.textureView);
         assert mTextureView != null;
         captureBtn = (Button) view.findViewById(R.id.captureButton);
-        mSignOutButton = (Button) view.findViewById(R.id.signOutButton);
+        mSettingsButton = (Button) view.findViewById(R.id.settingsButton);
         captureBtn.setOnTouchListener((v, event) -> {
             switch (event.getAction()) {
                 case (MotionEvent.ACTION_DOWN):
@@ -287,12 +287,7 @@ public class CameraFragment extends Fragment {
                     return false;
             }
         });
-        mSignOutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((MainActivity) getActivity()).setViewPagerByTitle("Settings_Fragment");
-            }
-        });
+        mSettingsButton.setOnClickListener(v -> ((MainActivity) getActivity()).setViewPagerByTitle("Settings_Fragment"));
     }
 
     /**
