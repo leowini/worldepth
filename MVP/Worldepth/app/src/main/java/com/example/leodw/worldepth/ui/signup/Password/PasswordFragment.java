@@ -146,8 +146,6 @@ public class PasswordFragment extends Fragment {
         }
 
         if (!doPasswordsMatch(password, confirmed)) {
-            Log.d(TAG, "Passwords must match");
-            Toast.makeText(getActivity(), "Passwords must match", Toast.LENGTH_SHORT).show();
             getView().findViewById(R.id.mustMatch).setVisibility(View.VISIBLE);
             validity = false;
         } else {
