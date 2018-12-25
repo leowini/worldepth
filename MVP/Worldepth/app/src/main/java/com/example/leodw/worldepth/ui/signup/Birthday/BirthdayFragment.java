@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -26,7 +27,6 @@ public class BirthdayFragment extends Fragment {
     private BirthdayViewModel mViewModel;
     private FirebaseWrapper mFb;
     private EditText mBirthdayInput;
-
 
     public static BirthdayFragment newInstance() {
         return new BirthdayFragment();
@@ -48,9 +48,8 @@ public class BirthdayFragment extends Fragment {
             ((MainActivity) getActivity()).setViewPagerByTitle("Password_Fragment");
         });
 
-        Button birthdayBackButton = view.findViewById(R.id.birthdayBackButton);
+        ImageView birthdayBackButton = view.findViewById(R.id.birthdayBackButton);
         birthdayBackButton.setOnClickListener((view2) -> {
-            Toast.makeText(getActivity(), "Going back", Toast.LENGTH_SHORT).show();
             ((MainActivity) getActivity()).setViewPagerByTitle("Name_Fragment");
         });
         return view;
