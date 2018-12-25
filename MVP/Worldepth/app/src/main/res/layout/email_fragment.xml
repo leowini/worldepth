@@ -19,13 +19,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.45"
-        tools:layout_editor_absoluteX="16dp" />
+        tools:layout_editor_absoluteX="16dp"
+        tools:ignore="MissingConstraints" />
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/bubble"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/Bubble"
+        android:src="@drawable/bubble1"
         tools:layout_editor_absoluteX="6dp"
         tools:layout_editor_absoluteY="219dp"
         tools:ignore="MissingConstraints" />
