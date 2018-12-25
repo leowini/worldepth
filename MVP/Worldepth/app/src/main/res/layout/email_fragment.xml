@@ -29,7 +29,8 @@
         android:src="@drawable/bubble1"
         tools:layout_editor_absoluteX="6dp"
         tools:layout_editor_absoluteY="219dp"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        android:visibility="invisible"/>
 
     <EditText
         android:id="@+id/emailService"
