@@ -153,7 +153,7 @@ public class PasswordFragment extends Fragment {
         } else {
             getView().findViewById(R.id.mustMatch).setVisibility(View.INVISIBLE);
         }
-        
+
         return validity;
     }
 
