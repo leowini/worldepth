@@ -16,9 +16,9 @@
         android:hint="@string/firstName"
         android:inputType="text"
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.SearchResult.Title"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.45"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.45" />
 
     <EditText
         android:id="@+id/lastName"
@@ -30,41 +30,41 @@
         android:inputType="text"
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.SearchResult.Title"
         app:layout_constraintStart_toStartOf="@id/firstName"
-        app:layout_constraintTop_toBottomOf="@id/firstName"/>
+        app:layout_constraintTop_toBottomOf="@id/firstName" />
 
 
     <Button
-        android:id="@+id/continueButton"
+        android:id="@+id/nameNextButton"
         style="@style/Widget.AppCompat.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="200dp"
-        android:layout_marginTop="130dp"
-        android:text="@string/signUp"
-        app:layout_constraintStart_toStartOf="@id/lastName"
-        app:layout_constraintTop_toBottomOf="@id/lastName" />
-
-    <Button
-        android:id="@+id/backButton"
-        style="@style/Widget.AppCompat.Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="130dp"
-        android:text="@string/backButton"
-        app:layout_constraintStart_toStartOf="@id/lastName"
-        app:layout_constraintTop_toBottomOf="@id/lastName" />
+        android:text="@string/nextButton"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.944" />
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/logo"
+        android:id="@+id/nameBackButton"
+        android:layout_width="43dp"
+        android:layout_height="58dp"
+        android:src="@drawable/back2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.034" />
+
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/name"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.05"
-        android:maxWidth="150dp"
-        android:adjustViewBounds ="true"/>
+        app:layout_constraintVertical_bias="0.05" />
 </android.support.constraint.ConstraintLayout>

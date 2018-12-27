@@ -16,9 +16,10 @@
         android:hint="@string/email"
         android:inputType="textEmailAddress"
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.SearchResult.Title"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.40"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.447"
+        tools:layout_editor_absoluteX="0dp" />
 
     <EditText
         android:id="@+id/passwordInput"
@@ -100,8 +101,8 @@
         app:layout_constraintTop_toBottomOf="@+id/confirmPasswordInput" />
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:src="@drawable/logo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -123,14 +124,12 @@
         app:layout_constraintStart_toStartOf="@id/confirmPasswordInput"
         app:layout_constraintTop_toBottomOf="@id/confirmPasswordInput"/>
 
-    <Button
+    <ImageView
         android:id="@+id/backButton"
-        style="@style/Widget.AppCompat.Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="130dp"
-        android:text="@string/backButton"
-        app:layout_constraintStart_toStartOf="@id/confirmPasswordInput"
-        app:layout_constraintTop_toBottomOf="@id/confirmPasswordInput"/>
+        android:layout_width="39dp"
+        android:layout_height="77dp"
+        android:src="@drawable/back2"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="16dp" />
 </android.support.constraint.ConstraintLayout>

@@ -1,6 +1,7 @@
 package com.example.leodw.worldepth.ui.signup.StartSignup;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.leodw.worldepth.R;
@@ -21,41 +23,41 @@ import com.example.leodw.worldepth.ui.signup.SignUpFragment;
 import com.example.leodw.worldepth.ui.signup.SignUpViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class StartSignupFragment extends Fragment {
+public class  StartSignupFragment extends Fragment {
     private static final String TAG = "StartSignupFragment";
 
     private StartSignupViewModel mViewModel;
     private FirebaseWrapper mFb;
+
+    private ImageView mPhoneSignup;
+    private ImageView mEmailSignup;
+
+    private ImageView mBackToStart;
 
 
     public static StartSignupFragment newInstance() {
         return new StartSignupFragment();
     }
 
-    @Nullable
+
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.start_signup_fragment, container, false);
+
+        /*
         Button emailSignup = view.findViewById(R.id.emailSignup);
-        Log.d(TAG, "onCreateView: started");
-        emailSignup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        emailSignup.setOnClickListener((view1) -> {
                 Toast.makeText(getActivity(), "Going to email sign up page", Toast.LENGTH_SHORT).show();
                 ((MainActivity) getActivity()).setViewPager(3); //email page
-            }
         });
 
         Button phoneSignup = view.findViewById(R.id.phoneSignup);
-        Log.d(TAG, "onCreateView: started");
-        phoneSignup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        phoneSignup.setOnClickListener((view1) -> {
                 Toast.makeText(getActivity(), "Going to phone sign up page", Toast.LENGTH_SHORT).show();
-                ((MainActivity) getActivity()).setViewPager(4); //phone page
-            }
+                ((MainActivity) getActivity()).setViewPager(5); //phone page
         });
+        */
         return view;
     }
 
@@ -69,6 +71,13 @@ public class StartSignupFragment extends Fragment {
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
-
+        mPhoneSignup = view.findViewById(R.id.phoneSignup);
+        mEmailSignup = view.findViewById(R.id.emailSignup);
+        mPhoneSignup.setOnClickListener(v -> ((MainActivity)getActivity()).setViewPagerByTitle("Phone_Fragment"));
+        mEmailSignup.setOnClickListener(v -> ((MainActivity) getActivity()).setViewPagerByTitle("Email_Fragment"));
+        mBackToStart = view.findViewById(R.id.signUpBackButton);
+        mBackToStart.setOnClickListener(v -> ((MainActivity) getActivity()).setViewPagerByTitle("StartScreen_Fragment"));
     }
+
+
 }

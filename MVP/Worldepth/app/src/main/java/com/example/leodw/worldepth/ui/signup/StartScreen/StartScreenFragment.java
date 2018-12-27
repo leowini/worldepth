@@ -35,45 +35,6 @@ public class StartScreenFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.start_screen_fragment, container, false);
-        Button goToSignIn = view.findViewById(R.id.goToSignIn);
-        Log.d(TAG, "onCreateView: started");
-        goToSignIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getActivity(), "Going to login page", Toast.LENGTH_SHORT).show();
-                ((MainActivity) getActivity()).setViewPager(1); //login page
-            }
-        });
-
-        Button goToSignUp = view.findViewById(R.id.goToSignUp);
-        Log.d(TAG, "onCreateView: started");
-        goToSignUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getActivity(), "Going to sign up page", Toast.LENGTH_SHORT).show();
-                ((MainActivity) getActivity()).setViewPager(2); //sign up page
-            }
-        });
-
-        Button goToViewer = view.findViewById(R.id.goToViewer);
-        Log.d(TAG, "onCreateView: started");
-        goToViewer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getActivity(), "Going to viewer", Toast.LENGTH_SHORT).show();
-                ((MainActivity) getActivity()).setViewPager(9); //sign up page
-            }
-        });
-
-        Button goToCamera = view.findViewById(R.id.goToCamera);
-        Log.d(TAG, "onCreateView: started");
-        goToCamera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getActivity(), "Going to camera", Toast.LENGTH_SHORT).show();
-                ((MainActivity) getActivity()).setViewPager(7); //sign up page
-            }
-        });
         return view;
     }
 
@@ -87,6 +48,23 @@ public class StartScreenFragment extends Fragment {
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
+        Button goToSignIn = view.findViewById(R.id.goToSignIn);
+        goToSignIn.setOnClickListener((view1) -> {
+            Toast.makeText(getActivity(), "Going to login page", Toast.LENGTH_SHORT).show();
+            ((MainActivity) getActivity()).setViewPager(1); //login page
+        });
 
+        Button goToSignUp = view.findViewById(R.id.goToSignUp);
+        goToSignUp.setOnClickListener((view2) -> {
+            Toast.makeText(getActivity(), "Going to sign up page", Toast.LENGTH_SHORT).show();
+            ((MainActivity) getActivity()).setViewPager(2); //sign up page
+        });
+
+        Button goToCamera = view.findViewById(R.id.goToCamera);
+        goToCamera.setOnClickListener((view4) -> {
+            Toast.makeText(getActivity(), "Going to camera", Toast.LENGTH_SHORT).show();
+            ((MainActivity) getActivity()).setLoginState(true);
+            ((MainActivity) getActivity()).setViewPagerByTitle("Camera_Fragment"); //camera page
+        });
     }
 }
