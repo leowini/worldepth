@@ -14,6 +14,8 @@ void start();
 void process(cv::Mat im, double tstamp);
 
 //call this at the end, writes the map to the file and closes things
+//for internal storage, this looks like "/data/data/com.example.leodw.worldepth/name of file" i think
+//This could then read into reconstruction or go to the database so it isn't stored on the phone
 void end(std::string filename);
 
 

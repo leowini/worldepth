@@ -4,11 +4,12 @@
 
 #include <RunSlam.h>
 #include <TrackingInit.h>
+#include <RandomMap.h>
 
 namespace SLAM {
 
     void start () {
-        TrackingInit();
+        //TrackingInit * slam = new TrackingInit();
         //maybe do other threading here
     }
 
@@ -18,8 +19,14 @@ namespace SLAM {
     }
 
 
-    void end () {
-        //get
+    void end (std::string filename) {
+        //get finished map as reference
+        //writeMap(filename, map);
+
+        //this should run map.clear and delete map
+        //delete slam;
+        
+        //close any other threads
     }
 }
 
