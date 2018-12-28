@@ -10,6 +10,7 @@ import com.example.leodw.worldepth.data.DataTransfer;
 import com.example.leodw.worldepth.data.FirebaseWrapper;
 import com.example.leodw.worldepth.ui.camera.CameraFragment;
 import com.example.leodw.worldepth.ui.loading.LoadingFragment;
+import com.example.leodw.worldepth.ui.settings.Settings;
 import com.example.leodw.worldepth.ui.signup.Birthday.BirthdayFragment;
 import com.example.leodw.worldepth.ui.signup.Email.EmailFragment;
 import com.example.leodw.worldepth.ui.signup.Login.LoginFragment;
@@ -66,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
         mPagerAdapter.addFragment(new CameraFragment(), "Camera_Fragment");             //8
         mPagerAdapter.addFragment(new LoadingFragment(), "Loading_Fragment");           //9
         mPagerAdapter.addFragment(new ViewerFragment(), "Viewer_Fragment");             //10
+        mPagerAdapter.addFragment(new Settings(), "Settings_Fragment");
         mViewPager.setAdapter(mPagerAdapter);
     }
 
