@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -35,7 +37,6 @@ public class PasswordFragment extends Fragment {
     private ImageView goBack;
     private String mEmail;
 
-
     public static PasswordFragment newInstance() {
         return new PasswordFragment();
     }
@@ -63,6 +64,40 @@ public class PasswordFragment extends Fragment {
         completeSignUp = view.findViewById(R.id.passwordNextButton);
         goBack = view.findViewById(R.id.passwordBackButton);
 
+        mPasswordInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                validPassword();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        mConfirmPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                validPassword();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         completeSignUp.setOnClickListener((v) -> {
             if (validPassword()) {
                 for (int i = 0; i < mDt.size(); i++) {
@@ -81,32 +116,45 @@ public class PasswordFragment extends Fragment {
     private boolean validPassword() {
         String password = mPasswordInput.getText().toString();
         String confirmed = mConfirmPassword.getText().toString();
+        boolean validity = true;
+
         if (!checkPasswordLength(password)) {
-            Log.d(TAG, "Password must be between 8 and 20 characters long");
-            Toast.makeText(getActivity(), "Password must be between 8 and 20 characters long", Toast.LENGTH_SHORT).show();
-            return false;
+            getView().findViewById(R.id.atLeast8).setVisibility(View.VISIBLE);
+            getView().findViewById(R.id.over20).setVisibility(View.VISIBLE);
+            validity = false;
+        } else {
+            getView().findViewById(R.id.atLeast8).setVisibility(View.INVISIBLE);
+            getView().findViewById(R.id.over20).setVisibility(View.INVISIBLE);
         }
+
         if (!containsNumbers(password)) {
-            Log.d(TAG, "Password must contain numbers");
-            Toast.makeText(getActivity(), "Password must contain numbers", Toast.LENGTH_SHORT).show();
-            return false;
+            getView().findViewById(R.id.containNumbers).setVisibility(View.VISIBLE);
+            validity = false;
+        } else {
+            getView().findViewById(R.id.containNumbers).setVisibility(View.INVISIBLE);
         }
+
         if (!containsUpperAndLower(password)) {
-            Log.d(TAG, "Password must contain uppercase and lowercase characters");
-            Toast.makeText(getActivity(), "Password must contain uppercase and lowercase characters", Toast.LENGTH_SHORT).show();
-            return false;
+            getView().findViewById(R.id.upperLower).setVisibility(View.VISIBLE);
+            validity = false;
+        } else {
+            getView().findViewById(R.id.upperLower).setVisibility(View.INVISIBLE);
         }
         if (containsIllegalChars(password)) {
-            Log.d(TAG, "Password contains an illegal character");
-            Toast.makeText(getActivity(), "Password contains an illegal character", Toast.LENGTH_SHORT).show();
-            return false;
+            getView().findViewById(R.id.passwordIllegalChars).setVisibility(View.VISIBLE);
+            validity = false;
+        } else {
+            getView().findViewById(R.id.passwordIllegalChars).setVisibility(View.INVISIBLE);
         }
+
         if (!doPasswordsMatch(password, confirmed)) {
-            Log.d(TAG, "Passwords must match");
-            Toast.makeText(getActivity(), "Passwords must match", Toast.LENGTH_SHORT).show();
-            return false;
+            getView().findViewById(R.id.mustMatch).setVisibility(View.VISIBLE);
+            validity = false;
+        } else {
+            getView().findViewById(R.id.mustMatch).setVisibility(View.INVISIBLE);
         }
-        return true;
+
+        return validity;
     }
 
     /*checks for illegal characters. Only the following are permitted:
