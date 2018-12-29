@@ -28,17 +28,14 @@ public class LoadingFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.camera_fragment, container, false);
-
+        return inflater.inflate(R.layout.loading_fragment, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         Button loadingNextButton = view.findViewById(R.id.loadingNextButton);
         Button loadingBackButton = view.findViewById(R.id.loadingBackBtn);
-        loadingNextButton.setOnClickListener((view1) -> {
-            ((MainActivity) getActivity()).setViewPagerByTitle("Viewer_Fragment");
-        });
+        loadingNextButton.setOnClickListener((view1) -> ((MainActivity) getActivity()).setViewPagerByTitle("Viewer_Fragment"));
         loadingBackButton.setOnClickListener(v -> ((MainActivity) getActivity()).setViewPagerByTitle("Camera_Fragment"));
     }
 }
