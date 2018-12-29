@@ -21,9 +21,13 @@ import com.example.leodw.worldepth.ui.signup.StartScreen.StartScreenFragment;
 import com.example.leodw.worldepth.ui.signup.StartSignup.StartSignupFragment;
 import com.example.leodw.worldepth.ui.viewer.ViewerFragment;
 
+import java.util.NavigableMap;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
+
+    private NavigationManager mNavigationManager;
     
     private SectionsStatePagerAdapter mPagerAdapter;
     private SelectiveSwipingViewPager mViewPager;
