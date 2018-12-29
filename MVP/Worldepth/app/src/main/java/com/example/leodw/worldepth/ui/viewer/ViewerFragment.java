@@ -54,7 +54,7 @@ public class ViewerFragment extends Fragment {
     @Nullable
     private ModelSurfaceView modelView;
     private ViewGroup containerView;
-    
+
     private Button mLoadSample;
 
     @Override
@@ -78,12 +78,6 @@ public class ViewerFragment extends Fragment {
             beginLoadModel(getActivity().getIntent().getData());
         }
         mLoadSample = view.findViewById(R.id.loadSampleButton);
-        mOpenModel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                checkReadPermissionThenOpen();
-            }
-        });
         mLoadSample.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
