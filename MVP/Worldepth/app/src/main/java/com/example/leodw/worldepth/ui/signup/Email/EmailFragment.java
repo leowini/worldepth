@@ -36,7 +36,8 @@ public class EmailFragment extends Fragment {
     private EditText mEmailInput;
     private EditText mServiceInput;
     private EditText mSuffixInput;
-    private Button signUp, goBack;
+    private Button signUp;
+    private ImageView goBack;
 
     private DataTransfer mDt;
 
