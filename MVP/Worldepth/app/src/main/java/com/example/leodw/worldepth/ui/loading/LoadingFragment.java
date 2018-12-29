@@ -32,10 +32,19 @@ public class LoadingFragment extends Fragment {
         loadingFragmentBinding.executePendingBindings();
 
         Button loadingNextButton = view.findViewById(R.id.loadingNextButton);
+        Button loadingBackButton = view.findViewById(R.id.loadingBackBtn);
         loadingNextButton.setOnClickListener((view1) -> {
             Toast.makeText(getActivity(), "Finished", Toast.LENGTH_SHORT).show();
             ((MainActivity) getActivity()).setViewPager(10); //viewer
         });
+        loadingBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity) getActivity()).setViewPagerByTitle("Camera_Fragment");
+            }
+        });
+
+
         return view;
     }
 }
