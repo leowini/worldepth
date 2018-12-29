@@ -8,6 +8,7 @@ import android.os.Bundle;
 import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.data.DataTransfer;
 import com.example.leodw.worldepth.data.FirebaseWrapper;
+import com.example.leodw.worldepth.navigation.NavigationManager;
 import com.example.leodw.worldepth.ui.camera.CameraFragment;
 import com.example.leodw.worldepth.ui.loading.LoadingFragment;
 import com.example.leodw.worldepth.ui.settings.Settings;
@@ -23,7 +24,7 @@ import com.example.leodw.worldepth.ui.viewer.ViewerFragment;
 
 import java.util.NavigableMap;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity implements NavigationManager.NavigationListener {
 
     private static final String TAG = "MainActivity";
 
@@ -48,6 +49,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Init the NavigationManager
+        mNavigationManager.init(getSupportFragmentManager());
+        mNavigationManager.setNavigationListener(this);
+
         mPreferences = getSharedPreferences(sharedPrefFile, MODE_PRIVATE);
         mLoginState = mPreferences.getBoolean("loginState", false);
         mPagerAdapter = new SectionsStatePagerAdapter(getSupportFragmentManager());
