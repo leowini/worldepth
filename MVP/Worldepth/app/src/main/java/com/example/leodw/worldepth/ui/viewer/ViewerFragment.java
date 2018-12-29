@@ -26,6 +26,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.leodw.worldepth.ui.MainActivity;
 import com.example.leodw.worldepth.ui.viewer.obj.ObjModel;
 import com.example.leodw.worldepth.ui.viewer.ply.PlyModel;
 import com.example.leodw.worldepth.ui.viewer.stl.StlModel;
@@ -89,6 +90,13 @@ public class ViewerFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 loadSampleModel();
+            }
+        });
+        Button backToCamera = view.findViewById(R.id.viewerBackToCamera);
+        backToCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity) getActivity()).setViewPagerByTitle("Camera_Fragment");
             }
         });
     }

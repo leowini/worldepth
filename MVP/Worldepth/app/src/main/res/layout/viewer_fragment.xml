@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -10,18 +10,20 @@
     tools:context="com.example.leodw.worldepth.ui.viewer.ViewerFragment">
 
     <Button
-        android:id="@+id/openModelButton"
+        android:id="@+id/viewerBackToCamera"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="open"
-        />
+        android:text="@string/back"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp" />
 
     <Button
         android:id="@+id/loadSampleButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="sample"
-        />
+        android:text="@string/sample"
+        tools:layout_editor_absoluteX="297dp"
+        tools:layout_editor_absoluteY="0dp" />
 
-</FrameLayout>
+</android.support.constraint.ConstraintLayout>
 

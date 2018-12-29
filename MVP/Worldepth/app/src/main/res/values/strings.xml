@@ -38,4 +38,6 @@
     <string name="settings">Settings</string>
     <string name="must_contain_valid_characters">Must contain valid characters</string>
     <string name="back">Back</string>
+    <string name="viewerbacktocamera">viewerBackToCamera</string>
+    <string name="sample">sample</string>
 </resources>
