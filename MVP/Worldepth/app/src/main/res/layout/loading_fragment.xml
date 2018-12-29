@@ -1,38 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:bind="http://schemas.android.com/tools">
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
 
-    <data>
+    <Button
+        android:id="@+id/loadingBackBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="43dp"
+        android:layout_marginEnd="39dp"
+        android:layout_marginBottom="172dp"
+        android:text="@string/back"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/loadingNextButton"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <variable
-            name="viewModel"
-            type="com.example.leodw.worldepth.ui.loading.LoadingViewModel" />
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="59dp"
+        android:layout_marginEnd="107dp"
+        android:layout_marginBottom="204dp"
+        android:text="@string/loading"
+        android:textSize="50sp"
+        app:layout_constraintBottom_toTopOf="@+id/loadingBackBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.802" />
 
-    </data>
+    <Button
+        android:id="@+id/loadingNextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="39dp"
+        android:layout_marginTop="204dp"
+        android:layout_marginEnd="49dp"
+        android:layout_marginBottom="151dp"
+        android:ems="10"
+        android:text="@string/nextButton"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/loadingBackBtn"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/back"
-            android:id="@+id/loadingBackBtn"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="50sp"
-            android:text="@string/loading" />
-
-        <Button
-            android:id="@+id/loadingNextButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:text="@string/nextButton" />
-
-    </LinearLayout>
-
-</layout>
+</android.support.constraint.ConstraintLayout>
