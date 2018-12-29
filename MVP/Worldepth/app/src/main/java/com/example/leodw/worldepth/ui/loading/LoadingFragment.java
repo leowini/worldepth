@@ -2,7 +2,9 @@ package com.example.leodw.worldepth.ui.loading;
 
 import android.databinding.DataBindingUtil;
 import android.databinding.BindingAdapter;
+
 import com.example.leodw.worldepth.databinding.LoadingFragmentBinding;
+
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -34,17 +36,9 @@ public class LoadingFragment extends Fragment {
         Button loadingNextButton = view.findViewById(R.id.loadingNextButton);
         Button loadingBackButton = view.findViewById(R.id.loadingBackBtn);
         loadingNextButton.setOnClickListener((view1) -> {
-            Toast.makeText(getActivity(), "Finished", Toast.LENGTH_SHORT).show();
-            ((MainActivity) getActivity()).setViewPager(10); //viewer
+            ((MainActivity) getActivity()).setViewPagerByTitle("Viewer_Fragment");
         });
-        loadingBackButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((MainActivity) getActivity()).setViewPagerByTitle("Camera_Fragment");
-            }
-        });
-
-
+        loadingBackButton.setOnClickListener(v -> ((MainActivity) getActivity()).setViewPagerByTitle("Camera_Fragment"));
         return view;
     }
 }
