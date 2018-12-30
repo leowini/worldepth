@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.data.FirebaseWrapper;
 import com.example.leodw.worldepth.ui.MainActivity;
+import com.example.leodw.worldepth.ui.transitions.SignupTransition;
 import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.navigation.Navigation;
@@ -44,20 +45,6 @@ public class  StartSignupFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.start_signup_fragment, container, false);
-
-        /*
-        Button emailSignup = view.findViewById(R.id.emailSignup);
-        emailSignup.setOnClickListener((view1) -> {
-                Toast.makeText(getActivity(), "Going to email sign up page", Toast.LENGTH_SHORT).show();
-                ((MainActivity) getActivity()).setViewPager(3); //email page
-        });
-
-        Button phoneSignup = view.findViewById(R.id.phoneSignup);
-        phoneSignup.setOnClickListener((view1) -> {
-                Toast.makeText(getActivity(), "Going to phone sign up page", Toast.LENGTH_SHORT).show();
-                ((MainActivity) getActivity()).setViewPager(5); //phone page
-        });
-        */
         return view;
     }
 
