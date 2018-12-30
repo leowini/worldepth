@@ -63,9 +63,11 @@ public class  StartSignupFragment extends Fragment {
         setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(R.transition.logo_move));
         AnimatorSet emailSet = (AnimatorSet) AnimatorInflater.loadAnimator(getContext(),
                 R.animator.signup_anim);
+        emailSet.setStartDelay(1000);
         emailSet.setTarget(view.findViewById(R.id.emailSignup));
         AnimatorSet phoneSet = (AnimatorSet) AnimatorInflater.loadAnimator(getContext(),
                 R.animator.signup_anim);
+        phoneSet.setStartDelay(1000);
         phoneSet.setTarget(view.findViewById(R.id.phoneSignup));
         emailSet.start();
         phoneSet.start();
