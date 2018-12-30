@@ -63,7 +63,6 @@ public class PhoneFragment extends Fragment {
 
         mPhoneBackButton = view.findViewById(R.id.phoneBackButton);
         mPhoneBackButton.setOnClickListener((view2) -> {
-            Toast.makeText(getActivity(), "Going back", Toast.LENGTH_SHORT).show();
             ((MainActivity) getActivity()).setViewPagerByTitle("StartSignup_Fragment"); //signup
         });
         return view;

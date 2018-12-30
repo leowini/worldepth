@@ -20,6 +20,8 @@ import com.example.leodw.worldepth.ui.MainActivity;
 import com.example.leodw.worldepth.ui.signup.Phone.PhoneFragment;
 import com.example.leodw.worldepth.ui.signup.Phone.PhoneViewModel;
 
+import androidx.navigation.Navigation;
+
 public class LoginFragment extends Fragment {
     private static final String TAG = "LoginFragment";
 
@@ -59,13 +61,12 @@ public class LoginFragment extends Fragment {
                     Toast.makeText(getActivity(), "Invalid email or password", Toast.LENGTH_SHORT).show();
                 }*/
             ((MainActivity) getActivity()).setLoginState(true);
-            ((MainActivity) getActivity()).setViewPagerByTitle("Camera_Fragment");
+            Navigation.findNavController(view1).navigate(R.id.action_loginFragment_to_cameraFragment);
         });
 
         ImageView loginBackButton = view.findViewById(R.id.loginBackButton);
         loginBackButton.setOnClickListener((view2) -> {
-            Toast.makeText(getActivity(), "Going back", Toast.LENGTH_SHORT).show();
-            ((MainActivity) getActivity()).setViewPagerByTitle("StartScreen_Fragment"); //start screen fragment
+            Navigation.findNavController(view2).navigate(R.id.action_loginFragment_to_startScreenFragment);
         });
     }
 

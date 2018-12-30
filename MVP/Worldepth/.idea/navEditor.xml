@@ -19,6 +19,11 @@
                         </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="action_birthdayFragment_to_nameFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_birthdayFragment_to_passwordFragment">
                               <value>
                                 <LayoutPositions />
@@ -108,6 +113,11 @@
                         </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="action_passwordFragment_to_birthdayFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_passwordFragment_to_cameraFragment">
                               <value>
                                 <LayoutPositions />
@@ -151,17 +161,43 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="signUpFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-108" />
+                            <option name="y" value="-2" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_signUpFragment_to_startScreenFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="startScreenFragment">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-383" />
-                            <option name="y" value="-364" />
+                            <option name="x" value="-497" />
+                            <option name="y" value="-180" />
                           </Point>
                         </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="action_startScreenFragment_to_signUpFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_startScreenFragment_to_startSignupFragment">
                               <value>
                                 <LayoutPositions />

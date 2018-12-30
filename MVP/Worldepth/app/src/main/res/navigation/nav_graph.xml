@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_startScreenFragment_to_startSignupFragment"
             app:destination="@id/startSignupFragment" />
+        <action
+            android:id="@+id/action_startScreenFragment_to_signUpFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/passwordFragment"
@@ -98,5 +101,17 @@
         <action
             android:id="@+id/action_loadingFragment_to_viewerFragment"
             app:destination="@id/viewerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.leodw.worldepth.ui.signup.SignUpFragment"
+        android:label="sign_in_fragment"
+        tools:layout="@layout/sign_in_fragment" >
+        <action
+            android:id="@+id/action_loginFragment_to_startScreenFragment"
+            app:destination="@id/startScreenFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
     </fragment>
 </navigation>
