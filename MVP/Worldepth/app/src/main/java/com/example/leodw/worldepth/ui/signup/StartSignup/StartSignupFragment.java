@@ -78,7 +78,7 @@ public class  StartSignupFragment extends Fragment {
         mPhoneSignup.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_startSignupFragment_to_phoneFragment));
         mEmailSignup.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.));
         mBackToStart = view.findViewById(R.id.signUpBackButton);
-        mBackToStart.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_startSignupFragment_to_startScreenFragment);
+        mBackToStart.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_startSignupFragment_to_startScreenFragment));
     }
 
 
