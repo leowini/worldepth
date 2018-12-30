@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.FragmentNavigator;
 
@@ -30,6 +31,7 @@ public class StartScreenFragment extends Fragment {
     private FirebaseWrapper mFb;
 
     private FragmentNavigator.Extras mAnimExtras;
+    private NavOptions mNavOptions;
 
     public static StartScreenFragment newInstance() {
         return new StartScreenFragment();
@@ -53,7 +55,7 @@ public class StartScreenFragment extends Fragment {
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
-        createSharedElementTransitionFromStartToStartSignup();
+        createSignupTransitions();
         Button goToSignIn = view.findViewById(R.id.goToSignIn);
         goToSignIn.setOnClickListener((view1) -> {
             Navigation.findNavController(view1).navigate(R.id.action_startScreenFragment_to_signUpFragment);
@@ -74,10 +76,13 @@ public class StartScreenFragment extends Fragment {
         });
     }
 
-    private void createSharedElementTransitionFromStartToStartSignup() {
+    private void createSignupTransitions() {
         ImageView logo = getView().findViewById(R.id.start_logo);
         mAnimExtras = new FragmentNavigator.Extras.Builder()
                 .addSharedElement(logo, "bigLogo")
+                .build();
+        mNavOptions = new NavOptions.Builder()
+                .setEnterAnim(R.animator.signup_anim)
                 .build();
     }
 }

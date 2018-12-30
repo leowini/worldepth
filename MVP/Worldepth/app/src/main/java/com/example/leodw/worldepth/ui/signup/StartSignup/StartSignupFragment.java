@@ -1,5 +1,7 @@
 package com.example.leodw.worldepth.ui.signup.StartSignup;
 
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
 import android.arch.lifecycle.ViewModelProviders;
 import android.media.Image;
 import android.os.Bundle;
@@ -58,7 +60,11 @@ public class  StartSignupFragment extends Fragment {
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
-        setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.move));
+        setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(R.transition.logo_move));
+        AnimatorSet set = (AnimatorSet) AnimatorInflater.loadAnimator(getContext(),
+                R.animator.signup_anim);
+        set.setTarget(view.findViewById(R.id.emailSignup));
+        set.start();
         mPhoneSignup = view.findViewById(R.id.phoneSignup);
         mEmailSignup = view.findViewById(R.id.emailSignup);
         mPhoneSignup.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_startSignupFragment_to_phoneFragment));

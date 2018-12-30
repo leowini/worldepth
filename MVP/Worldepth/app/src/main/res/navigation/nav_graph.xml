@@ -15,7 +15,9 @@
             app:destination="@id/startSignupFragment" />
         <action
             android:id="@+id/action_startScreenFragment_to_signUpFragment"
-            app:destination="@id/loginFragment" />
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
         <action
             android:id="@+id/action_startScreenFragment_to_cameraFragment"
             app:destination="@id/cameraFragment" />
