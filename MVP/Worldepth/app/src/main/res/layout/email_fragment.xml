@@ -10,6 +10,7 @@
 
     <EditText
         android:id="@+id/emailInput"
+        android:textAlignment="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -22,17 +23,8 @@
         tools:layout_editor_absoluteX="16dp"
         tools:ignore="MissingConstraints" />
 
-    <ImageView
-        android:id="@+id/bubble"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/bubble1"
-        tools:layout_editor_absoluteX="6dp"
-        tools:layout_editor_absoluteY="219dp"
-        tools:ignore="MissingConstraints"
-        android:visibility="invisible"/>
-
     <EditText
+        android:textAlignment="center"
         android:id="@+id/emailService"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -47,6 +39,7 @@
         android:visibility="invisible"/>
 
     <EditText
+        android:textAlignment="center"
         android:id="@+id/emailSuffix"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
