@@ -2,6 +2,7 @@ package com.example.leodw.worldepth.ui.profile;
 
 import android.media.Image;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,7 +19,7 @@ import androidx.navigation.Navigation;
 public class ProfileFragment extends Fragment {
 
     private ImageView mSettingsButton;
-    private Button mBackButton;
+    private ImageView mBackButton;
 
     @Nullable
     @Override
