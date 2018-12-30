@@ -116,12 +116,9 @@ public class EmailFragment extends Fragment {
         signUp.setOnClickListener((view1) -> {
             if (validEmail()) {
                 String email = mEmailInput.getText().toString();
-                mDt.addData(new DataPair(email, ((MainActivity) getActivity()).getFragmentIndex("Password_Fragment"),
-                        ((MainActivity) getActivity()).getFragmentIndex("Email_Fragment")));
-                Toast.makeText(getActivity(), "Valid email!", Toast.LENGTH_SHORT).show();
-                mDt.addData(new DataPair("FromEmail", ((MainActivity) getActivity()).getFragmentIndex("Password_Fragment"),
-                        ((MainActivity) getActivity()).getFragmentIndex("Email_Fragment")));
-                Navigation.findNavController(view1).navigate(R.id.action_emailFragment_to_nameFragment);
+                Bundle emailBundle = new Bundle();
+                emailBundle.putString("email", email);
+                Navigation.findNavController(view1).navigate(R.id.action_emailFragment_to_nameFragment, emailBundle);
             }
         });
 
