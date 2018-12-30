@@ -17,9 +17,11 @@ import com.example.leodw.worldepth.ui.signup.Name.NameViewModel;
 import com.example.leodw.worldepth.ui.signup.Phone.PhoneFragment;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.FragmentNavigator;
 
 public class StartScreenFragment extends Fragment {
     private static final String TAG = "StartScreenFragment";
@@ -27,6 +29,7 @@ public class StartScreenFragment extends Fragment {
     private StartScreenViewModel mViewModel;
     private FirebaseWrapper mFb;
 
+    private FragmentNavigator.Extras mAnimExtras;
 
     public static StartScreenFragment newInstance() {
         return new StartScreenFragment();
@@ -50,6 +53,7 @@ public class StartScreenFragment extends Fragment {
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
+        createSharedElementTransitionFromStartToStartSignup();
         Button goToSignIn = view.findViewById(R.id.goToSignIn);
         goToSignIn.setOnClickListener((view1) -> {
             Navigation.findNavController(view1).navigate(R.id.action_startScreenFragment_to_signUpFragment);
@@ -57,7 +61,10 @@ public class StartScreenFragment extends Fragment {
 
         Button goToSignUp = view.findViewById(R.id.goToSignUp);
         goToSignUp.setOnClickListener((view2) -> {
-            Navigation.findNavController(view2).navigate(R.id.action_startScreenFragment_to_startSignupFragment);
+            Navigation.findNavController(getView()).navigate(R.id.action_startScreenFragment_to_startSignupFragment,
+                    null,
+                    null,
+                    mAnimExtras);
         });
 
         Button goToCamera = view.findViewById(R.id.goToCamera);
@@ -65,5 +72,12 @@ public class StartScreenFragment extends Fragment {
             ((MainActivity) getActivity()).setLoginState(true);
             Navigation.findNavController(view4).navigate(R.id.action_startScreenFragment_to_cameraFragment);
         });
+    }
+
+    private void createSharedElementTransitionFromStartToStartSignup() {
+        ImageView logo = getView().findViewById(R.id.start_logo);
+        mAnimExtras = new FragmentNavigator.Extras.Builder()
+                .addSharedElement(logo, "bigLogo")
+                .build();
     }
 }

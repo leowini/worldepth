@@ -8,6 +8,8 @@
     tools:context=".ui.signup.StartScreen.StartScreenFragment">
 
     <ImageView
+        android:transitionName="small_logo"
+        android:id="@+id/start_logo"
         android:layout_width="250dp"
         android:layout_height="250dp"
         android:adjustViewBounds="true"
