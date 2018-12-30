@@ -109,26 +109,6 @@ public class ViewerFragment extends Fragment {
         }
     }
 
-//    @Override
-//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-//        getActivity().getMenuInflater().inflate(R.menu.menu_main, menu);
-//        super.onCreateOptionsMenu(menu, inflater);
-//    }
-
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()) {
-//            case R.id.menu_open_model:
-//                checkReadPermissionThenOpen();
-//                return true;
-//            case R.id.menu_load_sample:
-//                loadSampleModel();
-//                return true;
-//            default:
-//                return super.onOptionsItemSelected(item);
-//        }
-//    }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
