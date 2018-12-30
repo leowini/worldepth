@@ -105,7 +105,14 @@
         android:id="@+id/settings"
         android:name="com.example.leodw.worldepth.ui.settings.Settings"
         android:label="settings_fragment"
-        tools:layout="@layout/settings_fragment" />
+        tools:layout="@layout/settings_fragment" >
+        <action
+            android:id="@+id/action_settings_to_startScreenFragment"
+            app:destination="@id/startScreenFragment" />
+        <action
+            android:id="@+id/action_settings_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
+    </fragment>
     <fragment
         android:id="@+id/viewerFragment"
         android:name="com.example.leodw.worldepth.ui.viewer.ViewerFragment"
