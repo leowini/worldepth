@@ -21,6 +21,8 @@ import com.example.leodw.worldepth.ui.signup.StartScreen.StartScreenFragment;
 import com.example.leodw.worldepth.ui.signup.StartSignup.StartSignupFragment;
 import com.example.leodw.worldepth.ui.viewer.ViewerFragment;
 
+import androidx.navigation.fragment.NavHostFragment;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
@@ -44,6 +46,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Set as NavHostFragment for the nav_graph
+        NavHostFragment finalHost = NavHostFragment.create(R.navigation.nav_graph);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.nav_host, finalHost)
+                .setPrimaryNavigationFragment(finalHost) // this is the equivalent to app:defaultNavHost="true"
+                .commit();
+
         mPreferences = getSharedPreferences(sharedPrefFile, MODE_PRIVATE);
         mLoginState = mPreferences.getBoolean("loginState", false);
 //        mPagerAdapter = new SectionsStatePagerAdapter(getSupportFragmentManager());

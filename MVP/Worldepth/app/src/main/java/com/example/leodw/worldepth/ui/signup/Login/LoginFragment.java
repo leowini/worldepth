@@ -46,8 +46,8 @@ public class LoginFragment extends Fragment {
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
-        Button signInButton = view.findViewById(R.id.signInButton);
-        signInButton.setOnClickListener((view1) -> {
+        Button loginButton = view.findViewById(R.id.signInButton);
+        loginButton.setOnClickListener((view1) -> {
                 /*EditText username = view.findViewById(R.id.enterEmail);
                 String usernameString = username.getText().toString();
                 EditText password = view.findViewById(R.id.enterPassword);
