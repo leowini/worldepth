@@ -16,6 +16,8 @@ import android.widget.Button;
 import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.ui.MainActivity;
 
+import androidx.navigation.Navigation;
+
 
 public class LoadingFragment extends Fragment {
 
@@ -33,8 +35,7 @@ public class LoadingFragment extends Fragment {
 
         Button loadingNextButton = view.findViewById(R.id.loadingNextButton);
         loadingNextButton.setOnClickListener((view1) -> {
-            Toast.makeText(getActivity(), "Finished", Toast.LENGTH_SHORT).show();
-            ((MainActivity) getActivity()).setViewPager(10); //viewer
+            Navigation.findNavController(view1).navigate(R.id.action_loadingFragment_to_viewerFragment);
         });
         return view;
     }

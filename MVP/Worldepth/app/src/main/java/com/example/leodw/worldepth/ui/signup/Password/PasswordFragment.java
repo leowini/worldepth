@@ -26,6 +26,8 @@ import com.example.leodw.worldepth.ui.signup.Phone.PhoneFragment;
 import com.example.leodw.worldepth.ui.signup.Phone.PhoneViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 
+import androidx.navigation.Navigation;
+
 public class PasswordFragment extends Fragment {
     private static final String TAG = "PasswordFragment";
 
@@ -109,7 +111,7 @@ public class PasswordFragment extends Fragment {
         });
 
         goBack.setOnClickListener((view2) -> {
-            ((MainActivity) getActivity()).setViewPagerByTitle("Name_Fragment"); //name
+            Navigation.findNavController(view2).navigate(R.id.action_passwordFragment_to_birthdayFragment);
         });
     }
 
@@ -217,7 +219,7 @@ public class PasswordFragment extends Fragment {
                 //set login state
                 ((MainActivity) getActivity()).setLoginState(true);
                 //go to camera fragment
-                ((MainActivity) getActivity()).setViewPagerByTitle("Camera_Fragment");
+                Navigation.findNavController(getView()).navigate(R.id.action_passwordFragment_to_cameraFragment);
             } else {
                 Log.d(TAG, "createNewAccount:failed", task.getException());
             }

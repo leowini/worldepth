@@ -19,9 +19,9 @@ import android.widget.Toast;
 import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.data.FirebaseWrapper;
 import com.example.leodw.worldepth.ui.MainActivity;
-import com.example.leodw.worldepth.ui.signup.SignUpFragment;
-import com.example.leodw.worldepth.ui.signup.SignUpViewModel;
 import com.google.firebase.auth.FirebaseAuth;
+
+import androidx.navigation.Navigation;
 
 public class  StartSignupFragment extends Fragment {
     private static final String TAG = "StartSignupFragment";
@@ -73,11 +73,10 @@ public class  StartSignupFragment extends Fragment {
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         mPhoneSignup = view.findViewById(R.id.phoneSignup);
         mEmailSignup = view.findViewById(R.id.emailSignup);
-        mPhoneSignup.setOnClickListener(v -> ((MainActivity)getActivity()).setViewPagerByTitle("Phone_Fragment"));
-        mEmailSignup.setOnClickListener(v -> ((MainActivity) getActivity()).setViewPagerByTitle("Email_Fragment"));
+        mPhoneSignup.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_startSignupFragment_to_phoneFragment));
+        mEmailSignup.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_startSignupFragment_to_emailFragment));
         mBackToStart = view.findViewById(R.id.signUpBackButton);
-        mBackToStart.setOnClickListener(v -> ((MainActivity) getActivity()).setViewPagerByTitle("StartScreen_Fragment"));
+        mBackToStart.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_startSignupFragment_to_startScreenFragment));
     }
-
 
 }

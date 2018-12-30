@@ -20,6 +20,8 @@ import com.example.leodw.worldepth.ui.MainActivity;
 import com.example.leodw.worldepth.ui.signup.Phone.PhoneFragment;
 import com.example.leodw.worldepth.ui.signup.Phone.PhoneViewModel;
 
+import androidx.navigation.Navigation;
+
 public class LoginFragment extends Fragment {
     private static final String TAG = "LoginFragment";
 
@@ -33,30 +35,7 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.login_fragment, container, false);
-        Button signInButton = view.findViewById(R.id.signInButton);
-        signInButton.setOnClickListener((view1) -> {
-                /*EditText username = view.findViewById(R.id.enterEmail);
-                String usernameString = username.getText().toString();
-                EditText password = view.findViewById(R.id.enterPassword);
-                String passwordString = password.getText().toString();
-                if (usernameString.length() > 0 && passwordString.length() > 0) { //if username and password not blank
-                    Toast.makeText(getActivity(), "Logging in", Toast.LENGTH_SHORT).show();
-                    ((MainActivity) getActivity()).setViewPager(7); //camera
-                } else {
-                    Toast.makeText(getActivity(), "Invalid email or password", Toast.LENGTH_SHORT).show();
-                }*/
-            Toast.makeText(getActivity(), "Logging in", Toast.LENGTH_SHORT).show();
-            ((MainActivity) getActivity()).setLoginState(true);
-            ((MainActivity) getActivity()).setViewPagerByTitle("Camera_Fragment"); //camera
-        });
-
-        ImageView loginBackButton = view.findViewById(R.id.loginBackButton);
-        loginBackButton.setOnClickListener((view2) -> {
-            Toast.makeText(getActivity(), "Going back", Toast.LENGTH_SHORT).show();
-            ((MainActivity) getActivity()).setViewPagerByTitle("StartScreen_Fragment"); //start screen fragment
-        });
-        return view;
+        return inflater.inflate(R.layout.login_fragment, container, false);
     }
 
     @Override
@@ -69,7 +48,26 @@ public class LoginFragment extends Fragment {
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
+        Button loginButton = view.findViewById(R.id.signInButton);
+        loginButton.setOnClickListener((view1) -> {
+                /*EditText username = view.findViewById(R.id.enterEmail);
+                String usernameString = username.getText().toString();
+                EditText password = view.findViewById(R.id.enterPassword);
+                String passwordString = password.getText().toString();
+                if (usernameString.length() > 0 && passwordString.length() > 0) { //if username and password not blank
+                    Toast.makeText(getActivity(), "Logging in", Toast.LENGTH_SHORT).show();
+                    ((MainActivity) getActivity()).setViewPager(7); //camera
+                } else {
+                    Toast.makeText(getActivity(), "Invalid email or password", Toast.LENGTH_SHORT).show();
+                }*/
+            ((MainActivity) getActivity()).setLoginState(true);
+            Navigation.findNavController(view1).navigate(R.id.action_loginFragment_to_cameraFragment);
+        });
 
+        ImageView loginBackButton = view.findViewById(R.id.loginBackButton);
+        loginBackButton.setOnClickListener((view2) -> {
+            Navigation.findNavController(view2).navigate(R.id.action_loginFragment_to_startScreenFragment);
+        });
     }
 
 }
