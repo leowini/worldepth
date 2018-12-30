@@ -82,6 +82,9 @@
         <action
             android:id="@+id/action_phoneFragment_to_nameFragment"
             app:destination="@id/nameFragment" />
+        <action
+            android:id="@+id/action_phoneFragment_to_startSignupFragment"
+            app:destination="@id/startSignupFragment" />
     </fragment>
     <fragment
         android:id="@+id/settings"

@@ -27,6 +27,8 @@ import com.example.leodw.worldepth.ui.signup.SignUpFragment;
 import com.example.leodw.worldepth.ui.signup.SignUpViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 
+import androidx.navigation.Navigation;
+
 public class PhoneFragment extends Fragment {
     private static final String TAG = "PhoneFragment";
 
@@ -58,12 +60,12 @@ public class PhoneFragment extends Fragment {
             Toast.makeText(getActivity(), "Success!", Toast.LENGTH_SHORT).show();
             mDt.addData(new DataPair("FromPhone", ((MainActivity) getActivity()).getFragmentIndex("Password_Fragment"),
                     ((MainActivity) getActivity()).getFragmentIndex("Phone_Fragment")));
-            ((MainActivity) getActivity()).setViewPagerByTitle("Name_Fragment"); //name page
+            Navigation.findNavController(view1).navigate(R.id.action_phoneFragment_to_nameFragment);
         });
 
         mPhoneBackButton = view.findViewById(R.id.phoneBackButton);
         mPhoneBackButton.setOnClickListener((view2) -> {
-            ((MainActivity) getActivity()).setViewPagerByTitle("StartSignup_Fragment"); //signup
+            Navigation.findNavController(view2).navigate(R.id.action_phoneFragment_to_startSignupFragment);
         });
         return view;
     }
