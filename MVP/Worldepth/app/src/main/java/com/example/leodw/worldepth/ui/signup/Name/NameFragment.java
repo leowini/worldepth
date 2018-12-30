@@ -20,6 +20,8 @@ import com.example.leodw.worldepth.ui.MainActivity;
 import com.example.leodw.worldepth.ui.signup.Phone.PhoneFragment;
 import com.example.leodw.worldepth.ui.signup.Phone.PhoneViewModel;
 
+import androidx.navigation.Navigation;
+
 public class NameFragment extends Fragment {
     private static final String TAG = "NameFragment";
 
@@ -41,14 +43,14 @@ public class NameFragment extends Fragment {
 
         Button nameNextButton = view.findViewById(R.id.nameNextButton);
         nameNextButton.setOnClickListener((view1) -> {
-            Toast.makeText(getActivity(), "Success!", Toast.LENGTH_SHORT).show();
-            ((MainActivity) getActivity()).setViewPagerByTitle("Birthday_Fragment"); //birthday
+            Navigation.findNavController(view1).navigate(R.id.action_nameFragment_to_birthdayFragment);
         });
 
         mNameBackButton = view.findViewById(R.id.nameBackButton);
         mNameBackButton.setOnClickListener((view2) -> {
             int lastLoc = getLastLocation();
-            ((MainActivity) getActivity()).setViewPager(lastLoc); //either phone or email fragment
+            Navigation.findNavController(view2).navigate(R.id.);
+            //((MainActivity) getActivity()).setViewPager(lastLoc); //either phone or email fragment
         });
         return view;
     }

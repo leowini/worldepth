@@ -28,6 +28,8 @@ import com.example.leodw.worldepth.ui.signup.Name.NameViewModel;
 import com.example.leodw.worldepth.ui.signup.Password.PasswordFragment;
 import com.example.leodw.worldepth.ui.signup.Phone.PhoneFragment;
 
+import androidx.navigation.Navigation;
+
 public class EmailFragment extends Fragment {
     private static final String TAG = "EmailFragment";
 
@@ -119,12 +121,12 @@ public class EmailFragment extends Fragment {
                 Toast.makeText(getActivity(), "Valid email!", Toast.LENGTH_SHORT).show();
                 mDt.addData(new DataPair("FromEmail", ((MainActivity) getActivity()).getFragmentIndex("Password_Fragment"),
                         ((MainActivity) getActivity()).getFragmentIndex("Email_Fragment")));
-                ((MainActivity) getActivity()).setViewPagerByTitle("Name_Fragment"); //name fragment
+                Navigation.findNavController(view1).navigate(R.id.action_emailFragment_to_nameFragment);
             }
         });
 
         goBack.setOnClickListener((view2) -> {
-            ((MainActivity) getActivity()).setViewPagerByTitle("StartSignup_Fragment"); //signup fragment
+            Navigation.findNavController(view2).navigate(R.id.action_emailFragment_to_startSignupFragment);
         });
     }
 

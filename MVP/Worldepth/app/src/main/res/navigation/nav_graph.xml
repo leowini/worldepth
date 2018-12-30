@@ -73,6 +73,9 @@
         <action
             android:id="@+id/action_startSignupFragment_to_startScreenFragment"
             app:destination="@id/startScreenFragment" />
+        <action
+            android:id="@+id/action_startSignupFragment_to_emailFragment"
+            app:destination="@id/emailFragment" />
     </fragment>
     <fragment
         android:id="@+id/phoneFragment"
@@ -85,6 +88,18 @@
         <action
             android:id="@+id/action_phoneFragment_to_startSignupFragment"
             app:destination="@id/startSignupFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/emailFragment"
+        android:name="com.example.leodw.worldepth.ui.signup.Email.EmailFragment"
+        android:label="email_fragment"
+        tools:layout="@layout/email_fragment">
+        <action
+            android:id="@+id/action_emailFragment_to_startSignupFragment"
+            app:destination="@id/startSignupFragment" />
+        <action
+            android:id="@+id/action_emailFragment_to_nameFragment"
+            app:destination="@id/nameFragment" />
     </fragment>
     <fragment
         android:id="@+id/settings"
