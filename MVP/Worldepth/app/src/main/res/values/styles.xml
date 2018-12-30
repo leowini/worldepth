@@ -8,4 +8,8 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="WorldepthEditText" parent="">
+        <item name="android:background">@drawable/bubble1</item>
+    </style>
+
 </resources>

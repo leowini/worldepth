@@ -7,31 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.signup.Email.EmailFragment">
 
-
-    <EditText
-        android:id="@+id/enterEmail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/email"
-        android:inputType="textEmailAddress"
-        android:textAppearance="@android:style/TextAppearance.DeviceDefault.SearchResult.Title"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.45"/>
-
-    <EditText
-        android:id="@+id/enterPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:ems="10"
-        android:hint="@string/password"
-        android:inputType="textPassword"
-        android:textAppearance="@android:style/TextAppearance.DeviceDefault.SearchResult.Title"
-        app:layout_constraintStart_toStartOf="@id/enterEmail"
-        app:layout_constraintTop_toBottomOf="@id/enterEmail"/>
-
     <Button
         android:id="@+id/signInButton"
         style="@style/Widget.AppCompat.Button"
