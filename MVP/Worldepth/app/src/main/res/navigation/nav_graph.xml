@@ -29,7 +29,11 @@
         android:id="@+id/birthdayFragment"
         android:name="com.example.leodw.worldepth.ui.signup.Birthday.BirthdayFragment"
         android:label="birthday_fragment"
-        tools:layout="@layout/birthday_fragment" />
+        tools:layout="@layout/birthday_fragment" >
+        <action
+            android:id="@+id/action_birthdayFragment_to_passwordFragment"
+            app:destination="@id/passwordFragment" />
+    </fragment>
     <fragment
         android:id="@+id/startSignupFragment"
         android:name="com.example.leodw.worldepth.ui.signup.StartSignup.StartSignupFragment"
