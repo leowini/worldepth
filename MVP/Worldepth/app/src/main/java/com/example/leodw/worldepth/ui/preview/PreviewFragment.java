@@ -33,9 +33,9 @@ import java.io.InputStream;
 import androidx.navigation.Navigation;
 
 
-public class ViewerFragment extends Fragment {
+public class PreviewFragment extends Fragment {
 
-    private static final String TAG = "ViewerFragment";
+    private static final String TAG = "PreviewFragment";
 
     private ViewerViewModel mViewerViewModel;
 

@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
 //        mPagerAdapter.addFragment(new BirthdayFragment(), "Birthday_Fragment");         //7
 //        mPagerAdapter.addFragment(new CameraFragment(), "Camera_Fragment");             //8
 //        mPagerAdapter.addFragment(new LoadingFragment(), "Loading_Fragment");           //9
-//        mPagerAdapter.addFragment(new ViewerFragment(), "Viewer_Fragment");             //10
+//        mPagerAdapter.addFragment(new PreviewFragment(), "Viewer_Fragment");             //10
 //        mPagerAdapter.addFragment(new Settings(), "Settings_Fragment");
 //        mViewPager.setAdapter(mPagerAdapter);
 //    }

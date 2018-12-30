@@ -1,4 +1,4 @@
-package com.example.leodw.worldepth.ui.messages;
+package com.example.leodw.worldepth.ui.viewer;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,12 +10,11 @@ import android.view.ViewGroup;
 
 import com.example.leodw.worldepth.R;
 
-public class MessageFragment extends Fragment {
-
+public class ViewerFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.message_fragment, container, false);
+        return inflater.inflate(R.layout.fragment_viewer, container, false);
     }
 
     @Override

@@ -118,7 +118,7 @@
     </fragment>
     <fragment
         android:id="@+id/viewerFragment"
-        android:name="com.example.leodw.worldepth.ui.preview.ViewerFragment"
+        android:name="com.example.leodw.worldepth.ui.preview.PreviewFragment"
         android:label="viewer_fragment"
         tools:layout="@layout/viewer_fragment" >
         <action

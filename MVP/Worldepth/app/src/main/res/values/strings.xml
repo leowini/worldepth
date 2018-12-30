@@ -40,4 +40,7 @@
     <string name="back">Back</string>
     <string name="viewerbacktocamera">viewerBackToCamera</string>
     <string name="sample">sample</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
