@@ -14,26 +14,53 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="@string/email"
         android:inputType="textEmailAddress"
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.SearchResult.Title"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.535"
-        tools:layout_editor_absoluteX="0dp" />
+        tools:ignore="MissingConstraints" />
 
     <EditText
         android:id="@+id/enterPassword"
         style="@style/WorldepthEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="24dp"
         android:ems="10"
-        android:hint="@string/password"
         android:inputType="textPassword"
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.SearchResult.Title"
         app:layout_constraintStart_toStartOf="@id/enterEmail"
         app:layout_constraintTop_toBottomOf="@+id/enterEmail" />
+
+    <TextView
+        android:id="@+id/emailHint"
+        android:textColor="#A6A4A4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="284dp"
+        android:text="@string/email"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:textColor="#A6A4A4"
+        android:id="@+id/passwordHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/password"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="@+id/enterPassword"
+        app:layout_constraintHorizontal_bias="0.064"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="377dp" />
 
     <ImageView
         android:layout_width="250dp"
