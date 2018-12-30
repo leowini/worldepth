@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -19,7 +20,6 @@ import android.widget.Toast;
 import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.data.FirebaseWrapper;
 import com.example.leodw.worldepth.ui.MainActivity;
-import com.example.leodw.worldepth.ui.transitions.SignupTransition;
 import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.navigation.Navigation;
@@ -58,6 +58,7 @@ public class  StartSignupFragment extends Fragment {
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
+        setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.move));
         mPhoneSignup = view.findViewById(R.id.phoneSignup);
         mEmailSignup = view.findViewById(R.id.emailSignup);
         mPhoneSignup.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_startSignupFragment_to_phoneFragment));
