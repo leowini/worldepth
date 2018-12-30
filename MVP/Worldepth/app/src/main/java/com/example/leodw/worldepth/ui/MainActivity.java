@@ -1,27 +1,12 @@
 package com.example.leodw.worldepth.ui;
 
 import android.content.SharedPreferences;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.data.DataTransfer;
 import com.example.leodw.worldepth.data.FirebaseWrapper;
-import com.example.leodw.worldepth.ui.camera.CameraFragment;
-import com.example.leodw.worldepth.ui.loading.LoadingFragment;
-import com.example.leodw.worldepth.ui.settings.Settings;
-import com.example.leodw.worldepth.ui.signup.Birthday.BirthdayFragment;
-import com.example.leodw.worldepth.ui.signup.Email.EmailFragment;
-import com.example.leodw.worldepth.ui.signup.Login.LoginFragment;
-import com.example.leodw.worldepth.ui.signup.Name.NameFragment;
-import com.example.leodw.worldepth.ui.signup.Password.PasswordFragment;
-import com.example.leodw.worldepth.ui.signup.Phone.PhoneFragment;
-import com.example.leodw.worldepth.ui.signup.StartScreen.StartScreenFragment;
-import com.example.leodw.worldepth.ui.signup.StartSignup.StartSignupFragment;
-import com.example.leodw.worldepth.ui.viewer.ViewerFragment;
-
-import androidx.navigation.fragment.NavHostFragment;
 
 public class MainActivity extends AppCompatActivity {
 

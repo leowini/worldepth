@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWindowBackground"
-    tools:context="com.example.leodw.worldepth.ui.viewer.ViewerFragment">
+    tools:context="com.example.leodw.worldepth.ui.preview.ViewerFragment">
 
     <Button
         android:id="@+id/openModelButton"

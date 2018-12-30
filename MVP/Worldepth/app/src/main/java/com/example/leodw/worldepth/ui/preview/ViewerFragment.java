@@ -1,4 +1,4 @@
-package com.example.leodw.worldepth.ui.viewer;
+package com.example.leodw.worldepth.ui.preview;
 
 import android.Manifest;
 import android.content.ContentResolver;
@@ -16,20 +16,16 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContentResolverCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.leodw.worldepth.ui.viewer.obj.ObjModel;
-import com.example.leodw.worldepth.ui.viewer.ply.PlyModel;
-import com.example.leodw.worldepth.ui.viewer.stl.StlModel;
-import com.example.leodw.worldepth.ui.viewer.util.Util;
+import com.example.leodw.worldepth.ui.preview.obj.ObjModel;
+import com.example.leodw.worldepth.ui.preview.ply.PlyModel;
+import com.example.leodw.worldepth.ui.preview.stl.StlModel;
+import com.example.leodw.worldepth.ui.preview.util.Util;
 import com.example.leodw.worldepth.R;
 
 import java.io.IOException;
