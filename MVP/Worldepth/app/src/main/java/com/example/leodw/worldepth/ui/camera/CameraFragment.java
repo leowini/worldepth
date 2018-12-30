@@ -54,6 +54,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
+import androidx.navigation.Navigation;
+
 public class CameraFragment extends Fragment {
     private static final String TAG = "CameraFragment";
 
@@ -278,7 +280,7 @@ public class CameraFragment extends Fragment {
                     if (mRecordingState) {
                         stopRecording();
                         mRecordingState = false;
-                        ((MainActivity) getActivity()).setViewPagerByTitle("Loading_Fragment");
+                        Navigation.findNavController(getView()).navigate(R.id.action_cameraFragment_to_loadingFragment);
                         mRenderer.stopRenderThread();
                         return true;
                     }
@@ -287,7 +289,7 @@ public class CameraFragment extends Fragment {
                     return false;
             }
         });
-        mSettingsButton.setOnClickListener(v -> ((MainActivity) getActivity()).setViewPagerByTitle("Settings_Fragment"));
+        mSettingsButton.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_cameraFragment_to_settings));
     }
 
     /**
