@@ -103,8 +103,11 @@ public class PasswordFragment extends Fragment {
         completeSignUp.setOnClickListener((v) -> {
             if (validPassword()) {
                 for (int i = 0; i < mDt.size(); i++) {
-                    if (mDt.getDataPair(i).getLocation() == 4) {
+                    if (mDt.getDataPair(i).getLocation().equals("passwordFragment")) {
+                        Log.d(TAG, "email: " + mDt.getDataPair(i).getData());
+                        Log.d(TAG, "password: " + mPasswordInput.getText().toString());
                         createNewAccount(mDt.getDataPair(i).getData(), mPasswordInput.getText().toString());
+                        mDt.removeData(i);
                     }
                 }
             }
