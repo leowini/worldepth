@@ -61,11 +61,14 @@ public class  StartSignupFragment extends Fragment {
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(R.transition.logo_move));
-        AnimatorSet set = (AnimatorSet) AnimatorInflater.loadAnimator(getContext(),
+        AnimatorSet emailSet = (AnimatorSet) AnimatorInflater.loadAnimator(getContext(),
                 R.animator.signup_anim);
-        set.setTarget(view.findViewById(R.id.emailSignup));
-        set.setTarget(view.findViewById(R.id.))
-        set.start();
+        emailSet.setTarget(view.findViewById(R.id.emailSignup));
+        AnimatorSet phoneSet = (AnimatorSet) AnimatorInflater.loadAnimator(getContext(),
+                R.animator.signup_anim);
+        phoneSet.setTarget(view.findViewById(R.id.phoneSignup));
+        emailSet.start();
+        phoneSet.start();
         mPhoneSignup = view.findViewById(R.id.phoneSignup);
         mEmailSignup = view.findViewById(R.id.emailSignup);
         mPhoneSignup.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_startSignupFragment_to_phoneFragment));
