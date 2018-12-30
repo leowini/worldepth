@@ -33,7 +33,19 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.login_fragment, container, false);
+        return inflater.inflate(R.layout.login_fragment, container, false);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
+        mFb = ((MainActivity) this.getActivity()).getFirebaseWrapper();
+        // TODO: Use the ViewModel
+    }
+
+    @Override
+    public void onViewCreated(final View view, Bundle savedInstanceState) {
         Button signInButton = view.findViewById(R.id.signInButton);
         signInButton.setOnClickListener((view1) -> {
                 /*EditText username = view.findViewById(R.id.enterEmail);
@@ -56,20 +68,6 @@ public class LoginFragment extends Fragment {
             Toast.makeText(getActivity(), "Going back", Toast.LENGTH_SHORT).show();
             ((MainActivity) getActivity()).setViewPagerByTitle("StartScreen_Fragment"); //start screen fragment
         });
-        return view;
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
-        mFb = ((MainActivity) this.getActivity()).getFirebaseWrapper();
-        // TODO: Use the ViewModel
-    }
-
-    @Override
-    public void onViewCreated(final View view, Bundle savedInstanceState) {
-
     }
 
 }

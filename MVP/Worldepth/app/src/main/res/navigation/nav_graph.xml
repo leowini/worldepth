@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/startScreenFragment">
+
+    <fragment
+        android:id="@+id/startScreenFragment"
+        android:name="com.example.leodw.worldepth.ui.signup.StartScreen.StartScreenFragment"
+        android:label="start_screen_fragment"
+        tools:layout="@layout/start_screen_fragment" />
+    <fragment
+        android:id="@+id/passwordFragment"
+        android:name="com.example.leodw.worldepth.ui.signup.Password.PasswordFragment"
+        android:label="password_fragment"
+        tools:layout="@layout/password_fragment" />
+    <fragment
+        android:id="@+id/cameraFragment"
+        android:name="com.example.leodw.worldepth.ui.camera.CameraFragment"
+        android:label="camera_fragment"
+        tools:layout="@layout/camera_fragment" />
+    <fragment
+        android:id="@+id/nameFragment"
+        android:name="com.example.leodw.worldepth.ui.signup.Name.NameFragment"
+        android:label="name_fragment"
+        tools:layout="@layout/name_fragment" />
+    <fragment
+        android:id="@+id/birthdayFragment"
+        android:name="com.example.leodw.worldepth.ui.signup.Birthday.BirthdayFragment"
+        android:label="birthday_fragment"
+        tools:layout="@layout/birthday_fragment" />
+    <fragment
+        android:id="@+id/startSignupFragment"
+        android:name="com.example.leodw.worldepth.ui.signup.StartSignup.StartSignupFragment"
+        android:label="start_signup_fragment"
+        tools:layout="@layout/start_signup_fragment" />
+    <fragment
+        android:id="@+id/phoneFragment"
+        android:name="com.example.leodw.worldepth.ui.signup.Phone.PhoneFragment"
+        android:label="phone_fragment"
+        tools:layout="@layout/phone_fragment" />
+    <fragment
+        android:id="@+id/settings"
+        android:name="com.example.leodw.worldepth.ui.settings.Settings"
+        android:label="settings_fragment"
+        tools:layout="@layout/settings_fragment" />
+    <fragment
+        android:id="@+id/viewerFragment"
+        android:name="com.example.leodw.worldepth.ui.viewer.ViewerFragment"
+        android:label="viewer_fragment"
+        tools:layout="@layout/viewer_fragment" />
+    <fragment
+        android:id="@+id/loadingFragment"
+        android:name="com.example.leodw.worldepth.ui.loading.LoadingFragment"
+        android:label="loading_fragment"
+        tools:layout="@layout/loading_fragment" />
+</navigation>
