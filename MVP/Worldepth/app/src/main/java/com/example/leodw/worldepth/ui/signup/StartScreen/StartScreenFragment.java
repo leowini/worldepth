@@ -19,6 +19,8 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.navigation.Navigation;
+
 public class StartScreenFragment extends Fragment {
     private static final String TAG = "StartScreenFragment";
 
@@ -50,21 +52,18 @@ public class StartScreenFragment extends Fragment {
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         Button goToSignIn = view.findViewById(R.id.goToSignIn);
         goToSignIn.setOnClickListener((view1) -> {
-            Toast.makeText(getActivity(), "Going to login page", Toast.LENGTH_SHORT).show();
-            ((MainActivity) getActivity()).setViewPager(1); //login page
+            Navigation.findNavController(view1).navigate(R.id.action_startScreenFragment_to_signUpFragment);
         });
 
         Button goToSignUp = view.findViewById(R.id.goToSignUp);
         goToSignUp.setOnClickListener((view2) -> {
-            Toast.makeText(getActivity(), "Going to sign up page", Toast.LENGTH_SHORT).show();
-            ((MainActivity) getActivity()).setViewPager(2); //sign up page
+            Navigation.findNavController(view2).navigate(R.id.action_startScreenFragment_to_startSignupFragment);
         });
 
         Button goToCamera = view.findViewById(R.id.goToCamera);
         goToCamera.setOnClickListener((view4) -> {
-            Toast.makeText(getActivity(), "Going to camera", Toast.LENGTH_SHORT).show();
             ((MainActivity) getActivity()).setLoginState(true);
-            ((MainActivity) getActivity()).setViewPagerByTitle("Camera_Fragment"); //camera page
+            Navigation.findNavController(view4).navigate(R.id.action_startScreenFragment_to_cameraFragment);
         });
     }
 }

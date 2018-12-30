@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.ui.MainActivity;
 
+import androidx.navigation.Navigation;
+
 public class Settings extends Fragment {
 
     private ImageView mBackToCamera;
@@ -30,10 +32,10 @@ public class Settings extends Fragment {
         mBackToCamera = view.findViewById(R.id.settingsBackButton);
         mSignOutButton = view.findViewById(R.id.signOutButton);
 
-        mBackToCamera.setOnClickListener(v -> ((MainActivity) getActivity()).setViewPagerByTitle("Camera_Fragment"));
+        mBackToCamera.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_settings_to_cameraFragment));
         mSignOutButton.setOnClickListener(v -> {
             ((MainActivity) getActivity()).setLoginState(false);
-            ((MainActivity) getActivity()).setViewPagerByTitle("StartScreen_Fragment");
+            Navigation.findNavController(v).navigate(R.id.action_settings_to_startScreenFragment);
         });
     }
 

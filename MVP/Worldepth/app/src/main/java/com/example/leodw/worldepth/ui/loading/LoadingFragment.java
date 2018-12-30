@@ -18,6 +18,8 @@ import android.widget.Button;
 import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.ui.MainActivity;
 
+import androidx.navigation.Navigation;
+
 
 public class LoadingFragment extends Fragment {
 
@@ -35,7 +37,9 @@ public class LoadingFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         Button loadingNextButton = view.findViewById(R.id.loadingNextButton);
         Button loadingBackButton = view.findViewById(R.id.loadingBackBtn);
-        loadingNextButton.setOnClickListener((view1) -> ((MainActivity) getActivity()).setViewPagerByTitle("Viewer_Fragment"));
-        loadingBackButton.setOnClickListener(v -> ((MainActivity) getActivity()).setViewPagerByTitle("Camera_Fragment"));
+        loadingNextButton.setOnClickListener((view1) -> {
+            Navigation.findNavController(view1).navigate(R.id.action_loadingFragment_to_viewerFragment);
+        });
+        loadingBackButton.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_loadingFragment_to_cameraFragment));
     }
 }

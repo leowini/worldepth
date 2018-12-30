@@ -36,6 +36,8 @@ import com.example.leodw.worldepth.R;
 import java.io.IOException;
 import java.io.InputStream;
 
+import androidx.navigation.Navigation;
+
 
 public class ViewerFragment extends Fragment {
 
@@ -85,12 +87,7 @@ public class ViewerFragment extends Fragment {
             }
         });
         Button backToCamera = view.findViewById(R.id.viewerBackToCamera);
-        backToCamera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((MainActivity) getActivity()).setViewPagerByTitle("Camera_Fragment");
-            }
-        });
+        backToCamera.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_viewerFragment_to_cameraFragment));
     }
 
     @Override

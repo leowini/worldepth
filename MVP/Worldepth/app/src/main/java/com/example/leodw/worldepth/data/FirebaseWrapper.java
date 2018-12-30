@@ -29,7 +29,7 @@ import com.google.firebase.storage.UploadTask;
 //Easy interaction with our database
 public class FirebaseWrapper {
     //Debug TAG
-    private static final String TAG = "worldepth";
+    private static final String TAG = "FirebaseWrapper";
 
     private FirebaseDatabase mDatabase; //Instance of database
     private StorageReference mStorageRef; //Instace of storage reference
