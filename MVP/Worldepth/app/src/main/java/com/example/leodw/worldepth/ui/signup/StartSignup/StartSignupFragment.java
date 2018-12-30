@@ -64,6 +64,7 @@ public class  StartSignupFragment extends Fragment {
         AnimatorSet set = (AnimatorSet) AnimatorInflater.loadAnimator(getContext(),
                 R.animator.signup_anim);
         set.setTarget(view.findViewById(R.id.emailSignup));
+        set.setTarget(view.findViewById(R.id.))
         set.start();
         mPhoneSignup = view.findViewById(R.id.phoneSignup);
         mEmailSignup = view.findViewById(R.id.emailSignup);
