@@ -1,9 +1,5 @@
 package com.example.leodw.worldepth.data;
 
-import android.os.Environment;
-import android.os.Parcelable;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.net.Uri;
 import android.widget.Toast;
