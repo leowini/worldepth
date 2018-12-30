@@ -81,5 +81,4 @@ public class  StartSignupFragment extends Fragment {
         mBackToStart.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_startSignupFragment_to_startScreenFragment));
     }
 
-
 }
