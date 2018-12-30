@@ -1,10 +1,5 @@
 package com.example.leodw.worldepth.ui.loading;
 
-import android.databinding.DataBindingUtil;
-import android.databinding.BindingAdapter;
-
-import com.example.leodw.worldepth.databinding.LoadingFragmentBinding;
-
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;

@@ -118,6 +118,9 @@
         <action
             android:id="@+id/action_settings_to_cameraFragment"
             app:destination="@id/cameraFragment" />
+        <action
+            android:id="@+id/action_settings_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
     <fragment
         android:id="@+id/viewerFragment"
@@ -160,6 +163,12 @@
         <action
             android:id="@+id/action_mapFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_mapFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
+        <action
+            android:id="@+id/action_mapFragment_to_messageFragment"
+            app:destination="@id/messageFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -169,10 +178,17 @@
         <action
             android:id="@+id/action_profileFragment_to_settings"
             app:destination="@id/settings" />
+        <action
+            android:id="@+id/action_profileFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
     </fragment>
     <fragment
         android:id="@+id/messageFragment"
         android:name="com.example.leodw.worldepth.ui.messages.MessageFragment"
         android:label="message_fragment"
-        tools:layout="@layout/message_fragment" />
+        tools:layout="@layout/message_fragment" >
+        <action
+            android:id="@+id/action_messageFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
+    </fragment>
 </navigation>

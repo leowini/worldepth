@@ -35,12 +35,14 @@
     <string name="feedback">Feedback</string>
     <string name="rate_us_on_the_app_store">Rate Us on the App Store</string>
     <string name="account">Account</string>
-    <string name="settings">Settings</string>
     <string name="must_contain_valid_characters">Must contain valid characters</string>
-    <string name="back">Back</string>
     <string name="viewerbacktocamera">viewerBackToCamera</string>
     <string name="sample">sample</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="profile">Profile</string>
+    <string name="messages">Messages</string>
+    <string name="settings">Settings</string>
+    <string name="back">Back</string>
 </resources>

@@ -7,10 +7,16 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.leodw.worldepth.R;
 
+import androidx.navigation.Navigation;
+
 public class ProfileFragment extends Fragment {
+
+    private Button mSettingsButton;
+    private Button mBackButton;
 
     @Nullable
     @Override
@@ -20,6 +26,9 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        mSettingsButton = view.findViewById(R.id.profileToSettingsBtn);
+        mSettingsButton.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_profileFragment_to_settings));
+        mBackButton = view.findViewById(R.id.profileToMapButton);
+        mBackButton.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_profileFragment_to_mapFragment));
     }
 }

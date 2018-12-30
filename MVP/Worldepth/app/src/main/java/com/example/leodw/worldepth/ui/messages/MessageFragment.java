@@ -7,10 +7,15 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.leodw.worldepth.R;
 
+import androidx.navigation.Navigation;
+
 public class MessageFragment extends Fragment {
+
+    private Button mBackButton;
 
     @Nullable
     @Override
@@ -20,6 +25,7 @@ public class MessageFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        mBackButton = view.findViewById(R.id.messageToMapBtn);
+        mBackButton.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_messageFragment_to_mapFragment));
     }
 }
