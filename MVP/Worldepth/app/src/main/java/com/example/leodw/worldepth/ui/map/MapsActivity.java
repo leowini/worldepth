@@ -2,6 +2,8 @@ package com.example.leodw.worldepth.ui.map;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+
+import com.example.leodw.worldepth.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
