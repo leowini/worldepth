@@ -48,9 +48,7 @@ public class NameFragment extends Fragment {
 
         mNameBackButton = view.findViewById(R.id.nameBackButton);
         mNameBackButton.setOnClickListener((view2) -> {
-            String lastLoc = getLastLocation();
-            Navigation.findNavController(view2).navigate(R.id.);
-            //((MainActivity) getActivity()).setViewPager(lastLoc); //either phone or email fragment
+            Navigation.findNavController(view2).popBackStack();
         });
         return view;
     }
@@ -65,19 +63,5 @@ public class NameFragment extends Fragment {
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
-    }
-
-    private String getLastLocation() {
-        for (int i = mDt.size() - 1; i >= 0; i--) {
-            int temp = mDt.getDataPair(i).getSender();
-            String phoneIndex = ((MainActivity) getActivity()).getFragmentIndex("Phone_Fragment");
-            int emailIndex = ((MainActivity) getActivity()).getFragmentIndex("Email_Fragment");
-            if (temp == phoneIndex) {
-                return phoneIndex;
-            } else if (temp == emailIndex) {
-                return emailIndex;
-            }
-        }
-        return 0;
     }
 }
