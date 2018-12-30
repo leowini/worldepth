@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         //Set as NavHostFragment for the nav_graph
         NavHostFragment finalHost = NavHostFragment.create(R.navigation.nav_graph);
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.nav_host, finalHost)
+                .replace(R.id., finalHost)
                 .setPrimaryNavigationFragment(finalHost) // this is the equivalent to app:defaultNavHost="true"
                 .commit();
 
