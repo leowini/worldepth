@@ -19,8 +19,6 @@ import android.widget.Toast;
 import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.data.FirebaseWrapper;
 import com.example.leodw.worldepth.ui.MainActivity;
-import com.example.leodw.worldepth.ui.signup.SignUpFragment;
-import com.example.leodw.worldepth.ui.signup.SignUpViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.navigation.Navigation;

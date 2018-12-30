@@ -23,8 +23,6 @@ import com.example.leodw.worldepth.data.DataPair;
 import com.example.leodw.worldepth.data.DataTransfer;
 import com.example.leodw.worldepth.data.FirebaseWrapper;
 import com.example.leodw.worldepth.ui.MainActivity;
-import com.example.leodw.worldepth.ui.signup.SignUpFragment;
-import com.example.leodw.worldepth.ui.signup.SignUpViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.navigation.Navigation;

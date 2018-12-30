@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_startScreenFragment_to_signUpFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_startScreenFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
     </fragment>
     <fragment
         android:id="@+id/passwordFragment"
