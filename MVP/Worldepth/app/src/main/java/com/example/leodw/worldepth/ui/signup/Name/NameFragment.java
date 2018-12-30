@@ -28,6 +28,8 @@ public class NameFragment extends Fragment {
     private NameViewModel mViewModel;
     private FirebaseWrapper mFb;
     private DataTransfer mDt;
+    private EditText mFirstName;
+    private EditText mLastName;
 
     private ImageView mNameBackButton;
 
@@ -63,5 +65,8 @@ public class NameFragment extends Fragment {
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
+        mFirstName = view.findViewById(R.id.firstName);
+        mLastName = view.findViewById(R.id.lastName);
+        mFirstName.requestFocus();
     }
 }
