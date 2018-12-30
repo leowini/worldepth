@@ -1,9 +1,9 @@
-package com.example.leodw.worldepth.ui.viewer.obj;
+package com.example.leodw.worldepth.ui.preview.obj;
 
 import android.support.annotation.NonNull;
 
-import com.example.leodw.worldepth.ui.viewer.IndexedModel;
-import com.example.leodw.worldepth.ui.viewer.util.Util;
+import com.example.leodw.worldepth.ui.preview.IndexedModel;
+import com.example.leodw.worldepth.ui.preview.util.Util;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;

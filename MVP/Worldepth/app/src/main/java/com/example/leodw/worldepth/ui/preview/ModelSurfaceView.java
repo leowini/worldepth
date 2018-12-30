@@ -1,4 +1,4 @@
-package com.example.leodw.worldepth.ui.viewer;
+package com.example.leodw.worldepth.ui.preview;
 
 import android.content.Context;
 import android.graphics.PointF;
@@ -7,7 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.MotionEvent;
 
-import com.example.leodw.worldepth.ui.viewer.util.Util;
+import com.example.leodw.worldepth.ui.preview.util.Util;
 
 public class ModelSurfaceView extends GLSurfaceView {
     private static final int TOUCH_NONE = 0;

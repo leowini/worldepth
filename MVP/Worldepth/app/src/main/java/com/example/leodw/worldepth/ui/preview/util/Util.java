@@ -1,4 +1,4 @@
-package com.example.leodw.worldepth.ui.viewer.util;
+package com.example.leodw.worldepth.ui.preview.util;
 
 import android.opengl.GLES20;
 import android.support.annotation.NonNull;
@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RawRes;
 import android.util.Log;
 
-import com.example.leodw.worldepth.ui.viewer.ModelViewerApplication;
+import com.example.leodw.worldepth.ui.preview.ModelViewerApplication;
 
 import java.io.Closeable;
 import java.io.IOException;

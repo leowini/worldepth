@@ -1,4 +1,4 @@
-package com.example.leodw.worldepth.ui.viewer;
+package com.example.leodw.worldepth.ui.preview;
 
 import android.opengl.GLES20;
 import java.nio.IntBuffer;

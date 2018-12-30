@@ -1,13 +1,13 @@
-package com.example.leodw.worldepth.ui.viewer.ply;
+package com.example.leodw.worldepth.ui.preview.ply;
 
 import android.opengl.GLES20;
 import android.opengl.Matrix;
 import android.support.annotation.NonNull;
 
 import com.example.leodw.worldepth.R;
-import com.example.leodw.worldepth.ui.viewer.IndexedModel;
-import com.example.leodw.worldepth.ui.viewer.Light;
-import com.example.leodw.worldepth.ui.viewer.util.Util;
+import com.example.leodw.worldepth.ui.preview.IndexedModel;
+import com.example.leodw.worldepth.ui.preview.Light;
+import com.example.leodw.worldepth.ui.preview.util.Util;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -19,7 +19,7 @@ import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.leodw.worldepth.ui.viewer.util.Util.readIntLe;
+import static com.example.leodw.worldepth.ui.preview.util.Util.readIntLe;
 
 public class PlyModel extends IndexedModel {
 

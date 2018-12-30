@@ -17,7 +17,7 @@ import androidx.navigation.Navigation;
 
 public class Settings extends Fragment {
 
-    private ImageView mBackToCamera;
+    private ImageView mBackToProfile;
     private Button mSignOutButton;
 
     @Nullable
@@ -29,10 +29,9 @@ public class Settings extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mBackToCamera = view.findViewById(R.id.settingsBackButton);
+        mBackToProfile = view.findViewById(R.id.settingsBackButton);
         mSignOutButton = view.findViewById(R.id.signOutButton);
-
-        mBackToCamera.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_settings_to_cameraFragment));
+        mBackToProfile.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_settings_to_profileFragment));
         mSignOutButton.setOnClickListener(v -> {
             ((MainActivity) getActivity()).setLoginState(false);
             Navigation.findNavController(v).navigate(R.id.action_settings_to_startScreenFragment);
