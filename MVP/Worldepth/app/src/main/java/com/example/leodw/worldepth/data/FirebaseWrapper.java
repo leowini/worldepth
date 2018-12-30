@@ -4,7 +4,10 @@ import android.util.Log;
 import android.net.Uri;
 import android.widget.Toast;
 
-//Firebase imports needed
+import android.os.Environment;
+import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import com.example.leodw.worldepth.ui.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
