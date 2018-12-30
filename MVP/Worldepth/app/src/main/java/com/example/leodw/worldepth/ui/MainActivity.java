@@ -47,13 +47,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Set as NavHostFragment for the nav_graph
-        NavHostFragment finalHost = NavHostFragment.create(R.navigation.nav_graph);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id., finalHost)
-                .setPrimaryNavigationFragment(finalHost) // this is the equivalent to app:defaultNavHost="true"
-                .commit();
-
         mPreferences = getSharedPreferences(sharedPrefFile, MODE_PRIVATE);
         mLoginState = mPreferences.getBoolean("loginState", false);
 //        mPagerAdapter = new SectionsStatePagerAdapter(getSupportFragmentManager());
