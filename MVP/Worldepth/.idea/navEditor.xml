@@ -97,6 +97,11 @@
                         </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="action_loadingFragment_to_cameraFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_loadingFragment_to_viewerFragment">
                               <value>
                                 <LayoutPositions />
@@ -217,6 +222,11 @@
                         </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="action_settings_to_cameraFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_settings_to_startScreenFragment">
                               <value>
                                 <LayoutPositions />
@@ -238,6 +248,11 @@
                         </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="action_startScreenFragment_to_cameraFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_startScreenFragment_to_signUpFragment">
                               <value>
                                 <LayoutPositions />
@@ -292,6 +307,15 @@
                             <option name="x" value="1559" />
                             <option name="y" value="18" />
                           </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_viewerFragment_to_cameraFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
                         </option>
                       </LayoutPositions>
                     </value>

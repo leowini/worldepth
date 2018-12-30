@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -10,18 +10,30 @@
     tools:context="com.example.leodw.worldepth.ui.preview.ViewerFragment">
 
     <Button
-        android:id="@+id/openModelButton"
+        android:id="@+id/viewerBackToCamera"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="open"
-        />
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="138dp"
+        android:layout_marginBottom="519dp"
+        android:text="@string/back"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/loadSampleButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/loadSampleButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="sample"
-        />
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="37dp"
+        android:layout_marginBottom="519dp"
+        android:text="@string/sample"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/viewerBackToCamera"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</FrameLayout>
+</android.support.constraint.ConstraintLayout>
 

@@ -21,7 +21,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
-
 import com.example.leodw.worldepth.ui.preview.obj.ObjModel;
 import com.example.leodw.worldepth.ui.preview.ply.PlyModel;
 import com.example.leodw.worldepth.ui.preview.stl.StlModel;
@@ -30,6 +29,8 @@ import com.example.leodw.worldepth.R;
 
 import java.io.IOException;
 import java.io.InputStream;
+
+import androidx.navigation.Navigation;
 
 
 public class ViewerFragment extends Fragment {
@@ -50,7 +51,6 @@ public class ViewerFragment extends Fragment {
     private ModelSurfaceView modelView;
     private ViewGroup containerView;
 
-    private Button mOpenModel;
     private Button mLoadSample;
 
     @Override
@@ -73,20 +73,15 @@ public class ViewerFragment extends Fragment {
         if (getActivity().getIntent().getData() != null && savedInstanceState == null) {
             beginLoadModel(getActivity().getIntent().getData());
         }
-        mOpenModel = view.findViewById(R.id.openModelButton);
         mLoadSample = view.findViewById(R.id.loadSampleButton);
-        mOpenModel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                checkReadPermissionThenOpen();
-            }
-        });
         mLoadSample.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 loadSampleModel();
             }
         });
+        Button backToCamera = view.findViewById(R.id.viewerBackToCamera);
+        backToCamera.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_viewerFragment_to_cameraFragment));
     }
 
     @Override

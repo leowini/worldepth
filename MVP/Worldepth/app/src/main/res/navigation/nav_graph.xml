@@ -120,7 +120,11 @@
         android:id="@+id/viewerFragment"
         android:name="com.example.leodw.worldepth.ui.preview.ViewerFragment"
         android:label="viewer_fragment"
-        tools:layout="@layout/viewer_fragment" />
+        tools:layout="@layout/viewer_fragment" >
+        <action
+            android:id="@+id/action_viewerFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
+    </fragment>
     <fragment
         android:id="@+id/loadingFragment"
         android:name="com.example.leodw.worldepth.ui.loading.LoadingFragment"
@@ -129,6 +133,9 @@
         <action
             android:id="@+id/action_loadingFragment_to_viewerFragment"
             app:destination="@id/viewerFragment" />
+        <action
+            android:id="@+id/action_loadingFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
