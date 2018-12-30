@@ -58,9 +58,8 @@ public class LoginFragment extends Fragment {
                 } else {
                     Toast.makeText(getActivity(), "Invalid email or password", Toast.LENGTH_SHORT).show();
                 }*/
-            Toast.makeText(getActivity(), "Logging in", Toast.LENGTH_SHORT).show();
             ((MainActivity) getActivity()).setLoginState(true);
-            ((MainActivity) getActivity()).setViewPagerByTitle("Camera_Fragment"); //camera
+            ((MainActivity) getActivity()).setViewPagerByTitle("Camera_Fragment");
         });
 
         ImageView loginBackButton = view.findViewById(R.id.loginBackButton);
