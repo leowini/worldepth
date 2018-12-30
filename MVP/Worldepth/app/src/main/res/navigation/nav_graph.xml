@@ -132,9 +132,9 @@
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.leodw.worldepth.ui.signup.SignUpFragment"
-        android:label="sign_in_fragment"
-        tools:layout="@layout/sign_in_fragment" >
+        android:name="com.example.leodw.worldepth.ui.signup.Login.LoginFragment"
+        android:label="login_fragment"
+        tools:layout="@layout/login_fragment">
         <action
             android:id="@+id/action_loginFragment_to_startScreenFragment"
             app:destination="@id/startScreenFragment" />

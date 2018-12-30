@@ -71,8 +71,8 @@ public class PhoneFragment extends Fragment {
         Button phoneNextButton = view.findViewById(R.id.phoneNextButton);
         phoneNextButton.setOnClickListener((view1) -> {
             Bundle phoneBundle = new Bundle();
-            phoneBundle.putString("phone", m)
-            Navigation.findNavController(view1).navigate(R.id.action_phoneFragment_to_nameFragment);
+            phoneBundle.putString("phone", mPhoneInput.getText().toString());
+            Navigation.findNavController(view1).navigate(R.id.action_phoneFragment_to_nameFragment, phoneBundle);
         });
 
         mPhoneBackButton = view.findViewById(R.id.phoneBackButton);
