@@ -50,6 +50,11 @@
                                 <LayoutPositions />
                               </value>
                             </entry>
+                            <entry key="action_cameraFragment_to_mapFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_cameraFragment_to_settings">
                               <value>
                                 <LayoutPositions />
@@ -138,6 +143,39 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="mapFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="983" />
+                            <option name="y" value="-739" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_mapFragment_to_profileFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="messageFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="1793" />
+                            <option name="y" value="-653" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="nameFragment">
                     <value>
                       <LayoutPositions>
@@ -211,13 +249,34 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="profileFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="1266" />
+                            <option name="y" value="-835" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_profileFragment_to_settings">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="settings">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="1018" />
-                            <option name="y" value="-708" />
+                            <option name="x" value="1522" />
+                            <option name="y" value="-717" />
                           </Point>
                         </option>
                         <option name="myPositions">
