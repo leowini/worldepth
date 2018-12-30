@@ -23,7 +23,7 @@ public class BaseActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
-        DaggerManager.component().inject(this);
+        com.exarlabs.android.fragmentnavigationdemo.business.dagger.DaggerManager.component().inject(this);
     }
 
 

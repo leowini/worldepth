@@ -1,6 +1,6 @@
-package com.exarlabs.android.fragmentnavigationdemo.business.dagger;
+package com.example.leodw.worldepth.dagger;
 
-import com.exarlabs.android.fragmentnavigationdemo.FragmentNavigationDemoApplication;
+import com.example.leodw.worldepth.WorldepthApplication;
 
 /**
  * Base class for initializeing and accessing the Dagger Component Graph
@@ -10,21 +10,9 @@ import com.exarlabs.android.fragmentnavigationdemo.FragmentNavigationDemoApplica
  */
 public class DaggerManager {
 
-    // ------------------------------------------------------------------------
-    // TYPES
-    // ------------------------------------------------------------------------
-
     private static class Holder {
         static final DaggerManager INSTANCE = new DaggerManager();
     }
-
-    // ------------------------------------------------------------------------
-    // STATIC FIELDS
-    // ------------------------------------------------------------------------
-
-    // ------------------------------------------------------------------------
-    // STATIC METHODS
-    // ------------------------------------------------------------------------
 
     /**
      * @return the Gagger generate graph
@@ -46,10 +34,6 @@ public class DaggerManager {
      */
     private DaggerComponentGraph graph;
 
-    // ------------------------------------------------------------------------
-    // CONSTRUCTORS
-    // ------------------------------------------------------------------------
-
     // Just make it private
     private DaggerManager() {
     }
@@ -57,7 +41,7 @@ public class DaggerManager {
     /**
      * Rebuilds the dagger generated object graph
      */
-    public void buildComponentAndInject(FragmentNavigationDemoApplication app) {
+    public void buildComponentAndInject(WorldepthApplication app) {
         graph = DaggerMainComponent.Initializer.init(app);
         graph.inject(app);
     }

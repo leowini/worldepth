@@ -1,9 +1,10 @@
-package com.exarlabs.android.fragmentnavigationdemo.business.dagger;
+package com.example.leodw.worldepth.dagger;
 
 import javax.inject.Singleton;
 
 import android.app.Application;
 
+import com.example.leodw.worldepth.dagger.DaggerComponentGraph;
 import com.exarlabs.android.fragmentnavigationdemo.business.dagger.modules.AppModule;
 import com.exarlabs.android.fragmentnavigationdemo.business.dagger.modules.DevelModule;
 import com.exarlabs.android.fragmentnavigationdemo.business.dagger.modules.NavigationModule;
