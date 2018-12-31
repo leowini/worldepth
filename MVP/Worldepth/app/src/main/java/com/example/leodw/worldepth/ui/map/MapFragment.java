@@ -42,8 +42,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         Button mProfileButton = view.findViewById(R.id.mapToProfileBtn);
         Button mMessageButton = view.findViewById(R.id.mapToMessageBtn);
         Button mCameraButton = view.findViewById(R.id.mapToCameraBtn);
-        Button mGoToMapActivity = view.findViewById(R.id.fakeMapToMapBtn);
-        mGoToMapActivity.setOnClickListener(v -> ((MainActivity) getActivity()).switchToMap());
         mProfileButton.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_mapFragment_to_profileFragment));
         mCameraButton.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_mapFragment_to_cameraFragment));
         mMessageButton.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_mapFragment_to_messageFragment));
