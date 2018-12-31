@@ -21,9 +21,7 @@ import java.util.Objects;
 
 import androidx.navigation.Navigation;
 
-public class MapFragment extends Fragment implements OnMapReadyCallback {
-
-    private GoogleMap mMap;
+public class MapFragment extends Fragment {
 
     @Nullable
     @Override
@@ -33,25 +31,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        MapFragment mapFragment = (MapFragment) getActivity().getFragmentManager().findFragmentById(R.layout.map_fragment);
-        this.getMapAsync(this);
-
         Button mProfileButton = view.findViewById(R.id.mapToProfileBtn);
         Button mMessageButton = view.findViewById(R.id.mapToMessageBtn);
         Button mCameraButton = view.findViewById(R.id.mapToCameraBtn);
+        Button mGoToMapActivity = view.findViewById(R.id.fakeMapToMapBtn);
         mProfileButton.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_mapFragment_to_profileFragment));
         mCameraButton.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_mapFragment_to_cameraFragment));
         mMessageButton.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_mapFragment_to_messageFragment));
     }
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-
-        // Add a marker in Sydney, Australia, and move the camera.
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-    }
-
 }

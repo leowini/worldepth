@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/map"
-    tools:context=".ui.map.MapFragment"
-    android:name="com.google.android.gms.maps.SupportMapFragment">
+    tools:context=".ui.map.MapFragment">
 
     <Button
         android:elevation="1dp"
@@ -51,4 +50,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mapToProfileBtn" />
 
-</fragment>
+    <Button
+        android:id="@+id/fakeMapToMapBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="147dp"
+        android:layout_marginTop="148dp"
+        android:layout_marginEnd="149dp"
+        android:layout_marginBottom="32dp"
+        android:text="@string/map"
+        app:layout_constraintBottom_toTopOf="@+id/mapToProfileBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</android.support.constraint.ConstraintLayout>
