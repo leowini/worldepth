@@ -1,12 +1,18 @@
 package com.example.leodw.worldepth.ui;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
 
 import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.data.DataTransfer;
 import com.example.leodw.worldepth.data.FirebaseWrapper;
+import com.example.leodw.worldepth.ui.map.MapsActivity;
+
+import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.FragmentNavigator;
@@ -56,5 +62,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void setLoginState(boolean state) {
         mLoginState = state;
+    }
+
+    public void switchToMap() {
+        Intent intent = new Intent(this, MapsActivity.class);
+        startActivity(intent);
     }
 }
