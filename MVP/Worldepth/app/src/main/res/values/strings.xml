@@ -51,4 +51,6 @@
     <string name="home">Home</string>
     <string name="worldepthlogo">WorldepthLogo</string>
     <string name="title_activity_maps">Map</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="password">Password</string>
 </resources>
