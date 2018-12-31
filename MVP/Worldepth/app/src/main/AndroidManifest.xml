@@ -81,7 +81,7 @@
 
         <activity
             android:name=".ui.map.MapsActivity"
-            android:label="@string/title_activity_maps"></activity>
+            android:label="@string/title_activity_maps" android:parentActivityName=".ui.MainActivity">></activity>
     </application>
 
 </manifest>
