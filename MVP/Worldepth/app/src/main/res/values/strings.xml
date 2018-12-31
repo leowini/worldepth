@@ -36,6 +36,11 @@
     <string name="must_contain_valid_characters">Must contain valid characters</string>
     <string name="viewerbacktocamera">viewerBackToCamera</string>
     <string name="sample">sample</string>
+    <string name="email">Email</string>
+    <string name="map">Map</string>
+    <string name="first">First</string>
+    <string name="last">Last</string>
+    <string name="password">Password</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -45,4 +50,5 @@
     <string name="back">Back</string>
     <string name="home">Home</string>
     <string name="worldepthlogo">WorldepthLogo</string>
+    <string name="title_activity_maps">Map</string>
 </resources>

@@ -56,10 +56,6 @@ public class StartScreenFragment extends Fragment {
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         createSignupTransitions();
-        Button goToSignIn = view.findViewById(R.id.goToSignIn);
-        goToSignIn.setOnClickListener((view1) -> {
-            Navigation.findNavController(view1).navigate(R.id.action_startScreenFragment_to_signUpFragment);
-        });
         Button goToSignUp = view.findViewById(R.id.goToSignUp);
         goToSignUp.setOnClickListener((view2) -> {
             Navigation.findNavController(getView()).navigate(R.id.action_startScreenFragment_to_startSignupFragment,
