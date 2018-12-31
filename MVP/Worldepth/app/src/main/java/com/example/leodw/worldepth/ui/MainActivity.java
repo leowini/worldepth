@@ -14,6 +14,9 @@ import com.example.leodw.worldepth.ui.map.MapsActivity;
 
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.FragmentNavigator;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
