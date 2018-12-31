@@ -33,6 +33,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        MapFragment mapFragment = (MapFragment) getActivity().getFragmentManager().findFragmentById(R.layout.map_fragment);
         this.getMapAsync(this);
 
         Button mProfileButton = view.findViewById(R.id.mapToProfileBtn);
