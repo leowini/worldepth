@@ -117,32 +117,6 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="loginFragment">
-                    <value>
-                      <LayoutPositions>
-                        <option name="myPosition">
-                          <Point>
-                            <option name="x" value="-108" />
-                            <option name="y" value="-2" />
-                          </Point>
-                        </option>
-                        <option name="myPositions">
-                          <map>
-                            <entry key="action_loginFragment_to_cameraFragment">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                            <entry key="action_loginFragment_to_startScreenFragment">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                          </map>
-                        </option>
-                      </LayoutPositions>
-                    </value>
-                  </entry>
                   <entry key="mapFragment">
                     <value>
                       <LayoutPositions>
@@ -330,18 +304,13 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-497" />
-                            <option name="y" value="-180" />
+                            <option name="x" value="-333" />
+                            <option name="y" value="-52" />
                           </Point>
                         </option>
                         <option name="myPositions">
                           <map>
                             <entry key="action_startScreenFragment_to_cameraFragment">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                            <entry key="action_startScreenFragment_to_signUpFragment">
                               <value>
                                 <LayoutPositions />
                               </value>

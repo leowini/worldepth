@@ -126,6 +126,8 @@ public class EmailFragment extends Fragment {
         goBack.setOnClickListener((view2) -> {
             Navigation.findNavController(view2).navigate(R.id.action_emailFragment_to_startSignupFragment);
         });
+
+        mEmailInput.requestFocus();
     }
 
     private boolean validEmail() {

@@ -60,7 +60,6 @@ public class StartScreenFragment extends Fragment {
         goToSignIn.setOnClickListener((view1) -> {
             Navigation.findNavController(view1).navigate(R.id.action_startScreenFragment_to_signUpFragment);
         });
-
         Button goToSignUp = view.findViewById(R.id.goToSignUp);
         goToSignUp.setOnClickListener((view2) -> {
             Navigation.findNavController(getView()).navigate(R.id.action_startScreenFragment_to_startSignupFragment,
