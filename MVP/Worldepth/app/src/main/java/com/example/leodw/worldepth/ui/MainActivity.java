@@ -8,6 +8,9 @@ import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.data.DataTransfer;
 import com.example.leodw.worldepth.data.FirebaseWrapper;
 
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.FragmentNavigator;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
