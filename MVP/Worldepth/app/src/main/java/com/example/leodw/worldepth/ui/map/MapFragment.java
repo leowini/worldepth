@@ -17,15 +17,13 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.Objects;
+
 import androidx.navigation.Navigation;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-
-    private Button mProfileButton;
-    private Button mCameraButton;
-    private Button mMessageButton;
 
     @Nullable
     @Override
@@ -35,13 +33,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        SupportMapFragment mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        this.getMapAsync(this);
 
-        mProfileButton = view.findViewById(R.id.mapToProfileBtn);
-        mMessageButton = view.findViewById(R.id.mapToMessageBtn);
-        mCameraButton = view.findViewById(R.id.mapToCameraBtn);
+        Button mProfileButton = view.findViewById(R.id.mapToProfileBtn);
+        Button mMessageButton = view.findViewById(R.id.mapToMessageBtn);
+        Button mCameraButton = view.findViewById(R.id.mapToCameraBtn);
         mProfileButton.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_mapFragment_to_profileFragment));
         mCameraButton.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_mapFragment_to_cameraFragment));
         mMessageButton.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_mapFragment_to_messageFragment));
