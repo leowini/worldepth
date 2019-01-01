@@ -42,8 +42,6 @@ import android.widget.Toast;
 
 import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.slam.Slam;
-import com.example.leodw.worldepth.ui.MainActivity;
-import com.example.leodw.worldepth.ui.signup.StartScreen.StartScreenFragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;

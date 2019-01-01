@@ -1,24 +1,19 @@
-package com.example.leodw.worldepth.ui.signup.StartScreen;
+package com.example.leodw.worldepth.ui.StartScreen;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 
 import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.data.FirebaseWrapper;
 import com.example.leodw.worldepth.ui.MainActivity;
-import com.example.leodw.worldepth.ui.signup.Name.NameViewModel;
-import com.example.leodw.worldepth.ui.signup.Phone.PhoneFragment;
-import android.util.Log;
+
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;

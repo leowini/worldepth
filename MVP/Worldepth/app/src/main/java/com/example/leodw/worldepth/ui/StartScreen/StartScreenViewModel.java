@@ -1,4 +1,4 @@
-package com.example.leodw.worldepth.ui.signup.StartScreen;
+package com.example.leodw.worldepth.ui.StartScreen;
 
 import android.arch.lifecycle.ViewModel;
 
