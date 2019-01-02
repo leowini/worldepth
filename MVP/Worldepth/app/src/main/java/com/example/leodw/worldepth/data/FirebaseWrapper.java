@@ -109,7 +109,17 @@ public class FirebaseWrapper {
         Log.d(TAG,"Wrote to Database");
     }
 
+    public void createNewAccount(String email, String password) {
 
+    }
+
+    private void writeNewUser(String name, String email) {
+        User user = new User(name, email);
+        FirebaseUser authUser = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference ref = mDatabase.getReference();
+        assert authUser != null;
+        ref.child("users").child(authUser.getUid()).setValue(user);
+    }
 
     private void attachReader(DatabaseReference dbRef) {
         dbRef.addValueEventListener(new ValueEventListener() {

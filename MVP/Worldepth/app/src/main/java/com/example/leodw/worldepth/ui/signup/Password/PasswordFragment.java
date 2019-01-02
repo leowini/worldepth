@@ -25,6 +25,7 @@ import com.example.leodw.worldepth.ui.signup.Email.EmailFragment;
 import com.example.leodw.worldepth.ui.signup.Phone.PhoneFragment;
 import com.example.leodw.worldepth.ui.signup.Phone.PhoneViewModel;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 import androidx.navigation.Navigation;
 
@@ -217,8 +218,10 @@ public class PasswordFragment extends Fragment {
 
     public void createNewAccount(String email, String password) {
         FirebaseAuth _auth = mFb.getFirebaseAuth();
+        FirebaseDatabase database = mFb.getFirebaseDatabase();
         _auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
+                mFb.createNewAccount(email, password);
                 //set login state
                 ((MainActivity) getActivity()).setLoginState(true);
                 //go to camera fragment
