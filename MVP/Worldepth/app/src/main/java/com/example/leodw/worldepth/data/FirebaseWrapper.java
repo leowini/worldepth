@@ -8,6 +8,7 @@ import android.os.Environment;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+
 import com.example.leodw.worldepth.ui.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -63,8 +64,20 @@ public class FirebaseWrapper {
         }
     }
 
-    public String getName() {
-        return this.name;
+    public void getName() {
+        //String name = mDatabase.getReference().child("users").child(uid);
+        DatabaseReference dbRef = mDatabase.getReference();
+        dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.child("users").child(uid).getValue(User.class);
+                Log.d(TAG, "The retrieved username is: " + user.firstName);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
     }
 
     public String getEmail() {
@@ -93,20 +106,24 @@ public class FirebaseWrapper {
     }
 
     //Get firebase storageReference object
-    public StorageReference getStorageReference() { return mStorageRef; }
+    public StorageReference getStorageReference() {
+        return mStorageRef;
+    }
 
     public FirebaseUser getFirebaseUser() {
         return currentUser;
     }
 
-    public FirebaseAuth getFirebaseAuth() { return mAuth; }
+    public FirebaseAuth getFirebaseAuth() {
+        return mAuth;
+    }
 
     //Write to the firebase database with serializable data
     public void writeToDatabase(String location, Object message) {
         DatabaseReference myRef = mDatabase.getReference(location); //location for message
         myRef.setValue(message); //sending the "message" object
         attachReader(myRef);
-        Log.d(TAG,"Wrote to Database");
+        Log.d(TAG, "Wrote to Database");
     }
 
     public void createNewAccount(String firstName, String lastName, String email, String password) {
