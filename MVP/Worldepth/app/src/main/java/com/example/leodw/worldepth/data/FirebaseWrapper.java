@@ -83,6 +83,10 @@ public class FirebaseWrapper {
         return this.uid;
     }
 
+    public void friendRequest(String Name) {
+
+    }
+
     //Get firebase database object
     public FirebaseDatabase getFirebaseDatabase() {
         return mDatabase;

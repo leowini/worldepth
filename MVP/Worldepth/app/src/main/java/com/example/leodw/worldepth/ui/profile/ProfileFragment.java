@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.ui.MainActivity;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Objects;
 
@@ -28,6 +29,7 @@ public class ProfileFragment extends Fragment {
     private TextView mNameOfUser;
     private int mFriendNumber = 1;
     private TextView mFriendText;
+    private FirebaseDatabase mDb;
 
     @Nullable
     @Override
@@ -38,14 +40,18 @@ public class ProfileFragment extends Fragment {
     @SuppressLint("SetTextI18n")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        mDb = ((MainActivity) getActivity()).getFirebaseWrapper().getFirebaseDatabase();
         mSettingsButton = view.findViewById(R.id.profileToSettingsBtn);
         mSettingsButton.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_profileFragment_to_settings));
         mBackButton = view.findViewById(R.id.profileToMapButton);
         mBackButton.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_profileFragment_to_mapFragment));
         mNameOfUser = view.findViewById(R.id.profileName);
         mNameOfUser.setText(((MainActivity)Objects.requireNonNull(getActivity())).getFirebaseWrapper().getName());
+        mFollowerNumber = mDb.
         //mFollowerNumber = ((MainActivity) getActivity()).getFirebaseWrapper().getFollowerNumber();
         mFriendText = view.findViewById(R.id.profileNumberOfFollowers);
         mFriendText.setText(Integer.toString(mFriendNumber));
+
+
     }
 }
