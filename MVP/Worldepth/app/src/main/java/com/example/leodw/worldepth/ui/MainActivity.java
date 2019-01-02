@@ -1,5 +1,6 @@
 package com.example.leodw.worldepth.ui;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
@@ -14,8 +15,10 @@ import com.example.leodw.worldepth.ui.map.MapsActivity;
 
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.FragmentNavigator;
+import androidx.navigation.fragment.NavHostFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,7 +43,9 @@ public class MainActivity extends AppCompatActivity {
 
         mPreferences = getSharedPreferences(sharedPrefFile, MODE_PRIVATE);
         mLoginState = mPreferences.getBoolean("loginState", false);
-        String startFragment = (mLoginState) ? "Camera_Fragment" : "StartScreen_Fragment";
+        NavHostFragment hostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        NavController navController = hostFragment.getNavController();
+        if (mLoginState) navController.navigate(R.id.cameraFragment);
         fb = new FirebaseWrapper();
         dt = new DataTransfer();
     }
