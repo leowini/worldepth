@@ -36,31 +36,39 @@
 
     <TextView
         android:id="@+id/emailHint"
-        android:textColor="#A6A4A4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="284dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:text="@string/email"
+        android:textColor="#A6A4A4"
         android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/enterEmail"
+        app:layout_constraintEnd_toEndOf="@+id/enterEmail"
+        app:layout_constraintHorizontal_bias="0.055"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/start_logo"
         tools:ignore="MissingConstraints" />
 
     <TextView
-        android:textColor="#A6A4A4"
         android:id="@+id/passwordHint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:text="@string/password"
+        android:textColor="#A6A4A4"
         android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/goToCamera"
         app:layout_constraintEnd_toEndOf="@+id/enterPassword"
         app:layout_constraintHorizontal_bias="0.064"
         app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteY="377dp" />
+        app:layout_constraintTop_toTopOf="@+id/enterPassword"
+        tools:ignore="MissingConstraints" />
 
     <ImageView
         android:transitionName="small_logo"
