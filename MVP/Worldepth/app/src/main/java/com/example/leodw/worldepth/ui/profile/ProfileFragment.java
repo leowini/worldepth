@@ -47,8 +47,7 @@ public class ProfileFragment extends Fragment {
         mBackButton.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_profileFragment_to_mapFragment));
         mNameOfUser = view.findViewById(R.id.profileName);
         mNameOfUser.setText(((MainActivity)Objects.requireNonNull(getActivity())).getFirebaseWrapper().getName());
-        mFollowerNumber = mDb.
-        //mFollowerNumber = ((MainActivity) getActivity()).getFirebaseWrapper().getFollowerNumber();
+        //mFriendNumber = ((MainActivity) getActivity()).getFirebaseWrapper().getFollowerNumber();
         mFriendText = view.findViewById(R.id.profileNumberOfFollowers);
         mFriendText.setText(Integer.toString(mFriendNumber));
 
