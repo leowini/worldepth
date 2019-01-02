@@ -6,8 +6,6 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.EditText;
 
 import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.data.DataTransfer;
@@ -70,10 +68,5 @@ public class MainActivity extends AppCompatActivity {
 
     public void setLoginState(boolean state) {
         mLoginState = state;
-    }
-
-    public void switchToMap() {
-        Intent intent = new Intent(this, MapsActivity.class);
-        startActivity(intent);
     }
 }
