@@ -1,5 +1,6 @@
 package com.example.leodw.worldepth.ui.profile;
 
+import android.annotation.SuppressLint;
 import android.media.Image;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -25,6 +26,8 @@ public class ProfileFragment extends Fragment {
     private ImageView mSettingsButton;
     private ImageView mBackButton;
     private TextView mNameOfUser;
+    private int mFriendNumber = 1;
+    private TextView mFriendText;
 
     @Nullable
     @Override
@@ -32,6 +35,7 @@ public class ProfileFragment extends Fragment {
         return inflater.inflate(R.layout.profile_fragment, container, false);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         mSettingsButton = view.findViewById(R.id.profileToSettingsBtn);
@@ -40,5 +44,8 @@ public class ProfileFragment extends Fragment {
         mBackButton.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_profileFragment_to_mapFragment));
         mNameOfUser = view.findViewById(R.id.profileName);
         mNameOfUser.setText(((MainActivity)Objects.requireNonNull(getActivity())).getFirebaseWrapper().getName());
+        //mFollowerNumber = ((MainActivity) getActivity()).getFirebaseWrapper().getFollowerNumber();
+        mFriendText = view.findViewById(R.id.profileNumberOfFollowers);
+        mFriendText.setText(Integer.toString(mFriendNumber));
     }
 }
