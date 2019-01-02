@@ -10,7 +10,6 @@ import android.os.Bundle;
 import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.data.DataTransfer;
 import com.example.leodw.worldepth.data.FirebaseWrapper;
-import com.example.leodw.worldepth.ui.map.MapsActivity;
 
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
