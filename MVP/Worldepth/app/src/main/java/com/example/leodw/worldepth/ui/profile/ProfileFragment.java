@@ -50,7 +50,5 @@ public class ProfileFragment extends Fragment {
         //mFriendNumber = ((MainActivity) getActivity()).getFirebaseWrapper().getFollowerNumber();
         mFriendText = view.findViewById(R.id.profileNumberOfFollowers);
         mFriendText.setText(Integer.toString(mFriendNumber));
-
-
     }
 }

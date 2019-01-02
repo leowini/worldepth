@@ -221,7 +221,7 @@ public class PasswordFragment extends Fragment {
         FirebaseDatabase database = mFb.getFirebaseDatabase();
         _auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                mFb.createNewAccount(email, password);
+                mFb.createNewAccount(firstName, lastName, email, password);
                 //set login state
                 ((MainActivity) getActivity()).setLoginState(true);
                 //go to camera fragment
