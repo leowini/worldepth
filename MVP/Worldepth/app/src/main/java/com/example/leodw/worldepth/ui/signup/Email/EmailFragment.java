@@ -117,8 +117,6 @@ public class EmailFragment extends Fragment {
             if (validEmail()) {
                 String email = mEmailInput.getText().toString() + "@" + mServiceInput.getText().toString() + "." + mSuffixInput.getText().toString();
                 mDt.addData(new DataPair(email, "passwordFragment", "emailFragment"));
-                //Bundle emailBundle = new Bundle();
-                //emailBundle.putString("email", email);
                 Navigation.findNavController(view1).navigate(R.id.action_emailFragment_to_nameFragment);
             }
         });

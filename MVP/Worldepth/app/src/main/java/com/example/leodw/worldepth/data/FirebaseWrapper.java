@@ -109,7 +109,7 @@ public class FirebaseWrapper {
         Log.d(TAG,"Wrote to Database");
     }
 
-    private void createNewAccount(String firstName, String lastName, String email, String password) {
+    public void createNewAccount(String firstName, String lastName, String email, String password) {
         User user = new User(firstName, lastName, email, password);
         FirebaseUser authUser = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference ref = mDatabase.getReference();
