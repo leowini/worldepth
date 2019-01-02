@@ -107,6 +107,10 @@ public class PasswordFragment extends Fragment {
                 String firstName = mDt.getDataPair(1).getData();
                 String lastName = mDt.getDataPair(2).getData();
                 String password = mPasswordInput.getText().toString();
+                Log.d(TAG, "email: " + email);
+                Log.d(TAG, "firstName: " + firstName);
+                Log.d(TAG, "lastName: " + lastName);
+                Log.d(TAG, "password: " + password);
                 createNewAccount(firstName, lastName, email, password);
             }
         });
