@@ -31,9 +31,15 @@ public class FirebaseWrapper {
     private static final String TAG = "FirebaseWrapper";
 
     private FirebaseDatabase mDatabase; //Instance of database
-    private StorageReference mStorageRef; //Instace of storage reference
+    private StorageReference mStorageRef; //Instance of storage reference
     private FirebaseAuth mAuth; //Instance of Authentication checker
     private FirebaseUser currentUser;
+    private String name;
+    private String email;
+    private Uri photoUrl;
+    private boolean emailVerified;
+    private String uid;
+
     //TODO: create list of database references by location
 
     public FirebaseWrapper() { //Constructor
@@ -41,6 +47,40 @@ public class FirebaseWrapper {
         mStorageRef = FirebaseStorage.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            // Name, email address, and profile photo Url
+            this.name = currentUser.getDisplayName();
+            this.email = currentUser.getEmail();
+            this.photoUrl = currentUser.getPhotoUrl();
+
+            // Check if user's email is verified
+            this.emailVerified = currentUser.isEmailVerified();
+
+            // The user's ID, unique to the Firebase project. Do NOT use this value to
+            // authenticate with your backend server, if you have one. Use
+            // FirebaseUser.getIdToken() instead.
+            this.uid = currentUser.getUid();
+        }
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public String getEmail() {
+        return this.email;
+    }
+
+    public Uri getPhotoUrl() {
+        return this.photoUrl;
+    }
+
+    public boolean getEmailVerified() {
+        return this.emailVerified;
+    }
+
+    public String getUid() {
+        return this.uid;
     }
 
     //Get firebase database object
