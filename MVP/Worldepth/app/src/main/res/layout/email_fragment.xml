@@ -9,6 +9,7 @@
 
 
     <EditText
+        style="@style/BlankEditText"
         android:id="@+id/emailInput"
         android:textAlignment="center"
         android:layout_width="match_parent"
@@ -25,6 +26,7 @@
         tools:ignore="MissingConstraints" />
 
     <EditText
+        style="@style/BlankEditText"
         android:textSize="25sp"
         android:textAlignment="center"
         android:id="@+id/emailService"
@@ -41,6 +43,7 @@
         android:visibility="invisible"/>
 
     <EditText
+        style="@style/BlankEditText"
         android:textSize="25sp"
         android:textAlignment="center"
         android:id="@+id/emailSuffix"

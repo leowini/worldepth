@@ -12,4 +12,8 @@
         <item name="android:background">@drawable/bubble1</item>
     </style>
 
+    <style name="BlankEditText">
+        <item name="android:background">@null</item>
+    </style>
+
 </resources>
