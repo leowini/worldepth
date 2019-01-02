@@ -52,7 +52,7 @@ public class BirthdayFragment extends Fragment {
 
         ImageView birthdayBackButton = view.findViewById(R.id.birthdayBackButton);
         birthdayBackButton.setOnClickListener((view2) -> {
-            Navigation.findNavController(view2).navigate(R.id.action_birthdayFragment_to_nameFragment);
+            Navigation.findNavController(view2).popBackStack();
         });
         return view;
     }
