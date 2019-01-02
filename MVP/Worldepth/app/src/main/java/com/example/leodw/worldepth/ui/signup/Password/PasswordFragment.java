@@ -112,7 +112,7 @@ public class PasswordFragment extends Fragment {
         });
 
         goBack.setOnClickListener((view2) -> {
-            Navigation.findNavController(view2).navigate(R.id.action_passwordFragment_to_birthdayFragment);
+            Navigation.findNavController(view2).popBackStack();
         });
     }
 
