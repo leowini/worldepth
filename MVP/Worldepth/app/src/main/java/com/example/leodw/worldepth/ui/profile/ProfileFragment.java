@@ -11,8 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.leodw.worldepth.R;
+import com.example.leodw.worldepth.ui.MainActivity;
+
+import java.util.Objects;
 
 import androidx.navigation.Navigation;
 
@@ -20,6 +24,7 @@ public class ProfileFragment extends Fragment {
 
     private ImageView mSettingsButton;
     private ImageView mBackButton;
+    private TextView mNameOfUser;
 
     @Nullable
     @Override
@@ -33,5 +38,7 @@ public class ProfileFragment extends Fragment {
         mSettingsButton.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_profileFragment_to_settings));
         mBackButton = view.findViewById(R.id.profileToMapButton);
         mBackButton.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_profileFragment_to_mapFragment));
+        mNameOfUser = view.findViewById(R.id.profileName);
+        mNameOfUser.setText(((MainActivity)Objects.requireNonNull(getActivity())).getFirebaseWrapper().getName());
     }
 }
