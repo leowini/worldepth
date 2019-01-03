@@ -166,6 +166,9 @@
         <action
             android:id="@+id/action_profileFragment_to_mapFragment"
             app:destination="@id/mapFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_addFriend"
+            app:destination="@id/addFriend" />
     </fragment>
     <fragment
         android:id="@+id/messageFragment"
@@ -175,5 +178,14 @@
         <action
             android:id="@+id/action_messageFragment_to_mapFragment"
             app:destination="@id/mapFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addFriend"
+        android:name="com.example.leodw.worldepth.ui.profile.ProfileFragment"
+        android:label="add_friend_fragment"
+        tools:layout="@layout/add_friend_fragment" >
+        <action
+            android:id="@+id/action_addFriend_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
 </navigation>
