@@ -6,13 +6,18 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.data.DataTransfer;
 import com.example.leodw.worldepth.data.FirebaseWrapper;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
 
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
+import static java.security.AccessController.getContext;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -74,13 +79,29 @@ public class MainActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         FirebaseUser user = this.fb.getCurrentUser();
-        updateUI(user);
+        updateUi(user);
     }
 
-    private void updateUI(FirebaseUser user) {
-        if (user == null) return;
-        else {
+    private void updateUi(FirebaseUser user) {
+        if (user != null) {
             //do some stuff;
         }
+    }
+
+    private void login(String email, String password) {
+        fb.getFirebaseAuth().signInWithEmailAndPassword(email, password).
+                addOnCompleteListener((OnCompleteListener<AuthResult>) task -> {
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d(TAG, "signInWithEmail:success");
+                        FirebaseUser user = fb.getCurrentUser();
+                        updateUi(user);
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w(TAG, "signInWithEmail:failure", task.getException());
+                        Toast.makeText(MainActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                        updateUi(null);
+                    }
+                });
     }
 }
