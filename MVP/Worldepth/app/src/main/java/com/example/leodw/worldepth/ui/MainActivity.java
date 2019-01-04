@@ -74,5 +74,13 @@ public class MainActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         FirebaseUser user = this.fb.getCurrentUser();
+        updateUI(user);
+    }
+
+    private void updateUI(FirebaseUser user) {
+        if (user == null) return;
+        else {
+            //do some stuff;
+        }
     }
 }

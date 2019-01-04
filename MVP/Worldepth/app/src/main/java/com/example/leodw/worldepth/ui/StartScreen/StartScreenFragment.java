@@ -67,7 +67,7 @@ public class StartScreenFragment extends Fragment {
         mTestUserLogin = view.findViewById(R.id.testUserLogin);
 
         mTestUserLogin.setOnClickListener(v -> {
-            login("johndoe@testmail.com", "RealSlimShady13!");
+            login("JohnDoe@testmail.com", "RealSlimShady13!");
             ((MainActivity) getActivity()).setLoginState(true);
             Navigation.findNavController(v).navigate(R.id.action_startScreenFragment_to_cameraFragment);
         });
