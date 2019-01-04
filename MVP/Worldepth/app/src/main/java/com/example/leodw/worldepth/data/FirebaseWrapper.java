@@ -18,6 +18,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -132,7 +133,10 @@ public class FirebaseWrapper {
         FirebaseUser authUser = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference ref = mDatabase.getReference();
         assert authUser != null;
-        ref.child("users").child(authUser.getIdToken(true).toString()).setValue(user);
+        authUser.getIdToken(true).addOnSuccessListener(result -> {
+            String idToken = result.getToken();
+            ref.child("users").child(idToken).setValue(user);
+        });
     }
 
     private void attachReader(DatabaseReference dbRef) {
