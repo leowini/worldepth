@@ -59,10 +59,14 @@ public class StartScreenFragment extends Fragment {
                     mAnimExtras);
         });
 
-        Button goToCamera = view.findViewById(R.id.goToCamera);
-        goToCamera.setOnClickListener((view4) -> {
-            ((MainActivity) getActivity()).setLoginState(true);
-            Navigation.findNavController(view4).navigate(R.id.action_startScreenFragment_to_cameraFragment);
+        Button logIn = view.findViewById(R.id.goToCamera);
+        logIn.setOnClickListener((view4) -> {
+            if (true /* valid login */) {
+                ((MainActivity) getActivity()).setLoginState(true);
+                Navigation.findNavController(view4).navigate(R.id.action_startScreenFragment_to_cameraFragment);
+            } else {
+                //incorrect login
+            }
         });
     }
 

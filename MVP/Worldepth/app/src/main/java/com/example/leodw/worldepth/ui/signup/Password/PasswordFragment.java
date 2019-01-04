@@ -25,6 +25,7 @@ import com.example.leodw.worldepth.ui.signup.Email.EmailFragment;
 import com.example.leodw.worldepth.ui.signup.Phone.PhoneFragment;
 import com.example.leodw.worldepth.ui.signup.Phone.PhoneViewModel;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 import androidx.navigation.Navigation;
 
@@ -102,14 +103,15 @@ public class PasswordFragment extends Fragment {
 
         completeSignUp.setOnClickListener((v) -> {
             if (validPassword()) {
-                for (int i = 0; i < mDt.size(); i++) {
-                    if (mDt.getDataPair(i).getLocation().equals("passwordFragment")) {
-                        Log.d(TAG, "email: " + mDt.getDataPair(i).getData());
-                        Log.d(TAG, "password: " + mPasswordInput.getText().toString());
-                        createNewAccount(mDt.getDataPair(i).getData(), mPasswordInput.getText().toString());
-                        mDt.removeData(i);
-                    }
-                }
+                String email = mDt.getDataPair(0).getData();
+                String firstName = mDt.getDataPair(1).getData();
+                String lastName = mDt.getDataPair(2).getData();
+                String password = mPasswordInput.getText().toString();
+                Log.d(TAG, "email: " + email);
+                Log.d(TAG, "firstName: " + firstName);
+                Log.d(TAG, "lastName: " + lastName);
+                Log.d(TAG, "password: " + password);
+                createNewAccount(firstName, lastName, email, password);
             }
         });
 
@@ -215,10 +217,12 @@ public class PasswordFragment extends Fragment {
         return false;
     }
 
-    public void createNewAccount(String email, String password) {
+    public void createNewAccount(String firstName, String lastName, String email, String password) {
         FirebaseAuth _auth = mFb.getFirebaseAuth();
+        FirebaseDatabase database = mFb.getFirebaseDatabase();
         _auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
+                mFb.createNewAccount(firstName, lastName, email, password);
                 //set login state
                 ((MainActivity) getActivity()).setLoginState(true);
                 //go to camera fragment

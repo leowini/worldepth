@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean mLoginState;
 
     private SharedPreferences mPreferences;
-    private String sharedPrefFile = "com.example.android.leodw.worldepth";
+    private static final String sharedPrefFile = "com.example.android.leodw.worldepth";
 
     // Used to load the 'native-lib' library on application startup.
     static {
