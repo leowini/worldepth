@@ -83,7 +83,6 @@ public class StartScreenFragment extends Fragment {
         Button logIn = view.findViewById(R.id.goToCamera);
         logIn.setOnClickListener((view4) -> {
             if (login(mEmailInput.getText().toString(), mPasswordInput.getText().toString())) {
-                ((MainActivity) getActivity()).setLoginState(true);
                 Navigation.findNavController(view4).navigate(R.id.action_startScreenFragment_to_cameraFragment);
             } else {
                 //incorrect login

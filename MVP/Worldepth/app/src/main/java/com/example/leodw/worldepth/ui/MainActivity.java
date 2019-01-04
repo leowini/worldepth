@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         preferencesEditor.apply();
     }
 
-    public void setLoginState(boolean state) {
+    private void setLoginState(boolean state) {
         mLoginState = state;
     }
 
@@ -94,8 +94,9 @@ public class MainActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInWithEmail:success");
-                        FirebaseUser user = fb.getCurrentUser();
+                        FirebaseUser user = fb.getFirebaseAuth().getCurrentUser();
                         updateUi(user);
+                        setLoginState(true);
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w(TAG, "signInWithEmail:failure", task.getException());
