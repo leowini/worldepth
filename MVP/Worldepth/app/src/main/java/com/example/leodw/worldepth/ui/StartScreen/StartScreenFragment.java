@@ -66,7 +66,6 @@ public class StartScreenFragment extends Fragment {
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         createSignupTransitions();
         mTestUserLogin = view.findViewById(R.id.testUserLogin);
-
         mTestUserLogin.setOnClickListener(v -> {
             login("JohnDoe@testmail.com", "RealSlimShady13!");
             Navigation.findNavController(v).navigate(R.id.action_startScreenFragment_to_cameraFragment);
@@ -80,10 +79,9 @@ public class StartScreenFragment extends Fragment {
                     mAnimExtras);
         });
 
-        Button logIn = view.findViewById(R.id.goToCamera);
+        Button logIn = view.findViewById(R.id.loginBtn);
         logIn.setOnClickListener((view4) -> {
             login(mEmailInput.getText().toString(), mPasswordInput.getText().toString());
-            Navigation.findNavController(view4).navigate(R.id.action_startScreenFragment_to_cameraFragment);
         });
     }
 

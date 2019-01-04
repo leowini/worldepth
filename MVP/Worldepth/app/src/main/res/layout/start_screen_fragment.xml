@@ -63,7 +63,6 @@
         android:text="@string/password"
         android:textColor="#A6A4A4"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/goToCamera"
         app:layout_constraintEnd_toEndOf="@+id/enterPassword"
         app:layout_constraintHorizontal_bias="0.064"
         app:layout_constraintStart_toStartOf="parent"
@@ -99,31 +98,33 @@
         app:layout_constraintVertical_bias="0.968" />
 
     <Button
-        android:id="@+id/loginBtn"
-        style="@style/Widget.AppCompat.Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:text="@string/signIn"
-        android:textSize="25sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.838" />
+    android:id="@+id/loginBtn"
+    style="@style/Widget.AppCompat.Button"
+    android:layout_width="129dp"
+    android:layout_height="wrap_content"
+    android:ems="10"
+    android:text="@string/signIn"
+    android:textSize="25sp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.937"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintVertical_bias="0.838" />
 
     <Button
         android:id="@+id/testUserLogin"
         style="@style/Widget.AppCompat.Button"
-        android:layout_width="wrap_content"
+        android:layout_width="158dp"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:text="@string/signIn"
+        android:text="@string/test_login"
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.146"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.838" />
+        app:layout_constraintVertical_bias="0.828" />
 
 </android.support.constraint.ConstraintLayout>
