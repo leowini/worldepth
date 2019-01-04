@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         preferencesEditor.apply();
     }
 
-    private void setLoginState(boolean state) {
+    public void setLoginState(boolean state) {
         mLoginState = state;
     }
 
@@ -86,24 +86,6 @@ public class MainActivity extends AppCompatActivity {
         if (user != null) {
             //do some stuff;
         }
-    }
-
-    public void login(String email, String password) {
-        fb.getFirebaseAuth().signInWithEmailAndPassword(email, password).
-                addOnCompleteListener((OnCompleteListener<AuthResult>) task -> {
-                    if (task.isSuccessful()) {
-                        // Sign in success, update UI with the signed-in user's information
-                        Log.d(TAG, "signInWithEmail:success");
-                        FirebaseUser user = fb.getFirebaseAuth().getCurrentUser();
-                        updateUi(user);
-                        setLoginState(true);
-                    } else {
-                        // If sign in fails, display a message to the user.
-                        Log.w(TAG, "signInWithEmail:failure", task.getException());
-                        Toast.makeText(MainActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-                        updateUi(null);
-                    }
-                });
     }
 
     public void signOut() {

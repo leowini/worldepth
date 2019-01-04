@@ -17,6 +17,7 @@ import com.example.leodw.worldepth.ui.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import android.widget.Button;
@@ -68,7 +69,6 @@ public class StartScreenFragment extends Fragment {
 
         mTestUserLogin.setOnClickListener(v -> {
             login("JohnDoe@testmail.com", "RealSlimShady13!");
-            ((MainActivity) getActivity()).setLoginState(true);
             Navigation.findNavController(v).navigate(R.id.action_startScreenFragment_to_cameraFragment);
         });
 
@@ -98,6 +98,15 @@ public class StartScreenFragment extends Fragment {
     }
 
     private void login(String email, String password) {
-        ((MainActivity) getActivity()).login(email, password);
+        FirebaseAuth auth = mFb.getFirebaseAuth();
+        auth.signInWithEmailAndPassword(email, password).
+                addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Navigation.findNavController(getView()).navigate(R.id.action_startScreenFragment_to_cameraFragment);
+                    } else {
+                        Log.w(TAG, "signInWithEmail:failure", task.getException());
+                        Toast.makeText(getContext(), "Authentication failed.", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }
