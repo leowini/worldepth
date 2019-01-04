@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.leodw.worldepth.R;
+import com.example.leodw.worldepth.data.DataPair;
 import com.example.leodw.worldepth.data.DataTransfer;
 import com.example.leodw.worldepth.data.FirebaseWrapper;
 import com.example.leodw.worldepth.ui.MainActivity;
@@ -45,6 +46,8 @@ public class NameFragment extends Fragment {
 
         Button nameNextButton = view.findViewById(R.id.nameNextButton);
         nameNextButton.setOnClickListener((view1) -> {
+            mDt.addData(new DataPair(mFirstName.getText().toString(), "passwordFragment", "nameFragment"));
+            mDt.addData(new DataPair(mLastName.getText().toString(), "passwordFragment", "nameFragment"));
             Navigation.findNavController(view1).navigate(R.id.action_nameFragment_to_birthdayFragment);
         });
 
