@@ -10,6 +10,7 @@ import android.os.Bundle;
 import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.data.DataTransfer;
 import com.example.leodw.worldepth.data.FirebaseWrapper;
+import com.google.firebase.auth.FirebaseUser;
 
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
@@ -67,5 +68,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void setLoginState(boolean state) {
         mLoginState = state;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        FirebaseUser user = this.fb.getCurrentUser();
     }
 }
