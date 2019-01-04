@@ -65,6 +65,8 @@ public class StartScreenFragment extends Fragment {
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         createSignupTransitions();
+        mEmailInput = view.findViewById(R.id.enterEmail);
+        mPasswordInput = view.findViewById(R.id.enterPassword);
         mTestUserLogin = view.findViewById(R.id.testUserLogin);
         mTestUserLogin.setOnClickListener(v -> {
             login("JohnDoe@gmail.com", "Qwerty123!");
