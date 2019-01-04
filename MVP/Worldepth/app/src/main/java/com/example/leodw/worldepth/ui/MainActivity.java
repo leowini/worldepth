@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        FirebaseUser user = this.fb.getCurrentUser();
+        FirebaseUser user = fb.getFirebaseAuth().getCurrentUser();
         updateUi(user);
     }
 
