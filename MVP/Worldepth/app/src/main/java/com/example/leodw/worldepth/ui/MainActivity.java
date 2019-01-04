@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void login(String email, String password) {
+    public void login(String email, String password) {
         fb.getFirebaseAuth().signInWithEmailAndPassword(email, password).
                 addOnCompleteListener((OnCompleteListener<AuthResult>) task -> {
                     if (task.isSuccessful()) {

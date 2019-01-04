@@ -99,6 +99,6 @@ public class StartScreenFragment extends Fragment {
     }
 
     private void login(String email, String password) {
-        ((MainActivity) getActivity()).getFirebaseWrapper().login(email, password);
+        ((MainActivity) getActivity()).login(email, password);
     }
 }
