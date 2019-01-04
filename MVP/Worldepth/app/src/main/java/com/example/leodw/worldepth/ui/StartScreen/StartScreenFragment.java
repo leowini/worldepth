@@ -67,8 +67,7 @@ public class StartScreenFragment extends Fragment {
         createSignupTransitions();
         mTestUserLogin = view.findViewById(R.id.testUserLogin);
         mTestUserLogin.setOnClickListener(v -> {
-            login("JohnDoe@testmail.com", "RealSlimShady13!");
-            Navigation.findNavController(v).navigate(R.id.action_startScreenFragment_to_cameraFragment);
+            login("JohnDoe@gmail.com", "Qwerty123!");
         });
 
         Button goToSignUp = view.findViewById(R.id.goToSignUp);
