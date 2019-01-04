@@ -9,6 +9,7 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import com.example.leodw.worldepth.ui.MainActivity;
+import com.example.leodw.worldepth.ui.signup.StartSignup.StartSignupFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -89,7 +90,7 @@ public class FirebaseWrapper {
 
     public void login(String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password).
-                addOnCompleteListener(this, (OnCompleteListener<AuthResult>) task -> {
+                addOnCompleteListener(FirebaseWrapper.this, (OnCompleteListener<AuthResult>) task -> {
                     if (task.isSuccessful()) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInWithEmail:success");
@@ -98,7 +99,7 @@ public class FirebaseWrapper {
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w(TAG, "signInWithEmail:failure", task.getException());
-                        Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
+                        Toast.makeText( , "Authentication failed.",
                                 Toast.LENGTH_SHORT).show();
                         updateUI(null);
                     }
