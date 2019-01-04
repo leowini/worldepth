@@ -133,11 +133,11 @@ public class FirebaseWrapper {
         FirebaseUser authUser = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference ref = mDatabase.getReference();
         assert authUser != null;
-//        authUser.getIdToken(true).addOnSuccessListener(result -> {
+        ref.child("users").child(authUser.getUid()).setValue(user);
+//               authUser.getIdToken(true).addOnSuccessListener(result -> {
 //            String idToken = result.getToken();
 //            ref.child("users").child(idToken).setValue(user);
 //        });
-        ref.child("users").child(authUser.getUid()).setValue(user);
     }
 
     private void attachReader(DatabaseReference dbRef) {
