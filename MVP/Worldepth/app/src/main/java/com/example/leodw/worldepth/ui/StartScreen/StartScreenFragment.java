@@ -82,7 +82,10 @@ public class StartScreenFragment extends Fragment {
 
         Button logIn = view.findViewById(R.id.loginBtn);
         logIn.setOnClickListener((view4) -> {
-            login(mEmailInput.getText().toString(), mPasswordInput.getText().toString());
+            if ((!mEmailInput.getText().toString().equals("")) && (!mPasswordInput.getText().toString().equals("")))
+            {
+                login(mEmailInput.getText().toString(), mPasswordInput.getText().toString());
+            }
         });
     }
 
