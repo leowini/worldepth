@@ -85,6 +85,8 @@ public class StartScreenFragment extends Fragment {
             if ((!mEmailInput.getText().toString().equals("")) && (!mPasswordInput.getText().toString().equals("")))
             {
                 login(mEmailInput.getText().toString(), mPasswordInput.getText().toString());
+            } else {
+                Toast.makeText(getContext(), "Enter your login info.", Toast.LENGTH_SHORT);
             }
         });
     }
