@@ -106,6 +106,7 @@ public class StartScreenFragment extends Fragment {
         auth.signInWithEmailAndPassword(email, password).
                 addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
+                        ((MainActivity) getActivity()).setLoginState(true);
                         Navigation.findNavController(getView()).navigate(R.id.action_startScreenFragment_to_cameraFragment);
                     } else {
                         Log.w(TAG, "signInWithEmail:failure", task.getException());

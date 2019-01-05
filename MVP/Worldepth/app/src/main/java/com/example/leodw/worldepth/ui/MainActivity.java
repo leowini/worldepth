@@ -87,8 +87,4 @@ public class MainActivity extends AppCompatActivity {
             //do some stuff;
         }
     }
-
-    public void signOut() {
-        setLoginState(false);
-    }
 }

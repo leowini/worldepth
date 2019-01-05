@@ -33,7 +33,7 @@ public class Settings extends Fragment {
         mSignOutButton = view.findViewById(R.id.signOutButton);
         mBackToProfile.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_settings_to_profileFragment));
         mSignOutButton.setOnClickListener(v -> {
-            ((MainActivity) getActivity()).signOut();
+            ((MainActivity) getActivity()).setLoginState(false);
             Navigation.findNavController(v).navigate(R.id.action_settings_to_startScreenFragment);
         });
     }
