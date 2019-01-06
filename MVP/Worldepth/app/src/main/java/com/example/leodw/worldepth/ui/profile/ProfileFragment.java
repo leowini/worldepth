@@ -57,10 +57,10 @@ public class ProfileFragment extends Fragment {
         mAddFriendBtn = view.findViewById(R.id.addFriend);
         mRemoveFriendBtn = view.findViewById(R.id.removeFriend);
         mAddFriendBtn.setOnClickListener(v -> {
-            addFriend();
+            addRequest();
         });
         mRemoveFriendBtn.setOnClickListener(v -> {
-            removeFriend();
+            removeRequest();
         });
         mFb = ((MainActivity) getActivity()).getFirebaseWrapper();
         mDb = mFb.getFirebaseDatabase();
@@ -91,7 +91,7 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    private void addFriend() {
+    private void addRequest() {
 //        DatabaseReference dbRef = mFb.getFirebaseDatabase().getReference();
 //        String friendUid = "6c3jBM7hEkfZ7xB0eGFJQvDS7qC3";
 //        String myUid = mFb.getUid();
@@ -101,9 +101,9 @@ public class ProfileFragment extends Fragment {
         dbRef.child("users").child(friendUid).child("requests").child(mFb.getUid()).setValue(true);
     }
 
-    private void removeFriend() {
+    private void removeRequest() {
         DatabaseReference dbRef = mFb.getFirebaseDatabase().getReference();
         String friendUid = "6c3jBM7hEkfZ7xB0eGFJQvDS7qC3";
-        dbRef.child("users").child(mFb.getUid()).child("friends").child(friendUid).removeValue();
+        dbRef.child("users").child(friendUid).child("friends").child(mFb.getUid()).removeValue();
     }
 }

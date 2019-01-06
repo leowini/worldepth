@@ -10,6 +10,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +26,7 @@ import com.example.leodw.worldepth.data.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -44,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
     static private DataTransfer dt;
 
     private boolean mLoginState;
+
+    private NotificationChannel mChannel;
 
     private SharedPreferences mPreferences;
     private static final String sharedPrefFile = "com.example.android.leodw.worldepth";
@@ -67,14 +72,17 @@ public class MainActivity extends AppCompatActivity {
         if (mLoginState) navController.navigate(R.id.cameraFragment);
         fb = new FirebaseWrapper();
         dt = new DataTransfer();
+        createNotificationChannel();
         listenForFriendRequests();
     }
 
-    public FirebaseWrapper getFirebaseWrapper(){
+    public FirebaseWrapper getFirebaseWrapper() {
         return this.fb;
     }
 
-    public DataTransfer getDataTransfer() { return this.dt; }
+    public DataTransfer getDataTransfer() {
+        return this.dt;
+    }
 
     @Override
     protected void onPause() {
@@ -103,37 +111,67 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void listenForFriendRequests() {
-        ValueEventListener requestListener = new ValueEventListener() {
+
+        ChildEventListener requestListener = new ChildEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get Post object and use the values to update the UI
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 String userId = dataSnapshot.getKey();
+                Toast.makeText(MainActivity.this, "Request recieved!!!!", Toast.LENGTH_SHORT).show();
                 notifyUser();
             }
 
             @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
             public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
                 Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
-                // ...
             }
         };
         String path = "users/" + fb.getUid() + "/requests";
         DatabaseReference requestReference = fb.getFirebaseDatabase().getReference(path);
-        requestReference.addValueEventListener(requestListener);
+        requestReference.addChildEventListener(requestListener);
     }
 
-    public void notifyUser() {
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, "Worldepth")
+    private void notifyUser() {
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, mChannel.getId())
                 .setSmallIcon(R.drawable.logo)
                 .setContentTitle("Fuck you Johann!!!")
                 .setContentText("You have a friend request")
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                .setPriority(NotificationCompat.PRIORITY_MAX);
+        mBuilder.setVisibility(Notification.VISIBILITY_PUBLIC);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        // notificationId is a unique int for each notification that you must define
+        notificationManager.notify(1, mBuilder.build());
+    }
 
-// notificationId is a unique int for each notification that you must define
-        notificationManager.notify(0, mBuilder.build());
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Worldepth channel";
+            String description = "Worldepth messages";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            mChannel = new NotificationChannel("Worldepth", name, importance);
+            mChannel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(mChannel);
+        }
     }
 
 }
