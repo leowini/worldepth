@@ -42,7 +42,9 @@
             app:destination="@id/settings" />
         <action
             android:id="@+id/action_cameraFragment_to_mapFragment"
-            app:destination="@id/mapFragment" />
+            app:destination="@id/mapFragment"
+            app:enterAnim="@animator/slide_down_in"
+            app:exitAnim="@animator/slide_down_out" />
     </fragment>
     <fragment
         android:id="@+id/nameFragment"
@@ -150,7 +152,9 @@
             app:destination="@id/profileFragment" />
         <action
             android:id="@+id/action_mapFragment_to_cameraFragment"
-            app:destination="@id/cameraFragment" />
+            app:destination="@id/cameraFragment"
+            app:enterAnim="@animator/slide_up_in"
+            app:exitAnim="@animator/slide_up_out" />
         <action
             android:id="@+id/action_mapFragment_to_messageFragment"
             app:destination="@id/messageFragment" />
