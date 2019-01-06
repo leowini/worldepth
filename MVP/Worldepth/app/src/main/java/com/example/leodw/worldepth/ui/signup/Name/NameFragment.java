@@ -42,19 +42,7 @@ public class NameFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.name_fragment, container, false);
-        mDt = ((MainActivity) this.getActivity()).getDataTransfer();
 
-        Button nameNextButton = view.findViewById(R.id.nameNextButton);
-        nameNextButton.setOnClickListener((view1) -> {
-            mDt.addData(new DataPair(mFirstName.getText().toString(), "passwordFragment", "nameFragment"));
-            mDt.addData(new DataPair(mLastName.getText().toString(), "passwordFragment", "nameFragment"));
-            Navigation.findNavController(view1).navigate(R.id.action_nameFragment_to_birthdayFragment);
-        });
-
-        mNameBackButton = view.findViewById(R.id.nameBackButton);
-        mNameBackButton.setOnClickListener((view2) -> {
-            Navigation.findNavController(view2).popBackStack();
-        });
         return view;
     }
 
@@ -70,6 +58,19 @@ public class NameFragment extends Fragment {
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         mFirstName = view.findViewById(R.id.firstName);
         mLastName = view.findViewById(R.id.lastName);
+        mDt = ((MainActivity) this.getActivity()).getDataTransfer();
+
+        Button nameNextButton = view.findViewById(R.id.nameNextButton);
+        nameNextButton.setOnClickListener((view1) -> {
+            mDt.addData(new DataPair(mFirstName.getText().toString(), "passwordFragment", "nameFragment"));
+            mDt.addData(new DataPair(mLastName.getText().toString(), "passwordFragment", "nameFragment"));
+            Navigation.findNavController(view1).navigate(R.id.action_nameFragment_to_birthdayFragment);
+        });
+
+        mNameBackButton = view.findViewById(R.id.nameBackButton);
+        mNameBackButton.setOnClickListener((view2) -> {
+            Navigation.findNavController(view2).popBackStack();
+        });
         mFirstName.requestFocus();
     }
 }

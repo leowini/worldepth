@@ -33,6 +33,9 @@ public class ProfileFragment extends Fragment {
 
     private final String TAG = "ProfileFragment";
 
+    private Button mAddFriendBtn;
+    private Button mRemoveFriendBtn;
+
     private ImageView mSettingsButton;
     private ImageView mBackButton;
     private TextView mNameOfUser;
@@ -50,6 +53,14 @@ public class ProfileFragment extends Fragment {
     @SuppressLint("SetTextI18n")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        mAddFriendBtn = view.findViewById(R.id.addFriend);
+        mRemoveFriendBtn = view.findViewById(R.id.removeFriend);
+        mAddFriendBtn.setOnClickListener(v -> {
+            addFriend();
+        });
+        mRemoveFriendBtn.setOnClickListener(v -> {
+            removeFriend();
+        });
         mFb = ((MainActivity) getActivity()).getFirebaseWrapper();
         mDb = mFb.getFirebaseDatabase();
         mSettingsButton = view.findViewById(R.id.profileToSettingsBtn);
@@ -77,5 +88,15 @@ public class ProfileFragment extends Fragment {
             public void onCancelled(DatabaseError databaseError) {
             }
         });
+    }
+
+    private void addFriend() {
+        DatabaseReference dbRef = mFb.getFirebaseDatabase().getReference();
+        String userId = mFb.getUid();
+        dbRef.child("users").child(userId).child("friends").child("Johann").setValue(true);
+    }
+
+    private void removeFriend() {
+
     }
 }
