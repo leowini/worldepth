@@ -98,10 +98,6 @@ public class FirebaseWrapper {
         return this.uid;
     }
 
-    public void friendRequest(String Name) {
-
-    }
-
     //Get firebase database object
     public FirebaseDatabase getFirebaseDatabase() {
         return mDatabase;
@@ -134,7 +130,7 @@ public class FirebaseWrapper {
         DatabaseReference ref = mDatabase.getReference();
         assert authUser != null;
         ref.child("users").child(authUser.getUid()).setValue(user);
-//               authUser.getIdToken(true).addOnSuccessListener(result -> {
+//        authUser.getIdToken(true).addOnSuccessListener(result -> {
 //            String idToken = result.getToken();
 //            ref.child("users").child(idToken).setValue(user);
 //        });

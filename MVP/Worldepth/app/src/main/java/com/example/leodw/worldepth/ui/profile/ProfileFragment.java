@@ -19,6 +19,7 @@ import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.data.FirebaseWrapper;
 import com.example.leodw.worldepth.data.User;
 import com.example.leodw.worldepth.ui.MainActivity;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -91,12 +92,18 @@ public class ProfileFragment extends Fragment {
     }
 
     private void addFriend() {
+//        DatabaseReference dbRef = mFb.getFirebaseDatabase().getReference();
+//        String friendUid = "6c3jBM7hEkfZ7xB0eGFJQvDS7qC3";
+//        String myUid = mFb.getUid();
+//        dbRef.child("users").child(myUid).child("friends").child(friendUid).setValue(true);
         DatabaseReference dbRef = mFb.getFirebaseDatabase().getReference();
-        String userId = mFb.getUid();
-        dbRef.child("users").child(userId).child("friends").child("Johann").setValue(true);
+        String friendUid = "6c3jBM7hEkfZ7xB0eGFJQvDS7qC3";
+        dbRef.child("users").child(friendUid).child("requests").child(mFb.getUid()).setValue(true);
     }
 
     private void removeFriend() {
-
+        DatabaseReference dbRef = mFb.getFirebaseDatabase().getReference();
+        String friendUid = "6c3jBM7hEkfZ7xB0eGFJQvDS7qC3";
+        dbRef.child("users").child(mFb.getUid()).child("friends").child(friendUid).removeValue();
     }
 }
