@@ -228,6 +228,7 @@ public class PasswordFragment extends Fragment {
                 //go to camera fragment
                 Navigation.findNavController(getView()).navigate(R.id.action_passwordFragment_to_cameraFragment);
             } else {
+                Toast.makeText(getContext(), "Account creation failed.", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "createNewAccount:failed", task.getException());
             }
         });

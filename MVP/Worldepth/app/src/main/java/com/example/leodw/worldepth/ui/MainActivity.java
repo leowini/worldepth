@@ -6,12 +6,18 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.data.DataTransfer;
 import com.example.leodw.worldepth.data.FirebaseWrapper;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseUser;
 
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
+import static java.security.AccessController.getContext;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -68,4 +74,18 @@ public class MainActivity extends AppCompatActivity {
     public void setLoginState(boolean state) {
         mLoginState = state;
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        FirebaseUser user = fb.getFirebaseAuth().getCurrentUser();
+        updateUi(user);
+    }
+
+    private void updateUi(FirebaseUser user) {
+        if (user != null) {
+            //do some stuff;
+        }
+    }
 }
+
