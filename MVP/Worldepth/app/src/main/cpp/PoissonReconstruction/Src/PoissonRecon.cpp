@@ -685,6 +685,8 @@ int Execute( int argc , char* argv[] )
 }
 #endif // !FAST_COMPILE
 
+//argc is number of cmd line arguments, including the program name.
+//argv is a list of the actual arguments, in an array of strings.
 int main( int argc , char* argv[] )
 {
 	Timer timer;

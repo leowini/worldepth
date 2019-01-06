@@ -37,12 +37,11 @@ import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.slam.Slam;
-import com.example.leodw.worldepth.ui.MainActivity;
-import com.example.leodw.worldepth.ui.signup.StartScreen.StartScreenFragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -54,6 +53,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
+import androidx.navigation.Navigation;
+
 public class CameraFragment extends Fragment {
     private static final String TAG = "CameraFragment";
 
@@ -62,7 +63,7 @@ public class CameraFragment extends Fragment {
     private SurfaceTexture mSlamOutputSurface;
 
     private Button captureBtn;
-    private Button mSignOutButton;
+    private ImageView mMapButton;
     private AutoFitTextureView mTextureView;
 
     private boolean mRecordingState;
@@ -264,7 +265,7 @@ public class CameraFragment extends Fragment {
         mTextureView = (AutoFitTextureView) view.findViewById(R.id.textureView);
         assert mTextureView != null;
         captureBtn = (Button) view.findViewById(R.id.captureButton);
-        mSignOutButton = (Button) view.findViewById(R.id.signOutButton);
+        mMapButton = (ImageView) view.findViewById(R.id.cameraToMapButton);
         captureBtn.setOnTouchListener((v, event) -> {
             switch (event.getAction()) {
                 case (MotionEvent.ACTION_DOWN):
@@ -278,7 +279,7 @@ public class CameraFragment extends Fragment {
                     if (mRecordingState) {
                         stopRecording();
                         mRecordingState = false;
-                        ((MainActivity) getActivity()).setViewPagerByTitle("Loading_Fragment");
+                        Navigation.findNavController(getView()).navigate(R.id.action_cameraFragment_to_loadingFragment);
                         mRenderer.stopRenderThread();
                         return true;
                     }
@@ -287,13 +288,7 @@ public class CameraFragment extends Fragment {
                     return false;
             }
         });
-        mSignOutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((MainActivity) getActivity()).setLoginState(false);
-                ((MainActivity) getActivity()).setViewPagerByTitle("StartScreen_Fragment");
-            }
-        });
+        mMapButton.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_cameraFragment_to_mapFragment));
     }
 
     /**

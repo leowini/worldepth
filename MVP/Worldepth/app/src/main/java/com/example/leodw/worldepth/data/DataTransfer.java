@@ -25,4 +25,3 @@ public class DataTransfer {
         return mDataPairs.size();
     }
 }
-

@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -23,6 +25,9 @@ import com.example.leodw.worldepth.ui.signup.Email.EmailFragment;
 import com.example.leodw.worldepth.ui.signup.Phone.PhoneFragment;
 import com.example.leodw.worldepth.ui.signup.Phone.PhoneViewModel;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
+
+import androidx.navigation.Navigation;
 
 public class PasswordFragment extends Fragment {
     private static final String TAG = "PasswordFragment";
@@ -34,7 +39,6 @@ public class PasswordFragment extends Fragment {
     private Button completeSignUp;
     private ImageView goBack;
     private String mEmail;
-
 
     public static PasswordFragment newInstance() {
         return new PasswordFragment();
@@ -63,50 +67,101 @@ public class PasswordFragment extends Fragment {
         completeSignUp = view.findViewById(R.id.passwordNextButton);
         goBack = view.findViewById(R.id.passwordBackButton);
 
+        mPasswordInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                validPassword();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        mConfirmPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                validPassword();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         completeSignUp.setOnClickListener((v) -> {
             if (validPassword()) {
-                for (int i = 0; i < mDt.size(); i++) {
-                    if (mDt.getDataPair(i).getLocation() == 4) {
-                        createNewAccount(mDt.getDataPair(i).getData(), mPasswordInput.getText().toString());
-                    }
-                }
+                String email = mDt.getDataPair(0).getData();
+                String firstName = mDt.getDataPair(1).getData();
+                String lastName = mDt.getDataPair(2).getData();
+                String password = mPasswordInput.getText().toString();
+                Log.d(TAG, "email: " + email);
+                Log.d(TAG, "firstName: " + firstName);
+                Log.d(TAG, "lastName: " + lastName);
+                Log.d(TAG, "password: " + password);
+                createNewAccount(firstName, lastName, email, password);
             }
         });
 
         goBack.setOnClickListener((view2) -> {
-            ((MainActivity) getActivity()).setViewPagerByTitle("Name_Fragment"); //name
+            Navigation.findNavController(view2).popBackStack();
         });
     }
 
     private boolean validPassword() {
         String password = mPasswordInput.getText().toString();
         String confirmed = mConfirmPassword.getText().toString();
+        boolean validity = true;
+
         if (!checkPasswordLength(password)) {
-            Log.d(TAG, "Password must be between 8 and 20 characters long");
-            Toast.makeText(getActivity(), "Password must be between 8 and 20 characters long", Toast.LENGTH_SHORT).show();
-            return false;
+            getView().findViewById(R.id.atLeast8).setVisibility(View.VISIBLE);
+            getView().findViewById(R.id.over20).setVisibility(View.VISIBLE);
+            validity = false;
+        } else {
+            getView().findViewById(R.id.atLeast8).setVisibility(View.INVISIBLE);
+            getView().findViewById(R.id.over20).setVisibility(View.INVISIBLE);
         }
+
         if (!containsNumbers(password)) {
-            Log.d(TAG, "Password must contain numbers");
-            Toast.makeText(getActivity(), "Password must contain numbers", Toast.LENGTH_SHORT).show();
-            return false;
+            getView().findViewById(R.id.containNumbers).setVisibility(View.VISIBLE);
+            validity = false;
+        } else {
+            getView().findViewById(R.id.containNumbers).setVisibility(View.INVISIBLE);
         }
+
         if (!containsUpperAndLower(password)) {
-            Log.d(TAG, "Password must contain uppercase and lowercase characters");
-            Toast.makeText(getActivity(), "Password must contain uppercase and lowercase characters", Toast.LENGTH_SHORT).show();
-            return false;
+            getView().findViewById(R.id.upperLower).setVisibility(View.VISIBLE);
+            validity = false;
+        } else {
+            getView().findViewById(R.id.upperLower).setVisibility(View.INVISIBLE);
         }
         if (containsIllegalChars(password)) {
-            Log.d(TAG, "Password contains an illegal character");
-            Toast.makeText(getActivity(), "Password contains an illegal character", Toast.LENGTH_SHORT).show();
-            return false;
+            getView().findViewById(R.id.passwordIllegalChars).setVisibility(View.VISIBLE);
+            validity = false;
+        } else {
+            getView().findViewById(R.id.passwordIllegalChars).setVisibility(View.INVISIBLE);
         }
+
         if (!doPasswordsMatch(password, confirmed)) {
-            Log.d(TAG, "Passwords must match");
-            Toast.makeText(getActivity(), "Passwords must match", Toast.LENGTH_SHORT).show();
-            return false;
+            getView().findViewById(R.id.mustMatch).setVisibility(View.VISIBLE);
+            validity = false;
+        } else {
+            getView().findViewById(R.id.mustMatch).setVisibility(View.INVISIBLE);
         }
-        return true;
+
+        return validity;
     }
 
     /*checks for illegal characters. Only the following are permitted:
@@ -162,15 +217,18 @@ public class PasswordFragment extends Fragment {
         return false;
     }
 
-    public void createNewAccount(String email, String password) {
+    public void createNewAccount(String firstName, String lastName, String email, String password) {
         FirebaseAuth _auth = mFb.getFirebaseAuth();
+        FirebaseDatabase database = mFb.getFirebaseDatabase();
         _auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
+                mFb.createNewAccount(firstName, lastName, email, password);
                 //set login state
                 ((MainActivity) getActivity()).setLoginState(true);
                 //go to camera fragment
-                ((MainActivity) getActivity()).setViewPagerByTitle("Camera_Fragment");
+                Navigation.findNavController(getView()).navigate(R.id.action_passwordFragment_to_cameraFragment);
             } else {
+                Toast.makeText(getContext(), "Account creation failed.", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "createNewAccount:failed", task.getException());
             }
         });
