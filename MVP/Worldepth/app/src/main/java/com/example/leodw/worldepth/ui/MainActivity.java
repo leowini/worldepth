@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
                 // ...
             }
         };
-        String path = "users/" + fb.getUid() + "/invitations";
+        String path = "users/" + fb.getUid() + "/requests";
         DatabaseReference requestReference = fb.getFirebaseDatabase().getReference(path);
         requestReference.addValueEventListener(requestListener);
     }
