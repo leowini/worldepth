@@ -9,16 +9,55 @@
 
 
     <EditText
+        style="@style/BlankEditText"
         android:id="@+id/emailInput"
+        android:textAlignment="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:textSize="25sp"
         android:hint="@string/email"
         android:inputType="textEmailAddress"
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.SearchResult.Title"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.45"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.45"
+        tools:layout_editor_absoluteX="16dp"
+        tools:ignore="MissingConstraints" />
+
+    <EditText
+        style="@style/BlankEditText"
+        android:textSize="25sp"
+        android:textAlignment="center"
+        android:id="@+id/emailService"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.SearchResult.Title"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.649"
+        tools:layout_editor_absoluteX="0dp"
+        tools:ignore="MissingConstraints"
+        android:visibility="invisible"/>
+
+    <EditText
+        style="@style/BlankEditText"
+        android:textSize="25sp"
+        android:textAlignment="center"
+        android:id="@+id/emailSuffix"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.SearchResult.Title"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.828"
+        tools:layout_editor_absoluteX="0dp"
+        tools:ignore="MissingConstraints"
+        android:visibility="invisible"/>
 
     <Button
         android:id="@+id/emailNextButton"
@@ -54,4 +93,28 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.05" />
+
+    <ImageView
+        android:id="@+id/asterisk"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/asterisk1"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.545" />
+
+    <ImageView
+        android:id="@+id/dot"
+        android:layout_width="24dp"
+        android:layout_height="23dp"
+        android:src="@drawable/dot1"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.713" />
 </android.support.constraint.ConstraintLayout>

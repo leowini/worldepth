@@ -10,27 +10,66 @@
 
     <EditText
         android:id="@+id/firstName"
+        style="@style/WorldepthEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="@string/firstName"
         android:inputType="text"
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.SearchResult.Title"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.45" />
+        app:layout_constraintVertical_bias="0.519"
+        tools:layout_editor_absoluteX="0dp" />
 
     <EditText
         android:id="@+id/lastName"
+        style="@style/WorldepthEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginTop="32dp"
         android:ems="10"
-        android:hint="@string/lastName"
         android:inputType="text"
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.SearchResult.Title"
         app:layout_constraintStart_toStartOf="@id/firstName"
         app:layout_constraintTop_toBottomOf="@id/firstName" />
+
+    <TextView
+        android:id="@+id/firstNameHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="280dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="15dp"
+        android:text="@string/first"
+        android:textColor="#4a5759"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/firstName"
+        app:layout_constraintEnd_toStartOf="@+id/firstName"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.028"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/lastNameHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="384dp"
+        android:layout_marginEnd="11dp"
+        android:layout_marginBottom="14dp"
+        android:text="@string/last"
+        android:textColor="#4a5759"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/lastName"
+        app:layout_constraintEnd_toStartOf="@+id/lastName"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.085"
+        tools:ignore="MissingConstraints" />
 
 
     <Button

@@ -1,8 +1,5 @@
 package com.example.leodw.worldepth.ui.loading;
 
-import android.databinding.DataBindingUtil;
-import android.databinding.BindingAdapter;
-import com.example.leodw.worldepth.databinding.LoadingFragmentBinding;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,6 +13,8 @@ import android.widget.Button;
 import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.ui.MainActivity;
 
+import androidx.navigation.Navigation;
+
 
 public class LoadingFragment extends Fragment {
 
@@ -26,16 +25,16 @@ public class LoadingFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        LoadingFragmentBinding loadingFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.loading_fragment, container, false);
-        View view = loadingFragmentBinding.getRoot();
-        loadingFragmentBinding.setViewModel(new LoadingViewModel());
-        loadingFragmentBinding.executePendingBindings();
+        return inflater.inflate(R.layout.loading_fragment, container, false);
+    }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         Button loadingNextButton = view.findViewById(R.id.loadingNextButton);
+        Button loadingBackButton = view.findViewById(R.id.loadingBackBtn);
         loadingNextButton.setOnClickListener((view1) -> {
-            Toast.makeText(getActivity(), "Finished", Toast.LENGTH_SHORT).show();
-            ((MainActivity) getActivity()).setViewPager(10); //viewer
+            Navigation.findNavController(view1).navigate(R.id.action_loadingFragment_to_viewerFragment);
         });
-        return view;
+        loadingBackButton.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_loadingFragment_to_cameraFragment));
     }
 }

@@ -21,6 +21,8 @@ import com.example.leodw.worldepth.ui.MainActivity;
 import com.example.leodw.worldepth.ui.signup.Name.NameViewModel;
 import com.example.leodw.worldepth.ui.signup.Phone.PhoneFragment;
 
+import androidx.navigation.Navigation;
+
 public class BirthdayFragment extends Fragment {
     private static final String TAG = "BirthdayFragment";
 
@@ -45,12 +47,12 @@ public class BirthdayFragment extends Fragment {
 
         Button birthdayNextButton = view.findViewById(R.id.birthdayNextButton);
         birthdayNextButton.setOnClickListener((view1) -> {
-            ((MainActivity) getActivity()).setViewPagerByTitle("Password_Fragment");
+            Navigation.findNavController(view1).navigate(R.id.action_birthdayFragment_to_passwordFragment);
         });
 
         ImageView birthdayBackButton = view.findViewById(R.id.birthdayBackButton);
         birthdayBackButton.setOnClickListener((view2) -> {
-            ((MainActivity) getActivity()).setViewPagerByTitle("Name_Fragment");
+            Navigation.findNavController(view2).popBackStack();
         });
         return view;
     }

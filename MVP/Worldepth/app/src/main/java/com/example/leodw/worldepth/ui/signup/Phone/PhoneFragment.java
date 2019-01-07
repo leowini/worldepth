@@ -23,9 +23,9 @@ import com.example.leodw.worldepth.data.DataPair;
 import com.example.leodw.worldepth.data.DataTransfer;
 import com.example.leodw.worldepth.data.FirebaseWrapper;
 import com.example.leodw.worldepth.ui.MainActivity;
-import com.example.leodw.worldepth.ui.signup.SignUpFragment;
-import com.example.leodw.worldepth.ui.signup.SignUpViewModel;
 import com.google.firebase.auth.FirebaseAuth;
+
+import androidx.navigation.Navigation;
 
 public class PhoneFragment extends Fragment {
     private static final String TAG = "PhoneFragment";
@@ -36,6 +36,8 @@ public class PhoneFragment extends Fragment {
 
     private ImageView mPhoneBackButton;
 
+    private EditText mPhoneInput;
+
     public static PhoneFragment newInstance() {
         return new PhoneFragment();
     }
@@ -43,30 +45,7 @@ public class PhoneFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.phone_fragment, container, false);
-        mDt = ((MainActivity) this.getActivity()).getDataTransfer();
-
-        String [] values =
-                {"Country","+1 (US)"};
-        Spinner spinner = (Spinner) view.findViewById(R.id.phone_spinner);
-        ArrayAdapter<String> LTRadapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, values);
-        LTRadapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-        spinner.setAdapter(LTRadapter);
-
-        Button phoneNextButton = view.findViewById(R.id.phoneNextButton);
-        phoneNextButton.setOnClickListener((view1) -> {
-            Toast.makeText(getActivity(), "Success!", Toast.LENGTH_SHORT).show();
-            mDt.addData(new DataPair("FromPhone", ((MainActivity) getActivity()).getFragmentIndex("Password_Fragment"),
-                    ((MainActivity) getActivity()).getFragmentIndex("Phone_Fragment")));
-            ((MainActivity) getActivity()).setViewPagerByTitle("Name_Fragment"); //name page
-        });
-
-        mPhoneBackButton = view.findViewById(R.id.phoneBackButton);
-        mPhoneBackButton.setOnClickListener((view2) -> {
-            Toast.makeText(getActivity(), "Going back", Toast.LENGTH_SHORT).show();
-            ((MainActivity) getActivity()).setViewPagerByTitle("StartSignup_Fragment"); //signup
-        });
-        return view;
+        return inflater.inflate(R.layout.phone_fragment, container, false);
     }
 
     @Override
@@ -79,5 +58,26 @@ public class PhoneFragment extends Fragment {
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
+        mPhoneInput = view.findViewById(R.id.number);
+        mDt = ((MainActivity) this.getActivity()).getDataTransfer();
+
+        String [] values =
+                {"Country","+1 (US)"};
+        Spinner spinner = (Spinner) view.findViewById(R.id.phone_spinner);
+        ArrayAdapter<String> LTRadapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, values);
+        LTRadapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        spinner.setAdapter(LTRadapter);
+
+        Button phoneNextButton = view.findViewById(R.id.phoneNextButton);
+        phoneNextButton.setOnClickListener((view1) -> {
+            Bundle phoneBundle = new Bundle();
+            phoneBundle.putString("phone", mPhoneInput.getText().toString());
+            Navigation.findNavController(view1).navigate(R.id.action_phoneFragment_to_nameFragment, phoneBundle);
+        });
+
+        mPhoneBackButton = view.findViewById(R.id.phoneBackButton);
+        mPhoneBackButton.setOnClickListener((view2) -> {
+            Navigation.findNavController(view2).navigate(R.id.action_phoneFragment_to_startSignupFragment);
+        });
     }
 }

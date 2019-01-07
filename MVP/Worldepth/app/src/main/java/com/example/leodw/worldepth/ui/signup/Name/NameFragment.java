@@ -14,11 +14,14 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.leodw.worldepth.R;
+import com.example.leodw.worldepth.data.DataPair;
 import com.example.leodw.worldepth.data.DataTransfer;
 import com.example.leodw.worldepth.data.FirebaseWrapper;
 import com.example.leodw.worldepth.ui.MainActivity;
 import com.example.leodw.worldepth.ui.signup.Phone.PhoneFragment;
 import com.example.leodw.worldepth.ui.signup.Phone.PhoneViewModel;
+
+import androidx.navigation.Navigation;
 
 public class NameFragment extends Fragment {
     private static final String TAG = "NameFragment";
@@ -26,6 +29,8 @@ public class NameFragment extends Fragment {
     private NameViewModel mViewModel;
     private FirebaseWrapper mFb;
     private DataTransfer mDt;
+    private EditText mFirstName;
+    private EditText mLastName;
 
     private ImageView mNameBackButton;
 
@@ -41,14 +46,14 @@ public class NameFragment extends Fragment {
 
         Button nameNextButton = view.findViewById(R.id.nameNextButton);
         nameNextButton.setOnClickListener((view1) -> {
-            Toast.makeText(getActivity(), "Success!", Toast.LENGTH_SHORT).show();
-            ((MainActivity) getActivity()).setViewPagerByTitle("Birthday_Fragment"); //birthday
+            mDt.addData(new DataPair(mFirstName.getText().toString(), "passwordFragment", "nameFragment"));
+            mDt.addData(new DataPair(mLastName.getText().toString(), "passwordFragment", "nameFragment"));
+            Navigation.findNavController(view1).navigate(R.id.action_nameFragment_to_birthdayFragment);
         });
 
         mNameBackButton = view.findViewById(R.id.nameBackButton);
         mNameBackButton.setOnClickListener((view2) -> {
-            int lastLoc = getLastLocation();
-            ((MainActivity) getActivity()).setViewPager(lastLoc); //either phone or email fragment
+            Navigation.findNavController(view2).popBackStack();
         });
         return view;
     }
@@ -63,19 +68,8 @@ public class NameFragment extends Fragment {
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
-    }
-
-    private int getLastLocation() {
-        for (int i = mDt.size() - 1; i >= 0; i--) {
-            int temp = mDt.getDataPair(i).getSender();
-            int phoneIndex = ((MainActivity) getActivity()).getFragmentIndex("Phone_Fragment");
-            int emailIndex = ((MainActivity) getActivity()).getFragmentIndex("Email_Fragment");
-            if (temp == phoneIndex) {
-                return phoneIndex;
-            } else if (temp == emailIndex) {
-                return emailIndex;
-            }
-        }
-        return 0;
+        mFirstName = view.findViewById(R.id.firstName);
+        mLastName = view.findViewById(R.id.lastName);
+        mFirstName.requestFocus();
     }
 }
