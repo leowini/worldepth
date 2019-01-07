@@ -25,7 +25,7 @@ namespace SLAM {
 
         //this should run map.clear and delete map
         //delete slam;
-        
+
         //close any other threads
     }
 }
