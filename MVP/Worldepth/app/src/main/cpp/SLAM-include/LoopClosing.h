@@ -35,7 +35,7 @@ namespace SLAM
 
     public:
 
-        LoopClosing(Map* pMap, /*KeyFrameDatabase* pDB,*/ ORBVocabulary* pVoc);
+        LoopClosing(Map* pMap, KeyFrameDatabase* pDB, ORBVocabulary* pVoc);
 
         void SetTracker(Tracking* pTracker);
 

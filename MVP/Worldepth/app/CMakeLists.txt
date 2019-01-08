@@ -92,6 +92,10 @@ add_library( # Sets the name of the library.
         ${SLAM-SRC}/Optimizer.cpp
         ${SLAM-SRC}/Sim3Solver.cpp
         ${SLAM-SRC}/RunSlam.cpp
+        ${SLAM-SRC}/KeyFrameDatabase.cpp
+        ${SLAM-SRC}/Initializer.cpp
+        ${SLAM-SRC}/System.cpp
+        ${SLAM-SRC}/PnPSolver.cpp
         )
 
 add_library( lib_opencv SHARED IMPORTED)

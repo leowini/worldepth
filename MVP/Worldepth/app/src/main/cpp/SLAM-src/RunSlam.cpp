@@ -26,6 +26,9 @@ namespace SLAM {
         //this should run map.clear and delete map
         //delete slam;
 
+        //System actually has a clear func, it's
+        //slam.Reset()
+
         //close any other threads
     }
 }

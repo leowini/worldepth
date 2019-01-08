@@ -21,9 +21,9 @@
 namespace SLAM
 {
 
-    LoopClosing::LoopClosing(Map *pMap, /*KeyFrameDatabase *pDB, */ ORBVocabulary *pVoc):
+    LoopClosing::LoopClosing(Map *pMap, KeyFrameDatabase *pDB,  ORBVocabulary *pVoc):
             mbResetRequested(false), mbFinishRequested(false), mbFinished(true), mpMap(pMap),
-            /*mpKeyFrameDB(pDB),*/ mpORBVocabulary(pVoc), mpMatchedKF(NULL), mLastLoopKFid(0), mbRunningGBA(false), mbFinishedGBA(true),
+            mpKeyFrameDB(pDB), mpORBVocabulary(pVoc), mpMatchedKF(NULL), mLastLoopKFid(0), mbRunningGBA(false), mbFinishedGBA(true),
             mbStopGBA(false), mpThreadGBA(NULL),  mnFullBAIdx(0)
     {
         mnCovisibilityConsistencyTh = 3;
@@ -99,7 +99,7 @@ namespace SLAM
         //If the map contains less than 10 KF or less than 10 KF have passed from last loop detection
         if(mpCurrentKF->mnId<mLastLoopKFid+10)
         {
-            //mpKeyFrameDB->add(mpCurrentKF);
+            mpKeyFrameDB->add(mpCurrentKF);
             mpCurrentKF->SetErase();
             return false;
         }
@@ -123,7 +123,7 @@ namespace SLAM
                 minScore = score;
         }
 
-        /* KEYFRAMEDATABASE
+        ///* KEYFRAMEDATABASE
         // Query the database imposing the minimum score
         vector<KeyFrame*> vpCandidateKFs = mpKeyFrameDB->DetectLoopCandidates(mpCurrentKF, minScore);
 
@@ -194,14 +194,14 @@ namespace SLAM
                 vCurrentConsistentGroups.push_back(cg);
             }
         }
-        */
+        //*/
 
         // Update Covisibility Consistent Groups
-        //mvConsistentGroups = vCurrentConsistentGroups;
+        mvConsistentGroups = vCurrentConsistentGroups;
 
 
         // Add Current Keyframe to database
-        //mpKeyFrameDB->add(mpCurrentKF);
+        mpKeyFrameDB->add(mpCurrentKF);
 
         if(mvpEnoughConsistentCandidates.empty())
         {

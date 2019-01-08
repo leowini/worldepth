@@ -14,11 +14,11 @@
 #include"LoopClosing.h"
 #include"Frame.h"
 #include "ORBVocabulary.h"
-//#include"KeyFrameDatabase.h"
+#include"KeyFrameDatabase.h"
 #include"ORBExtractor.h"
-//#include "Initializer.h"
+#include "Initializer.h"
 
-//#include "System.h"
+#include "System.h"
 
 #include <mutex>
 #include <string>
@@ -36,8 +36,8 @@ namespace SLAM
     {
 
     public:
-        Tracking(/*System* pSys,*/ ORBVocabulary* pVoc, Map* pMap,
-                 /*KeyFrameDatabase* pKFDB,*/ const string &strSettingPath);
+        Tracking(System* pSys, ORBVocabulary* pVoc, Map* pMap,
+                 KeyFrameDatabase* pKFDB, const string &strSettingPath);
 
         // Preprocess the input and call Track(). Extract features and performs stereo matching.
         cv::Mat GrabImageMonocular(const cv::Mat &im, const double &timestamp);
@@ -69,7 +69,7 @@ namespace SLAM
         eTrackingState mLastProcessedState;
 
         // Input sensor
-        int mSensor;
+        //int mSensor;
 
         // Current Frame
         Frame mCurrentFrame;
@@ -110,7 +110,7 @@ namespace SLAM
         void UpdateLastFrame();
         bool TrackWithMotionModel();
 
-        //bool Relocalization();
+        bool Relocalization();
 
         void UpdateLocalMap();
         void UpdateLocalPoints();
@@ -138,10 +138,10 @@ namespace SLAM
 
         //BoW
         ORBVocabulary* mpORBVocabulary;
-        //KeyFrameDatabase* mpKeyFrameDB;
+        KeyFrameDatabase* mpKeyFrameDB;
 
         // Initalization (only for monocular)
-        //Initializer* mpInitializer;
+        Initializer* mpInitializer;
 
         //Local Map
         KeyFrame* mpReferenceKF;
@@ -149,7 +149,7 @@ namespace SLAM
         std::vector<MapPoint*> mvpLocalMapPoints;
 
         // System
-        //System* mpSystem;
+        System* mpSystem;
 
 
         //Map

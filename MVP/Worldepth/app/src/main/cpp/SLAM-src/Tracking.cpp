@@ -27,9 +27,9 @@ using namespace std;
 namespace SLAM
 {
 
-    Tracking::Tracking(/*System *pSys,*/ ORBVocabulary* pVoc,  Map *pMap, /*KeyFrameDatabase* pKFDB,*/ const string &strSettingPath):
+    Tracking::Tracking(System *pSys, ORBVocabulary* pVoc,  Map *pMap, KeyFrameDatabase* pKFDB, const string &strSettingPath):
             mState(NO_IMAGES_YET), mbOnlyTracking(false), mbVO(false), mpORBVocabulary(pVoc),
-            /*mpKeyFrameDB(pKFDB), mpInitializer(static_cast<Initializer*>(NULL)), mpSystem(pSys), */
+            mpKeyFrameDB(pKFDB), mpInitializer(static_cast<Initializer*>(NULL)), mpSystem(pSys),
             mpMap(pMap), mnLastRelocFrameId(0)
     {
         // Load camera parameters from settings file
@@ -205,7 +205,7 @@ namespace SLAM
                 }
                 else
                 {
-                    //bOK = Relocalization();
+                    bOK = Relocalization();
                 }
             }
             else
@@ -214,7 +214,7 @@ namespace SLAM
 
                 if(mState==LOST)
                 {
-                    //bOK = Relocalization();
+                    bOK = Relocalization();
                 }
                 else
                 {
@@ -251,7 +251,7 @@ namespace SLAM
                             vbOutMM = mCurrentFrame.mvbOutlier;
                             TcwMM = mCurrentFrame.mTcw.clone();
                         }
-                        //bOKReloc = Relocalization();
+                        bOKReloc = Relocalization();
 
                         if(bOKMM && !bOKReloc)
                         {
@@ -393,7 +393,7 @@ namespace SLAM
     }
 
 
-    /*DO THIS AFTER INITIALIZATION
+    ///*DO THIS AFTER INITIALIZATION
     void Tracking::MonocularInitialization()
     {
 
@@ -467,7 +467,7 @@ namespace SLAM
             }
         }
     }
-     */
+     //*/
 
     void Tracking::CreateInitialMapMonocular()
     {
@@ -641,7 +641,7 @@ namespace SLAM
 
         mLastFrame.SetPose(Tlr*pRef->GetPose());
 
-        //This should be always true, but Ill keep the resto of the code here
+        //This should be always true, but Ill keep the rest of the code here
         //if(mnLastKeyFrameId==mLastFrame.mnId || mSensor==System::MONOCULAR || !mbOnlyTracking)
             return;
 
@@ -1101,7 +1101,7 @@ namespace SLAM
     }
 
 
-    /*This all needs PnPSolvers and KFDBs
+    ///*This all needs PnPSolvers and KFDBs
     bool Tracking::Relocalization()
     {
         // Compute Bag of Words Vector
@@ -1264,7 +1264,7 @@ namespace SLAM
         }
 
     }
-     */
+     //*/
 
     void Tracking::Reset()
     {
@@ -1284,7 +1284,7 @@ namespace SLAM
 
         // Clear BoW Database
         cout << "Reseting Database...";
-        //mpKeyFrameDB->clear();
+        mpKeyFrameDB->clear();
         cout << " done" << endl;
 
         // Clear Map (this erase MapPoints and KeyFrames)
@@ -1294,13 +1294,13 @@ namespace SLAM
         Frame::nNextId = 0;
         mState = NO_IMAGES_YET;
 
-        /*
+
         if(mpInitializer)
         {
             delete mpInitializer;
             mpInitializer = static_cast<Initializer*>(NULL);
         }
-         */
+
 
         mlRelativeFramePoses.clear();
         mlpReferences.clear();

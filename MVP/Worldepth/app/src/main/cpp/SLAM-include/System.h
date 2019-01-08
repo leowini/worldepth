@@ -25,7 +25,7 @@ namespace SLAM
     class Map;
     class Tracking;
     class LocalMapping;
-    //class LoopClosing;
+    class LoopClosing;
 
     class System
     {
@@ -40,7 +40,7 @@ namespace SLAM
     public:
 
         // Initialize the SLAM system. It launches the Local Mapping, Loop Closing and Viewer threads.
-        System(const string &strVocFile, const string &strSettingsFile, const eSensor sensor, const bool bUseViewer = true);
+        System(const string &strVocFile, const string &strSettingsFile);
 
 
         // Proccess the given monocular frame
@@ -117,7 +117,7 @@ namespace SLAM
 
         // Loop Closer. It searches loops with every new keyframe. If there is a loop it performs
         // a pose graph optimization and full bundle adjustment (in a new thread) afterwards.
-        //LoopClosing* mpLoopCloser;
+        LoopClosing* mpLoopCloser;
 
 
 
