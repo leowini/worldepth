@@ -13,12 +13,7 @@
 
 namespace SLAM {
 
-
-    //Call this one to write if you already have a map
-    void writeMap(std::string filename, Map & map);
-
-    //call this one to run it all
-    void makeMapAndWrite(string &filename, size_t num);
+void makeMapAndWrite(string &filename, size_t num);
 
 }
 

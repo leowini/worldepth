@@ -5,7 +5,6 @@
 
 set(SLAM-SRC ${PROJECT_SOURCE_DIR}/src/main/cpp/SLAM-src)
 set(DBoW2 ${PROJECT_SOURCE_DIR}/src/main/cpp/DBoW2)
-set(G2O ${PROJECT_SOURCE_DIR}/src/main/cpp/g2o)
 
 cmake_minimum_required(VERSION 3.4.1)
 
@@ -17,8 +16,6 @@ cmake_minimum_required(VERSION 3.4.1)
 include_directories(${PROJECT_SOURCE_DIR}/src/main/cpp/opencv-include)
 include_directories(${PROJECT_SOURCE_DIR}/src/main/cpp/SLAM-include)
 include_directories(${DBoW2})
-include_directories(${PROJECT_SOURCE_DIR}/src/main/cpp)
-include_directories(${G2O})
 
 add_library(lib_DBoW2
         SHARED
@@ -30,42 +27,6 @@ add_library(lib_DBoW2
         ${DBoW2}/DUtils/Random.cpp
         ${DBoW2}/DUtils/Timestamp.cpp)
 
-add_library(lib_g2o
-        SHARED
-
-        ${G2O}/types/types_sba.cpp
-        ${G2O}/types/types_six_dof_expmap.cpp
-        ${G2O}/types/types_seven_dof_expmap.cpp
-        #core
-        ${G2O}/core/hyper_graph_action.cpp
-        ${G2O}/core/hyper_graph.cpp
-        ${G2O}/core/marginal_covariance_cholesky.cpp
-        ${G2O}/core/matrix_structure.cpp
-        ${G2O}/core/batch_stats.cpp
-        ${G2O}/core/parameter.cpp
-        ${G2O}/core/cache.cpp
-        ${G2O}/core/optimizable_graph.cpp
-        ${G2O}/core/solver.cpp
-        ${G2O}/core/optimization_algorithm_factory.cpp
-        ${G2O}/core/estimate_propagator.cpp
-        ${G2O}/core/factory.cpp
-        ${G2O}/core/sparse_optimizer.cpp
-        ${G2O}/core/hyper_dijkstra.cpp
-        ${G2O}/core/parameter_container.cpp
-        ${G2O}/core/optimization_algorithm.cpp
-        ${G2O}/core/optimization_algorithm_with_hessian.cpp
-        ${G2O}/core/optimization_algorithm_levenberg.cpp
-        ${G2O}/core/jacobian_workspace.cpp
-        ${G2O}/core/robust_kernel.cpp
-        ${G2O}/core/robust_kernel_factory.cpp
-        ${G2O}/core/robust_kernel_impl.cpp
-        #stuff
-        ${G2O}/stuff/timeutil.cpp
-        ${G2O}/stuff/os_specific.c
-        ${G2O}/stuff/string_tools.cpp
-        ${G2O}/stuff/property.cpp
-        )
-
 add_library( # Sets the name of the library.
         native-lib
 
@@ -74,7 +35,6 @@ add_library( # Sets the name of the library.
 
         # Provides a relative path to your source file(s).
         src/main/cpp/native-lib.cpp
-        #SLAM
         ${SLAM-SRC}/Frame.cpp
         ${SLAM-SRC}/ORBExtractor.cpp
         ${SLAM-SRC}/fast_score.cpp
@@ -87,15 +47,6 @@ add_library( # Sets the name of the library.
         ${SLAM-SRC}/FrameList.cpp
         ${SLAM-SRC}/randomMap.cpp
         ${SLAM-SRC}/Tracking.cpp
-        ${SLAM-SRC}/LocalMapping.cpp
-        ${SLAM-SRC}/LoopClosing.cpp
-        ${SLAM-SRC}/Optimizer.cpp
-        ${SLAM-SRC}/Sim3Solver.cpp
-        ${SLAM-SRC}/RunSlam.cpp
-        ${SLAM-SRC}/KeyFrameDatabase.cpp
-        ${SLAM-SRC}/Initializer.cpp
-        ${SLAM-SRC}/System.cpp
-        ${SLAM-SRC}/PnPSolver.cpp
         )
 
 add_library( lib_opencv SHARED IMPORTED)
@@ -128,6 +79,5 @@ target_link_libraries( # Specifies the target library.
         # Links the target library to the log library
         # included in the NDK.
         ${log-lib}
-        lib_g2o
         lib_DBoW2
         lib_opencv)
