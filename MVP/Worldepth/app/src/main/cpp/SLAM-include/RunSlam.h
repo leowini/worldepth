@@ -7,8 +7,9 @@
 
 #include <opencv2/core/mat.hpp>
 
-//call this fist to start the TrackingInit and threads
-void start();
+//call this fist to start the TrackingInit and threads,
+//we can remove the settings file, but I need to know how to access the phone's settings
+void start(std::string & vocFile, std::string & settingsFile);
 
 //call this for each frame
 void process(cv::Mat im, double tstamp);
