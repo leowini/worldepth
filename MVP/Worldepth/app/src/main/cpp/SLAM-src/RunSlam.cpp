@@ -16,6 +16,9 @@ namespace SLAM {
     void process(cv::Mat im, double tstamp) {
 
         //call the equivalent of System::TrackMonocular for TrackingInit or Tracking directly
+        if (im.empty()){
+            end("data")
+        }
     }
 
 
