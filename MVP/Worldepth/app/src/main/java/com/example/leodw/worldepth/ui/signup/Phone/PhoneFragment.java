@@ -77,7 +77,7 @@ public class PhoneFragment extends Fragment {
 
         mPhoneBackButton = view.findViewById(R.id.phoneBackButton);
         mPhoneBackButton.setOnClickListener((view2) -> {
-            Navigation.findNavController(view2).popBackStack();
+            Navigation.findNavController(view2).navigate(R.id.action_phoneFragment_to_startSignupFragment);
         });
     }
 }
