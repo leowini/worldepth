@@ -6,24 +6,28 @@
 
 namespace SLAM {
 
-    void writeMap(ofstream & file, Map & map) {
+    void writeMap(std::string filename, Map & map) {
+        FILE * file;
+        file = fopen(filename.c_str(), "w");
         std::vector<MapPoint*> vpMapPoints = map.GetAllMapPoints();
         for(MapPoint * pMP: vpMapPoints) {
             cv::Mat pos = pMP->GetWorldPos();
             for(int i = 0; i < pos.rows; i++) {
                 for (int j = 0; j < pos.cols; j++) {
-                    file << pos.at<float>(i, j) << " ";
+                    fputs(to_string(pos.at<float>(i, j)).c_str(), file);
+                    fputs(string (" ").c_str(), file);
                 }
             }
             cv::Mat norm = pMP->GetNormal();
             for(int i = 0; i < norm.rows; i++) {
                 for(int j = 0; j < norm.cols; j++) {
-                    file << norm.at<float>(i, j) << " ";
+                    fputs(to_string(norm.at<float>(i, j)).c_str(), file);
+                    fputs(string (" ").c_str(), file);
                 }
             }
-            file << "\n";
+            fputs(string ("\n").c_str(), file);
         }
-
+        fclose(file);
     }
 
 
@@ -46,9 +50,7 @@ namespace SLAM {
         Frame empty;
         KeyFrame emptykf(empty, pmap);
         putPointsInMap(num, emptykf, *pmap);
-        ofstream file;
-        file.open(filename);
-        writeMap(file, *pmap);
+        writeMap(filename, *pmap);
 
         pmap->clear();
         delete pmap;
