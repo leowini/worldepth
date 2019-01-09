@@ -152,47 +152,36 @@ public class CameraFragment extends Fragment {
         }
     };
 
-    /**
-     * This goes through each possible camera output size and chooses the smallest
-     * size of the sizes that are bigger than the TextureView and smaller than the display dimensions.
-     *
-     * @param choices
-     * @param mTextureViewWidth
-     * @param mTextureViewHeight
-     * @param maxWidth
-     * @param maxHeight
-     * @param aspectRatio
-     * @return
-     */
-    private static Size chooseOptimalSize(Size[] choices, int mTextureViewWidth,
-                                          int mTextureViewHeight, int maxWidth, int maxHeight, Size aspectRatio) {
+    private Size chooseVideoSize(Size[] choices) {
+        for (Size size : choices) {
+            // Note that it will pick only HD video size, you should create more robust solution depending on screen size and available video sizes
+            if (1920 == size.getWidth() && 1080 == size.getHeight()) {
+                return size;
+            }
+        }
+        Log.e(TAG, "Couldn't find any suitable video size");
+        return choices[choices.length - 1];
+    }
+
+    private static Size chooseOptimalSize(Size[] choices, int width, int height, Size aspectRatio) {
         // Collect the supported resolutions that are at least as big as the preview Surface
-        List<Size> bigEnough = new ArrayList<>();
-        // Collect the supported resolutions that are smaller than the preview Surface
-        List<Size> notBigEnough = new ArrayList<>();
+        List<Size> bigEnough = new ArrayList<Size>();
         int w = aspectRatio.getWidth();
         int h = aspectRatio.getHeight();
+        double ratio = (double) h / w;
         for (Size option : choices) {
-            if (option.getWidth() <= maxWidth && option.getHeight() <= maxHeight &&
-                    option.getHeight() == option.getWidth() * h / w) {
-                if (option.getWidth() >= mTextureViewWidth &&
-                        option.getHeight() >= mTextureViewHeight) {
-                    bigEnough.add(option);
-                } else {
-                    notBigEnough.add(option);
-                }
+            double optionRatio = (double) option.getHeight() / option.getWidth();
+            if (ratio == optionRatio) {
+                bigEnough.add(option);
             }
         }
 
-        // Pick the smallest of those big enough. If there is no one big enough, pick the
-        // largest of those not big enough.
+        // Pick the smallest of those, assuming we found any
         if (bigEnough.size() > 0) {
             return Collections.min(bigEnough, new CompareSizesByArea());
-        } else if (notBigEnough.size() > 0) {
-            return Collections.max(notBigEnough, new CompareSizesByArea());
         } else {
             Log.e(TAG, "Couldn't find any suitable preview size");
-            return choices[0];
+            return choices[1];
         }
     }
 
@@ -415,7 +404,9 @@ public class CameraFragment extends Fragment {
                 maxPreviewHeight = MAX_PREVIEW_HEIGHT;
             }
 
-            mPreviewSize = chooseOptimalSize(map.getOutputSizes(SurfaceTexture.class), rotatedPreviewWidth, rotatedPreviewHeight, maxPreviewWidth, maxPreviewHeight, largest);
+            Size videoSize = chooseVideoSize(map.getOutputSizes(SurfaceTexture.class));
+
+            mPreviewSize = chooseOptimalSize(map.getOutputSizes(SurfaceTexture.class), rotatedPreviewWidth, rotatedPreviewHeight, videoSize);
             //check real-time permissions
             if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(getActivity(), new String[]{
