@@ -24,7 +24,7 @@ public class Slam {
         this.mQueue = q;
         this.mPoisonPillBitmap = mPoisonPillBitmap;
         startSlamThread();
-        mSlamSenderHandler.post(() -> doSlam());
+        mSlamSenderHandler.post(this::doSlam);
     }
 
     /**
