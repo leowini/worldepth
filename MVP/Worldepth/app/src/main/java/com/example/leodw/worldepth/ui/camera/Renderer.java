@@ -155,6 +155,11 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
                 looper.quit();
             }
         });
+        try {
+            mRenderThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         mRenderThread = null;
     }
 
