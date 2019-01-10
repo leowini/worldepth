@@ -472,8 +472,8 @@ namespace SLAM
     void Tracking::CreateInitialMapMonocular()
     {
         // Create KeyFrames
-        KeyFrame* pKFini = new KeyFrame(mInitialFrame,mpMap/*,mpKeyFrameDB*/);
-        KeyFrame* pKFcur = new KeyFrame(mCurrentFrame,mpMap/*,mpKeyFrameDB*/);
+        KeyFrame* pKFini = new KeyFrame(mInitialFrame,mpMap,mpKeyFrameDB);
+        KeyFrame* pKFcur = new KeyFrame(mCurrentFrame,mpMap,mpKeyFrameDB);
 
 
         pKFini->ComputeBoW();
@@ -888,7 +888,7 @@ namespace SLAM
             return;
 
 
-        KeyFrame* pKF = new KeyFrame(mCurrentFrame,mpMap/*,mpKeyFrameDB*/);
+        KeyFrame* pKF = new KeyFrame(mCurrentFrame,mpMap,mpKeyFrameDB);
 
         mpReferenceKF = pKF;
         mCurrentFrame.mpReferenceKF = pKF;

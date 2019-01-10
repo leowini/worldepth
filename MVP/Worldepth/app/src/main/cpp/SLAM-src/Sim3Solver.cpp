@@ -10,7 +10,7 @@
 #include <opencv2/core/core.hpp>
 
 #include "KeyFrame.h"
-#include "ORBmatcher.h"
+#include "ORBMatcher.h"
 
 #include "DBoW2/DUtils/Random.h"
 
