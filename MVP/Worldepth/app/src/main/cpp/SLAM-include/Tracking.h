@@ -10,15 +10,15 @@
 
 
 #include"Map.h"
-//#include"LocalMapping.h"
-//#include"LoopClosing.h"
+#include"LocalMapping.h"
+#include"LoopClosing.h"
 #include"Frame.h"
 #include "ORBVocabulary.h"
-//#include"KeyFrameDatabase.h"
+#include"KeyFrameDatabase.h"
 #include"ORBExtractor.h"
-//#include "Initializer.h"
+#include "Initializer.h"
 
-//#include "System.h"
+#include "System.h"
 
 #include <mutex>
 #include <string>
@@ -28,22 +28,22 @@ namespace SLAM
 
 
     class Map;
-    //class LocalMapping;
-    //class LoopClosing;
-    //class System;
+    class LocalMapping;
+    class LoopClosing;
+    class System;
 
     class Tracking
     {
 
     public:
-        Tracking(/*System* pSys,*/ ORBVocabulary* pVoc, Map* pMap,
-                 /*KeyFrameDatabase* pKFDB,*/ const string &strSettingPath, const int sensor);
+        Tracking(System* pSys, ORBVocabulary* pVoc, Map* pMap,
+                 KeyFrameDatabase* pKFDB, const string &strSettingPath);
 
         // Preprocess the input and call Track(). Extract features and performs stereo matching.
         cv::Mat GrabImageMonocular(const cv::Mat &im, const double &timestamp);
 
-        //void SetLocalMapper(LocalMapping* pLocalMapper);
-        //void SetLoopClosing(LoopClosing* pLoopClosing);
+        void SetLocalMapper(LocalMapping* pLocalMapper);
+        void SetLoopClosing(LoopClosing* pLoopClosing);
 
         // Load new settings
         // The focal lenght should be similar or scale prediction will fail when projecting points
@@ -69,7 +69,7 @@ namespace SLAM
         eTrackingState mLastProcessedState;
 
         // Input sensor
-        int mSensor;
+        //int mSensor;
 
         // Current Frame
         Frame mCurrentFrame;
@@ -102,7 +102,7 @@ namespace SLAM
 
 
         // Map initialization for monocular
-        //void MonocularInitialization();
+        void MonocularInitialization();
         void CreateInitialMapMonocular();
 
         void CheckReplacedInLastFrame();
@@ -129,8 +129,8 @@ namespace SLAM
         bool mbVO;
 
         //Other Thread Pointers
-        //LocalMapping* mpLocalMapper;
-        //LoopClosing* mpLoopClosing;
+        LocalMapping* mpLocalMapper;
+        LoopClosing* mpLoopClosing;
 
         //ORB
         ORBextractor* mpORBextractorLeft, *mpORBextractorRight;
@@ -138,10 +138,10 @@ namespace SLAM
 
         //BoW
         ORBVocabulary* mpORBVocabulary;
-        //KeyFrameDatabase* mpKeyFrameDB;
+        KeyFrameDatabase* mpKeyFrameDB;
 
         // Initalization (only for monocular)
-        //Initializer* mpInitializer;
+        Initializer* mpInitializer;
 
         //Local Map
         KeyFrame* mpReferenceKF;
@@ -149,7 +149,7 @@ namespace SLAM
         std::vector<MapPoint*> mvpLocalMapPoints;
 
         // System
-        //System* mpSystem;
+        System* mpSystem;
 
 
         //Map

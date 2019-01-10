@@ -41,7 +41,7 @@
         android:gravity="center|center_horizontal|center_vertical"
         app:layout_constraintStart_toStartOf="@id/enterEmail"
         app:layout_constraintTop_toBottomOf="@+id/enterEmail" />
-
+  
     <ImageView
         android:id="@+id/start_logo"
         android:layout_width="250dp"
