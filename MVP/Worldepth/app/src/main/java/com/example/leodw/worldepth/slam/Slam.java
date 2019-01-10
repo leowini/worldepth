@@ -3,6 +3,7 @@ package com.example.leodw.worldepth.slam;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.util.Log;
 
 import com.example.leodw.worldepth.ui.camera.TimeFramePair;
 
@@ -52,6 +53,7 @@ public class Slam {
                 time = timeFramePair.getTime();
                 frameCount++;
             } while (!bmp.equals(mPoisonPillBitmap));
+            stopSlamThread();
         }
         catch (Exception e) {
             System.out.println
@@ -71,12 +73,13 @@ public class Slam {
         mSlamSenderHandler = new Handler(mSlamSenderThread.getLooper());
     }
 
-    public void stopSlamThread() {
+    private void stopSlamThread() {
         mSlamSenderThread.quitSafely();
         try {
             mSlamSenderThread.join();
             mSlamSenderThread = null;
             mSlamSenderHandler = null;
+            Log.d(TAG, "Thread closed");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
