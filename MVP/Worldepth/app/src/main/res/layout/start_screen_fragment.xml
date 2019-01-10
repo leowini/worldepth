@@ -15,7 +15,11 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textEmailAddress"
+        android:textColor="@color/inputColor"
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.SearchResult.Title"
+        android:hint="@string/email"
+        android:textColorHint="@color/inputColor"
+        android:gravity="center|center_horizontal|center_vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -30,50 +34,24 @@
         android:layout_marginTop="24dp"
         android:ems="10"
         android:inputType="textPassword"
+        android:textColor="@color/inputColor"
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.SearchResult.Title"
+        android:hint="@string/password"
+        android:textColorHint="@color/inputColor"
+        android:gravity="center|center_horizontal|center_vertical"
         app:layout_constraintStart_toStartOf="@id/enterEmail"
         app:layout_constraintTop_toBottomOf="@+id/enterEmail" />
-
-    <TextView
-        android:id="@+id/emailHint"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/email"
-        android:textColor="#A6A4A4"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="@id/enterEmail"
-        app:layout_constraintEnd_toEndOf="@id/enterEmail"
-        app:layout_constraintHorizontal_bias="0.07"
-        app:layout_constraintStart_toStartOf="@id/enterEmail"
-        app:layout_constraintTop_toTopOf="@id/enterEmail"
-        app:layout_constraintVertical_bias="0.50"
-        tools:ignore="MissingConstraints" />
-
-    <TextView
-        android:id="@+id/passwordHint"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/password"
-        android:textColor="#A6A4A4"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="@id/enterPassword"
-        app:layout_constraintEnd_toEndOf="@id/enterPassword"
-        app:layout_constraintHorizontal_bias="0.07"
-        app:layout_constraintStart_toStartOf="@id/enterPassword"
-        app:layout_constraintTop_toTopOf="@id/enterPassword"
-        app:layout_constraintVertical_bias="0.50"
-        tools:ignore="MissingConstraints" />
-
+  
     <ImageView
         android:id="@+id/start_logo"
         android:layout_width="250dp"
         android:layout_height="250dp"
         android:adjustViewBounds="true"
-        android:maxWidth="150dp"
         android:src="@drawable/logo"
         android:transitionName="small_logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.05" />

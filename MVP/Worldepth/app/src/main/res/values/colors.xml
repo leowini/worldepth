@@ -5,4 +5,5 @@
     <color name="colorAccent">#D81B60</color>
     <color name="colorPrimaryLight">#5F71B5</color>
     <color name="colorWindowBackground">#333</color>
+    <color name="inputColor">#99b7e8</color>
 </resources>
