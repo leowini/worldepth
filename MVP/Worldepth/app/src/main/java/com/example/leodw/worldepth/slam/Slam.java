@@ -45,13 +45,13 @@ public class Slam {
             TimeFramePair<Bitmap, Long> timeFramePair = mQueue.take();
             Bitmap bmp = timeFramePair.getFrame();
             Long time = timeFramePair.getTime();
-            while (!bmp.equals(mPoisonPillBitmap)) {
+            do {
                 sendFrameToSlam(bmp, time);
                 timeFramePair = mQueue.take();
                 bmp = timeFramePair.getFrame();
                 time = timeFramePair.getTime();
                 frameCount++;
-            }
+            } while (!bmp.equals(mPoisonPillBitmap));
         }
         catch (Exception e) {
             System.out.println
