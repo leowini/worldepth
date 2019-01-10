@@ -60,6 +60,7 @@ public class Slam {
             System.out.println
                     (Thread.currentThread().getName() + " " + e.getMessage());
         }
+        mCompleteListenerHandler.post(() -> mCompleteListener.onSlamComplete());
     }
 
     private byte[] bitmapToByteArray(Bitmap bmp) {
