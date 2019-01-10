@@ -15,6 +15,9 @@ public class Slam {
     private HandlerThread mSlamSenderThread;
     public Handler mSlamSenderHandler;
 
+    private SlamCompleteListener mCompleteListener;
+    private Handler mCompleteListenerHandler;
+
     private final Bitmap mPoisonPillBitmap;
     private final BlockingQueue<TimeFramePair<Bitmap, Long>> mQueue;
 
@@ -80,6 +83,15 @@ public class Slam {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public void setOnSlamCompleteListener(SlamCompleteListener listener, Handler handler) {
+        mCompleteListener = listener;
+        mCompleteListenerHandler = handler;
+    }
+
+    public interface SlamCompleteListener {
+        void onSlamComplete();
     }
 
 }
