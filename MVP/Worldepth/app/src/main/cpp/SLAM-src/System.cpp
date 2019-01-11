@@ -45,7 +45,7 @@ System::System(const string &strVocFile, const string &strSettingsFile):
 
         cout << "Monocular" << endl;
 
-
+    /*    This isn't needed bc it's loaded in tracking, we should have preset settings anyway
     //Check settings file
     cv::FileStorage fsSettings(strSettingsFile.c_str(), cv::FileStorage::READ);
     if(!fsSettings.isOpened())
@@ -54,7 +54,9 @@ System::System(const string &strVocFile, const string &strSettingsFile):
        exit(-1);
     }
 
+     */
 
+    //THIS SHOULD BE CHANGED TO THE MAINACTIVITY
     //Load ORB Vocabulary
     cout << endl << "Loading ORB Vocabulary. This could take a while..." << endl;
 
