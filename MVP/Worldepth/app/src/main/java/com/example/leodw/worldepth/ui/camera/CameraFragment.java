@@ -301,6 +301,7 @@ public class CameraFragment extends Fragment {
         //Poison pill to signal end of queue.
         Bitmap poisonPill = Bitmap.createBitmap(1,1,Bitmap.Config.ARGB_8888);
         mSlam = new Slam(q, poisonPill);
+        mSlam.setOnSlamCompleteListener(() -> mSlam.stopSlamThread(), new Handler(Looper.getMainLooper()));
         mRenderer = new Renderer(q, poisonPill);
         mRenderer.setOnSurfaceTextureReadyListener(texture -> {
             mSlamOutputSurface = texture;
