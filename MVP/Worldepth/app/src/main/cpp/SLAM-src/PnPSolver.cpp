@@ -5,7 +5,7 @@
 
 #include <iostream>
 
-#include "PnPsolver.h"
+#include "PnPSolver.h"
 
 #include <vector>
 #include <cmath>

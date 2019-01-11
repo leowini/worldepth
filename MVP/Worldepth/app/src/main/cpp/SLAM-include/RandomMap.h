@@ -15,10 +15,10 @@ namespace SLAM {
 
 
     //Call this one to write if you already have a map
-    void writeMap(std::string filename, Map & map);
+    void writeMap(std::string filename, std::vector<MapPoint *> vpMapPoints);
 
-    //call this one to run it all
-    void makeMapAndWrite(string &filename, size_t num);
+    //call this one to run it all, doesn't work now
+    //void makeMapAndWrite(string &filename, size_t num);
 
 }
 

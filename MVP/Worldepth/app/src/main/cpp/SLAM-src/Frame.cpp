@@ -30,8 +30,8 @@ namespace SLAM {
               mvKeysUn(frame.mvKeysUn),
               mBowVec(frame.mBowVec), mFeatVec(frame.mFeatVec), mb(frame.mb),
               mDescriptors(frame.mDescriptors.clone()), mvuRight(frame.mvuRight), mvDepth(frame.mvDepth),
-            /*mvpMapPoints(frame.mvpMapPoints),*/ mvbOutlier(frame.mvbOutlier), mnId(frame.mnId),
-            /*mpReferenceKF(frame.mpReferenceKF),*/ mnScaleLevels(frame.mnScaleLevels),
+              mvpMapPoints(frame.mvpMapPoints), mvbOutlier(frame.mvbOutlier), mnId(frame.mnId),
+              mpReferenceKF(frame.mpReferenceKF), mnScaleLevels(frame.mnScaleLevels),
               mfScaleFactor(frame.mfScaleFactor), mfLogScaleFactor(frame.mfLogScaleFactor),
               mvScaleFactors(frame.mvScaleFactors), mvInvScaleFactors(frame.mvInvScaleFactors),
               mvLevelSigma2(frame.mvLevelSigma2), mvInvLevelSigma2(frame.mvInvLevelSigma2) {
