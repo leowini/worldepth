@@ -14,6 +14,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:textSize="30sp"
+        android:textCursorDrawable="@null"
         android:inputType="textEmailAddress"
         android:textColor="@color/inputColor"
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.SearchResult.Title"
@@ -23,7 +25,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.56"
+        app:layout_constraintVertical_bias="0.58"
         tools:ignore="MissingConstraints" />
 
     <EditText
@@ -31,8 +33,10 @@
         style="@style/WorldepthEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="10dp"
         android:ems="10"
+        android:textSize="30sp"
+        android:textCursorDrawable="@null"
         android:inputType="textPassword"
         android:textColor="@color/inputColor"
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.SearchResult.Title"
@@ -44,8 +48,8 @@
   
     <ImageView
         android:id="@+id/start_logo"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
+        android:layout_width="260dp"
+        android:layout_height="260dp"
         android:adjustViewBounds="true"
         android:src="@drawable/logo"
         android:transitionName="small_logo"
