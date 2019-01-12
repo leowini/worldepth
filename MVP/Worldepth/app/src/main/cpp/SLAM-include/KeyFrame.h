@@ -12,7 +12,7 @@
 #include "ORBExtractor.h"
 #include "Frame.h"
 #include <set>
-//#include "KeyFrameDatabase.h"
+#include "KeyFrameDatabase.h"
 
 #include <mutex>
 
@@ -23,13 +23,13 @@ namespace SLAM
     class Map;
     class MapPoint;
     class Frame;
-    //class KeyFrameDatabase;
+    class KeyFrameDatabase;
 
     class KeyFrame
     {
     public:
         //Constructor: ADD pKFDB back in
-        KeyFrame(Frame &F, Map* pMap/*, KeyFrameDatabase* pKFDB*/);
+        KeyFrame(Frame &F, Map* pMap, KeyFrameDatabase* pKFDB);
 
         // Pose functions
         void SetPose(const cv::Mat &Tcw);
@@ -190,7 +190,7 @@ namespace SLAM
         std::vector<MapPoint*> mvpMapPoints;
 
         // BoW
-        //KeyFrameDatabase* mpKeyFrameDB;
+        KeyFrameDatabase* mpKeyFrameDB;
         ORBVocabulary* mpORBvocabulary;
 
         // Grid over the image to speed up feature matching

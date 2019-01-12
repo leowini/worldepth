@@ -33,7 +33,7 @@ namespace SLAM
             mpMap(pMap), mnLastRelocFrameId(0)
     {
         // Load camera parameters from settings file
-
+        //We should find out settings for a camera as default and find out how to access different phone settings
         cv::FileStorage fSettings(strSettingPath, cv::FileStorage::READ);
         float fx = fSettings["Camera.fx"];
         float fy = fSettings["Camera.fy"];
@@ -472,8 +472,8 @@ namespace SLAM
     void Tracking::CreateInitialMapMonocular()
     {
         // Create KeyFrames
-        KeyFrame* pKFini = new KeyFrame(mInitialFrame,mpMap/*,mpKeyFrameDB*/);
-        KeyFrame* pKFcur = new KeyFrame(mCurrentFrame,mpMap/*,mpKeyFrameDB*/);
+        KeyFrame* pKFini = new KeyFrame(mInitialFrame,mpMap,mpKeyFrameDB);
+        KeyFrame* pKFcur = new KeyFrame(mCurrentFrame,mpMap,mpKeyFrameDB);
 
 
         pKFini->ComputeBoW();
@@ -888,7 +888,7 @@ namespace SLAM
             return;
 
 
-        KeyFrame* pKF = new KeyFrame(mCurrentFrame,mpMap/*,mpKeyFrameDB*/);
+        KeyFrame* pKF = new KeyFrame(mCurrentFrame,mpMap,mpKeyFrameDB);
 
         mpReferenceKF = pKF;
         mCurrentFrame.mpReferenceKF = pKF;

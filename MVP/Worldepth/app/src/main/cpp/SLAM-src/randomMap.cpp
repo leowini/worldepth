@@ -6,10 +6,10 @@
 
 namespace SLAM {
 
-    void writeMap(std::string filename, Map & map) {
+    void writeMap(std::string filename, std::vector<MapPoint *> vpMapPoints) {
         FILE * file;
         file = fopen(filename.c_str(), "w");
-        std::vector<MapPoint*> vpMapPoints = map.GetAllMapPoints();
+        //std::vector<MapPoint*> vpMapPoints = map.GetAllMapPoints();
         for(MapPoint * pMP: vpMapPoints) {
             cv::Mat pos = pMP->GetWorldPos();
             for(int i = 0; i < pos.rows; i++) {
@@ -44,17 +44,18 @@ namespace SLAM {
     }
 
 
-
+    /*
     void makeMapAndWrite(string &filename, size_t num) {
         Map * pmap = new Map();
         Frame empty;
         KeyFrame emptykf(empty, pmap);
         putPointsInMap(num, emptykf, *pmap);
-        writeMap(filename, *pmap);
+        writeMap(filename, pmap->GetAllMapPoints());
 
         pmap->clear();
         delete pmap;
 
     }
+     */
 }
 
