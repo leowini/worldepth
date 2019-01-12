@@ -18,3 +18,8 @@ git pull
 
 To get changes made to the remote master branch:
 git pull origin master
+
+To get rid of commits you don't want:
+	git reset --hard origin/master
+		OR
+	git reset - -hard -HEAD^
