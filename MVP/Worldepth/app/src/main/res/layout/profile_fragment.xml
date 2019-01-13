@@ -27,7 +27,8 @@
         app:layout_constraintHorizontal_bias="0.96"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.008" />
+        app:layout_constraintVertical_bias="0.008"
+        android:contentDescription="@string/navbutton" />
 
     <TextView
         android:id="@+id/profileName"
