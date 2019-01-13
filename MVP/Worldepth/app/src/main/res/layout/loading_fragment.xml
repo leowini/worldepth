@@ -18,6 +18,12 @@
         app:layout_constraintEnd_toStartOf="@+id/loadingNextButton"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/loadingAnimation"
+        android:src="@drawable/loading_animation"/>
+
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
