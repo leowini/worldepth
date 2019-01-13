@@ -47,7 +47,7 @@ public class LoadingFragment extends Fragment {
     private void startLoadingAnimation() {
         ImageView loadingImage = getView().findViewById(R.id.loadingAnimation);
         loadingImage.setImageResource(R.drawable.loading_animation);
-        mLoadingAnimation = (AnimationDrawable) loadingImage.getBackground();
+        mLoadingAnimation = (AnimationDrawable) loadingImage.getDrawable();
         mLoadingAnimation.start();
     }
 }
