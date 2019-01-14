@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Build;
+import android.os.Environment;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +22,17 @@ import com.example.leodw.worldepth.data.FirebaseWrapper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
 import static java.security.AccessController.getContext;
@@ -64,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
         dt = new DataTransfer();
         createNotificationChannel();
         //listenForNotifications();
+        loadFiles();
     }
 
     public FirebaseWrapper getFirebaseWrapper(){
@@ -124,6 +137,84 @@ public class MainActivity extends AppCompatActivity {
             // or other notification behaviors after this
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(mChannel);
+        }
+    }
+
+    private boolean checkAndWriteFile(String filename){
+        String externDir = Environment.getExternalStorageDirectory().getAbsolutePath();
+        File wdDir = new File(externDir + "/Worldepth");
+        if(!wdDir.exists()){
+            Log.i(TAG, "Worldepth folder not found, making it...");
+            wdDir.mkdir();
+            if(!wdDir.exists()){
+                Log.e(TAG, "Unable to create worldepth folder");
+            }
+        }
+        File targetFile = new File(externDir + "/Worldepth/" + filename);
+        if(targetFile.exists()){
+            Log.i(TAG, targetFile.getAbsolutePath() + " already exists");
+            return false;
+        }
+        else {
+            try {
+                targetFile.createNewFile();
+                if(!targetFile.exists()){
+                    Log.e(TAG, "Could not make file!");
+                }
+                InputStream initialStream = this.getApplicationContext().getAssets().open(filename);
+                byte[] buffer = new byte[initialStream.available()];
+                initialStream.read(buffer);
+
+                OutputStream outStream = new FileOutputStream(targetFile);
+                outStream.write(buffer);
+
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+            return true;
+        }
+    }
+
+    private void unzip(File zipFile, File targetDirectory) throws IOException {
+        ZipInputStream zis = new ZipInputStream(
+                new BufferedInputStream(new FileInputStream(zipFile)));
+        try {
+            ZipEntry ze;
+            int count;
+            byte[] buffer = new byte[8192];
+            while ((ze = zis.getNextEntry()) != null) {
+                File file = new File(targetDirectory, ze.getName());
+                File dir = ze.isDirectory() ? file : file.getParentFile();
+                if (!dir.isDirectory() && !dir.mkdirs())
+                    throw new FileNotFoundException("Failed to ensure directory: " +
+                            dir.getAbsolutePath());
+                if (ze.isDirectory())
+                    continue;
+                FileOutputStream fout = new FileOutputStream(file);
+                try {
+                    while ((count = zis.read(buffer)) != -1)
+                        fout.write(buffer, 0, count);
+                } finally {
+                    fout.close();
+                }
+            }
+        } finally {
+            zis.close();
+        }
+
+    }
+
+    private void loadFiles() {
+        boolean wasWritten = checkAndWriteFile("ORBvoc.txt.tar.gz");
+        checkAndWriteFile("TUM1.yaml");
+        if(wasWritten) {
+            String externDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Worldepth";
+
+            try {
+                unzip(new File(externDir + "/ORBvoc.txt.tar.gz"), Environment.getExternalStorageDirectory());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
