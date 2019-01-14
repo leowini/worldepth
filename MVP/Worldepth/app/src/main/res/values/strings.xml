@@ -57,4 +57,6 @@
     <string name="password">Password</string>
     <string name="test_login">Test Login</string>
     <string name="login">Login</string>
+    <string name="animation">Animation</string>
+    <string name="navbutton">NavButton</string>
 </resources>
