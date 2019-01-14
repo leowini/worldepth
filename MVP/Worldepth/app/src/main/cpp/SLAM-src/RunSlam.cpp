@@ -7,6 +7,7 @@
 #include <RandomMap.h>
 #include <System.h>
 #include <jni.h>
+#include <string>
 
 namespace SLAM
 {
@@ -53,6 +54,7 @@ namespace SLAM
         cv::Mat mimg(width, height, CV_8UC1, (unsigned char *)_img);
         double tframe = (double) timeStamp;
         SLAM::process(mimg, tframe);
+        env->ReleaseByteArrayElements(img, _img, 0);
         std::string hello = "Hello from C++";
         return env->NewStringUTF(hello.c_str());
     }
@@ -60,11 +62,13 @@ namespace SLAM
     extern "C"
     JNIEXPORT void JNICALL
     Java_com_example_leodw_worldepth_slam_Slam_initSystem(JNIEnv *env, jobject instance, jstring vocFile, jstring settingsFile) {
-        const char *_vocFile= env->GetStringUTFChars(vocFile,0);
-
-        //need to release this string when done with it in order to
-        //avoid memory leak
+        const char *_vocFile = env->GetStringUTFChars(vocFile,0);
+        const char *_settingsFile = env->GetStringUTFChars(settingsFile,0);
+        std::string vocFileString = _vocFile;
+        std::string settingsFileString = _settingsFile;
+        SLAM::start(vocFileString, settingsFileString);
         env->ReleaseStringUTFChars(vocFile, _vocFile);
+        env->ReleaseStringUTFChars(settingsFile, _settingsFile);
     }
 
 
