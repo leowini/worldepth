@@ -197,11 +197,6 @@ public class MainActivity extends AppCompatActivity {
                 } finally {
                     fout.close();
                 }
-            /* if time should be restored as well
-            long time = ze.getTime();
-            if (time > 0)
-                file.setLastModified(time);
-            */
             }
         } finally {
             zis.close();
