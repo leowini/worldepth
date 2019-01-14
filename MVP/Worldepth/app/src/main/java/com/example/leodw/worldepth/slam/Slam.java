@@ -21,11 +21,13 @@ public class Slam {
     private final Bitmap mPoisonPillBitmap;
     private final BlockingQueue<TimeFramePair<Bitmap, Long>> mQueue;
 
-    public native void passImageToSlam(int width, int height, byte[] img, long timeStamp);
+    public native String passImageToSlam(int width, int height, byte[] img, long timeStamp);
+    public native void initSystem(String vocFile, String settingsFile);
 
     public Slam(BlockingQueue<TimeFramePair<Bitmap, Long>> q, Bitmap mPoisonPillBitmap) {
         this.mQueue = q;
         this.mPoisonPillBitmap = mPoisonPillBitmap;
+        initSystem("hi", "bye");
         startSlamThread();
         mSlamSenderHandler.post(this::doSlam);
     }
@@ -33,6 +35,7 @@ public class Slam {
     /**
      * Converts the bitmap frame to a byte array and sends it to the C++ code.
      * @param frame
+     * @param timeStamp
      */
     public void sendFrameToSlam(Bitmap frame, Long timeStamp) {
         byte[] byteArray = bitmapToByteArray(frame);

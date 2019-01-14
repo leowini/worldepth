@@ -6,6 +6,7 @@
 #include <TrackingInit.h>
 #include <RandomMap.h>
 #include <System.h>
+#include <jni.h>
 
 namespace SLAM
 {
@@ -16,7 +17,7 @@ namespace SLAM
     }
 
     //I still don't know how to do the initializer, if it's not automatically Idk how this is done
-    void process(cv::Mat im, double tstamp) {
+    void process(cv::Mat &im, double &tstamp) {
         //call the equivalent of System::TrackMonocular for TrackingInit or Tracking directly
         if (im.empty() || tstamp == 0){
             cerr << "could not load image!" << endl;
@@ -44,6 +45,29 @@ namespace SLAM
         //close any other threads (should be done already in System.Reset()
         delete slam;
     }
+
+    extern "C"
+    JNIEXPORT jstring JNICALL
+    Java_com_example_leodw_worldepth_slam_Slam_passImageToSlam(JNIEnv *env, jobject instance, jint width, jint height, jbyteArray img, jlong timeStamp) {
+        jbyte* _img  = env->GetByteArrayElements(img, 0);
+        cv::Mat mimg(width, height, CV_8UC1, (unsigned char *)_img);
+        double tframe = (double) timeStamp;
+        SLAM::process(mimg, tframe);
+        std::string hello = "Hello from C++";
+        return env->NewStringUTF(hello.c_str());
+    }
+
+    extern "C"
+    JNIEXPORT void JNICALL
+    Java_com_example_leodw_worldepth_slam_Slam_initSystem(JNIEnv *env, jobject instance, jstring vocFile, jstring settingsFile) {
+        const char *_vocFile= env->GetStringUTFChars(vocFile,0);
+
+        //need to release this string when done with it in order to
+        //avoid memory leak
+        env->ReleaseStringUTFChars(vocFile, _vocFile);
+    }
+
+
 }
 
 

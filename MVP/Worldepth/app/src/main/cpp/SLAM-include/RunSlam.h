@@ -16,7 +16,7 @@ namespace SLAM
 void start(std::string &vocFile, std::string &settingsFile);
 
 //call this for each frame
-void process(cv::Mat &im, double tstamp);
+void process(cv::Mat &im, double &tstamp);
 
 //call this at the end, writes the map to the file and closes things
 //for internal storage, this looks like "/data/data/com.example.leodw.worldepth/name of file" i think
