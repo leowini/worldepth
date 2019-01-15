@@ -7,6 +7,10 @@
 
 #include <opencv2/core/mat.hpp>
 #include <System.h>
+#include <TrackingInit.h>
+#include <RandomMap.h>
+#include <jni.h>
+#include <string>
 
 namespace SLAM
 {
@@ -22,6 +26,10 @@ void process(cv::Mat &im, double &tstamp);
 //for internal storage, this looks like "/data/data/com.example.leodw.worldepth/name of file" i think
 //This could then read into reconstruction or go to the database so it isn't stored on the phone
 void end(std::string filename);
+
+extern "C" JNIEXPORT jstring JNICALL Java_com_example_leodw_worldepth_slam_Slam_passImageToSlam(JNIEnv *env, jobject instance, jint width, jint height, jbyteArray img, jlong timeStamp);
+
+extern "C" JNIEXPORT void JNICALL Java_com_example_leodw_worldepth_slam_Slam_initSystem(JNIEnv *env, jobject instance, jstring vocFile, jstring settingsFile);
 
 System *slam;
 

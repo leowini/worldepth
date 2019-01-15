@@ -1,7 +1,6 @@
 #include <jni.h>
 #include <string>
 #include <opencv2/core/core.hpp>
-#include <RunSlam.h>
 
 using namespace std;
 

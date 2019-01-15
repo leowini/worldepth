@@ -262,6 +262,7 @@ public class CameraFragment extends Fragment {
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
+        mRecordingState = false;
         mTextureView = (AutoFitTextureView) view.findViewById(R.id.textureView);
         assert mTextureView != null;
         captureBtn = (Button) view.findViewById(R.id.captureButton);
@@ -269,6 +270,7 @@ public class CameraFragment extends Fragment {
         captureBtn.setOnTouchListener((v, event) -> {
             switch (event.getAction()) {
                 case (MotionEvent.ACTION_DOWN):
+                    Log.d(TAG, "Capturing");
                     if (!mRecordingState) {
                         startRecording();
                         mRecordingState = true;
@@ -276,6 +278,7 @@ public class CameraFragment extends Fragment {
                     }
                     return false;
                 case (MotionEvent.ACTION_UP):
+                    Log.d(TAG, "Stop Capturing");
                     if (mRecordingState) {
                         stopRecording();
                         mRecordingState = false;

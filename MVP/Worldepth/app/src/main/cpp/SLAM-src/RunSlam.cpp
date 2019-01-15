@@ -53,7 +53,7 @@ namespace SLAM
         jbyte* _img  = env->GetByteArrayElements(img, 0);
         cv::Mat mimg(width, height, CV_8UC1, (unsigned char *)_img);
         double tframe = (double) timeStamp;
-        SLAM::process(mimg, tframe);
+        process(mimg, tframe);
         env->ReleaseByteArrayElements(img, _img, 0);
         std::string hello = "Hello from C++";
         return env->NewStringUTF(hello.c_str());
@@ -66,7 +66,7 @@ namespace SLAM
         const char *_settingsFile = env->GetStringUTFChars(settingsFile,0);
         std::string vocFileString = _vocFile;
         std::string settingsFileString = _settingsFile;
-        SLAM::start(vocFileString, settingsFileString);
+        start(vocFileString, settingsFileString);
         env->ReleaseStringUTFChars(vocFile, _vocFile);
         env->ReleaseStringUTFChars(settingsFile, _settingsFile);
     }

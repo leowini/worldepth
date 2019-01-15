@@ -1,6 +1,7 @@
 package com.example.leodw.worldepth.slam;
 
 import android.graphics.Bitmap;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 
@@ -27,7 +28,7 @@ public class Slam {
     public Slam(BlockingQueue<TimeFramePair<Bitmap, Long>> q, Bitmap mPoisonPillBitmap) {
         this.mQueue = q;
         this.mPoisonPillBitmap = mPoisonPillBitmap;
-        initSystem("hi", "bye");
+        initSystem(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Worldepth/ORBvoc.txt", Environment.getExternalStorageDirectory().getAbsolutePath() + "/Worldepth/TUM1.yaml");
         startSlamThread();
         mSlamSenderHandler.post(this::doSlam);
     }
