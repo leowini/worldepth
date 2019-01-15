@@ -55,6 +55,16 @@
                                 <LayoutPositions />
                               </value>
                             </entry>
+                            <entry key="action_cameraFragment_to_mapFragment2">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_cameraFragment_to_mapFragment3">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_cameraFragment_to_settings">
                               <value>
                                 <LayoutPositions />
