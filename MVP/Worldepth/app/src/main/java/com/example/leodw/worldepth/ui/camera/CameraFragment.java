@@ -62,6 +62,8 @@ public class CameraFragment extends Fragment {
 
     private ReconVM mReconVM;
 
+    private static Bitmap poisonPill = Bitmap.createBitmap(1,1,Bitmap.Config.ARGB_8888);
+
     private Renderer mRenderer;
     private Slam mSlam;
     private SurfaceTexture mSlamOutputSurface;
@@ -312,7 +314,12 @@ public class CameraFragment extends Fragment {
             mSlamOutputSurface = texture;
             startCameraRecording();
         }, new Handler(Looper.getMainLooper()));
+        mRenderer.setOnFrameRenderedListener(() -> sendFrameToReconVM(), new Handler(Looper.getMainLooper()));
         mRenderer.start(mTextureView.getWidth(), mTextureView.getHeight());
+    }
+
+    private void sendFrameToReconVM() {
+
     }
 
     private void startCameraRecording() {

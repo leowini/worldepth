@@ -37,6 +37,9 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
     private static final File FILES_DIR = Environment.getExternalStorageDirectory();
     private ByteBuffer mPixelBuf; // used by saveFrame()
 
+    private OnFrameRenderedListener mFrameRenderedListener;
+    private Handler mFrameRenderedListenerHandler;
+
     private EGLDisplay mEGLDisplay;
     private EGLSurface mEGLSurface;
     private EGLContext mEGLContext;
@@ -541,6 +544,15 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
         if ((error = EGL14.eglGetError()) != EGL14.EGL_SUCCESS) {
             throw new RuntimeException(msg + ": EGL error: 0x" + Integer.toHexString(error));
         }
+    }
+
+    public interface OnFrameRenderedListener {
+        void onFrameRendered();
+    }
+
+    public void setOnFrameRenderedListener(OnFrameRenderedListener listener, Handler handler) {
+        this.mFrameRenderedListener = listener;
+        this.mFrameRenderedListenerHandler = handler;
     }
 
 }

@@ -40,6 +40,7 @@ public class LoadingFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         mReconVM = ViewModelProviders.of(getActivity()).get(ReconVM.class);
+        mReconVM.getSelected().observe(this, item -> updateUI());
         startLoadingAnimation();
         Button loadingNextButton = view.findViewById(R.id.loadingNextButton);
         Button loadingBackButton = view.findViewById(R.id.loadingBackBtn);
@@ -57,6 +58,10 @@ public class LoadingFragment extends Fragment {
     }
 
     private void Reconstruct() {
+
+    }
+
+    private void updateUI() {
 
     }
 }
