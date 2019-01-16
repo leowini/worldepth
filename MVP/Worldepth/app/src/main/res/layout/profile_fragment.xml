@@ -83,8 +83,8 @@
 
     <ImageView
         android:id="@+id/preview1"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="120sp"
+        android:layout_height="120sp"
         android:src="@drawable/cake4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -95,8 +95,8 @@
 
     <ImageView
         android:id="@+id/preview2"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="120sp"
+        android:layout_height="120sp"
         android:src="@drawable/cake4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -107,8 +107,8 @@
 
     <ImageView
         android:id="@+id/preview3"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="120sp"
+        android:layout_height="120sp"
         android:src="@drawable/cake4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -119,8 +119,8 @@
 
     <ImageView
         android:id="@+id/preview4"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="120sp"
+        android:layout_height="120sp"
         android:src="@drawable/cake4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -131,8 +131,8 @@
 
     <ImageView
         android:id="@+id/preview5"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="120sp"
+        android:layout_height="120sp"
         android:src="@drawable/cake4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -143,8 +143,8 @@
 
     <ImageView
         android:id="@+id/preview6"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="120sp"
+        android:layout_height="120sp"
         android:src="@drawable/cake4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -155,8 +155,8 @@
 
     <ImageView
         android:id="@+id/preview7"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="120sp"
+        android:layout_height="120sp"
         android:src="@drawable/cake4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -167,8 +167,8 @@
 
     <ImageView
         android:id="@+id/preview8"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="120sp"
+        android:layout_height="120sp"
         android:src="@drawable/cake4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -179,8 +179,8 @@
 
     <ImageView
         android:id="@+id/preview9"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="120sp"
+        android:layout_height="120sp"
         android:src="@drawable/cake4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
