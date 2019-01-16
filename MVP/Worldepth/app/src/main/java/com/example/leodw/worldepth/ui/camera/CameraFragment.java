@@ -2,6 +2,7 @@ package com.example.leodw.worldepth.ui.camera;
 
 import android.Manifest;
 import android.app.Activity;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -41,6 +42,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.leodw.worldepth.R;
+import com.example.leodw.worldepth.slam.ReconVM;
 import com.example.leodw.worldepth.slam.Slam;
 
 import java.util.ArrayList;
@@ -57,6 +59,8 @@ import androidx.navigation.Navigation;
 
 public class CameraFragment extends Fragment {
     private static final String TAG = "CameraFragment";
+
+    private ReconVM mReconVM;
 
     private Renderer mRenderer;
     private Slam mSlam;
@@ -262,6 +266,7 @@ public class CameraFragment extends Fragment {
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
+        mReconVM = ViewModelProviders.of(getActivity()).get(ReconVM.class);
         mTextureView = (AutoFitTextureView) view.findViewById(R.id.textureView);
         assert mTextureView != null;
         captureBtn = (Button) view.findViewById(R.id.captureButton);

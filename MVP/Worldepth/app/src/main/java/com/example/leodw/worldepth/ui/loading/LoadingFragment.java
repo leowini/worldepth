@@ -1,5 +1,6 @@
 package com.example.leodw.worldepth.ui.loading;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.graphics.drawable.AnimationDrawable;
 import android.media.Image;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 import android.widget.Button;
 
 import com.example.leodw.worldepth.R;
+import com.example.leodw.worldepth.slam.ReconVM;
 import com.example.leodw.worldepth.ui.MainActivity;
 
 import androidx.navigation.Navigation;
@@ -23,6 +25,8 @@ import androidx.navigation.Navigation;
 public class LoadingFragment extends Fragment {
 
     private static final String TAG = "LoadingFragment";
+
+    private ReconVM mReconVM;
 
     private LoadingViewModel mLoadingViewModel;
     private AnimationDrawable mLoadingAnimation;
@@ -35,6 +39,7 @@ public class LoadingFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        mReconVM = ViewModelProviders.of(getActivity()).get(ReconVM.class);
         startLoadingAnimation();
         Button loadingNextButton = view.findViewById(R.id.loadingNextButton);
         Button loadingBackButton = view.findViewById(R.id.loadingBackBtn);
@@ -49,5 +54,9 @@ public class LoadingFragment extends Fragment {
         loadingImage.setImageResource(R.drawable.loading_animation);
         mLoadingAnimation = (AnimationDrawable) loadingImage.getDrawable();
         mLoadingAnimation.start();
+    }
+
+    private void Reconstruct() {
+
     }
 }

@@ -57,8 +57,7 @@ public class Slam {
             } while (!bmp.equals(mPoisonPillBitmap));
         }
         catch (Exception e) {
-            System.out.println
-                    (Thread.currentThread().getName() + " " + e.getMessage());
+            System.out.println(Thread.currentThread().getName() + " " + e.getMessage());
         }
         mCompleteListenerHandler.post(() -> mCompleteListener.onSlamComplete());
     }

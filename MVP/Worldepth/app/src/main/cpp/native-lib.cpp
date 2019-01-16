@@ -19,3 +19,9 @@ Java_com_example_leodw_worldepth_slam_Slam_passImageToSlam(JNIEnv *env, jobject 
     //SLAM.TrackMonocular(mimg, tframe);
     env->ReleaseByteArrayElements(img, _img, 0);
 }
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_example_leodw_worldepth_slam_PoissonWrapper_passPointCloudToPoisson(JNIEnv *env, jobject instance, jint x) {
+
+}
