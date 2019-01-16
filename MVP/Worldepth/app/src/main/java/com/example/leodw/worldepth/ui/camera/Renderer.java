@@ -64,7 +64,7 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
 
         Bitmap bmp = getBitmap();
         try {
-            mQueue.put(new TimeFramePair<Bitmap, Long>(bmp, frameTimeStamp));
+            mFrameRenderedListenerHandler.post(() -> mFrameRenderedListener.onFrameRendered(new TimeFramePair<Bitmap, Long>(bmp, frameTimeStamp)));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -547,7 +547,7 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
     }
 
     public interface OnFrameRenderedListener {
-        void onFrameRendered();
+        void onFrameRendered(TimeFramePair<Bitmap, Long> timeFramePair);
     }
 
     public void setOnFrameRenderedListener(OnFrameRenderedListener listener, Handler handler) {
