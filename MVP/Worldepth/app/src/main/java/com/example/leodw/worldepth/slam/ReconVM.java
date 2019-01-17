@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModel;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
+import android.widget.Toast;
 
 import com.example.leodw.worldepth.ui.camera.TimeFramePair;
 
@@ -15,7 +16,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class ReconVM extends ViewModel {
     private final MutableLiveData<ReconProgress> mReconProgress = new MutableLiveData<>();
     private final MutableLiveData<String> mSlamProgress = new MutableLiveData<>();
-
+    public static final String TAG = "ReconVM";
     private int mRenderedFrames;
     private int mProcessedFrames;
 
