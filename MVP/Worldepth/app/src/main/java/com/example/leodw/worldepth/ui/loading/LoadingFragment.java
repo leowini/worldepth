@@ -43,7 +43,6 @@ public class LoadingFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         mReconVM = ViewModelProviders.of(getActivity()).get(ReconVM.class);
-        mReconVM.getSlamProgress().observe(this, item -> updateUI());
         mSlamProgress = view.findViewById(R.id.slamProgress);
         mReconVM.getSlamProgress().observe(this, progress -> mSlamProgress.setText(progress + " %"));
         mLoadingImage = view.findViewById(R.id.loadingAnimation);
