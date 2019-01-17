@@ -3,6 +3,7 @@ package com.example.leodw.worldepth.ui.camera;
 import android.Manifest;
 import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -307,9 +308,9 @@ public class CameraFragment extends Fragment {
         BlockingQueue<TimeFramePair<Bitmap, Long>> q = new LinkedBlockingQueue<TimeFramePair<Bitmap, Long>>();
         //Poison pill to signal end of queue.
         Bitmap poisonPill = Bitmap.createBitmap(1,1,Bitmap.Config.ARGB_8888);
-        mSlam = new Slam(q, poisonPill);
+        mSlam = new Slam(poisonPill);
         mSlam.setOnSlamCompleteListener(() -> mSlam.stopSlamThread(), new Handler(Looper.getMainLooper()));
-        mRenderer = new Renderer(q, poisonPill);
+        mRenderer = new Renderer(poisonPill);
         mRenderer.setOnSurfaceTextureReadyListener(texture -> {
             mSlamOutputSurface = texture;
             startCameraRecording();
@@ -319,7 +320,7 @@ public class CameraFragment extends Fragment {
     }
 
     private void sendFrameToReconVM(TimeFramePair<Bitmap, Long> timeFramePair) {
-
+        mReconVM.select(timeFramePair);
     }
 
     private void startCameraRecording() {

@@ -46,10 +46,7 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
 
     private final Bitmap mPoisonPillBitmap;
 
-    private final BlockingQueue<TimeFramePair<Bitmap, Long>> mQueue;
-
-    public Renderer(BlockingQueue<TimeFramePair<Bitmap, Long>> q, Bitmap mPoisonPillBitmap) {
-        this.mQueue = q;
+    public Renderer(Bitmap mPoisonPillBitmap) {
         this.mPoisonPillBitmap = mPoisonPillBitmap;
     }
 
@@ -142,14 +139,7 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
 
     public void stopRenderThread() {
         if (mRenderThread == null) return;
-        //Put the end of data signal on mQueue on the SlamSenderThread.
-        mRenderThread.handler.post(() -> {
-            try {
-                mQueue.put(new TimeFramePair<Bitmap, Long>(mPoisonPillBitmap, (long) 0));
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        });
+        mRenderThread.handler.post(() -> mFrameRenderedListenerHandler.post(() -> mFrameRenderedListener.onFrameRendered(new TimeFramePair<Bitmap, Long>(mPoisonPillBitmap, (long) 0))));
         mRenderThread.handler.post(() -> {
             Looper looper = Looper.myLooper();
             if (looper != null) {

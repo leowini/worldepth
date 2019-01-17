@@ -7,11 +7,12 @@ import android.os.HandlerThread;
 import com.example.leodw.worldepth.ui.camera.TimeFramePair;
 
 import java.io.ByteArrayOutputStream;
+import java.sql.Time;
 import java.util.concurrent.BlockingQueue;
 
 public class Slam {
     public static final String TAG = "Slam";
-
+    private Queue<TimeFramePair<Bitmap, Long>> mQueue = new LinkedList<>();
     private HandlerThread mSlamSenderThread;
     public Handler mSlamSenderHandler;
 
@@ -19,12 +20,10 @@ public class Slam {
     private Handler mCompleteListenerHandler;
 
     private final Bitmap mPoisonPillBitmap;
-    private final BlockingQueue<TimeFramePair<Bitmap, Long>> mQueue;
 
     public native void passImageToSlam(int width, int height, byte[] img, long timeStamp);
 
-    public Slam(BlockingQueue<TimeFramePair<Bitmap, Long>> q, Bitmap mPoisonPillBitmap) {
-        this.mQueue = q;
+    public Slam(Bitmap mPoisonPillBitmap) {
         this.mPoisonPillBitmap = mPoisonPillBitmap;
         startSlamThread();
         mSlamSenderHandler.post(this::doSlam);
@@ -34,11 +33,11 @@ public class Slam {
      * Converts the bitmap frame to a byte array and sends it to the C++ code.
      * @param frame
      */
-    public void sendFrameToSlam(Bitmap frame, Long timeStamp) {
+    private void sendFrameToSlam(Bitmap frame, Long timeStamp) {
         byte[] byteArray = bitmapToByteArray(frame);
         passImageToSlam(frame.getWidth(), frame.getHeight(), byteArray, timeStamp);
     }
-
+    public void sendFrameToSlamWrapper(TimeFramePair<Bitmap, Long> timeFramePair) {}
     /**
      * This will run in the background on the SlamSenderThread.
      */

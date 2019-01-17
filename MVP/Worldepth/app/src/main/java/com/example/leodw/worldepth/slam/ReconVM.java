@@ -6,16 +6,18 @@ import android.arch.lifecycle.ViewModel;
 import android.content.ClipData;
 import android.graphics.Bitmap;
 
+import com.example.leodw.worldepth.ui.camera.TimeFramePair;
+
 public class ReconVM extends ViewModel {
-    private final MutableLiveData<ClipData.Item> selected = new MutableLiveData<ClipData.Item>();
+    private final MutableLiveData<TimeFramePair<Bitmap, Long>> selected = new MutableLiveData<>();
 
     private Bitmap mPoisonPillBitmap;
     private Slam mSlam;
-    public void select(ClipData.Item item) {
-        selected.setValue(item);
+    public void select(TimeFramePair<Bitmap, Long> timeFramePair) {
+        selected.setValue(timeFramePair);
     }
 
-    public LiveData<ClipData.Item> getSelected() {
+    public LiveData<TimeFramePair<Bitmap, Long>> getSelected() {
         return selected;
     }
 
@@ -23,11 +25,10 @@ public class ReconVM extends ViewModel {
         //doSlam();
         //doPoisson();
         //doTextureMapping();
-    }
+    } public void queueFrame(TimeFramePair<Bitmap, Long> timeFramePair) {mSlam.sendFrameToSlamWrapper(selected.getValue());}
 
     public ReconVM(Bitmap poisonPillBitmap) {
         super();
         mPoisonPillBitmap = poisonPillBitmap;
-        mSlam = new Slam(q, mPoisonPillBitmap);
-    }
+    mSlam = new Slam(mPoisonPillBitmap);}
 }
