@@ -30,18 +30,6 @@
         app:layout_constraintVertical_bias="0.008"
         android:contentDescription="@string/navbutton" />
 
-    <ImageView
-        android:id="@+id/profilePicture"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:src="@drawable/cake4"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.50"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.03" />
-
     <TextView
         android:id="@+id/profileName"
         android:layout_width="wrap_content"
@@ -50,10 +38,10 @@
         android:textSize="32sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.476"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.25" />
+        app:layout_constraintVertical_bias="0.204" />
 
     <TextView
         android:id="@+id/profilefollowers"
