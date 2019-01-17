@@ -46,8 +46,8 @@ public class LoadingFragment extends Fragment {
         mReconVM.getReconstructionProgress().observe(this, item -> updateUI());
         mSlamProgress = view.findViewById(R.id.slamProgress);
         mReconVM.getSlamProgress().observe(this, progress -> mSlamProgress.setText(progress + " %"));
-        startLoadingAnimation();
         mLoadingImage = view.findViewById(R.id.loadingAnimation);
+        startLoadingAnimation();
         Button loadingNextButton = view.findViewById(R.id.loadingNextButton);
         Button loadingBackButton = view.findViewById(R.id.loadingBackBtn);
         loadingNextButton.setOnClickListener((view1) -> {
