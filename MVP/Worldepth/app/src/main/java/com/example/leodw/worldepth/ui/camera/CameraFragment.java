@@ -262,7 +262,16 @@ public class CameraFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        //check real-time permissions
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{
+                    Manifest.permission.CAMERA,
+            }, REQUEST_CAMERA_PERMISSION);
+            Log.i(TAG, "permission not granted, asking");
+
+        }
         return inflater.inflate(R.layout.camera_fragment, container, false);
+
     }
 
     @Override
@@ -421,21 +430,22 @@ public class CameraFragment extends Fragment {
             }
 
             mPreviewSize = chooseOptimalSize(map.getOutputSizes(SurfaceTexture.class), rotatedPreviewWidth, rotatedPreviewHeight, maxPreviewWidth, maxPreviewHeight, largest);
-            //check real-time permissions
-            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(getActivity(), new String[]{
-                        Manifest.permission.CAMERA,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE
-                }, REQUEST_CAMERA_PERMISSION);
-                return;
-            }
+
+
             int orientation = getResources().getConfiguration().orientation;
             if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 mTextureView.setAspectRatio(mPreviewSize.getWidth(), mPreviewSize.getHeight());
             } else {
                 mTextureView.setAspectRatio(mPreviewSize.getHeight(), mPreviewSize.getWidth());
             }
+
             configureTransform(width, height);
+            //check real-time permissions, this should be false on the first time the camera is ever opened
+            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                Log.i(TAG, "request permissions failed");
+                mCameraOpenCloseLock.release();
+                return;
+            }
             manager.openCamera(cameraId, stateCallback, null);
         } catch (CameraAccessException e) {
             e.printStackTrace();
@@ -462,8 +472,9 @@ public class CameraFragment extends Fragment {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_CAMERA_PERMISSION) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
                 Toast.makeText(getActivity(), "Can't use camera without permission", Toast.LENGTH_SHORT).show();
                 getActivity().finish();
             }
@@ -548,5 +559,7 @@ public class CameraFragment extends Fragment {
                     (long) rhs.getWidth() * rhs.getHeight());
         }
     }
+
+
 
 }
