@@ -3,7 +3,6 @@ package com.example.leodw.worldepth.slam;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-import android.content.ClipData;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
@@ -14,15 +13,17 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class ReconVM extends ViewModel {
-    private final MutableLiveData<TimeFramePair<Bitmap, Long>> mFrame = new MutableLiveData<>();
-    private final MutableLiveData<String> mProgress = new MutableLiveData<>();
+    private final MutableLiveData<ReconProgress> mProgress = new MutableLiveData<>();
 
     private final BlockingQueue<TimeFramePair<Bitmap, Long>> mQueue;
     private Bitmap mPoisonPillBitmap;
     private Slam mSlam;
 
+    public enum ReconProgress {
+        SLAM, POISSON, TM
+    }
+
     public void sendFrameToReconVM(TimeFramePair<Bitmap, Long> timeFramePair) {
-        mFrame.setValue(timeFramePair);
         try {
             mQueue.put(timeFramePair);
         } catch (InterruptedException e) {
@@ -30,11 +31,7 @@ public class ReconVM extends ViewModel {
         }
     }
 
-    public LiveData<TimeFramePair<Bitmap, Long>> getSelected() {
-        return mFrame;
-    }
-
-    public LiveData<String> getReconstructionProgress() {
+    public LiveData<ReconProgress> getReconstructionProgress() {
         return mProgress;
     }
 
