@@ -32,6 +32,7 @@ public class LoadingFragment extends Fragment {
     private LoadingViewModel mLoadingViewModel;
     private AnimationDrawable mLoadingAnimation;
     private TextView mSlamProgress;
+    private ImageView mLoadingImage;
 
     @Nullable
     @Override
@@ -46,6 +47,7 @@ public class LoadingFragment extends Fragment {
         mSlamProgress = view.findViewById(R.id.slamProgress);
         mReconVM.getSlamProgress().observe(this, progress -> mSlamProgress.setText(progress + " %"));
         startLoadingAnimation();
+        mLoadingImage = view.findViewById(R.id.loadingAnimation);
         Button loadingNextButton = view.findViewById(R.id.loadingNextButton);
         Button loadingBackButton = view.findViewById(R.id.loadingBackBtn);
         loadingNextButton.setOnClickListener((view1) -> {
@@ -55,9 +57,8 @@ public class LoadingFragment extends Fragment {
     }
 
     private void startLoadingAnimation() {
-        ImageView loadingImage = getView().findViewById(R.id.loadingAnimation);
-        loadingImage.setImageResource(R.drawable.loading_animation);
-        mLoadingAnimation = (AnimationDrawable) loadingImage.getDrawable();
+        mLoadingImage.setImageResource(R.drawable.loading_animation);
+        mLoadingAnimation = (AnimationDrawable) mLoadingImage.getDrawable();
         mLoadingAnimation.start();
     }
 
