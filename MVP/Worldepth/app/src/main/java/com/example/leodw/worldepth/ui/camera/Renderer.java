@@ -37,16 +37,16 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
     private static final File FILES_DIR = Environment.getExternalStorageDirectory();
     private ByteBuffer mPixelBuf; // used by saveFrame()
 
+    private OnFrameRenderedListener mFrameRenderedListener;
+    private Handler mFrameRenderedListenerHandler;
+
     private EGLDisplay mEGLDisplay;
     private EGLSurface mEGLSurface;
     private EGLContext mEGLContext;
 
     private final Bitmap mPoisonPillBitmap;
 
-    private final BlockingQueue<TimeFramePair<Bitmap, Long>> mQueue;
-
-    public Renderer(BlockingQueue<TimeFramePair<Bitmap, Long>> q, Bitmap mPoisonPillBitmap) {
-        this.mQueue = q;
+    public Renderer(Bitmap mPoisonPillBitmap) {
         this.mPoisonPillBitmap = mPoisonPillBitmap;
     }
 
@@ -61,7 +61,7 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
 
         Bitmap bmp = getBitmap();
         try {
-            mQueue.put(new TimeFramePair<Bitmap, Long>(bmp, frameTimeStamp));
+            mFrameRenderedListenerHandler.post(() -> mFrameRenderedListener.onFrameRendered(new TimeFramePair<Bitmap, Long>(bmp, frameTimeStamp)));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -139,14 +139,7 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
 
     public void stopRenderThread() {
         if (mRenderThread == null) return;
-        //Put the end of data signal on mQueue on the SlamSenderThread.
-        mRenderThread.handler.post(() -> {
-            try {
-                mQueue.put(new TimeFramePair<Bitmap, Long>(mPoisonPillBitmap, (long) 0));
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        });
+        mRenderThread.handler.post(() -> mFrameRenderedListenerHandler.post(() -> mFrameRenderedListener.onFrameRendered(new TimeFramePair<Bitmap, Long>(mPoisonPillBitmap, (long) 0))));
         mRenderThread.handler.post(() -> {
             Looper looper = Looper.myLooper();
             if (looper != null) {
@@ -541,6 +534,15 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
         if ((error = EGL14.eglGetError()) != EGL14.EGL_SUCCESS) {
             throw new RuntimeException(msg + ": EGL error: 0x" + Integer.toHexString(error));
         }
+    }
+
+    public interface OnFrameRenderedListener {
+        void onFrameRendered(TimeFramePair<Bitmap, Long> timeFramePair);
+    }
+
+    public void setOnFrameRenderedListener(OnFrameRenderedListener listener, Handler handler) {
+        this.mFrameRenderedListener = listener;
+        this.mFrameRenderedListenerHandler = handler;
     }
 
 }

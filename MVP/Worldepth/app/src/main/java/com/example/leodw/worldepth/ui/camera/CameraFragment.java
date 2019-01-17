@@ -2,6 +2,8 @@ package com.example.leodw.worldepth.ui.camera;
 
 import android.Manifest;
 import android.app.Activity;
+import android.arch.lifecycle.ViewModelProviders;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -41,6 +43,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.leodw.worldepth.R;
+import com.example.leodw.worldepth.slam.ReconVM;
 import com.example.leodw.worldepth.slam.Slam;
 
 import java.util.ArrayList;
@@ -57,6 +60,8 @@ import androidx.navigation.Navigation;
 
 public class CameraFragment extends Fragment {
     private static final String TAG = "CameraFragment";
+
+    private ReconVM mReconVM;
 
     private Renderer mRenderer;
     private Slam mSlam;
@@ -271,7 +276,7 @@ public class CameraFragment extends Fragment {
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
-
+        mReconVM = ViewModelProviders.of(getActivity()).get(ReconVM.class);
         mTextureView = (AutoFitTextureView) view.findViewById(R.id.textureView);
         assert mTextureView != null;
         captureBtn = (Button) view.findViewById(R.id.captureButton);
@@ -309,14 +314,12 @@ public class CameraFragment extends Fragment {
         //Queue for images and timestamps to send to Slam.
         BlockingQueue<TimeFramePair<Bitmap, Long>> q = new LinkedBlockingQueue<TimeFramePair<Bitmap, Long>>();
         //Poison pill to signal end of queue.
-        Bitmap poisonPill = Bitmap.createBitmap(1,1,Bitmap.Config.ARGB_8888);
-        mSlam = new Slam(q, poisonPill);
-        mSlam.setOnSlamCompleteListener(() -> mSlam.stopSlamThread(), new Handler(Looper.getMainLooper()));
-        mRenderer = new Renderer(q, poisonPill);
+        mRenderer = new Renderer(mReconVM.getPoisonPill());
         mRenderer.setOnSurfaceTextureReadyListener(texture -> {
             mSlamOutputSurface = texture;
             startCameraRecording();
         }, new Handler(Looper.getMainLooper()));
+        mRenderer.setOnFrameRenderedListener((timeFramePair) -> mReconVM.sendFrameToReconVM(timeFramePair), new Handler(Looper.getMainLooper()));
         mRenderer.start(mTextureView.getWidth(), mTextureView.getHeight());
     }
 

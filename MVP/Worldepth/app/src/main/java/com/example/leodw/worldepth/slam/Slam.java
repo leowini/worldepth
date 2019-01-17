@@ -7,11 +7,14 @@ import android.os.HandlerThread;
 import com.example.leodw.worldepth.ui.camera.TimeFramePair;
 
 import java.io.ByteArrayOutputStream;
+import java.sql.Time;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.concurrent.BlockingQueue;
 
 public class Slam {
     public static final String TAG = "Slam";
-
+    private final BlockingQueue<TimeFramePair<Bitmap, Long>> mQueue;
     private HandlerThread mSlamSenderThread;
     public Handler mSlamSenderHandler;
 
@@ -19,7 +22,9 @@ public class Slam {
     private Handler mCompleteListenerHandler;
 
     private final Bitmap mPoisonPillBitmap;
-    private final BlockingQueue<TimeFramePair<Bitmap, Long>> mQueue;
+
+    private FrameCountListener mFrameCountListener;
+    private Handler mFrameCountListenerHandler;
 
     public native void passImageToSlam(int width, int height, byte[] img, long timeStamp);
 
@@ -34,7 +39,7 @@ public class Slam {
      * Converts the bitmap frame to a byte array and sends it to the C++ code.
      * @param frame
      */
-    public void sendFrameToSlam(Bitmap frame, Long timeStamp) {
+    private void sendFrameToSlam(Bitmap frame, Long timeStamp) {
         byte[] byteArray = bitmapToByteArray(frame);
         passImageToSlam(frame.getWidth(), frame.getHeight(), byteArray, timeStamp);
     }
@@ -55,8 +60,7 @@ public class Slam {
             } while (!bmp.equals(mPoisonPillBitmap));
         }
         catch (Exception e) {
-            System.out.println
-                    (Thread.currentThread().getName() + " " + e.getMessage());
+            System.out.println(Thread.currentThread().getName() + " " + e.getMessage());
         }
         mCompleteListenerHandler.post(() -> mCompleteListener.onSlamComplete());
     }
@@ -91,6 +95,15 @@ public class Slam {
 
     public interface SlamCompleteListener {
         void onSlamComplete();
+    }
+
+    public interface FrameCountListener {
+        void onNextFrame();
+    }
+
+    public void setFrameCountListener(FrameCountListener listener, Handler handler) {
+        mFrameCountListener = listener;
+        mFrameCountListenerHandler = handler;
     }
 
 }

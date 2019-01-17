@@ -1,5 +1,6 @@
 package com.example.leodw.worldepth.ui.loading;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.graphics.drawable.AnimationDrawable;
 import android.media.Image;
 import android.os.Bundle;
@@ -11,10 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Button;
 
 import com.example.leodw.worldepth.R;
+import com.example.leodw.worldepth.slam.ReconVM;
 import com.example.leodw.worldepth.ui.MainActivity;
 
 import androidx.navigation.Navigation;
@@ -24,8 +27,11 @@ public class LoadingFragment extends Fragment {
 
     private static final String TAG = "LoadingFragment";
 
+    private ReconVM mReconVM;
+
     private LoadingViewModel mLoadingViewModel;
     private AnimationDrawable mLoadingAnimation;
+    private TextView mSlamProgress;
     private ImageView mLoadingImage;
 
     @Nullable
@@ -36,6 +42,10 @@ public class LoadingFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        mReconVM = ViewModelProviders.of(getActivity()).get(ReconVM.class);
+        mReconVM.getReconstructionProgress().observe(this, item -> updateUI());
+        mSlamProgress = view.findViewById(R.id.slamProgress);
+        mReconVM.getSlamProgress().observe(this, progress -> mSlamProgress.setText(progress + " %"));
         startLoadingAnimation();
         mLoadingImage = view.findViewById(R.id.loadingAnimation);
         Button loadingNextButton = view.findViewById(R.id.loadingNextButton);
@@ -50,5 +60,9 @@ public class LoadingFragment extends Fragment {
         mLoadingImage.setImageResource(R.drawable.loading_animation);
         mLoadingAnimation = (AnimationDrawable) mLoadingImage.getDrawable();
         mLoadingAnimation.start();
+    }
+
+    private void updateUI() {
+
     }
 }
