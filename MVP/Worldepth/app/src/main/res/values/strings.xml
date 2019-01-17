@@ -59,4 +59,5 @@
     <string name="login">Login</string>
     <string name="animation">Animation</string>
     <string name="navbutton">NavButton</string>
+    <string name="_0">0 %</string>
 </resources>

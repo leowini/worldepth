@@ -14,6 +14,10 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class ReconVM extends ViewModel {
     private final MutableLiveData<ReconProgress> mProgress = new MutableLiveData<>();
+    private final MutableLiveData<String> mSlamProgress = new MutableLiveData<>();
+
+    private int mRenderedFrames;
+    private int mProcessedFrames;
 
     private static final Bitmap mPoisonPillBitmap = Bitmap.createBitmap(1,1,Bitmap.Config.ARGB_8888);
 
@@ -24,7 +28,23 @@ public class ReconVM extends ViewModel {
         SLAM, POISSON, TM
     }
 
+    private void frameProcessed() {
+        mProcessedFrames++;
+        updateSlamProgress();
+    }
+
+    private void frameRendered() {
+        mRenderedFrames ++;
+        updateSlamProgress();
+    }
+
+    private void updateSlamProgress() {
+        int slamProgressPercent = (mProcessedFrames/mRenderedFrames)*100;
+        mSlamProgress.setValue(Integer.toString(slamProgressPercent));
+    }
+
     public void sendFrameToReconVM(TimeFramePair<Bitmap, Long> timeFramePair) {
+        frameRendered();
         try {
             mQueue.put(timeFramePair);
         } catch (InterruptedException e) {
@@ -44,13 +64,20 @@ public class ReconVM extends ViewModel {
 
     public ReconVM() {
         super();
+        mRenderedFrames = 0;
+        mProcessedFrames = 0;
         mQueue = new LinkedBlockingQueue<>();
         mSlam = new Slam(mQueue, mPoisonPillBitmap);
         mSlam.setOnSlamCompleteListener(() -> mSlam.stopSlamThread(), new Handler(Looper.getMainLooper()));
+        mSlam.setFrameCountListener(this::frameProcessed, new Handler(Looper.getMainLooper()));
     }
 
     public Bitmap getPoisonPill() {
         return mPoisonPillBitmap;
+    }
+
+    public LiveData<String> getSlamProgress() {
+        return mSlamProgress;
     }
 
 }
