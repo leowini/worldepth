@@ -15,8 +15,9 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class ReconVM extends ViewModel {
     private final MutableLiveData<ReconProgress> mProgress = new MutableLiveData<>();
 
+    private static final Bitmap mPoisonPillBitmap = Bitmap.createBitmap(1,1,Bitmap.Config.ARGB_8888);
+
     private final BlockingQueue<TimeFramePair<Bitmap, Long>> mQueue;
-    private Bitmap mPoisonPillBitmap;
     private Slam mSlam;
 
     public enum ReconProgress {
@@ -41,12 +42,15 @@ public class ReconVM extends ViewModel {
         //doTextureMapping();
     }
 
-    public ReconVM(Bitmap poisonPillBitmap) {
+    public ReconVM() {
         super();
         mQueue = new LinkedBlockingQueue<>();
-        mPoisonPillBitmap = poisonPillBitmap;
         mSlam = new Slam(mQueue, mPoisonPillBitmap);
         mSlam.setOnSlamCompleteListener(() -> mSlam.stopSlamThread(), new Handler(Looper.getMainLooper()));
+    }
+
+    public Bitmap getPoisonPill() {
+        return mPoisonPillBitmap;
     }
 
 }
