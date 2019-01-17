@@ -49,14 +49,15 @@ public class Slam {
      */
     private void doSlam() {
         try {
-            TimeFramePair<Bitmap, Long> timeFramePair;
-            Bitmap bmp;
-            Long time;
+            TimeFramePair<Bitmap, Long> timeFramePair = mQueue.take();
+            Bitmap bmp = timeFramePair.getFrame();
+            Long time = timeFramePair.getTime();
             do {
+                mFrameCountListenerHandler.post(() -> mFrameCountListener.onNextFrame());
+                sendFrameToSlam(bmp, time);
                 timeFramePair = mQueue.take();
                 bmp = timeFramePair.getFrame();
                 time = timeFramePair.getTime();
-                sendFrameToSlam(bmp, time);
             } while (!bmp.equals(mPoisonPillBitmap));
         }
         catch (Exception e) {
