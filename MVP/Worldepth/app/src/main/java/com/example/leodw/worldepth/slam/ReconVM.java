@@ -39,7 +39,7 @@ public class ReconVM extends ViewModel {
     }
 
     private void updateSlamProgress() {
-        int slamProgressPercent = (mProcessedFrames/mRenderedFrames)*100;
+        int slamProgressPercent = (int) (((float) mProcessedFrames / (float) mRenderedFrames) * 100);
         mSlamProgress.setValue(Integer.toString(slamProgressPercent));
     }
 
