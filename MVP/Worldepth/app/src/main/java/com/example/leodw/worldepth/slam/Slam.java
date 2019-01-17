@@ -44,9 +44,9 @@ public class Slam {
      */
     private void doSlam() {
         try {
-            TimeFramePair<Bitmap, Long> timeFramePair; = mQueue.take();
-            Bitmap bmp; = timeFramePair.getFrame();
-            Long time; = timeFramePair.getTime();
+            TimeFramePair<Bitmap, Long> timeFramePair;
+            Bitmap bmp;
+            Long time;
             do {
                 timeFramePair = mQueue.take();
                 bmp = timeFramePair.getFrame();
