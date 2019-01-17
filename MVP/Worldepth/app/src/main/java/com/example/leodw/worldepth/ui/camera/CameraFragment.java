@@ -308,19 +308,13 @@ public class CameraFragment extends Fragment {
         BlockingQueue<TimeFramePair<Bitmap, Long>> q = new LinkedBlockingQueue<TimeFramePair<Bitmap, Long>>();
         //Poison pill to signal end of queue.
         Bitmap poisonPill = Bitmap.createBitmap(1,1,Bitmap.Config.ARGB_8888);
-        mSlam = new Slam(poisonPill);
-        mSlam.setOnSlamCompleteListener(() -> mSlam.stopSlamThread(), new Handler(Looper.getMainLooper()));
         mRenderer = new Renderer(poisonPill);
         mRenderer.setOnSurfaceTextureReadyListener(texture -> {
             mSlamOutputSurface = texture;
             startCameraRecording();
         }, new Handler(Looper.getMainLooper()));
-        mRenderer.setOnFrameRenderedListener((timeFramePair) -> sendFrameToReconVM(timeFramePair), new Handler(Looper.getMainLooper()));
+        mRenderer.setOnFrameRenderedListener((timeFramePair) -> mReconVM.sendFrameToReconVM(timeFramePair), new Handler(Looper.getMainLooper()));
         mRenderer.start(mTextureView.getWidth(), mTextureView.getHeight());
-    }
-
-    private void sendFrameToReconVM(TimeFramePair<Bitmap, Long> timeFramePair) {
-        mReconVM.select(timeFramePair);
     }
 
     private void startCameraRecording() {

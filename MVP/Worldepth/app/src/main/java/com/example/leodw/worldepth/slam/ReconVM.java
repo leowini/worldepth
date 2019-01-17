@@ -5,30 +5,51 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.content.ClipData;
 import android.graphics.Bitmap;
+import android.os.Handler;
+import android.os.Looper;
 
 import com.example.leodw.worldepth.ui.camera.TimeFramePair;
 
-public class ReconVM extends ViewModel {
-    private final MutableLiveData<TimeFramePair<Bitmap, Long>> selected = new MutableLiveData<>();
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
+public class ReconVM extends ViewModel {
+    private final MutableLiveData<TimeFramePair<Bitmap, Long>> mFrame = new MutableLiveData<>();
+    private final MutableLiveData<String> mProgress = new MutableLiveData<>();
+
+    private final BlockingQueue<TimeFramePair<Bitmap, Long>> mQueue;
     private Bitmap mPoisonPillBitmap;
     private Slam mSlam;
-    public void select(TimeFramePair<Bitmap, Long> timeFramePair) {
-        selected.setValue(timeFramePair);
+
+    public void sendFrameToReconVM(TimeFramePair<Bitmap, Long> timeFramePair) {
+        mFrame.setValue(timeFramePair);
+        try {
+            mQueue.put(timeFramePair);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public LiveData<TimeFramePair<Bitmap, Long>> getSelected() {
-        return selected;
+        return mFrame;
+    }
+
+    public LiveData<String> getReconstructionProgress() {
+        return mProgress;
     }
 
     private void Reconstruct() {
         //doSlam();
         //doPoisson();
         //doTextureMapping();
-    } public void queueFrame(TimeFramePair<Bitmap, Long> timeFramePair) {mSlam.sendFrameToSlamWrapper(selected.getValue());}
+    }
 
     public ReconVM(Bitmap poisonPillBitmap) {
         super();
+        mQueue = new LinkedBlockingQueue<>();
         mPoisonPillBitmap = poisonPillBitmap;
-    mSlam = new Slam(mPoisonPillBitmap);}
+        mSlam = new Slam(mQueue, mPoisonPillBitmap);
+        mSlam.setOnSlamCompleteListener(() -> mSlam.stopSlamThread(), new Handler(Looper.getMainLooper()));
+    }
+
 }

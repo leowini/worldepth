@@ -8,11 +8,13 @@ import com.example.leodw.worldepth.ui.camera.TimeFramePair;
 
 import java.io.ByteArrayOutputStream;
 import java.sql.Time;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.concurrent.BlockingQueue;
 
 public class Slam {
     public static final String TAG = "Slam";
-    private Queue<TimeFramePair<Bitmap, Long>> mQueue = new LinkedList<>();
+    private final BlockingQueue<TimeFramePair<Bitmap, Long>> mQueue;
     private HandlerThread mSlamSenderThread;
     public Handler mSlamSenderHandler;
 
@@ -23,7 +25,8 @@ public class Slam {
 
     public native void passImageToSlam(int width, int height, byte[] img, long timeStamp);
 
-    public Slam(Bitmap mPoisonPillBitmap) {
+    public Slam(BlockingQueue<TimeFramePair<Bitmap, Long>> q, Bitmap mPoisonPillBitmap) {
+        this.mQueue = q;
         this.mPoisonPillBitmap = mPoisonPillBitmap;
         startSlamThread();
         mSlamSenderHandler.post(this::doSlam);
@@ -37,13 +40,12 @@ public class Slam {
         byte[] byteArray = bitmapToByteArray(frame);
         passImageToSlam(frame.getWidth(), frame.getHeight(), byteArray, timeStamp);
     }
-    public void sendFrameToSlamWrapper(TimeFramePair<Bitmap, Long> timeFramePair) {}
+
     /**
      * This will run in the background on the SlamSenderThread.
      */
     private void doSlam() {
         try {
-            int frameCount = 1;
             TimeFramePair<Bitmap, Long> timeFramePair = mQueue.take();
             Bitmap bmp = timeFramePair.getFrame();
             Long time = timeFramePair.getTime();
@@ -52,7 +54,6 @@ public class Slam {
                 timeFramePair = mQueue.take();
                 bmp = timeFramePair.getFrame();
                 time = timeFramePair.getTime();
-                frameCount++;
             } while (!bmp.equals(mPoisonPillBitmap));
         }
         catch (Exception e) {
