@@ -34,7 +34,7 @@ public class ReconVM extends ViewModel {
     }
 
     private void frameRendered() {
-        mRenderedFrames ++;
+        mRenderedFrames++;
         updateSlamProgress();
     }
 
