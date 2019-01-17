@@ -27,6 +27,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.util.Size;
 import android.util.SparseIntArray;
@@ -203,6 +204,12 @@ public class CameraFragment extends Fragment {
         if (null == cameraDevice || !mTextureView.isAvailable() || null == mPreviewSize) {
             return;
         }
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.CAMERA},
+                    REQUEST_CAMERA_PERMISSION);
+        }
         try {
             closePreviewSession();
             SurfaceTexture texture = mTextureView.getSurfaceTexture();
@@ -262,17 +269,19 @@ public class CameraFragment extends Fragment {
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
-        mRecordingState = false;
         mTextureView = (AutoFitTextureView) view.findViewById(R.id.textureView);
         assert mTextureView != null;
         captureBtn = (Button) view.findViewById(R.id.captureButton);
         mMapButton = (ImageView) view.findViewById(R.id.cameraToMapButton);
         captureBtn.setOnTouchListener((v, event) -> {
+            Log.d(TAG, event.getAction() + "");
             switch (event.getAction()) {
                 case (MotionEvent.ACTION_DOWN):
                     Log.d(TAG, "Capturing");
+                    Log.d(TAG, mRecordingState + "");
                     if (!mRecordingState) {
                         startRecording();
+                        Log.d(TAG, "Start Recording");
                         mRecordingState = true;
                         return true;
                     }
@@ -288,6 +297,7 @@ public class CameraFragment extends Fragment {
                     }
                     return false;
                 default:
+                    Log.d(TAG, event.getAction() + "");
                     return false;
             }
         });
