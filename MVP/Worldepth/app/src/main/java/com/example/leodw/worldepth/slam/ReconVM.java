@@ -13,6 +13,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class ReconVM extends ViewModel {
+    private final MutableLiveData<ReconProgress> mReconProgress = new MutableLiveData<>();
     private final MutableLiveData<String> mSlamProgress = new MutableLiveData<>();
 
     private int mRenderedFrames;
@@ -74,5 +75,7 @@ public class ReconVM extends ViewModel {
     public LiveData<String> getSlamProgress() {
         return mSlamProgress;
     }
+
+    public LiveData<ReconProgress> getReconProgress() { return mReconProgress; }
 
 }
