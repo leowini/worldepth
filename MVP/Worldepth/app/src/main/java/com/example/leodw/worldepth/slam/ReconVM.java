@@ -38,6 +38,7 @@ public class ReconVM extends ViewModel {
     public ReconVM() {
         mRenderedFrames = 0;
         mProcessedFrames = 0;
+        startReconstructionThread();
         mQueue = new LinkedBlockingQueue<>();
         mTextureMapWrapper = new TextureMapWrapper();
         mTextureMapWrapper.setOnCompleteListener(this::showModelPreview);
