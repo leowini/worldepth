@@ -31,7 +31,6 @@ public class ReconVM extends ViewModel {
 
     private TextureMapWrapper mTextureMapWrapper;
 
-
     public enum ReconProgress {
         SLAM, POISSON, TM
     }
