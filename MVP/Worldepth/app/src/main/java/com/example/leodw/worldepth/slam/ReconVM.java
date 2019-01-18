@@ -46,6 +46,7 @@ public class ReconVM extends ViewModel {
     public ReconVM() {
         mRenderedFrames = 0;
         mProcessedFrames = 0;
+        mCompleteListener = pointCloud -> stopReconstructionThread()
         mQueue = new LinkedBlockingQueue<>();
         startReconstructionThread();
         mReconstructionHandler.post(this::reconstruct);
@@ -99,7 +100,7 @@ public class ReconVM extends ViewModel {
 
     private void reconstruct() {
         mTextureMapWrapper = new TextureMapWrapper();
-        mTextureMapWrapper.setOnCompleteListener(this::showModelPreview);
+        mTextureMapWrapper.setOnCompleteListener(() -> mReconstructionHandler.post(() -> mCompleteListener.onReconstructionComplete()));
         mPoissonWrapper = new PoissonWrapper();
         mPoissonWrapper.setOnCompleteListener(mesh -> mTextureMapWrapper.runMapping(mesh));
         mSlam = new Slam(mQueue, mPoisonPillBitmap);
