@@ -2,6 +2,8 @@ package com.example.leodw.worldepth.ui.camera;
 
 import android.Manifest;
 import android.app.Activity;
+import android.arch.lifecycle.ViewModelProviders;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -42,6 +44,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.leodw.worldepth.R;
+import com.example.leodw.worldepth.slam.ReconVM;
 import com.example.leodw.worldepth.slam.Slam;
 
 import java.util.ArrayList;
@@ -58,6 +61,8 @@ import androidx.navigation.Navigation;
 
 public class CameraFragment extends Fragment {
     private static final String TAG = "CameraFragment";
+
+    private ReconVM mReconVM;
 
     private Renderer mRenderer;
     private Slam mSlam;
@@ -264,11 +269,21 @@ public class CameraFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        //check real-time permissions
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{
+                    Manifest.permission.CAMERA,
+            }, REQUEST_CAMERA_PERMISSION);
+            Log.i(TAG, "permission not granted, asking");
+
+        }
         return inflater.inflate(R.layout.camera_fragment, container, false);
+
     }
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
+        mReconVM = ViewModelProviders.of(getActivity()).get(ReconVM.class);
         mTextureView = (AutoFitTextureView) view.findViewById(R.id.textureView);
         assert mTextureView != null;
         captureBtn = (Button) view.findViewById(R.id.captureButton);
@@ -291,7 +306,7 @@ public class CameraFragment extends Fragment {
                     if (mRecordingState) {
                         stopRecording();
                         mRecordingState = false;
-                        Navigation.findNavController(getView()).navigate(R.id.action_cameraFragment_to_loadingFragment);
+                        Navigation.findNavController(getView()).navigate(R.id.action_cameraFragment_to_reconstructionFragment);
                         mRenderer.stopRenderThread();
                         return true;
                     }
@@ -312,14 +327,12 @@ public class CameraFragment extends Fragment {
         //Queue for images and timestamps to send to Slam.
         BlockingQueue<TimeFramePair<Bitmap, Long>> q = new LinkedBlockingQueue<TimeFramePair<Bitmap, Long>>();
         //Poison pill to signal end of queue.
-        Bitmap poisonPill = Bitmap.createBitmap(1,1,Bitmap.Config.ARGB_8888);
-        mSlam = new Slam(q, poisonPill);
-        mSlam.setOnSlamCompleteListener(() -> mSlam.stopSlamThread(), new Handler(Looper.getMainLooper()));
-        mRenderer = new Renderer(q, poisonPill);
+        mRenderer = new Renderer(mReconVM.getPoisonPill());
         mRenderer.setOnSurfaceTextureReadyListener(texture -> {
             mSlamOutputSurface = texture;
             startCameraRecording();
         }, new Handler(Looper.getMainLooper()));
+        mRenderer.setOnFrameRenderedListener((timeFramePair) -> mReconVM.sendFrameToReconVM(timeFramePair), new Handler(Looper.getMainLooper()));
         mRenderer.start(mTextureView.getWidth(), mTextureView.getHeight());
     }
 
@@ -430,21 +443,22 @@ public class CameraFragment extends Fragment {
             }
 
             mPreviewSize = chooseOptimalSize(map.getOutputSizes(SurfaceTexture.class), rotatedPreviewWidth, rotatedPreviewHeight, maxPreviewWidth, maxPreviewHeight, largest);
-            //check real-time permissions
-            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(getActivity(), new String[]{
-                        Manifest.permission.CAMERA,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE
-                }, REQUEST_CAMERA_PERMISSION);
-                return;
-            }
+
+
             int orientation = getResources().getConfiguration().orientation;
             if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 mTextureView.setAspectRatio(mPreviewSize.getWidth(), mPreviewSize.getHeight());
             } else {
                 mTextureView.setAspectRatio(mPreviewSize.getHeight(), mPreviewSize.getWidth());
             }
+
             configureTransform(width, height);
+            //check real-time permissions, this should be false on the first time the camera is ever opened
+            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                Log.i(TAG, "request permissions failed");
+                mCameraOpenCloseLock.release();
+                return;
+            }
             manager.openCamera(cameraId, stateCallback, null);
         } catch (CameraAccessException e) {
             e.printStackTrace();
@@ -471,8 +485,9 @@ public class CameraFragment extends Fragment {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_CAMERA_PERMISSION) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
                 Toast.makeText(getActivity(), "Can't use camera without permission", Toast.LENGTH_SHORT).show();
                 getActivity().finish();
             }
@@ -557,5 +572,7 @@ public class CameraFragment extends Fragment {
                     (long) rhs.getWidth() * rhs.getHeight());
         }
     }
+
+
 
 }

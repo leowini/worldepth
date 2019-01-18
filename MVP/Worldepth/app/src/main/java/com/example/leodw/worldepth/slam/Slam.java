@@ -12,7 +12,7 @@ import java.util.concurrent.BlockingQueue;
 
 public class Slam {
     public static final String TAG = "Slam";
-
+    private final BlockingQueue<TimeFramePair<Bitmap, Long>> mQueue;
     private HandlerThread mSlamSenderThread;
     public Handler mSlamSenderHandler;
 
@@ -20,7 +20,9 @@ public class Slam {
     private Handler mCompleteListenerHandler;
 
     private final Bitmap mPoisonPillBitmap;
-    private final BlockingQueue<TimeFramePair<Bitmap, Long>> mQueue;
+
+    private FrameCountListener mFrameCountListener;
+    private Handler mFrameCountListenerHandler;
 
     public native String passImageToSlam(int width, int height, byte[] img, long timeStamp);
     public native void initSystem(String vocFile, String settingsFile);
@@ -38,7 +40,7 @@ public class Slam {
      * @param frame
      * @param timeStamp
      */
-    public void sendFrameToSlam(Bitmap frame, Long timeStamp) {
+    private void sendFrameToSlam(Bitmap frame, Long timeStamp) {
         byte[] byteArray = bitmapToByteArray(frame);
         passImageToSlam(frame.getWidth(), frame.getHeight(), byteArray, timeStamp);
     }
@@ -48,21 +50,19 @@ public class Slam {
      */
     private void doSlam() {
         try {
-            int frameCount = 1;
             TimeFramePair<Bitmap, Long> timeFramePair = mQueue.take();
             Bitmap bmp = timeFramePair.getFrame();
             Long time = timeFramePair.getTime();
             do {
+                mFrameCountListenerHandler.post(() -> mFrameCountListener.onNextFrame());
                 sendFrameToSlam(bmp, time);
                 timeFramePair = mQueue.take();
                 bmp = timeFramePair.getFrame();
                 time = timeFramePair.getTime();
-                frameCount++;
             } while (!bmp.equals(mPoisonPillBitmap));
         }
         catch (Exception e) {
-            System.out.println
-                    (Thread.currentThread().getName() + " " + e.getMessage());
+            System.out.println(Thread.currentThread().getName() + " " + e.getMessage());
         }
         mCompleteListenerHandler.post(() -> mCompleteListener.onSlamComplete());
     }
@@ -97,6 +97,15 @@ public class Slam {
 
     public interface SlamCompleteListener {
         void onSlamComplete();
+    }
+
+    public interface FrameCountListener {
+        void onNextFrame();
+    }
+
+    public void setFrameCountListener(FrameCountListener listener, Handler handler) {
+        mFrameCountListener = listener;
+        mFrameCountListenerHandler = handler;
     }
 
 }

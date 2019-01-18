@@ -23,20 +23,17 @@
         android:label="password_fragment"
         tools:layout="@layout/password_fragment" >
         <action
-            android:id="@+id/action_passwordFragment_to_cameraFragment"
-            app:destination="@id/cameraFragment" />
-        <action
             android:id="@+id/action_passwordFragment_to_birthdayFragment"
             app:destination="@id/birthdayFragment" />
+        <action
+            android:id="@+id/action_passwordFragment_to_loadingFragment"
+            app:destination="@id/loadingFragment" />
     </fragment>
     <fragment
         android:id="@+id/cameraFragment"
         android:name="com.example.leodw.worldepth.ui.camera.CameraFragment"
         android:label="camera_fragment"
         tools:layout="@layout/camera_fragment" >
-        <action
-            android:id="@+id/action_cameraFragment_to_loadingFragment"
-            app:destination="@id/loadingFragment" />
         <action
             android:id="@+id/action_cameraFragment_to_settings"
             app:destination="@id/settings" />
@@ -51,6 +48,9 @@
         <action
             android:id="@+id/action_cameraFragment_to_mapFragment3"
             app:destination="@id/mapFragment" />
+        <action
+            android:id="@+id/action_cameraFragment_to_reconstructionFragment"
+            app:destination="@id/reconstructionFragment" />
     </fragment>
     <fragment
         android:id="@+id/nameFragment"
@@ -135,15 +135,15 @@
         <action
             android:id="@+id/action_viewerFragment_to_cameraFragment"
             app:destination="@id/cameraFragment" />
+        <action
+            android:id="@+id/action_viewerFragment_to_cameraFragment2"
+            app:destination="@id/cameraFragment" />
     </fragment>
     <fragment
         android:id="@+id/loadingFragment"
         android:name="com.example.leodw.worldepth.ui.loading.LoadingFragment"
         android:label="loading_fragment"
         tools:layout="@layout/loading_fragment" >
-        <action
-            android:id="@+id/action_loadingFragment_to_viewerFragment"
-            app:destination="@id/viewerFragment" />
         <action
             android:id="@+id/action_loadingFragment_to_cameraFragment"
             app:destination="@id/cameraFragment" />
@@ -185,5 +185,17 @@
         <action
             android:id="@+id/action_messageFragment_to_mapFragment"
             app:destination="@id/mapFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/reconstructionFragment"
+        android:name="com.example.leodw.worldepth.ui.Reconstruction.ReconstructionFragment"
+        android:label="reconstruction_fragment"
+        tools:layout="@layout/reconstruction_fragment" >
+        <action
+            android:id="@+id/action_reconstructionFragment_to_viewerFragment"
+            app:destination="@id/viewerFragment" />
+        <action
+            android:id="@+id/action_reconstructionFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
     </fragment>
 </navigation>

@@ -1,7 +1,7 @@
 package com.example.leodw.worldepth.ui.loading;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.graphics.drawable.AnimationDrawable;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,13 +9,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.TextView;
 import android.widget.Button;
 
 import com.example.leodw.worldepth.R;
-import com.example.leodw.worldepth.ui.MainActivity;
+import com.example.leodw.worldepth.slam.ReconVM;
 
 import androidx.navigation.Navigation;
 
@@ -24,8 +23,8 @@ public class LoadingFragment extends Fragment {
 
     private static final String TAG = "LoadingFragment";
 
-    private LoadingViewModel mLoadingViewModel;
     private AnimationDrawable mLoadingAnimation;
+    private ImageView mLoadingImage;
 
     @Nullable
     @Override
@@ -35,19 +34,18 @@ public class LoadingFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        mLoadingImage = view.findViewById(R.id.loadingAnimation);
         startLoadingAnimation();
         Button loadingNextButton = view.findViewById(R.id.loadingNextButton);
-        Button loadingBackButton = view.findViewById(R.id.loadingBackBtn);
         loadingNextButton.setOnClickListener((view1) -> {
-            Navigation.findNavController(view1).navigate(R.id.action_loadingFragment_to_viewerFragment);
+            Navigation.findNavController(view1).navigate(R.id.action_loadingFragment_to_cameraFragment);
         });
-        loadingBackButton.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_loadingFragment_to_cameraFragment));
     }
 
     private void startLoadingAnimation() {
-        ImageView loadingImage = getView().findViewById(R.id.loadingAnimation);
-        loadingImage.setImageResource(R.drawable.loading_animation);
-        mLoadingAnimation = (AnimationDrawable) loadingImage.getDrawable();
+        mLoadingImage.setImageResource(R.drawable.loading_animation);
+        mLoadingAnimation = (AnimationDrawable) mLoadingImage.getDrawable();
         mLoadingAnimation.start();
     }
+
 }
