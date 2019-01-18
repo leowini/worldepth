@@ -14,9 +14,11 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class ReconVM extends ViewModel {
 
+    private static final String TAG = "ReconVM";
+
     private final MutableLiveData<ReconProgress> mReconProgress = new MutableLiveData<>();
     private final MutableLiveData<String> mSlamProgress = new MutableLiveData<>();
-    private static final String TAG = "ReconVM";
+
     private int mRenderedFrames;
     private int mProcessedFrames;
 

@@ -10,7 +10,9 @@ import java.io.ByteArrayOutputStream;
 import java.util.concurrent.BlockingQueue;
 
 public class Slam {
-    public static final String TAG = "Slam";
+
+    private static final String TAG = "Slam";
+
     private final BlockingQueue<TimeFramePair<Bitmap, Long>> mQueue;
     private HandlerThread mSlamSenderThread;
     public Handler mSlamSenderHandler;
