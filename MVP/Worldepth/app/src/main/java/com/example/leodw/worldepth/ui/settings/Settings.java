@@ -17,6 +17,8 @@ import androidx.navigation.Navigation;
 
 public class Settings extends Fragment {
 
+    private static final String TAG = "Settings";
+
     private ImageView mBackToProfile;
     private Button mSignOutButton;
 

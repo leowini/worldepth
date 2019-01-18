@@ -3,6 +3,9 @@ package com.example.leodw.worldepth.data;
 import java.util.*;
 
 public class DataTransfer {
+
+    private static final String TAG = "DataTransfer";
+
     private List<DataPair> mDataPairs;
 
     public DataTransfer() {

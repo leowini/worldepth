@@ -30,6 +30,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.fragment.FragmentNavigator;
 
 public class StartScreenFragment extends Fragment {
+
     private static final String TAG = "StartScreenFragment";
 
     private Button mTestUserLogin;
