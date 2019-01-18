@@ -22,6 +22,7 @@ public class ReconVM extends ViewModel {
     private static final Bitmap mPoisonPillBitmap = Bitmap.createBitmap(1,1,Bitmap.Config.ARGB_8888);
 
     private final BlockingQueue<TimeFramePair<Bitmap, Long>> mQueue;
+
     private Slam mSlam;
 
     public enum ReconProgress {
