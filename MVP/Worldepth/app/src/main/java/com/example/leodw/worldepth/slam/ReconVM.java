@@ -22,7 +22,10 @@ public class ReconVM extends ViewModel {
     private static final Bitmap mPoisonPillBitmap = Bitmap.createBitmap(1,1,Bitmap.Config.ARGB_8888);
 
     private final BlockingQueue<TimeFramePair<Bitmap, Long>> mQueue;
+
     private Slam mSlam;
+    private PoissonWrapper mPoissonWrapper;
+    private TextureMapWrapper mTextureMapWrapper;
 
     public enum ReconProgress {
         SLAM, POISSON, TM
@@ -66,6 +69,8 @@ public class ReconVM extends ViewModel {
         mSlam = new Slam(mQueue, mPoisonPillBitmap);
         mSlam.setOnSlamCompleteListener(() -> mSlam.stopSlamThread(), new Handler(Looper.getMainLooper()));
         mSlam.setFrameCountListener(this::frameProcessed, new Handler(Looper.getMainLooper()));
+        mPoissonWrapper = new PoissonWrapper();
+        mTextureMapWrapper = new TextureMapWrapper();
     }
 
     public Bitmap getPoisonPill() {
