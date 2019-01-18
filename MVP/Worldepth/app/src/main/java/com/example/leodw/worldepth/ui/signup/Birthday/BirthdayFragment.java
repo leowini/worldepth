@@ -24,6 +24,7 @@ import com.example.leodw.worldepth.ui.signup.Phone.PhoneFragment;
 import androidx.navigation.Navigation;
 
 public class BirthdayFragment extends Fragment {
+
     private static final String TAG = "BirthdayFragment";
 
     private BirthdayViewModel mViewModel;

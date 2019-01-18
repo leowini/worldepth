@@ -2,6 +2,8 @@ package com.example.leodw.worldepth.ui.camera;
 
 public class TimeFramePair<L,R> {
 
+    private static final String TAG = "TimeFramePair";
+
     private final L left;
     private final R right;
 

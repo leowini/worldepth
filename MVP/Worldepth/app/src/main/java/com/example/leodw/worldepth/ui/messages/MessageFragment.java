@@ -16,6 +16,8 @@ import androidx.navigation.Navigation;
 
 public class MessageFragment extends Fragment {
 
+    private static final String TAG = "MessageFragment";
+
     private ImageView mBackButton;
 
     @Nullable

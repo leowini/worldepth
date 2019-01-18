@@ -1,6 +1,8 @@
 package com.example.leodw.worldepth.data;
 
 public class DataPair {
+
+    private static final String TAG = "DataPair";
     private String mData;
     private String mLocation;
     private String mSender;

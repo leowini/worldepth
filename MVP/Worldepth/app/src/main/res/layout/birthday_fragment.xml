@@ -57,12 +57,14 @@
         app:layout_constraintVertical_bias="0.481" />
 
     <EditText
-        android:id="@+id/Date"
+        android:id="@+id/year"
         android:layout_width="81dp"
         android:layout_height="42dp"
         android:layout_marginStart="8dp"
         android:ems="10"
         android:hint="@string/year"
+        android:textColorHint="#4a5759"
+        android:gravity="center|center_horizontal|center_vertical"
         android:inputType="date"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -72,7 +74,7 @@
         app:layout_constraintVertical_bias="0.75" />
 
     <EditText
-        android:id="@+id/year"
+        android:id="@+id/Date"
         android:layout_width="101dp"
         android:layout_height="42dp"
         android:layout_marginStart="8dp"
@@ -80,6 +82,8 @@
         android:layout_marginEnd="8dp"
         android:ems="10"
         android:hint="@string/day"
+        android:textColorHint="#4a5759"
+        android:gravity="center|center_horizontal|center_vertical"
         android:inputType="date"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

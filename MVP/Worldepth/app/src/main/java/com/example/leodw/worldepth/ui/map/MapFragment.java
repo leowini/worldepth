@@ -24,6 +24,8 @@ import androidx.navigation.Navigation;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
+    private static final String TAG = "MapFragment";
+
     private GoogleMap mMap;
 
     @Nullable

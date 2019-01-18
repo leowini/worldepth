@@ -11,7 +11,9 @@ import java.io.ByteArrayOutputStream;
 import java.util.concurrent.BlockingQueue;
 
 public class Slam {
-    public static final String TAG = "Slam";
+
+    private static final String TAG = "Slam";
+
     private final BlockingQueue<TimeFramePair<Bitmap, Long>> mQueue;
     private HandlerThread mSlamSenderThread;
     public Handler mSlamSenderHandler;
@@ -64,7 +66,7 @@ public class Slam {
         catch (Exception e) {
             System.out.println(Thread.currentThread().getName() + " " + e.getMessage());
         }
-        mCompleteListenerHandler.post(() -> mCompleteListener.onSlamComplete());
+        mCompleteListenerHandler.post(() -> mCompleteListener.onSlamComplete(0));
     }
 
     private byte[] bitmapToByteArray(Bitmap bmp) {
@@ -96,7 +98,7 @@ public class Slam {
     }
 
     public interface SlamCompleteListener {
-        void onSlamComplete();
+        void onSlamComplete(int pointCloud);
     }
 
     public interface FrameCountListener {

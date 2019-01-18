@@ -5,6 +5,8 @@ import com.google.firebase.database.IgnoreExtraProperties;
 @IgnoreExtraProperties
 public class User {
 
+    private static final String TAG = "User";
+
     public String firstName;
     public String lastName;
     public String email;

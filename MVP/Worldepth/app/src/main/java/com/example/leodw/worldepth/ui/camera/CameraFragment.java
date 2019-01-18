@@ -60,6 +60,7 @@ import java.util.concurrent.TimeUnit;
 import androidx.navigation.Navigation;
 
 public class CameraFragment extends Fragment {
+
     private static final String TAG = "CameraFragment";
 
     private ReconVM mReconVM;

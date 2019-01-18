@@ -26,7 +26,9 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Semaphore;
 
 public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
+
     private static final String TAG = "Renderer";
+
     private SurfaceTexture mEglSurfaceTexture;
     private RenderThread mRenderThread;
     private EglSurfaceTextureListener mListener;
