@@ -6,6 +6,9 @@ import android.os.HandlerThread;
 
 import com.example.leodw.worldepth.ui.camera.TimeFramePair;
 
+import org.opencv.android.Utils;
+import org.opencv.core.Mat;
+
 import java.io.ByteArrayOutputStream;
 import java.util.concurrent.BlockingQueue;
 
@@ -25,7 +28,7 @@ public class Slam {
     private FrameCountListener mFrameCountListener;
     private Handler mFrameCountListenerHandler;
 
-    public native void passImageToSlam(int width, int height, byte[] img, long timeStamp);
+    public native void passImageToSlam(int width, int height, long img, long timeStamp);
 
     public Slam(BlockingQueue<TimeFramePair<Bitmap, Long>> q, Bitmap mPoisonPillBitmap) {
         this.mQueue = q;
@@ -40,7 +43,10 @@ public class Slam {
      */
     private void sendFrameToSlam(Bitmap frame, Long timeStamp) {
         byte[] byteArray = bitmapToByteArray(frame);
-        passImageToSlam(frame.getWidth(), frame.getHeight(), byteArray, timeStamp);
+        Mat mat = new Mat();
+        Utils.bitmapToMat(frame, mat);
+
+        passImageToSlam(frame.getWidth(), frame.getHeight(), mat.getNativeObjAddr(), timeStamp);
     }
 
     /**

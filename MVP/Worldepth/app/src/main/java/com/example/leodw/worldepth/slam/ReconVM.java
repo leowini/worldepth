@@ -7,6 +7,9 @@ import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
 import com.example.leodw.worldepth.ui.camera.TimeFramePair;
+
+import org.opencv.core.Mat;
+
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
