@@ -17,11 +17,11 @@ public class Slam {
     private static final String TAG = "Slam";
 
     private final BlockingQueue<TimeFramePair<Bitmap, Long>> mQueue;
+
     private HandlerThread mSlamSenderThread;
     public Handler mSlamSenderHandler;
 
     private SlamCompleteListener mCompleteListener;
-    private Handler mCompleteListenerHandler;
 
     private final Bitmap mPoisonPillBitmap;
 
@@ -33,8 +33,7 @@ public class Slam {
     public Slam(BlockingQueue<TimeFramePair<Bitmap, Long>> q, Bitmap mPoisonPillBitmap) {
         this.mQueue = q;
         this.mPoisonPillBitmap = mPoisonPillBitmap;
-        startSlamThread();
-        mSlamSenderHandler.post(this::doSlam);
+        doSlam();
     }
 
     /**
@@ -68,7 +67,7 @@ public class Slam {
         catch (Exception e) {
             System.out.println(Thread.currentThread().getName() + " " + e.getMessage());
         }
-        mCompleteListenerHandler.post(() -> mCompleteListener.onSlamComplete(0));
+        mCompleteListener.onSlamComplete(0);
     }
 
     private byte[] bitmapToByteArray(Bitmap bmp) {
@@ -94,15 +93,6 @@ public class Slam {
         }
     }
 
-    public void setOnSlamCompleteListener(SlamCompleteListener listener, Handler handler) {
-        mCompleteListener = listener;
-        mCompleteListenerHandler = handler;
-    }
-
-    public interface SlamCompleteListener {
-        void onSlamComplete(int pointCloud);
-    }
-
     public interface FrameCountListener {
         void onNextFrame();
     }
@@ -110,6 +100,14 @@ public class Slam {
     public void setFrameCountListener(FrameCountListener listener, Handler handler) {
         mFrameCountListener = listener;
         mFrameCountListenerHandler = handler;
+    }
+
+    public interface SlamCompleteListener {
+        void onSlamComplete(int pointCloud);
+    }
+
+    public void setOnSlamCompleteListener(SlamCompleteListener listener) {
+        mCompleteListener = listener;
     }
 
 }
