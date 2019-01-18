@@ -46,6 +46,7 @@ public class ReconVM extends ViewModel {
         mPoissonWrapper.setOnCompleteListener(mesh -> mTextureMapWrapper.runMapping(mesh));
         mSlam = new Slam(mQueue, mPoisonPillBitmap);
         mSlam.setOnSlamCompleteListener(pointCloud -> {
+            mSlamProgress.setValue("100");
             mSlam.stopSlamThread();
             mPoissonWrapper.runPoisson(pointCloud);
         }, new Handler(Looper.getMainLooper()));
