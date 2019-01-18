@@ -42,7 +42,7 @@ public class Slam {
      * @param frame
      */
     private void sendFrameToSlam(Bitmap frame, Long timeStamp) {
-        byte[] byteArray = bitmapToByteArray(frame);
+        //byte[] byteArray = bitmapToByteArray(frame);
         Mat mat = new Mat();
         Utils.bitmapToMat(frame, mat);
 
