@@ -294,7 +294,7 @@ public class CameraFragment extends Fragment {
                     if (mRecordingState) {
                         stopRecording();
                         mRecordingState = false;
-                        Navigation.findNavController(getView()).navigate(R.id.action_cameraFragment_to_loadingFragment);
+                        Navigation.findNavController(getView()).navigate(R.id.action_cameraFragment_to_reconstructionFragment);
                         mRenderer.stopRenderThread();
                         return true;
                     }
