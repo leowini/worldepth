@@ -13,6 +13,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class ReconVM extends ViewModel {
+
     private final MutableLiveData<ReconProgress> mReconProgress = new MutableLiveData<>();
     private final MutableLiveData<String> mSlamProgress = new MutableLiveData<>();
     private static final String TAG = "ReconVM";
@@ -28,6 +29,15 @@ public class ReconVM extends ViewModel {
 
     public enum ReconProgress {
         SLAM, POISSON, TM
+    }
+
+    public ReconVM() {
+        mRenderedFrames = 0;
+        mProcessedFrames = 0;
+        mQueue = new LinkedBlockingQueue<>();
+        mSlam = new Slam(mQueue, mPoisonPillBitmap);
+        mSlam.setOnSlamCompleteListener(() -> mSlam.stopSlamThread(), new Handler(Looper.getMainLooper()));
+        mSlam.setFrameCountListener(this::frameProcessed, new Handler(Looper.getMainLooper()));
     }
 
     private void frameProcessed() {
@@ -58,16 +68,6 @@ public class ReconVM extends ViewModel {
         //doSlam();
         //doPoisson();
         //doTextureMapping();
-    }
-
-    public ReconVM() {
-        super();
-        mRenderedFrames = 0;
-        mProcessedFrames = 0;
-        mQueue = new LinkedBlockingQueue<>();
-        mSlam = new Slam(mQueue, mPoisonPillBitmap);
-        mSlam.setOnSlamCompleteListener(() -> mSlam.stopSlamThread(), new Handler(Looper.getMainLooper()));
-        mSlam.setFrameCountListener(this::frameProcessed, new Handler(Looper.getMainLooper()));
     }
 
     public Bitmap getPoisonPill() {

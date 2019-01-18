@@ -34,6 +34,7 @@ public class ProfileFragment extends Fragment {
     private static final String TAG = "ProfileFragment";
 
     private ImageView mSettingsButton;
+    private ImageView mBackButton;
     private TextView mNameOfUser;
     private int mFriendNumber = 1;
     private TextView mFriendText;
@@ -51,6 +52,8 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         mFb = ((MainActivity) getActivity()).getFirebaseWrapper();
         mDb = mFb.getFirebaseDatabase();
+        mBackButton = view.findViewById(R.id.profileToMapButton);
+        mBackButton.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_profileFragment_to_mapFragment));
         mSettingsButton = view.findViewById(R.id.profileToSettingsBtn);
         mSettingsButton.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_profileFragment_to_settings));
         mNameOfUser = view.findViewById(R.id.profileName);

@@ -26,7 +26,7 @@ public class ReconstructionFragment extends Fragment {
     private TextView mSlamProgress;
 
     private Button mNextButton;
-    private ImageView mBackButton;
+    private Button mBackButton;
 
     @Nullable
     @Override
@@ -42,7 +42,7 @@ public class ReconstructionFragment extends Fragment {
         mReconVM.getSlamProgress().observe(this, progress -> mSlamProgress.setText(progress + " %"));
         mNextButton = view.findViewById(R.id.reconNextButton);
         mNextButton.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_reconstructionFragment_to_viewerFragment));
-        mBackButton = view.findViewById(R.id.profileToMapButton);
+        mBackButton = view.findViewById(R.id.reconBackButton);
         mBackButton.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_reconstructionFragment_to_cameraFragment));
     }
 
