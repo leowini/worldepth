@@ -31,7 +31,7 @@ import androidx.navigation.Navigation;
 
 public class ProfileFragment extends Fragment {
 
-    private final String TAG = "ProfileFragment";
+    private static final String TAG = "ProfileFragment";
 
     private ImageView mSettingsButton;
     private ImageView mBackButton;
