@@ -40,11 +40,20 @@ public class ReconVM extends ViewModel {
         mRenderedFrames = 0;
         mProcessedFrames = 0;
         mQueue = new LinkedBlockingQueue<>();
-        mSlam = new Slam(mQueue, mPoisonPillBitmap);
-        mSlam.setOnSlamCompleteListener(() -> mSlam.stopSlamThread(), new Handler(Looper.getMainLooper()));
-        mSlam.setFrameCountListener(this::frameProcessed, new Handler(Looper.getMainLooper()));
-        mPoissonWrapper = new PoissonWrapper();
         mTextureMapWrapper = new TextureMapWrapper();
+        mTextureMapWrapper.setOnCompleteListener(this::showModelPreview);
+        mPoissonWrapper = new PoissonWrapper();
+        mPoissonWrapper.setOnCompleteListener(() -> mTextureMapWrapper.runMapping());
+        mSlam = new Slam(mQueue, mPoisonPillBitmap);
+        mSlam.setOnSlamCompleteListener(() -> {
+            mSlam.stopSlamThread();
+            mPoissonWrapper.runPoisson();
+        }, new Handler(Looper.getMainLooper()));
+        mSlam.setFrameCountListener(this::frameProcessed, new Handler(Looper.getMainLooper()));
+    }
+
+    private void showModelPreview() {
+
     }
 
     private void frameProcessed() {

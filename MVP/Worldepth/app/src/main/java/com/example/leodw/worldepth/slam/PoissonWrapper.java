@@ -4,9 +4,17 @@ public class PoissonWrapper {
 
     private static final String TAG = "PoissonWrapper";
 
-    public native void passPointCloudToPoisson(int x);
+    private OnCompleteListener listener;
 
-    public void runPoisson(int x){
-        passPointCloudToPoisson(x);
+    public void runPoisson() {
+
+    }
+
+    public void setOnCompleteListener(OnCompleteListener listener) {
+        this.listener = listener;
+    }
+
+    public interface OnCompleteListener {
+        void onComplete();
     }
 }
