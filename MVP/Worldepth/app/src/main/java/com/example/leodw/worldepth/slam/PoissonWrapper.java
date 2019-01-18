@@ -7,7 +7,7 @@ public class PoissonWrapper {
     private OnCompleteListener listener;
 
     public void runPoisson() {
-
+        listener.onComplete();
     }
 
     public void setOnCompleteListener(OnCompleteListener listener) {

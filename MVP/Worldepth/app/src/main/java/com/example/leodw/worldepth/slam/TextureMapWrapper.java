@@ -7,7 +7,7 @@ public class TextureMapWrapper {
     private OnCompleteListener listener;
 
     public void runMapping() {
-
+        listener.onComplete();
     }
 
     public interface OnCompleteListener {
