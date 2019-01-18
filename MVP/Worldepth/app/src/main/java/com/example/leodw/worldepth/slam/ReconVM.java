@@ -28,7 +28,6 @@ public class ReconVM extends ViewModel {
 
     private Slam mSlam;
     private PoissonWrapper mPoissonWrapper;
-
     private TextureMapWrapper mTextureMapWrapper;
 
     public enum ReconProgress {
