@@ -27,6 +27,9 @@ public class ReconVM extends ViewModel {
     private Slam mSlam;
     private PoissonWrapper mPoissonWrapper;
 
+    private TextureMapWrapper mTextureMapWrapper;
+
+
     public enum ReconProgress {
         SLAM, POISSON, TM
     }
@@ -69,6 +72,20 @@ public class ReconVM extends ViewModel {
         //doPoisson();
         //doTextureMapping();
     }
+
+
+    public ReconVM() {
+        super();
+        mRenderedFrames = 0;
+        mProcessedFrames = 0;
+        mQueue = new LinkedBlockingQueue<>();
+        mSlam = new Slam(mQueue, mPoisonPillBitmap);
+        mSlam.setOnSlamCompleteListener(() -> mSlam.stopSlamThread(), new Handler(Looper.getMainLooper()));
+        mSlam.setFrameCountListener(this::frameProcessed, new Handler(Looper.getMainLooper()));
+        mPoissonWrapper = new PoissonWrapper();
+        mTextureMapWrapper = new TextureMapWrapper();
+    }
+
 
     public Bitmap getPoisonPill() {
         return mPoisonPillBitmap;
