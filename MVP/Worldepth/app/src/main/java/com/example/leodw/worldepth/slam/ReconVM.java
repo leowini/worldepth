@@ -13,19 +13,31 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class ReconVM extends ViewModel {
+
     private final MutableLiveData<ReconProgress> mReconProgress = new MutableLiveData<>();
     private final MutableLiveData<String> mSlamProgress = new MutableLiveData<>();
-    public static final String TAG = "ReconVM";
+    private static final String TAG = "ReconVM";
     private int mRenderedFrames;
     private int mProcessedFrames;
 
     private static final Bitmap mPoisonPillBitmap = Bitmap.createBitmap(1,1,Bitmap.Config.ARGB_8888);
 
     private final BlockingQueue<TimeFramePair<Bitmap, Long>> mQueue;
+
     private Slam mSlam;
+    private PoissonWrapper mPoissonWrapper;
 
     public enum ReconProgress {
         SLAM, POISSON, TM
+    }
+
+    public ReconVM() {
+        mRenderedFrames = 0;
+        mProcessedFrames = 0;
+        mQueue = new LinkedBlockingQueue<>();
+        mSlam = new Slam(mQueue, mPoisonPillBitmap);
+        mSlam.setOnSlamCompleteListener(() -> mSlam.stopSlamThread(), new Handler(Looper.getMainLooper()));
+        mSlam.setFrameCountListener(this::frameProcessed, new Handler(Looper.getMainLooper()));
     }
 
     private void frameProcessed() {
@@ -56,16 +68,6 @@ public class ReconVM extends ViewModel {
         //doSlam();
         //doPoisson();
         //doTextureMapping();
-    }
-
-    public ReconVM() {
-        super();
-        mRenderedFrames = 0;
-        mProcessedFrames = 0;
-        mQueue = new LinkedBlockingQueue<>();
-        mSlam = new Slam(mQueue, mPoisonPillBitmap);
-        mSlam.setOnSlamCompleteListener(() -> mSlam.stopSlamThread(), new Handler(Looper.getMainLooper()));
-        mSlam.setFrameCountListener(this::frameProcessed, new Handler(Looper.getMainLooper()));
     }
 
     public Bitmap getPoisonPill() {

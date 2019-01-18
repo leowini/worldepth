@@ -23,11 +23,7 @@ public class LoadingFragment extends Fragment {
 
     private static final String TAG = "LoadingFragment";
 
-    private ReconVM mReconVM;
-
-    private LoadingViewModel mLoadingViewModel;
     private AnimationDrawable mLoadingAnimation;
-    private TextView mSlamProgress;
     private ImageView mLoadingImage;
 
     @Nullable
@@ -38,18 +34,12 @@ public class LoadingFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        mReconVM = ViewModelProviders.of(getActivity()).get(ReconVM.class);
-        mReconVM.getReconProgress().observe(this, item -> updateUI());
-        mSlamProgress = view.findViewById(R.id.slamProgress);
-        mReconVM.getSlamProgress().observe(this, progress -> mSlamProgress.setText(progress + " %"));
         mLoadingImage = view.findViewById(R.id.loadingAnimation);
         startLoadingAnimation();
         Button loadingNextButton = view.findViewById(R.id.loadingNextButton);
-        Button loadingBackButton = view.findViewById(R.id.loadingBackBtn);
         loadingNextButton.setOnClickListener((view1) -> {
-            Navigation.findNavController(view1).navigate(R.id.action_loadingFragment_to_viewerFragment);
+            Navigation.findNavController(view1).navigate(R.id.action_loadingFragment_to_cameraFragment);
         });
-        loadingBackButton.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_loadingFragment_to_cameraFragment));
     }
 
     private void startLoadingAnimation() {
@@ -58,7 +48,4 @@ public class LoadingFragment extends Fragment {
         mLoadingAnimation.start();
     }
 
-    private void updateUI() {
-
-    }
 }
