@@ -42,10 +42,8 @@ public class Slam {
      * @param frame
      */
     private void sendFrameToSlam(Bitmap frame, Long timeStamp) {
-        //byte[] byteArray = bitmapToByteArray(frame);
         Mat mat = new Mat();
         Utils.bitmapToMat(frame, mat);
-
         passImageToSlam(frame.getWidth(), frame.getHeight(), mat.getNativeObjAddr(), timeStamp);
     }
 
@@ -69,12 +67,6 @@ public class Slam {
             System.out.println(Thread.currentThread().getName() + " " + e.getMessage());
         }
         mCompleteListenerHandler.post(() -> mCompleteListener.onSlamComplete(0));
-    }
-
-    private byte[] bitmapToByteArray(Bitmap bmp) {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        return stream.toByteArray();
     }
 
     private void startSlamThread() {
