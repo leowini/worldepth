@@ -24,6 +24,7 @@ public class ReconVM extends ViewModel {
     private final BlockingQueue<TimeFramePair<Bitmap, Long>> mQueue;
 
     private Slam mSlam;
+    private PoissonWrapper mPoissonWrapper;
 
     public enum ReconProgress {
         SLAM, POISSON, TM
