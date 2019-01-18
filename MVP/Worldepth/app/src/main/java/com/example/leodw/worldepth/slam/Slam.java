@@ -7,9 +7,6 @@ import android.os.HandlerThread;
 import com.example.leodw.worldepth.ui.camera.TimeFramePair;
 
 import java.io.ByteArrayOutputStream;
-import java.sql.Time;
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.concurrent.BlockingQueue;
 
 public class Slam {
