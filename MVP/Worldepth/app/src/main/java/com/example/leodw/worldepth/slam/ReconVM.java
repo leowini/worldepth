@@ -6,7 +6,6 @@ import android.arch.lifecycle.ViewModel;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
-import android.widget.Toast;
 
 import com.example.leodw.worldepth.ui.camera.TimeFramePair;
 
