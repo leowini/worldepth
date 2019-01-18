@@ -6,12 +6,12 @@ public class TextureMapWrapper {
 
     private OnCompleteListener listener;
 
-    public void runMapping() {
-        listener.onComplete();
+    public void runMapping(int mesh) {
+        listener.onComplete(0);
     }
 
     public interface OnCompleteListener {
-        void onComplete();
+        void onComplete(int finalModel);
     }
 
     public void setOnCompleteListener(OnCompleteListener listener) {

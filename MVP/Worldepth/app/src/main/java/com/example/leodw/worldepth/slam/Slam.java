@@ -62,7 +62,7 @@ public class Slam {
         catch (Exception e) {
             System.out.println(Thread.currentThread().getName() + " " + e.getMessage());
         }
-        mCompleteListenerHandler.post(() -> mCompleteListener.onSlamComplete());
+        mCompleteListenerHandler.post(() -> mCompleteListener.onSlamComplete(0));
     }
 
     private byte[] bitmapToByteArray(Bitmap bmp) {
@@ -94,7 +94,7 @@ public class Slam {
     }
 
     public interface SlamCompleteListener {
-        void onSlamComplete();
+        void onSlamComplete(int pointCloud);
     }
 
     public interface FrameCountListener {

@@ -43,16 +43,16 @@ public class ReconVM extends ViewModel {
         mTextureMapWrapper = new TextureMapWrapper();
         mTextureMapWrapper.setOnCompleteListener(this::showModelPreview);
         mPoissonWrapper = new PoissonWrapper();
-        mPoissonWrapper.setOnCompleteListener(() -> mTextureMapWrapper.runMapping());
+        mPoissonWrapper.setOnCompleteListener(mesh -> mTextureMapWrapper.runMapping(mesh));
         mSlam = new Slam(mQueue, mPoisonPillBitmap);
-        mSlam.setOnSlamCompleteListener(() -> {
+        mSlam.setOnSlamCompleteListener(pointCloud -> {
             mSlam.stopSlamThread();
-            mPoissonWrapper.runPoisson();
+            mPoissonWrapper.runPoisson(pointCloud);
         }, new Handler(Looper.getMainLooper()));
         mSlam.setFrameCountListener(this::frameProcessed, new Handler(Looper.getMainLooper()));
     }
 
-    private void showModelPreview() {
+    private void showModelPreview(int finalModel) {
 
     }
 
