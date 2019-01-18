@@ -26,7 +26,6 @@ public class Slam {
     private final Bitmap mPoisonPillBitmap;
 
     private FrameCountListener mFrameCountListener;
-    private Handler mFrameCountListenerHandler;
 
     public native void passImageToSlam(int width, int height, long img, long timeStamp);
 
@@ -57,7 +56,7 @@ public class Slam {
             Bitmap bmp = timeFramePair.getFrame();
             Long time = timeFramePair.getTime();
             do {
-                mFrameCountListenerHandler.post(() -> mFrameCountListener.onNextFrame());
+                mFrameCountListener.onNextFrame();
                 sendFrameToSlam(bmp, time);
                 timeFramePair = mQueue.take();
                 bmp = timeFramePair.getFrame();
@@ -97,9 +96,8 @@ public class Slam {
         void onNextFrame();
     }
 
-    public void setFrameCountListener(FrameCountListener listener, Handler handler) {
+    public void setFrameCountListener(FrameCountListener listener) {
         mFrameCountListener = listener;
-        mFrameCountListenerHandler = handler;
     }
 
     public interface SlamCompleteListener {

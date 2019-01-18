@@ -107,7 +107,7 @@ public class ReconVM extends ViewModel {
             mReconstructionHandler.post(() -> mSlamProgress.setValue("100"));
             mPoissonWrapper.runPoisson(pointCloud);
         });
-        mSlam.setFrameCountListener(() -> mReconstructionHandler.post(this::frameProcessed), new Handler(Looper.getMainLooper()));
+        mSlam.setFrameCountListener(() -> mReconstructionHandler.post(this::frameProcessed));
     }
 
     public Bitmap getPoisonPill() {
