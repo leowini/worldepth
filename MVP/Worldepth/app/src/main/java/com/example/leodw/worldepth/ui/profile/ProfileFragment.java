@@ -58,7 +58,6 @@ public class ProfileFragment extends Fragment {
         mSettingsButton.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_profileFragment_to_settings));
         mNameOfUser = view.findViewById(R.id.profileName);
         setName();
-        //mFriendNumber = ((MainActivity) getActivity()).getFirebaseWrapper().getFollowerNumber();
         mFriendText = view.findViewById(R.id.profileNumberOfFollowers);
         mFriendText.setText(Integer.toString(mFriendNumber));
     }
