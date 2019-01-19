@@ -28,14 +28,11 @@ public class EmailFragment extends Fragment {
     private static final String TAG = "EmailFragment";
 
     private SignupViewModel mViewModel;
-    private FirebaseWrapper mFb;
     private EditText mEmailInput;
     private EditText mServiceInput;
     private EditText mSuffixInput;
     private Button signUp;
     private ImageView goBack;
-
-    private DataTransfer mDt;
 
 
     public static EmailFragment newInstance() {
@@ -52,8 +49,6 @@ public class EmailFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(SignupViewModel.class);
-        mFb = ((MainActivity) this.getActivity()).getFirebaseWrapper();
-        mDt = ((MainActivity) this.getActivity()).getDataTransfer();
         // TODO: Use the ViewModel
     }
 
