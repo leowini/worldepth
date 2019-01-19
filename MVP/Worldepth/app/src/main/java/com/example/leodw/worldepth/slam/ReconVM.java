@@ -46,7 +46,11 @@ public class ReconVM extends ViewModel {
     public ReconVM() {
         mRenderedFrames = 0;
         mProcessedFrames = 0;
-        mCompleteListener = pointCloud -> stopReconstructionThread()
+        mCompleteListener = finalModel -> {
+            stopReconstructionThread();
+            showModelPreview(finalModel);
+        };
+        mCompleteListenerHandler = new Handler(Looper.getMainLooper());
         mQueue = new LinkedBlockingQueue<>();
         startReconstructionThread();
         mReconstructionHandler.post(this::reconstruct);
@@ -100,7 +104,9 @@ public class ReconVM extends ViewModel {
 
     private void reconstruct() {
         mTextureMapWrapper = new TextureMapWrapper();
-        mTextureMapWrapper.setOnCompleteListener(() -> mReconstructionHandler.post(() -> mCompleteListener.onReconstructionComplete()));
+        mTextureMapWrapper.setOnCompleteListener(finalModel ->
+                mCompleteListenerHandler.post(() ->
+                        mCompleteListener.onReconstructionComplete(finalModel)));
         mPoissonWrapper = new PoissonWrapper();
         mPoissonWrapper.setOnCompleteListener(mesh -> mTextureMapWrapper.runMapping(mesh));
         mSlam = new Slam(mQueue, mPoisonPillBitmap);
@@ -109,6 +115,7 @@ public class ReconVM extends ViewModel {
             mPoissonWrapper.runPoisson(pointCloud);
         });
         mSlam.setFrameCountListener(() -> mReconstructionHandler.post(this::frameProcessed));
+        mSlam.doSlam();
     }
 
     public Bitmap getPoisonPill() {
@@ -124,12 +131,7 @@ public class ReconVM extends ViewModel {
     }
 
     public interface ReconstructionCompleteListener {
-        void onReconstructionComplete(int pointCloud);
-    }
-
-    public void setOnReconstructionCompleteListener(ReconstructionCompleteListener listener, Handler handler) {
-        mCompleteListener = listener;
-        mCompleteListenerHandler = handler;
+        void onReconstructionComplete(int finalModel);
     }
 
 }

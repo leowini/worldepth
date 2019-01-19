@@ -18,9 +18,6 @@ public class Slam {
 
     private final BlockingQueue<TimeFramePair<Bitmap, Long>> mQueue;
 
-    private HandlerThread mSlamSenderThread;
-    public Handler mSlamSenderHandler;
-
     private SlamCompleteListener mCompleteListener;
 
     private final Bitmap mPoisonPillBitmap;
@@ -32,7 +29,6 @@ public class Slam {
     public Slam(BlockingQueue<TimeFramePair<Bitmap, Long>> q, Bitmap mPoisonPillBitmap) {
         this.mQueue = q;
         this.mPoisonPillBitmap = mPoisonPillBitmap;
-        doSlam();
     }
 
     /**
@@ -48,7 +44,7 @@ public class Slam {
     /**
      * This will run in the background on the SlamSenderThread.
      */
-    private void doSlam() {
+    public void doSlam() {
         try {
             TimeFramePair<Bitmap, Long> timeFramePair = mQueue.take();
             Bitmap bmp = timeFramePair.getFrame();
@@ -65,23 +61,6 @@ public class Slam {
             System.out.println(Thread.currentThread().getName() + " " + e.getMessage());
         }
         mCompleteListener.onSlamComplete(0);
-    }
-
-    private void startSlamThread() {
-        mSlamSenderThread = new HandlerThread("Slam Background");
-        mSlamSenderThread.start();
-        mSlamSenderHandler = new Handler(mSlamSenderThread.getLooper());
-    }
-
-    public void stopSlamThread() {
-        mSlamSenderThread.quitSafely();
-        try {
-            mSlamSenderThread.join();
-            mSlamSenderThread = null;
-            mSlamSenderHandler = null;
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     public interface FrameCountListener {
