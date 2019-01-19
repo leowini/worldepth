@@ -35,8 +35,6 @@ public class ProfileFragment extends Fragment {
     private TextView mNameOfUser;
     private int mFriendNumber = 1;
     private TextView mFriendText;
-    private FirebaseWrapper mFb;
-    private FirebaseDatabase mDb;
 
     @Nullable
     @Override
@@ -48,31 +46,14 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         mProfileViewModel = ViewModelProviders.of(getActivity()).get(ProfileViewModel.class);
-        mFb = ((MainActivity) getActivity()).getFirebaseWrapper();
-        mDb = mFb.getFirebaseDatabase();
         mBackButton = view.findViewById(R.id.profileToMapButton);
         mBackButton.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_profileFragment_to_mapFragment));
         mSettingsButton = view.findViewById(R.id.profileToSettingsBtn);
         mSettingsButton.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_profileFragment_to_settings));
         mNameOfUser = view.findViewById(R.id.profileName);
-        setName();
+        mProfileViewModel.getName().observe(this, name -> mNameOfUser.setText(name));
         mFriendText = view.findViewById(R.id.profileNumberOfFollowers);
-        mFriendText.setText(Integer.toString(mFriendNumber));
+        mProfileViewModel.getFriendCount().observe(this, count -> mFriendText.setText(Integer.toString(mFriendNumber)));
     }
 
-    private void setName() {
-        DatabaseReference dbRef = mDb.getReference();
-        dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.child("users").child(mFb.getUid()).getValue(User.class);
-                String fullname = user.firstName + " " + user.lastName;
-                mNameOfUser.setText(fullname);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
-    }
 }
