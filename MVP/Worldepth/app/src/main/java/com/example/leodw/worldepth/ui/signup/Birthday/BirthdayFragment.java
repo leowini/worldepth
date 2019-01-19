@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.data.FirebaseWrapper;
@@ -27,7 +28,8 @@ public class BirthdayFragment extends Fragment {
 
     private SignupViewModel mViewModel;
     private FirebaseWrapper mFb;
-    private EditText mBirthdayInput;
+    private EditText mBirthdayDay;
+    private EditText mBirthdayYear;
 
     public static BirthdayFragment newInstance() {
         return new BirthdayFragment();
@@ -36,24 +38,7 @@ public class BirthdayFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.birthday_fragment, container, false);
-        String [] values =
-                {"Month","January","Febuary","March","April","May","June","July","August","September","October","November","December"};
-        Spinner spinner = (Spinner) view.findViewById(R.id.spinner);
-        ArrayAdapter<String> LTRadapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, values);
-        LTRadapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-        spinner.setAdapter(LTRadapter);
-
-        Button birthdayNextButton = view.findViewById(R.id.birthdayNextButton);
-        birthdayNextButton.setOnClickListener((view1) -> {
-            Navigation.findNavController(view1).navigate(R.id.action_birthdayFragment_to_passwordFragment);
-        });
-
-        ImageView birthdayBackButton = view.findViewById(R.id.birthdayBackButton);
-        birthdayBackButton.setOnClickListener((view2) -> {
-            Navigation.findNavController(view2).popBackStack();
-        });
-        return view;
+        return inflater.inflate(R.layout.birthday_fragment, container, false);
     }
 
     @Override
@@ -65,5 +50,28 @@ public class BirthdayFragment extends Fragment {
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
-        mViewModel = ViewModelProviders.of(getActivity()).get(SignupViewModel.class);    }
+        mViewModel = ViewModelProviders.of(getActivity()).get(SignupViewModel.class);
+        String [] values =
+                {"Month","January","Febuary","March","April","May","June","July","August","September","October","November","December"};
+        Spinner spinner = (Spinner) view.findViewById(R.id.spinner);
+        ArrayAdapter<String> LTRadapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, values);
+        LTRadapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        spinner.setAdapter(LTRadapter);
+
+        mBirthdayDay = view.findViewById(R.id.birthdayDay);
+        mBirthdayYear = view.findViewById(R.id.birthdayYear);
+
+        Button birthdayNextButton = view.findViewById(R.id.birthdayNextButton);
+        birthdayNextButton.setOnClickListener((view1) -> {
+            String birthday = spinner.getSelectedItem() + " " + mBirthdayDay.getText().toString() + ", " + mBirthdayYear.getText().toString();
+            Toast.makeText(getContext(), "birthday string: " + birthday, Toast.LENGTH_SHORT).show();
+            mViewModel.setBirthday(birthday);
+            Navigation.findNavController(view1).navigate(R.id.action_birthdayFragment_to_passwordFragment);
+        });
+
+        ImageView birthdayBackButton = view.findViewById(R.id.birthdayBackButton);
+        birthdayBackButton.setOnClickListener((view2) -> {
+            Navigation.findNavController(view2).popBackStack();
+        });
+    }
 }

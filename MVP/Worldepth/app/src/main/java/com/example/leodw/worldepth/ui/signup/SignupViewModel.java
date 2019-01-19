@@ -12,6 +12,8 @@ import com.example.leodw.worldepth.ui.MainActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Date;
+
 import androidx.navigation.Navigation;
 
 public class SignupViewModel extends ViewModel {
@@ -25,6 +27,7 @@ public class SignupViewModel extends ViewModel {
     private final MutableLiveData<String> lastName = new MutableLiveData<>();
     private final MutableLiveData<String> password = new MutableLiveData<>();
     private final MutableLiveData<String> email = new MutableLiveData<>();
+    private final MutableLiveData<Date> birthday = new MutableLiveData<>();
     private final MutableLiveData<Boolean> loginState = new MutableLiveData<>();
 
     public SignupViewModel() {
@@ -44,12 +47,14 @@ public class SignupViewModel extends ViewModel {
 
     public void setEmail(String email) { this.email.setValue(email); }
 
+    public void setBirthday(String birthday) { this.birthday.setValue(new Date(birthday)); }
+
     public void createNewAccount() {
         FirebaseAuth _auth = mFb.getFirebaseAuth();
         FirebaseDatabase database = mFb.getFirebaseDatabase();
         _auth.createUserWithEmailAndPassword(email.getValue(), password.getValue()).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                mFb.createNewAccount(firstName.getValue(), lastName.getValue(), email.getValue(), password.getValue());
+                mFb.createNewAccount(firstName.getValue(), lastName.getValue(), email.getValue(), birthday.getValue(), password.getValue());
                 //set login state
                 setLoginState(true);
             } else {

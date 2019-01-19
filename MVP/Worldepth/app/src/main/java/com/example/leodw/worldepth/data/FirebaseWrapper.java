@@ -28,6 +28,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.Date;
+
 //Easy interaction with our database
 public class FirebaseWrapper {
     //Debug TAG
@@ -128,8 +130,8 @@ public class FirebaseWrapper {
         Log.d(TAG, "Wrote to Database");
     }
 
-    public void createNewAccount(String firstName, String lastName, String email, String password) {
-        User user = new User(firstName, lastName, email, password);
+    public void createNewAccount(String firstName, String lastName, String email, Date birthday, String password) {
+        User user = new User(firstName, lastName, email, birthday, password);
         FirebaseUser authUser = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference ref = mDatabase.getReference();
         assert authUser != null;
