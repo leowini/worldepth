@@ -100,8 +100,9 @@ public class PasswordFragment extends Fragment {
 
         completeSignUp.setOnClickListener((v) -> {
             if (validPassword()) {
-                String password = mPasswordInput.getText().toString();
-                createNewAccount(firstName, lastName, email, password);
+                mViewModel.setPassword(mPasswordInput.getText().toString());
+                mViewModel.createNewAccount();
+                Navigation.findNavController(v).navigate(R.id.action_passwordFragment_to_loadingFragment);
             }
         });
 

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.data.DataTransfer;
 import com.example.leodw.worldepth.data.FirebaseWrapper;
+import com.example.leodw.worldepth.ui.signup.SignupViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
@@ -45,6 +47,9 @@ import androidx.navigation.fragment.NavHostFragment;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
+
+    private SignupViewModel mSignupViewModel;
+
     static private FirebaseWrapper fb;
     static private DataTransfer dt;
 
@@ -68,7 +73,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mPreferences = getSharedPreferences(sharedPrefFile, MODE_PRIVATE);
+        mSignupViewModel = ViewModelProviders.of(this).get(SignupViewModel.class);
         mLoginState = mPreferences.getBoolean("loginState", false);
+        mSignupViewModel.setLoginState(mLoginState);
+        mSignupViewModel.getLoginState().observe(this, state -> setLoginState(state));
         NavHostFragment hostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         NavController navController = hostFragment.getNavController();
         if (mLoginState) navController.navigate(R.id.cameraFragment);
