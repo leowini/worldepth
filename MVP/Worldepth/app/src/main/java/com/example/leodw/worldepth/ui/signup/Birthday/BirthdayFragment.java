@@ -20,6 +20,9 @@ import com.example.leodw.worldepth.data.FirebaseWrapper;
 import com.example.leodw.worldepth.ui.MainActivity;
 import com.example.leodw.worldepth.ui.signup.SignupViewModel;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import androidx.navigation.Navigation;
 
 public class BirthdayFragment extends Fragment {
@@ -34,6 +37,8 @@ public class BirthdayFragment extends Fragment {
     public static BirthdayFragment newInstance() {
         return new BirthdayFragment();
     }
+
+    private final Map<String, Integer> months = new HashMap<>();
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -51,6 +56,18 @@ public class BirthdayFragment extends Fragment {
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         mViewModel = ViewModelProviders.of(getActivity()).get(SignupViewModel.class);
+        months.put("January", 1);
+        months.put("February", 2);
+        months.put("March", 3);
+        months.put("April", 4);
+        months.put("May", 5);
+        months.put("June", 6);
+        months.put("July", 7);
+        months.put("August", 8);
+        months.put("September", 9);
+        months.put("October", 10);
+        months.put("November", 11);
+        months.put("December", 12);
         String [] values =
                 {"Month","January","Febuary","March","April","May","June","July","August","September","October","November","December"};
         Spinner spinner = view.findViewById(R.id.spinner);
@@ -63,8 +80,7 @@ public class BirthdayFragment extends Fragment {
 
         Button birthdayNextButton = view.findViewById(R.id.birthdayNextButton);
         birthdayNextButton.setOnClickListener((view1) -> {
-            String birthday = spinner.getSelectedItem() + " " + mBirthdayDay.getText().toString() + ", " + mBirthdayYear.getText().toString();
-            mViewModel.setBirthday(Integer.parseInt(mBirthdayYear.getText().toString()), (int) spinner.getSelectedItem(), Integer.parseInt(mBirthdayDay.getText().toString()));
+            mViewModel.setBirthday(Integer.parseInt(mBirthdayYear.getText().toString()), months.get(spinner.getSelectedItem().toString()), Integer.parseInt(mBirthdayDay.getText().toString()));
             Navigation.findNavController(view1).navigate(R.id.action_birthdayFragment_to_passwordFragment);
         });
 
