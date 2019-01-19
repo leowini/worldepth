@@ -1,17 +1,14 @@
 package com.example.leodw.worldepth.ui.profile;
 
 import android.annotation.SuppressLint;
-import android.media.Image;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,13 +22,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.Objects;
-
 import androidx.navigation.Navigation;
 
 public class ProfileFragment extends Fragment {
 
     private static final String TAG = "ProfileFragment";
+
+    private ProfileViewModel mProfileViewModel;
 
     private ImageView mSettingsButton;
     private ImageView mBackButton;
@@ -50,6 +47,7 @@ public class ProfileFragment extends Fragment {
     @SuppressLint("SetTextI18n")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        mProfileViewModel = ViewModelProviders.of(getActivity()).get(ProfileViewModel.class);
         mFb = ((MainActivity) getActivity()).getFirebaseWrapper();
         mDb = mFb.getFirebaseDatabase();
         mBackButton = view.findViewById(R.id.profileToMapButton);
