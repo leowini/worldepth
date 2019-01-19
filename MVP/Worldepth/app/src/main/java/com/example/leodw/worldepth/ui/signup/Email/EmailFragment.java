@@ -1,8 +1,6 @@
 package com.example.leodw.worldepth.ui.signup.Email;
 
-import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,22 +9,17 @@ import android.text.Editable;
 import android.text.Selection;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.data.DataPair;
 import com.example.leodw.worldepth.data.DataTransfer;
 import com.example.leodw.worldepth.data.FirebaseWrapper;
 import com.example.leodw.worldepth.ui.MainActivity;
-import com.example.leodw.worldepth.ui.signup.Name.NameViewModel;
-import com.example.leodw.worldepth.ui.signup.Password.PasswordFragment;
-import com.example.leodw.worldepth.ui.signup.Phone.PhoneFragment;
 
 import androidx.navigation.Navigation;
 
