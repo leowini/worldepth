@@ -17,24 +17,18 @@ public class Slam {
     private static final String TAG = "Slam";
 
     private final BlockingQueue<TimeFramePair<Bitmap, Long>> mQueue;
-    private HandlerThread mSlamSenderThread;
-    public Handler mSlamSenderHandler;
 
     private SlamCompleteListener mCompleteListener;
-    private Handler mCompleteListenerHandler;
 
     private final Bitmap mPoisonPillBitmap;
 
     private FrameCountListener mFrameCountListener;
-    private Handler mFrameCountListenerHandler;
 
     public native void passImageToSlam(int width, int height, long img, long timeStamp);
 
     public Slam(BlockingQueue<TimeFramePair<Bitmap, Long>> q, Bitmap mPoisonPillBitmap) {
         this.mQueue = q;
         this.mPoisonPillBitmap = mPoisonPillBitmap;
-        startSlamThread();
-        mSlamSenderHandler.post(this::doSlam);
     }
 
     /**
@@ -50,13 +44,13 @@ public class Slam {
     /**
      * This will run in the background on the SlamSenderThread.
      */
-    private void doSlam() {
+    public void doSlam() {
         try {
             TimeFramePair<Bitmap, Long> timeFramePair = mQueue.take();
             Bitmap bmp = timeFramePair.getFrame();
             Long time = timeFramePair.getTime();
             do {
-                mFrameCountListenerHandler.post(() -> mFrameCountListener.onNextFrame());
+                mFrameCountListener.onNextFrame();
                 sendFrameToSlam(bmp, time);
                 timeFramePair = mQueue.take();
                 bmp = timeFramePair.getFrame();
@@ -66,42 +60,23 @@ public class Slam {
         catch (Exception e) {
             System.out.println(Thread.currentThread().getName() + " " + e.getMessage());
         }
-        mCompleteListenerHandler.post(() -> mCompleteListener.onSlamComplete(0));
-    }
-
-    private void startSlamThread() {
-        mSlamSenderThread = new HandlerThread("Slam Background");
-        mSlamSenderThread.start();
-        mSlamSenderHandler = new Handler(mSlamSenderThread.getLooper());
-    }
-
-    public void stopSlamThread() {
-        mSlamSenderThread.quitSafely();
-        try {
-            mSlamSenderThread.join();
-            mSlamSenderThread = null;
-            mSlamSenderHandler = null;
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void setOnSlamCompleteListener(SlamCompleteListener listener, Handler handler) {
-        mCompleteListener = listener;
-        mCompleteListenerHandler = handler;
-    }
-
-    public interface SlamCompleteListener {
-        void onSlamComplete(int pointCloud);
+        mCompleteListener.onSlamComplete(0);
     }
 
     public interface FrameCountListener {
         void onNextFrame();
     }
 
-    public void setFrameCountListener(FrameCountListener listener, Handler handler) {
+    public void setFrameCountListener(FrameCountListener listener) {
         mFrameCountListener = listener;
-        mFrameCountListenerHandler = handler;
+    }
+
+    public interface SlamCompleteListener {
+        void onSlamComplete(int pointCloud);
+    }
+
+    public void setOnSlamCompleteListener(SlamCompleteListener listener) {
+        mCompleteListener = listener;
     }
 
 }
