@@ -51,7 +51,7 @@ public class SignupViewModel extends ViewModel {
             if (task.isSuccessful()) {
                 mFb.createNewAccount(firstName.getValue(), lastName.getValue(), email.getValue(), password.getValue());
                 //set login state
-                //((MainActivity) getActivity()).setLoginState(true);
+                setLoginState(true);
             } else {
                 Log.d(TAG, "createNewAccount:failed", task.getException());
             }

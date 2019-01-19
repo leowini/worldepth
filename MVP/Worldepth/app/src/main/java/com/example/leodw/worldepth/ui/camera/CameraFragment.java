@@ -3,7 +3,6 @@ package com.example.leodw.worldepth.ui.camera;
 import android.Manifest;
 import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.ClipData;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -43,8 +42,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.leodw.worldepth.R;
-import com.example.leodw.worldepth.slam.ReconVM;
-import com.example.leodw.worldepth.slam.Slam;
+import com.example.leodw.worldepth.reconstruction.ReconVM;
+import com.example.leodw.worldepth.reconstruction.Slam;
 
 import java.util.ArrayList;
 import java.util.Arrays;

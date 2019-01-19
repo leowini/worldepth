@@ -1,15 +1,12 @@
-package com.example.leodw.worldepth.slam;
+package com.example.leodw.worldepth.reconstruction;
 
 import android.graphics.Bitmap;
-import android.os.Handler;
-import android.os.HandlerThread;
 
 import com.example.leodw.worldepth.ui.camera.TimeFramePair;
 
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
 
-import java.io.ByteArrayOutputStream;
 import java.util.concurrent.BlockingQueue;
 
 public class Slam {

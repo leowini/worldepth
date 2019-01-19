@@ -1,4 +1,4 @@
-package com.example.leodw.worldepth.slam;
+package com.example.leodw.worldepth.reconstruction;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;

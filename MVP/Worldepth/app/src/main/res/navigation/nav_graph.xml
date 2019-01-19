@@ -188,7 +188,7 @@
     </fragment>
     <fragment
         android:id="@+id/reconstructionFragment"
-        android:name="com.example.leodw.worldepth.ui.Reconstruction.ReconstructionFragment"
+        android:name="com.example.leodw.worldepth.ui.reconstruction.ReconstructionFragment"
         android:label="reconstruction_fragment"
         tools:layout="@layout/reconstruction_fragment" >
         <action
