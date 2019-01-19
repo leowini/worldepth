@@ -17,15 +17,14 @@ import com.example.leodw.worldepth.data.DataPair;
 import com.example.leodw.worldepth.data.DataTransfer;
 import com.example.leodw.worldepth.data.FirebaseWrapper;
 import com.example.leodw.worldepth.ui.MainActivity;
+import com.example.leodw.worldepth.ui.signup.SignupViewModel;
 
 import androidx.navigation.Navigation;
 
 public class NameFragment extends Fragment {
     private static final String TAG = "NameFragment";
 
-    private NameViewModel mViewModel;
-    private FirebaseWrapper mFb;
-    private DataTransfer mDt;
+    private SignupViewModel mViewModel;
     private EditText mFirstName;
     private EditText mLastName;
 
@@ -39,12 +38,11 @@ public class NameFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.name_fragment, container, false);
-        mDt = ((MainActivity) this.getActivity()).getDataTransfer();
 
         Button nameNextButton = view.findViewById(R.id.nameNextButton);
         nameNextButton.setOnClickListener((view1) -> {
-            mDt.addData(new DataPair(mFirstName.getText().toString(), "passwordFragment", "nameFragment"));
-            mDt.addData(new DataPair(mLastName.getText().toString(), "passwordFragment", "nameFragment"));
+            mViewModel.setFirstName(mFirstName.getText().toString());
+            mViewModel.setLastName(mLastName.getText().toString());
             Navigation.findNavController(view1).navigate(R.id.action_nameFragment_to_birthdayFragment);
         });
 
@@ -58,8 +56,7 @@ public class NameFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(NameViewModel.class);
-        mFb = ((MainActivity)this.getActivity()).getFirebaseWrapper();
+        mViewModel = ViewModelProviders.of(this).get(SignupViewModel.class);
         // TODO: Use the ViewModel
     }
 

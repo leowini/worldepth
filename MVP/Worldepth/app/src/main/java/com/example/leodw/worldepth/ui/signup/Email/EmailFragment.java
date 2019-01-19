@@ -20,13 +20,14 @@ import com.example.leodw.worldepth.data.DataPair;
 import com.example.leodw.worldepth.data.DataTransfer;
 import com.example.leodw.worldepth.data.FirebaseWrapper;
 import com.example.leodw.worldepth.ui.MainActivity;
+import com.example.leodw.worldepth.ui.signup.SignupViewModel;
 
 import androidx.navigation.Navigation;
 
 public class EmailFragment extends Fragment {
     private static final String TAG = "EmailFragment";
 
-    private EmailViewModel mViewModel;
+    private SignupViewModel mViewModel;
     private FirebaseWrapper mFb;
     private EditText mEmailInput;
     private EditText mServiceInput;
@@ -50,7 +51,7 @@ public class EmailFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(EmailViewModel.class);
+        mViewModel = ViewModelProviders.of(this).get(SignupViewModel.class);
         mFb = ((MainActivity) this.getActivity()).getFirebaseWrapper();
         mDt = ((MainActivity) this.getActivity()).getDataTransfer();
         // TODO: Use the ViewModel
@@ -109,7 +110,7 @@ public class EmailFragment extends Fragment {
         signUp.setOnClickListener((view1) -> {
             if (validEmail()) {
                 String email = mEmailInput.getText().toString() + "@" + mServiceInput.getText().toString() + "." + mSuffixInput.getText().toString();
-                mDt.addData(new DataPair(email, "passwordFragment", "emailFragment"));
+                mViewModel.setEmail(email);
                 Navigation.findNavController(view1).navigate(R.id.action_emailFragment_to_nameFragment);
             }
         });

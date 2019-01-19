@@ -23,6 +23,7 @@ import com.example.leodw.worldepth.data.DataPair;
 import com.example.leodw.worldepth.data.DataTransfer;
 import com.example.leodw.worldepth.data.FirebaseWrapper;
 import com.example.leodw.worldepth.ui.MainActivity;
+import com.example.leodw.worldepth.ui.signup.SignupViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.navigation.Navigation;
@@ -30,7 +31,7 @@ import androidx.navigation.Navigation;
 public class PhoneFragment extends Fragment {
     private static final String TAG = "PhoneFragment";
 
-    private PhoneViewModel mViewModel;
+    private SignupViewModel mViewModel;
     private FirebaseWrapper mFb;
     private DataTransfer mDt;
 
@@ -51,7 +52,7 @@ public class PhoneFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(PhoneViewModel.class);
+        mViewModel = ViewModelProviders.of(this).get(SignupViewModel.class);
         mFb = ((MainActivity)this.getActivity()).getFirebaseWrapper();
         // TODO: Use the ViewModel
     }

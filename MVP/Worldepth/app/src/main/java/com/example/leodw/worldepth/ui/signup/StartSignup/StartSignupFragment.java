@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.data.FirebaseWrapper;
 import com.example.leodw.worldepth.ui.MainActivity;
+import com.example.leodw.worldepth.ui.signup.SignupViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.navigation.Navigation;
@@ -29,7 +30,7 @@ import androidx.navigation.Navigation;
 public class  StartSignupFragment extends Fragment {
     private static final String TAG = "StartSignupFragment";
 
-    private StartSignupViewModel mViewModel;
+    private SignupViewModel mViewModel;
     private FirebaseWrapper mFb;
 
     private ImageView mPhoneSignup;
@@ -53,7 +54,7 @@ public class  StartSignupFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(StartSignupViewModel.class);
+        mViewModel = ViewModelProviders.of(this).get(SignupViewModel.class);
         mFb = ((MainActivity)this.getActivity()).getFirebaseWrapper();
         // TODO: Use the ViewModel
     }

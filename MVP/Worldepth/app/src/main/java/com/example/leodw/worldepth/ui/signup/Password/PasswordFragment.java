@@ -20,6 +20,7 @@ import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.data.DataTransfer;
 import com.example.leodw.worldepth.data.FirebaseWrapper;
 import com.example.leodw.worldepth.ui.MainActivity;
+import com.example.leodw.worldepth.ui.signup.SignupViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -28,7 +29,7 @@ import androidx.navigation.Navigation;
 public class PasswordFragment extends Fragment {
     private static final String TAG = "PasswordFragment";
 
-    private PasswordViewModel mViewModel;
+    private SignupViewModel mViewModel;
     private FirebaseWrapper mFb;
     private DataTransfer mDt;
     private EditText mPasswordInput, mConfirmPassword;
@@ -49,7 +50,7 @@ public class PasswordFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(PasswordViewModel.class);
+        mViewModel = ViewModelProviders.of(this).get(SignupViewModel.class);
         mFb = ((MainActivity) this.getActivity()).getFirebaseWrapper();
         mDt = ((MainActivity) this.getActivity()).getDataTransfer();
         // TODO: Use the ViewModel
@@ -99,14 +100,7 @@ public class PasswordFragment extends Fragment {
 
         completeSignUp.setOnClickListener((v) -> {
             if (validPassword()) {
-                String email = mDt.getDataPair(0).getData();
-                String firstName = mDt.getDataPair(1).getData();
-                String lastName = mDt.getDataPair(2).getData();
                 String password = mPasswordInput.getText().toString();
-                Log.d(TAG, "email: " + email);
-                Log.d(TAG, "firstName: " + firstName);
-                Log.d(TAG, "lastName: " + lastName);
-                Log.d(TAG, "password: " + password);
                 createNewAccount(firstName, lastName, email, password);
             }
         });
@@ -213,20 +207,4 @@ public class PasswordFragment extends Fragment {
         return false;
     }
 
-    public void createNewAccount(String firstName, String lastName, String email, String password) {
-        FirebaseAuth _auth = mFb.getFirebaseAuth();
-        FirebaseDatabase database = mFb.getFirebaseDatabase();
-        _auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                mFb.createNewAccount(firstName, lastName, email, password);
-                //set login state
-                ((MainActivity) getActivity()).setLoginState(true);
-                //go to camera fragment
-                Navigation.findNavController(getView()).navigate(R.id.action_passwordFragment_to_loadingFragment);
-            } else {
-                Toast.makeText(getContext(), "Account creation failed.", Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "createNewAccount:failed", task.getException());
-            }
-        });
-    }
 }
