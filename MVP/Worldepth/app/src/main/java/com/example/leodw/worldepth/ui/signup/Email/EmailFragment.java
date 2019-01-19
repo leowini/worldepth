@@ -16,11 +16,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.example.leodw.worldepth.R;
-import com.example.leodw.worldepth.data.DataPair;
-import com.example.leodw.worldepth.data.DataTransfer;
-import com.example.leodw.worldepth.data.FirebaseWrapper;
-import com.example.leodw.worldepth.ui.MainActivity;
 import com.example.leodw.worldepth.ui.signup.SignupViewModel;
+
 
 import androidx.navigation.Navigation;
 
@@ -31,7 +28,7 @@ public class EmailFragment extends Fragment {
     private EditText mEmailInput;
     private EditText mServiceInput;
     private EditText mSuffixInput;
-    private Button signUp;
+    private Button mNextButton;
     private ImageView goBack;
 
 
@@ -57,7 +54,7 @@ public class EmailFragment extends Fragment {
         mEmailInput = view.findViewById(R.id.emailInput);
         mServiceInput = view.findViewById(R.id.emailService);
         mSuffixInput = view.findViewById(R.id.emailSuffix);
-        signUp = view.findViewById(R.id.emailNextButton);
+        mNextButton = view.findViewById(R.id.emailNextButton);
         goBack = view.findViewById(R.id.emailBackButton);
 
         mEmailInput.addTextChangedListener(new TextWatcher() {
@@ -102,7 +99,7 @@ public class EmailFragment extends Fragment {
             }
         });
 
-        signUp.setOnClickListener((view1) -> {
+        mNextButton.setOnClickListener((view1) -> {
             if (validEmail()) {
                 String email = mEmailInput.getText().toString() + "@" + mServiceInput.getText().toString() + "." + mSuffixInput.getText().toString();
                 mViewModel.setEmail(email);
