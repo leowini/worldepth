@@ -13,6 +13,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Date;
+import java.util.Objects;
 
 import androidx.navigation.Navigation;
 
@@ -23,11 +24,11 @@ public class SignupViewModel extends ViewModel {
     private FirebaseWrapper mFb;
     private FirebaseDatabase mDb;
 
-    private final MutableLiveData<String> firstName = new MutableLiveData<>();
-    private final MutableLiveData<String> lastName = new MutableLiveData<>();
-    private final MutableLiveData<String> password = new MutableLiveData<>();
-    private final MutableLiveData<String> email = new MutableLiveData<>();
-    private final MutableLiveData<Date> birthday = new MutableLiveData<>();
+    private String firstName;
+    private String lastName;
+    private String password;
+    private String email;
+    private Date birthday;
     private final MutableLiveData<Boolean> loginState = new MutableLiveData<>();
 
     public SignupViewModel() {
@@ -39,22 +40,22 @@ public class SignupViewModel extends ViewModel {
 
     public void setLoginState(boolean state) { this.loginState.setValue(state); }
 
-    public void setFirstName(String name) {firstName.setValue(name);}
+    public void setFirstName(String name) { this.firstName = name; }
 
-    public void setLastName(String name) { lastName.setValue(name); }
+    public void setLastName(String name) { this.lastName = name; }
 
-    public void setPassword(String password) { this.password.setValue(password); }
+    public void setPassword(String password) { this.password = password; }
 
-    public void setEmail(String email) { this.email.setValue(email); }
+    public void setEmail(String email) { this.email = email; }
 
-    public void setBirthday(String birthday) { this.birthday.setValue(new Date(birthday)); }
+    public void setBirthday(int year, int month, int date) { this.birthday = new Date(year, month, date); }
 
     public void createNewAccount() {
         FirebaseAuth _auth = mFb.getFirebaseAuth();
         FirebaseDatabase database = mFb.getFirebaseDatabase();
-        _auth.createUserWithEmailAndPassword(email.getValue(), password.getValue()).addOnCompleteListener(task -> {
+        _auth.createUserWithEmailAndPassword(Objects.requireNonNull(this.email), password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                mFb.createNewAccount(firstName.getValue(), lastName.getValue(), email.getValue(), birthday.getValue(), password.getValue());
+                mFb.createNewAccount(this.firstName, this.lastName, this.email, this.birthday, this.password);
                 //set login state
                 setLoginState(true);
             } else {

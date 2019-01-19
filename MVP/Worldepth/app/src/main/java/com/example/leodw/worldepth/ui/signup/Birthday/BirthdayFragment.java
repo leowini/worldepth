@@ -53,7 +53,7 @@ public class BirthdayFragment extends Fragment {
         mViewModel = ViewModelProviders.of(getActivity()).get(SignupViewModel.class);
         String [] values =
                 {"Month","January","Febuary","March","April","May","June","July","August","September","October","November","December"};
-        Spinner spinner = (Spinner) view.findViewById(R.id.spinner);
+        Spinner spinner = view.findViewById(R.id.spinner);
         ArrayAdapter<String> LTRadapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, values);
         LTRadapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         spinner.setAdapter(LTRadapter);
@@ -64,8 +64,7 @@ public class BirthdayFragment extends Fragment {
         Button birthdayNextButton = view.findViewById(R.id.birthdayNextButton);
         birthdayNextButton.setOnClickListener((view1) -> {
             String birthday = spinner.getSelectedItem() + " " + mBirthdayDay.getText().toString() + ", " + mBirthdayYear.getText().toString();
-            Toast.makeText(getContext(), "birthday string: " + birthday, Toast.LENGTH_SHORT).show();
-            mViewModel.setBirthday(birthday);
+            mViewModel.setBirthday(Integer.parseInt(mBirthdayYear.getText().toString()), (int) spinner.getSelectedItem(), Integer.parseInt(mBirthdayDay.getText().toString()));
             Navigation.findNavController(view1).navigate(R.id.action_birthdayFragment_to_passwordFragment);
         });
 
