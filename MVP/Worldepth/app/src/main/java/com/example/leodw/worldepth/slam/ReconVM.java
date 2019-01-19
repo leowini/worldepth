@@ -5,11 +5,10 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.graphics.Bitmap;
 import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.Looper;
+
 import com.example.leodw.worldepth.ui.camera.TimeFramePair;
-
-import org.opencv.core.Mat;
-
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -17,13 +16,21 @@ public class ReconVM extends ViewModel {
 
     private static final String TAG = "ReconVM";
 
+    private HandlerThread mReconstructionThread;
+    private Handler mReconstructionHandler;
+
+    private ReconstructionCompleteListener mCompleteListener;
+    private Handler mCompleteListenerHandler;
+
+    private Handler mFrameCountHandler;
+
     private final MutableLiveData<ReconProgress> mReconProgress = new MutableLiveData<>();
     private final MutableLiveData<String> mSlamProgress = new MutableLiveData<>();
 
     private int mRenderedFrames;
     private int mProcessedFrames;
 
-    private static final Bitmap mPoisonPillBitmap = Bitmap.createBitmap(1,1,Bitmap.Config.ARGB_8888);
+    private static final Bitmap mPoisonPillBitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
 
     private final BlockingQueue<TimeFramePair<Bitmap, Long>> mQueue;
 
@@ -38,18 +45,33 @@ public class ReconVM extends ViewModel {
     public ReconVM() {
         mRenderedFrames = 0;
         mProcessedFrames = 0;
+        mCompleteListener = finalModel -> {
+            stopReconstructionThread();
+            showModelPreview(finalModel);
+        };
+        mCompleteListenerHandler = new Handler(Looper.getMainLooper());
+        mFrameCountHandler = new Handler(Looper.getMainLooper());
         mQueue = new LinkedBlockingQueue<>();
-        mTextureMapWrapper = new TextureMapWrapper();
-        mTextureMapWrapper.setOnCompleteListener(this::showModelPreview);
-        mPoissonWrapper = new PoissonWrapper();
-        mPoissonWrapper.setOnCompleteListener(mesh -> mTextureMapWrapper.runMapping(mesh));
-        mSlam = new Slam(mQueue, mPoisonPillBitmap);
-        mSlam.setOnSlamCompleteListener(pointCloud -> {
-            mSlamProgress.setValue("100");
-            mSlam.stopSlamThread();
-            mPoissonWrapper.runPoisson(pointCloud);
-        }, new Handler(Looper.getMainLooper()));
-        mSlam.setFrameCountListener(this::frameProcessed, new Handler(Looper.getMainLooper()));
+        startReconstructionThread();
+        mReconstructionHandler.post(this::reconstruct);
+    }
+
+    private void startReconstructionThread() {
+        mReconstructionThread = new HandlerThread("ReconstructionThread");
+        mReconstructionThread.start();
+        mReconstructionHandler = new Handler(mReconstructionThread.getLooper());
+    }
+
+    public void stopReconstructionThread() {
+        mReconstructionThread.quitSafely();
+        try {
+            mReconstructionThread.join();
+            mReconstructionThread = null;
+            mReconstructionHandler = null;
+        } catch (
+                InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private void showModelPreview(int finalModel) {
@@ -80,10 +102,23 @@ public class ReconVM extends ViewModel {
         }
     }
 
-    private void Reconstruct() {
-        //doSlam();
-        //doPoisson();
-        //doTextureMapping();
+    private void reconstruct() {
+        mTextureMapWrapper = new TextureMapWrapper();
+        mTextureMapWrapper.setOnCompleteListener(finalModel ->
+                mCompleteListenerHandler.post(() ->
+                        mCompleteListener.onReconstructionComplete(finalModel)));
+        mPoissonWrapper = new PoissonWrapper();
+        mPoissonWrapper.setOnCompleteListener(mesh -> mTextureMapWrapper.runMapping(mesh));
+        mSlam = new Slam(mQueue, mPoisonPillBitmap);
+        mSlam.setOnSlamCompleteListener(pointCloud -> {
+            mFrameCountHandler.post(() -> {
+                mProcessedFrames = mRenderedFrames;
+                updateSlamProgress();
+            });
+            mPoissonWrapper.runPoisson(pointCloud);
+        });
+        mSlam.setFrameCountListener(() -> mFrameCountHandler.post(this::frameProcessed));
+        mSlam.doSlam();
     }
 
     public Bitmap getPoisonPill() {
@@ -94,6 +129,12 @@ public class ReconVM extends ViewModel {
         return mSlamProgress;
     }
 
-    public LiveData<ReconProgress> getReconProgress() { return mReconProgress; }
+    public LiveData<ReconProgress> getReconProgress() {
+        return mReconProgress;
+    }
+
+    public interface ReconstructionCompleteListener {
+        void onReconstructionComplete(int finalModel);
+    }
 
 }
