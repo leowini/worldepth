@@ -15,8 +15,8 @@ import com.google.firebase.database.ValueEventListener;
 
 public class ProfileViewModel extends ViewModel {
 
-    private MutableLiveData<String> mName = new MutableLiveData<>();
-    private MutableLiveData<Integer> mFriendCount = new MutableLiveData<>();
+    private final MutableLiveData<String> mName = new MutableLiveData<>();
+    private final MutableLiveData<Integer> mFriendCount = new MutableLiveData<>();
 
     private FirebaseWrapper mFb;
     private FirebaseDatabase mDb;
