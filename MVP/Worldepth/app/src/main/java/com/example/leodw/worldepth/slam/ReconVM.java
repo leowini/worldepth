@@ -9,9 +9,6 @@ import android.os.HandlerThread;
 import android.os.Looper;
 
 import com.example.leodw.worldepth.ui.camera.TimeFramePair;
-
-import org.opencv.core.Mat;
-
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -24,6 +21,8 @@ public class ReconVM extends ViewModel {
 
     private ReconstructionCompleteListener mCompleteListener;
     private Handler mCompleteListenerHandler;
+
+    private Handler mFrameCountHandler;
 
     private final MutableLiveData<ReconProgress> mReconProgress = new MutableLiveData<>();
     private final MutableLiveData<String> mSlamProgress = new MutableLiveData<>();
@@ -51,6 +50,7 @@ public class ReconVM extends ViewModel {
             showModelPreview(finalModel);
         };
         mCompleteListenerHandler = new Handler(Looper.getMainLooper());
+        mFrameCountHandler = new Handler(Looper.getMainLooper());
         mQueue = new LinkedBlockingQueue<>();
         startReconstructionThread();
         mReconstructionHandler.post(this::reconstruct);
@@ -111,10 +111,13 @@ public class ReconVM extends ViewModel {
         mPoissonWrapper.setOnCompleteListener(mesh -> mTextureMapWrapper.runMapping(mesh));
         mSlam = new Slam(mQueue, mPoisonPillBitmap);
         mSlam.setOnSlamCompleteListener(pointCloud -> {
-            mReconstructionHandler.post(() -> mSlamProgress.setValue("100"));
+            mFrameCountHandler.post(() -> {
+                mProcessedFrames = mRenderedFrames;
+                updateSlamProgress();
+            });
             mPoissonWrapper.runPoisson(pointCloud);
         });
-        mSlam.setFrameCountListener(() -> mReconstructionHandler.post(this::frameProcessed));
+        mSlam.setFrameCountListener(() -> mFrameCountHandler.post(this::frameProcessed));
         mSlam.doSlam();
     }
 
