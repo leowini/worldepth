@@ -1,5 +1,6 @@
 package com.example.leodw.worldepth.ui;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -7,8 +8,11 @@ import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -55,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences mPreferences;
     private static final String sharedPrefFile = "com.example.android.leodw.worldepth";
 
+    private static final int REQUEST_EXTERNAL_WRITE_PERMISSION = 2909;
+
     // Used to load the 'native-lib' library on application startup.
     static {
         System.loadLibrary("native-lib");
@@ -76,7 +82,13 @@ public class MainActivity extends AppCompatActivity {
         dt = new DataTransfer();
         createNotificationChannel();
         //listenForNotifications();
-        loadFiles();
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            }, REQUEST_EXTERNAL_WRITE_PERMISSION);
+            Log.i(TAG, "permission not granted, asking");
+
+        }
     }
 
     public FirebaseWrapper getFirebaseWrapper(){
@@ -142,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean checkAndWriteFile(String filename){
         String externDir = Environment.getExternalStorageDirectory().getAbsolutePath();
+        Log.d(TAG, externDir);
         File wdDir = new File(externDir + "/Worldepth");
         if(!wdDir.exists()){
             Log.i(TAG, "Worldepth folder not found, making it...");
@@ -215,6 +228,19 @@ public class MainActivity extends AppCompatActivity {
                 unzip(new File(externDir + "/ORBvoc.txt.tar.gz"), Environment.getExternalStorageDirectory());
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_EXTERNAL_WRITE_PERMISSION) {
+            if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                Toast.makeText(this, "Can't write to external storage without permission", Toast.LENGTH_SHORT).show();
+                this.finish();
+            } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                loadFiles();
             }
         }
     }
