@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
         File targetFile = new File(externDir + "/Worldepth/" + filename);
         if(targetFile.exists()){
             Log.i(TAG, targetFile.getAbsolutePath() + " already exists");
-            return false;
+            return true;
         }
         else {
             try {
@@ -201,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
         } finally {
             zis.close();
         }
-
+        Log.d(TAG, "unzipped");
     }
 
     private void loadFiles() {
@@ -211,6 +211,7 @@ public class MainActivity extends AppCompatActivity {
             String externDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Worldepth";
 
             try {
+                Log.d(TAG, "trying to unzip");
                 unzip(new File(externDir + "/ORBvoc.txt.tar.gz"), Environment.getExternalStorageDirectory());
             } catch (IOException e) {
                 e.printStackTrace();
