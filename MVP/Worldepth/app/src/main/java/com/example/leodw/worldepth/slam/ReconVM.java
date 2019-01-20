@@ -53,13 +53,13 @@ public class ReconVM extends ViewModel {
         mFrameCountHandler = new Handler(Looper.getMainLooper());
         mQueue = new LinkedBlockingQueue<>();
         startReconstructionThread();
-        mReconstructionHandler.post(this::reconstruct);
     }
 
     private void startReconstructionThread() {
         mReconstructionThread = new HandlerThread("ReconstructionThread");
         mReconstructionThread.start();
         mReconstructionHandler = new Handler(mReconstructionThread.getLooper());
+        mReconstructionHandler.post(this::reconstruct);
     }
 
     public void stopReconstructionThread() {
