@@ -151,10 +151,10 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         File targetFile = new File(externDir + "/Worldepth/" + filename);
-//        if (targetFile.exists()) {
-//            Log.i(TAG, targetFile.getAbsolutePath() + " already exists");
-//            return false;
-//        }
+        if (targetFile.exists()) {
+            Log.i(TAG, targetFile.getAbsolutePath() + " already exists");
+            return null;
+        }
 
         try {
             targetFile.createNewFile();
@@ -162,13 +162,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.e(TAG, "Could not make file!");
             }
             String[] assetsRoot = getAssets().list("");
-            String assetsFile;
-            if (filename == "ORBvoc.txt.tar.gz") {
-                assetsFile = "ORBvoc.txt.tar";
-            } else {
-                assetsFile = filename;
-            }
-            InputStream initialStream = getAssets().open(assetsFile);
+            InputStream initialStream = getAssets().open(filename);
             byte[] buffer = new byte[initialStream.available()];
             initialStream.read(buffer);
 
@@ -182,20 +176,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadFiles() {
-        File wasWritten = checkAndWriteFile("ORBvoc.txt.tar");
+        File tarFile = checkAndWriteFile("ORBvoc.txt.tar");
         checkAndWriteFile("TUM1.yaml");
-        if (true) {
+        if (tarFile != null) {
             String externDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Worldepth";
-
-//            try {
-//                unzip(new File(externDir + "/ORBvoc.txt.tar.gz"), externDir);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
             try {
-                String outputFile = getFileName(wasWritten, externDir);
-                File tarFile = wasWritten;
-                //tarFile = decompressGZIP(wasWritten, tarFile);
                 File unTarFile = new File(externDir);
                 unTar(tarFile, unTarFile);
             } catch (IOException e) {
