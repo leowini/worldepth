@@ -20,7 +20,6 @@ import android.widget.Toast;
 import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.data.DataTransfer;
 import com.example.leodw.worldepth.data.FirebaseWrapper;
-import com.google.android.gms.common.util.IOUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
@@ -37,14 +36,12 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import static android.provider.AlarmClock.EXTRA_MESSAGE;
-import static java.security.AccessController.getContext;
-
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.fragment.FragmentNavigator;
 import androidx.navigation.fragment.NavHostFragment;
+
+import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
+import org.apache.commons.compress.utils.IOUtils;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -264,7 +261,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void unTar() {
+    private void unTar(File tarFile, File destFile) throws IOException {
         FileInputStream fis = new FileInputStream(tarFile);
         TarArchiveInputStream tis = new TarArchiveInputStream(fis);
         TarArchiveEntry tarEntry = null;
