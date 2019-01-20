@@ -66,7 +66,7 @@ System::System(const string &strVocFile, const string &strSettingsFile):
     {
         cerr << "Wrong path to vocabulary. " << endl;
         cerr << "Failed to open at: " << strVocFile << endl;
-        exit(-1);
+        //exit(-1);
     }
     cout << "Vocabulary loaded!" << endl << endl;
 
