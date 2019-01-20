@@ -57,7 +57,7 @@ dependencies {
     implementation "android.arch.navigation:navigation-fragment:$nav_version" // use -ktx for Kotlin
     implementation "android.arch.navigation:navigation-ui:$nav_version"
     implementation project(path: ':openCVLibrary343')
-    compile project(path: ':openCVLibrary343') // use -ktx for Kotlin
+    implementation 'org.apache.directory.studio:org.apache.commons.io:2.4'
 }
 
 apply plugin: 'com.google.gms.google-services'
