@@ -32,9 +32,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -143,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private boolean checkAndWriteFile(String filename) {
+    private File checkAndWriteFile(String filename) {
         String externDir = Environment.getExternalStorageDirectory().getAbsolutePath();
         File wdDir = new File(externDir + "/Worldepth");
         if (!wdDir.exists()) {
@@ -166,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
             }
             String[] assetsRoot = getAssets().list("");
             String assetsFile;
-            if (filename=="ORBvoc.txt.tar.gz") {
+            if (filename == "ORBvoc.txt.tar.gz") {
                 assetsFile = "ORBvoc.txt.tar";
             } else {
                 assetsFile = filename;
@@ -181,46 +178,13 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return true;
-    }
-
-    private boolean unzip(File zipFile, String externDir) throws IOException {
-        InputStream is;
-        ZipInputStream zis;
-        try {
-            String filename;
-            is = new FileInputStream(zipFile);
-            zis = new ZipInputStream(new BufferedInputStream(is));
-            ZipEntry ze;
-            byte[] buffer = new byte[8192];
-            int count;
-            while ((ze = zis.getNextEntry()) != null) {
-                filename = ze.getName();
-                if (ze.isDirectory()) {
-                    File fmd = new File(externDir + filename);
-                    fmd.mkdirs();
-                    continue;
-                }
-                FileOutputStream fout = new FileOutputStream(externDir + filename);
-
-                while ((count = zis.read(buffer)) != -1) {
-                    fout.write(buffer, 0, count);
-                }
-                fout.close();
-                zis.closeEntry();
-            }
-            zis.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
+        return targetFile;
     }
 
     private void loadFiles() {
-        boolean wasWritten = checkAndWriteFile("ORBvoc.txt.tar.gz");
+        File wasWritten = checkAndWriteFile("ORBvoc.txt.tar");
         checkAndWriteFile("TUM1.yaml");
-        if (wasWritten) {
+        if (true) {
             String externDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Worldepth";
 
 //            try {
@@ -229,36 +193,15 @@ public class MainActivity extends AppCompatActivity {
 //                e.printStackTrace();
 //            }
             try {
-                File inputFile = new File(externDir + "/ORBvoc.txt.tar.gz");
-                String outputFile = getFileName(inputFile, externDir);
-                File tarFile = new File(outputFile);
-                tarFile = decompressGZIP(inputFile, tarFile);
+                String outputFile = getFileName(wasWritten, externDir);
+                File tarFile = wasWritten;
+                //tarFile = decompressGZIP(wasWritten, tarFile);
                 File unTarFile = new File(externDir);
                 unTar(tarFile, unTarFile);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-    }
-
-    /**
-     * Method to decompress a gzip file
-     */
-    private File decompressGZIP(File gZippedFile, File tarFile) throws IOException{
-        FileInputStream fis = new FileInputStream(gZippedFile);
-        GZIPInputStream gZIPInputStream = new GZIPInputStream(fis);
-
-        FileOutputStream fos = new FileOutputStream(tarFile);
-        byte[] buffer = new byte[1024];
-        int len;
-        while((len = gZIPInputStream.read(buffer)) > 0){
-            fos.write(buffer, 0, len);
-        }
-
-        fos.close();
-        gZIPInputStream.close();
-        return tarFile;
-
     }
 
     private void unTar(File tarFile, File destFile) throws IOException {
@@ -270,14 +213,14 @@ public class MainActivity extends AppCompatActivity {
         while ((tarEntry = tis.getNextTarEntry()) != null) {
             File outputFile = new File(destFile + File.separator + tarEntry.getName());
 
-            if(tarEntry.isDirectory()){
+            if (tarEntry.isDirectory()) {
 
                 System.out.println("outputFile Directory ---- "
                         + outputFile.getAbsolutePath());
-                if(!outputFile.exists()){
+                if (!outputFile.exists()) {
                     outputFile.mkdirs();
                 }
-            }else{
+            } else {
                 //File outputFile = new File(destFile + File.separator + tarEntry.getName());
                 System.out.println("outputFile File ---- " + outputFile.getAbsolutePath());
                 outputFile.getParentFile().mkdirs();
@@ -293,11 +236,12 @@ public class MainActivity extends AppCompatActivity {
     /**
      * This method is used to get the tar file name from the gz file
      * by removing the .gz part from the input file
+     *
      * @param inputFile
      * @param outputFolder
      * @return
      */
-    private static String getFileName(File inputFile, String outputFolder){
+    private static String getFileName(File inputFile, String outputFolder) {
         return outputFolder + File.separator +
                 inputFile.getName().substring(0, inputFile.getName().lastIndexOf('.'));
     }
