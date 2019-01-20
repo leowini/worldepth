@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
         File targetFile = new File(externDir + "/Worldepth/" + filename);
         if(targetFile.exists()){
             Log.i(TAG, targetFile.getAbsolutePath() + " already exists");
-            return true;
+            return false;
         }
         else {
             try {
