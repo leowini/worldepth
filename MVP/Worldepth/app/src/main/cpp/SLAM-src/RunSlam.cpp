@@ -47,7 +47,7 @@ namespace SLAM
     Java_com_example_leodw_worldepth_slam_Slam_passImageToSlam(JNIEnv *env, jobject instance, jlong img, jlong timeStamp) {
         cv::Mat &mat = *(cv::Mat *) img;
         double tframe = (double) timeStamp;
-        process(mat, tframe);;
+        //process(mat, tframe);;
     }
 
     extern "C"
