@@ -217,18 +217,6 @@ public class MainActivity extends AppCompatActivity {
         }
         tis.close();
     }
-
-    /**
-     * This method is used to get the tar file name from the gz file
-     * by removing the .gz part from the input file
-     *
-     * @param inputFile
-     * @param outputFolder
-     * @return
-     */
-    private static String getFileName(File inputFile, String outputFolder) {
-        return outputFolder + File.separator +
-                inputFile.getName().substring(0, inputFile.getName().lastIndexOf('.'));
-    }
+    
 }
 
