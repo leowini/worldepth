@@ -23,7 +23,7 @@ public class ReconVM extends ViewModel {
     private HandlerThread mReconstructionThread;
     private Handler mReconstructionHandler;
 
-    private Handler mCompleteListenerHandler;
+    private Handler mProgressListenerHandler;
 
     private Handler mFrameCountHandler;
 
@@ -42,13 +42,14 @@ public class ReconVM extends ViewModel {
     private TextureMapWrapper mTextureMapWrapper;
 
     public enum ReconProgress {
-        SLAM, POISSON, TM, COMPLETE
+        INIT, READY, SLAM, POISSON, TM, COMPLETE
     }
 
     public ReconVM() {
+        mReconProgress.setValue(ReconProgress.INIT);
         mRenderedFrames = 0;
         mProcessedFrames = 0;
-        mCompleteListenerHandler = new Handler(Looper.getMainLooper());
+        mProgressListenerHandler = new Handler(Looper.getMainLooper());
         mFrameCountHandler = new Handler(Looper.getMainLooper());
         mQueue = new LinkedBlockingQueue<>();
         startReconstructionThread();
@@ -104,21 +105,26 @@ public class ReconVM extends ViewModel {
     private void reconstruct() {
         mTextureMapWrapper = new TextureMapWrapper();
         mTextureMapWrapper.setOnCompleteListener(finalModel ->
-                mCompleteListenerHandler.post(() -> {
+                mProgressListenerHandler.post(() -> {
                     stopReconstructionThread();
                     showModelPreview(finalModel);
                 }));
         mPoissonWrapper = new PoissonWrapper();
-        mPoissonWrapper.setOnCompleteListener(mesh -> mTextureMapWrapper.runMapping(mesh));
+        mPoissonWrapper.setOnCompleteListener(mesh -> {
+            mProgressListenerHandler.post(() -> mReconProgress.setValue(ReconProgress.TM));
+            mTextureMapWrapper.runMapping(mesh);
+        });
         mSlam = new Slam(mQueue, mPoisonPillBitmap);
         mSlam.setOnCompleteListener(pointCloud -> {
             mFrameCountHandler.post(() -> {
                 mProcessedFrames = mRenderedFrames;
                 updateSlamProgress();
             });
+            mProgressListenerHandler.post(() -> mReconProgress.setValue(ReconProgress.POISSON));
             mPoissonWrapper.runPoisson(pointCloud);
         });
         mSlam.setFrameCountListener(() -> mFrameCountHandler.post(this::frameProcessed));
+        mProgressListenerHandler.post(() -> mReconProgress.setValue(ReconProgress.READY));
         mSlam.doSlam();
     }
 
