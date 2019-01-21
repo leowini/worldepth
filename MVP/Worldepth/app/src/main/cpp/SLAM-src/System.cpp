@@ -68,7 +68,6 @@ System::System(const string &strVocFile, const string &strSettingsFile):
     clock_t tStart = clock();
 
     mpVocabulary = new ORBVocabulary();
-    //bool bVocLoad = mpVocabulary->loadFromTextFile(strVocFile);
     bool bVocLoad = false; // chose loading method based on file extension
     if (has_suffix(strVocFile, ".txt"))
         bVocLoad = mpVocabulary->loadFromTextFile(strVocFile);
