@@ -131,3 +131,9 @@ target_link_libraries( # Specifies the target library.
         lib_g2o
         lib_DBoW2
         lib_opencv)
+
+# Build tools
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/tools)
+add_executable(bin_vocabulary
+        tools/bin_vocabulary.cpp)
+target_link_libraries(bin_vocabulary ${PROJECT_NAME})
