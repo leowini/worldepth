@@ -32,8 +32,8 @@ public class Slam {
     Slam(BlockingQueue<TimeFramePair<Bitmap, Long>> q, Bitmap mPoisonPillBitmap) {
         this.mQueue = q;
         this.mPoisonPillBitmap = mPoisonPillBitmap;
-        initSystem(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Worldepth/ORBvoc.txt",
-                Environment.getExternalStorageDirectory().getAbsolutePath() + "/Worldepth/TUM1.yaml");
+        initSystem(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Worldepth/ORBvoc.bin",
+               Environment.getExternalStorageDirectory().getAbsolutePath() + "/Worldepth/TUM1.yaml");
     }
 
     /**

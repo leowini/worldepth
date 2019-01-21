@@ -154,8 +154,11 @@ public class CameraFragment extends Fragment {
 
         @Override
         public void onError(@NonNull CameraDevice camera, int error) {
-            cameraDevice.close();
-            camera = null;
+            if(cameraDevice != null) {
+                cameraDevice.close();
+                camera = null;
+            }
+            Log.e(TAG, "" + error);
         }
     };
 

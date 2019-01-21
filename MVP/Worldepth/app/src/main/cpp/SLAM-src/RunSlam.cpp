@@ -8,8 +8,8 @@ namespace SLAM
 {
 
     void start (std::string & vocFile, std::string & settingsFile) {
+        //now with binary
         slam = new System(vocFile, settingsFile);
-        //return slam;
     }
 
     //I still don't know how to do the initializer, if it's not automatically Idk how this is done
