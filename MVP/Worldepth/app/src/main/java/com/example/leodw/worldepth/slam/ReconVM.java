@@ -7,10 +7,13 @@ import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
+import android.widget.Toast;
 
 import com.example.leodw.worldepth.ui.camera.TimeFramePair;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+
+import static java.security.AccessController.getContext;
 
 public class ReconVM extends ViewModel {
 
@@ -39,7 +42,7 @@ public class ReconVM extends ViewModel {
     private TextureMapWrapper mTextureMapWrapper;
 
     public enum ReconProgress {
-        SLAM, POISSON, TM
+        SLAM, POISSON, TM, COMPLETE
     }
 
     public ReconVM() {
@@ -75,7 +78,7 @@ public class ReconVM extends ViewModel {
     }
 
     private void showModelPreview(int finalModel) {
-
+        mReconProgress.setValue(ReconProgress.COMPLETE);
     }
 
     private void frameProcessed() {
