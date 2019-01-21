@@ -80,7 +80,7 @@ public class Slam {
         void onSlamComplete(int pointCloud);
     }
 
-    public void setOnSlamCompleteListener(SlamCompleteListener listener) {
+    public void setOnCompleteListener(SlamCompleteListener listener) {
         mCompleteListener = listener;
     }
 

@@ -22,7 +22,7 @@ public class ReconVM extends ViewModel {
 
     private HandlerThread mReconstructionThread;
     private Handler mReconstructionHandler;
-    
+
     private Handler mCompleteListenerHandler;
 
     private Handler mFrameCountHandler;
@@ -111,7 +111,7 @@ public class ReconVM extends ViewModel {
         mPoissonWrapper = new PoissonWrapper();
         mPoissonWrapper.setOnCompleteListener(mesh -> mTextureMapWrapper.runMapping(mesh));
         mSlam = new Slam(mQueue, mPoisonPillBitmap);
-        mSlam.setOnSlamCompleteListener(pointCloud -> {
+        mSlam.setOnCompleteListener(pointCloud -> {
             mFrameCountHandler.post(() -> {
                 mProcessedFrames = mRenderedFrames;
                 updateSlamProgress();
