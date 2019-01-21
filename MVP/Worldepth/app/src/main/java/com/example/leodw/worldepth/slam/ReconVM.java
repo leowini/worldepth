@@ -10,6 +10,7 @@ import android.os.Looper;
 import android.widget.Toast;
 
 import com.example.leodw.worldepth.ui.camera.TimeFramePair;
+
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -21,8 +22,7 @@ public class ReconVM extends ViewModel {
 
     private HandlerThread mReconstructionThread;
     private Handler mReconstructionHandler;
-
-    private ReconstructionCompleteListener mCompleteListener;
+    
     private Handler mCompleteListenerHandler;
 
     private Handler mFrameCountHandler;
@@ -48,10 +48,6 @@ public class ReconVM extends ViewModel {
     public ReconVM() {
         mRenderedFrames = 0;
         mProcessedFrames = 0;
-        mCompleteListener = finalModel -> {
-            stopReconstructionThread();
-            showModelPreview(finalModel);
-        };
         mCompleteListenerHandler = new Handler(Looper.getMainLooper());
         mFrameCountHandler = new Handler(Looper.getMainLooper());
         mQueue = new LinkedBlockingQueue<>();
@@ -108,8 +104,10 @@ public class ReconVM extends ViewModel {
     private void reconstruct() {
         mTextureMapWrapper = new TextureMapWrapper();
         mTextureMapWrapper.setOnCompleteListener(finalModel ->
-                mCompleteListenerHandler.post(() ->
-                        mCompleteListener.onReconstructionComplete(finalModel)));
+                mCompleteListenerHandler.post(() -> {
+                    stopReconstructionThread();
+                    showModelPreview(finalModel);
+                }));
         mPoissonWrapper = new PoissonWrapper();
         mPoissonWrapper.setOnCompleteListener(mesh -> mTextureMapWrapper.runMapping(mesh));
         mSlam = new Slam(mQueue, mPoisonPillBitmap);
@@ -134,10 +132,6 @@ public class ReconVM extends ViewModel {
 
     public LiveData<ReconProgress> getReconProgress() {
         return mReconProgress;
-    }
-
-    public interface ReconstructionCompleteListener {
-        void onReconstructionComplete(int finalModel);
     }
 
 }
