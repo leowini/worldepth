@@ -150,7 +150,7 @@ cv::Mat System::TrackMonocular(const cv::Mat &im, const double &timestamp)
     }
     }
 
-    cv::Mat Tcw = mpTracker->GrabImageMonocular(im,timestamp);
+    cv::Mat Tcw = mpTracker->GrabImageMonocular(im,timestamp); //the sigsev is in here
 
     unique_lock<mutex> lock2(mMutexState);
     mTrackingState = mpTracker->mState;
