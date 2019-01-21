@@ -61,7 +61,7 @@ public class ReconVM extends ViewModel {
         mReconstructionHandler.post(this::reconstruct);
     }
 
-    public void stopReconstructionThread() {
+    private void stopReconstructionThread() {
         mReconstructionThread.quitSafely();
         try {
             mReconstructionThread.join();

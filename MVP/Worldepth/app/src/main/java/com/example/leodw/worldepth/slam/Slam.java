@@ -29,7 +29,7 @@ public class Slam {
 
     public native void initSystem(String vocFile, String settingsFile);
 
-    public Slam(BlockingQueue<TimeFramePair<Bitmap, Long>> q, Bitmap mPoisonPillBitmap) {
+    Slam(BlockingQueue<TimeFramePair<Bitmap, Long>> q, Bitmap mPoisonPillBitmap) {
         this.mQueue = q;
         this.mPoisonPillBitmap = mPoisonPillBitmap;
         initSystem(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Worldepth/ORBvoc.txt",
@@ -50,7 +50,7 @@ public class Slam {
     /**
      * This will run in the background on the SlamSenderThread.
      */
-    public void doSlam() {
+    void doSlam() {
         try {
             TimeFramePair<Bitmap, Long> timeFramePair = mQueue.take();
             Bitmap bmp = timeFramePair.getFrame();
@@ -73,7 +73,7 @@ public class Slam {
         void onNextFrame();
     }
 
-    public void setFrameCountListener(FrameCountListener listener) {
+    void setFrameCountListener(FrameCountListener listener) {
         mFrameCountListener = listener;
     }
 
@@ -81,7 +81,7 @@ public class Slam {
         void onSlamComplete(int pointCloud);
     }
 
-    public void setOnCompleteListener(SlamCompleteListener listener) {
+    void setOnCompleteListener(SlamCompleteListener listener) {
         mCompleteListener = listener;
     }
 
