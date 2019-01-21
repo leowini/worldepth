@@ -62,7 +62,6 @@ namespace SLAM
         env->ReleaseStringUTFChars(settingsFile, _settingsFile);
     }
 
-
 }
 
 
