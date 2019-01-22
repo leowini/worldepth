@@ -102,6 +102,7 @@ namespace SLAM
 
         mpORBextractorLeft = new ORBextractor(nFeatures,fScaleFactor,nLevels,fIniThFAST,fMinThFAST);
 
+        mpIniORBextractor = new ORBextractor(2*nFeatures,fScaleFactor,nLevels,fIniThFAST,fMinThFAST);
 
         cout << endl  << "ORB Extractor Parameters: " << endl;
         cout << "- Number of Features: " << nFeatures << endl;
@@ -148,7 +149,7 @@ namespace SLAM
         }
 
         if(mState==NOT_INITIALIZED || mState==NO_IMAGES_YET)
-            mCurrentFrame = Frame(mImGray,timestamp,mpIniORBextractor,mpORBVocabulary,mK,mDistCoef,mbf,mThDepth);
+            mCurrentFrame = Frame(mImGray,timestamp,mpIniORBextractor/*this is null*/,mpORBVocabulary,mK,mDistCoef,mbf,mThDepth);
         else
             mCurrentFrame = Frame(mImGray,timestamp,mpORBextractorLeft,mpORBVocabulary,mK,mDistCoef,mbf,mThDepth);
 
