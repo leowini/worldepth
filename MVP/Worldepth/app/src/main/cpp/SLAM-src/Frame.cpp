@@ -43,7 +43,8 @@ namespace SLAM {
             SetPose(frame.mTcw);
     }
 
-    Frame::Frame(const cv::Mat &imGray, const double &timeStamp, ORBextractor* extractor,ORBVocabulary* voc, cv::Mat &K, cv::Mat &distCoef, const float &bf, const float &thDepth)
+    Frame::Frame(const cv::Mat &imGray, const double &timeStamp, ORBextractor* extractor /*this appears to be null, making the sigsegv error :( */
+            ,ORBVocabulary* voc, cv::Mat &K, cv::Mat &distCoef, const float &bf, const float &thDepth)
             :mpORBvocabulary(voc),mpORBextractorLeft(extractor),
              mTimeStamp(timeStamp), mK(K.clone()),mDistCoef(distCoef.clone()), mbf(bf), mThDepth(thDepth)
     {
