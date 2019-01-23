@@ -15,5 +15,4 @@
     <style name="BlankEditText">
         <item name="android:background">@null</item>
     </style>
-
 </resources>

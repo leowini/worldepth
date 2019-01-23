@@ -32,67 +32,232 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.05" />
 
-    <TextView
-        android:id="@+id/messagePreview1"
-        android:background="@drawable/rectangleBackground"
+    <View
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginStart="100dp"
-        android:text="temp1"
-        android:textAppearance="@android:style/TextAppearance.DeviceDefault.SearchResult.Title"
-        android:textSize="25sp"
+        android:layout_height="1dp"
+        android:background="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.16" />
+
+    <ImageView
+        android:id="@+id/imagePreview1"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="20dp"
+        android:src="@drawable/cake4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.20" />
+
+    <TextView
+        android:id="@+id/messagePreview1"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:layout_marginStart="120dp"
+        android:text="temp1"
+        android:gravity="center_vertical"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.SearchResult.Title"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="@id/imagePreview1"
+        app:layout_constraintStart_toEndOf="@id/imagePreview1"
+        app:layout_constraintTop_toTopOf="@id/imagePreview1"
         app:layout_constraintVertical_bias="0.20"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.305" />
+
+    <ImageView
+        android:id="@+id/imagePreview2"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/cake4"
+        android:layout_marginStart="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.36" />
 
     <TextView
         android:id="@+id/messagePreview2"
-        android:background="@drawable/rectangleBackground"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginStart="100dp"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:layout_marginStart="120dp"
         android:text="temp2"
+        android:gravity="center_vertical"
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.SearchResult.Title"
         android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="@id/imagePreview2"
+        app:layout_constraintStart_toEndOf="@id/imagePreview2"
+        app:layout_constraintTop_toTopOf="@id/imagePreview2"
+        app:layout_constraintVertical_bias="0.20"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.445" />
+
+    <ImageView
+        android:id="@+id/imagePreview3"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/cake4"
+        android:layout_marginStart="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.36"/>
+        app:layout_constraintVertical_bias="0.52" />
 
     <TextView
         android:id="@+id/messagePreview3"
-        android:background="@drawable/rectangleBackground"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginStart="100dp"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:layout_marginStart="120dp"
         android:text="temp3"
+        android:gravity="center_vertical"
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.SearchResult.Title"
         android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="@id/imagePreview3"
+        app:layout_constraintStart_toEndOf="@id/imagePreview3"
+        app:layout_constraintTop_toTopOf="@id/imagePreview3"
+        app:layout_constraintVertical_bias="0.20"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.52"/>
+        app:layout_constraintVertical_bias="0.59" />
 
-    <TextView
-        android:id="@+id/messagePreview4"
-        android:background="@drawable/rectangleBackground"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginStart="100dp"
-        android:text="temp4"
-        android:textAppearance="@android:style/TextAppearance.DeviceDefault.SearchResult.Title"
-        android:textSize="25sp"
+    <ImageView
+        android:id="@+id/imagePreview4"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/cake4"
+        android:layout_marginStart="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.68"/>
+
+    <TextView
+        android:id="@+id/messagePreview4"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:layout_marginStart="120dp"
+        android:text="temp4"
+        android:gravity="center_vertical"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.SearchResult.Title"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="@id/imagePreview4"
+        app:layout_constraintStart_toEndOf="@id/imagePreview4"
+        app:layout_constraintTop_toTopOf="@id/imagePreview4"
+        app:layout_constraintVertical_bias="0.20"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.73" />
+
+    <ImageView
+        android:id="@+id/imagePreview5"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/cake4"
+        android:layout_marginStart="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.84"/>
+
+    <TextView
+        android:id="@+id/messagePreview5"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:layout_marginStart="120dp"
+        android:text="temp5"
+        android:gravity="center_vertical"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.SearchResult.Title"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="@id/imagePreview5"
+        app:layout_constraintStart_toEndOf="@id/imagePreview5"
+        app:layout_constraintTop_toTopOf="@id/imagePreview5"
+        app:layout_constraintVertical_bias="0.20"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.875" />
+
+    <ImageView
+        android:id="@+id/imagePreview6"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/cake4"
+        android:layout_marginStart="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"/>
+
+    <TextView
+        android:id="@+id/messagePreview6"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:layout_marginStart="120dp"
+        android:text="temp6"
+        android:gravity="center_vertical"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.SearchResult.Title"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="@id/imagePreview6"
+        app:layout_constraintStart_toEndOf="@id/imagePreview6"
+        app:layout_constraintTop_toTopOf="@id/imagePreview6"
+        app:layout_constraintVertical_bias="0.20"/>
+
 </android.support.constraint.ConstraintLayout>
