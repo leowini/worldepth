@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/nameBackButton"
+        android:id="@+id/messageToMapBtn"
         android:layout_width="43dp"
         android:layout_height="58dp"
         android:src="@drawable/back2"
