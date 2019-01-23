@@ -405,9 +405,9 @@ namespace SLAM
             {
                 mInitialFrame = Frame(mCurrentFrame);
                 mLastFrame = Frame(mCurrentFrame);
-                mvbPrevMatched.resize(mCurrentFrame.mvKeysUn.size());
-                for(size_t i=0; i<mCurrentFrame.mvKeysUn.size(); i++)
-                    mvbPrevMatched[i]=mCurrentFrame.mvKeysUn[i].pt;
+                mvbPrevMatched.resize(mCurrentFrame.mvKeys.size());
+                for(size_t i=0; i<mCurrentFrame.mvKeys.size(); i++)
+                    mvbPrevMatched[i]=mCurrentFrame.mvKeys[i].pt;
 
                 if(mpInitializer)
                     delete mpInitializer;

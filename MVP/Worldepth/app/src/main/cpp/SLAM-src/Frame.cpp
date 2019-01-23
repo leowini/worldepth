@@ -27,7 +27,7 @@ namespace SLAM {
               mTimeStamp(frame.mTimeStamp), mK(frame.mK.clone()),
               mDistCoef(frame.mDistCoef.clone()),
               mbf(frame.mbf), mThDepth(frame.mThDepth), N(frame.N), mvKeys(frame.mvKeys),
-              mvKeysUn(frame.mvKeysUn),
+              mvKeys(frame.mvKeys),
               mBowVec(frame.mBowVec), mFeatVec(frame.mFeatVec), mb(frame.mb),
               mDescriptors(frame.mDescriptors.clone()), mvuRight(frame.mvuRight), mvDepth(frame.mvDepth),
               mvpMapPoints(frame.mvpMapPoints), mvbOutlier(frame.mvbOutlier), mnId(frame.mnId),
@@ -111,7 +111,7 @@ namespace SLAM {
 
         for(int i=0;i<N;i++)
         {
-            const cv::KeyPoint &kp = mvKeys[i]; //changed from mvKeysUn[i] because our frames are already undistorted.
+            const cv::KeyPoint &kp = mvKeys[i]; //changed from mvKeys[i] because our frames are already undistorted.
 
             int nGridPosX, nGridPosY;
             if(PosInGrid(kp,nGridPosX,nGridPosY))
@@ -233,7 +233,7 @@ namespace SLAM {
 
                 for(size_t j=0, jend=vCell.size(); j<jend; j++)
                 {
-                    const cv::KeyPoint &kpUn = mvKeysUn[vCell[j]];
+                    const cv::KeyPoint &kpUn = mvKeys[vCell[j]];
                     if(bCheckLevels)
                     {
                         if(kpUn.octave<minLevel)
@@ -284,7 +284,7 @@ namespace SLAM {
     {
         if(mDistCoef.at<float>(0)==0.0)
         {
-            mvKeysUn=mvKeys;
+            mvKeys=mvKeys;
             return;
         }
 
@@ -302,13 +302,13 @@ namespace SLAM {
         mat=mat.reshape(1);
 
         // Fill undistorted keypoint vector
-        mvKeysUn.resize(N);
+        mvKeys.resize(N);
         for(int i=0; i<N; i++)
         {
             cv::KeyPoint kp = mvKeys[i];
             kp.pt.x=mat.at<float>(i,0);
             kp.pt.y=mat.at<float>(i,1);
-            mvKeysUn[i]=kp;
+            mvKeys[i]=kp;
         }
     }
      */

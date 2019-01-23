@@ -276,11 +276,11 @@ namespace SLAM
                 const int &idx1 = vMatchedIndices[ikp].first;
                 const int &idx2 = vMatchedIndices[ikp].second;
 
-                const cv::KeyPoint &kp1 = mpCurrentKeyFrame->mvKeysUn[idx1];
+                const cv::KeyPoint &kp1 = mpCurrentKeyFrame->mvKeys[idx1];
                 const float kp1_ur=mpCurrentKeyFrame->mvuRight[idx1];
                 bool bStereo1 = kp1_ur>=0;
 
-                const cv::KeyPoint &kp2 = pKF2->mvKeysUn[idx2];
+                const cv::KeyPoint &kp2 = pKF2->mvKeys[idx2];
                 const float kp2_ur = pKF2->mvuRight[idx2];
                 bool bStereo2 = kp2_ur>=0;
 
@@ -652,7 +652,7 @@ namespace SLAM
                         nMPs++;
                         if(pMP->Observations()>thObs)
                         {
-                            const int &scaleLevel = pKF->mvKeysUn[i].octave;
+                            const int &scaleLevel = pKF->mvKeys[i].octave;
                             const map<KeyFrame*, size_t> observations = pMP->GetObservations();
                             int nObs=0;
                             for(map<KeyFrame*, size_t>::const_iterator mit=observations.begin(), mend=observations.end(); mit!=mend; mit++)
@@ -660,7 +660,7 @@ namespace SLAM
                                 KeyFrame* pKFi = mit->first;
                                 if(pKFi==pKF)
                                     continue;
-                                const int &scaleLeveli = pKFi->mvKeysUn[mit->second].octave;
+                                const int &scaleLeveli = pKFi->mvKeys[mit->second].octave;
 
                                 if(scaleLeveli<=scaleLevel+1)
                                 {

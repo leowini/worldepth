@@ -34,7 +34,7 @@ Initializer::Initializer(const Frame &ReferenceFrame, float sigma, int iteration
 {
     mK = ReferenceFrame.mK.clone();
 
-    mvKeys1 = ReferenceFrame.mvKeysUn;
+    mvKeys1 = ReferenceFrame.mvKeys;
 
     mSigma = sigma;
     mSigma2 = sigma*sigma;
@@ -46,7 +46,7 @@ bool Initializer::Initialize(const Frame &CurrentFrame, const vector<int> &vMatc
 {
     // Fill structures with current keypoints and matches with reference frame
     // Reference Frame: 1, Current Frame: 2
-    mvKeys2 = CurrentFrame.mvKeysUn;
+    mvKeys2 = CurrentFrame.mvKeys;
 
     mvMatches12.clear();
     mvMatches12.reserve(mvKeys2.size());
