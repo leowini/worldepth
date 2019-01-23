@@ -111,7 +111,7 @@ namespace SLAM {
 
         for(int i=0;i<N;i++)
         {
-            const cv::KeyPoint &kp = mvKeysUn[i];
+            const cv::KeyPoint &kp = mvKeys[i]; //changed from mvKeysUn[i] because our frames are already undistorted.
 
             int nGridPosX, nGridPosY;
             if(PosInGrid(kp,nGridPosX,nGridPosY))
@@ -257,7 +257,8 @@ namespace SLAM {
 
     bool Frame::PosInGrid(const cv::KeyPoint &kp, int &posX, int &posY)
     {
-        posX = round((kp.pt.x-mnMinX)*mfGridElementWidthInv);
+        float x = kp.pt.x;
+        posX = round((kp.pt.x-mnMinX)*mfGridElementWidthInv); //sigsegv here
         posY = round((kp.pt.y-mnMinY)*mfGridElementHeightInv);
 
         //Keypoint's coordinates are undistorted, which could cause to go out of the image
