@@ -170,7 +170,7 @@ namespace SLAM
         // Get Map Mutex -> Map cannot be changed
         unique_lock<mutex> lock(mpMap->mMutexMapUpdate);
 
-        if(mState==NOT_INITIALIZED)//I think initialization is not happening
+        if(mState==NOT_INITIALIZED)
         {
             MonocularInitialization();
 
@@ -361,7 +361,7 @@ namespace SLAM
             {
                 if(mpMap->KeyFramesInMap()<=5)
                 {
-                    cout << "Track lost soon after initialisation, reseting..." << endl;
+                    cout << "Track lost soon after initialisation, resetting..." << endl;
                     //mpSystem->Reset();
                     return;
                 }
@@ -446,7 +446,7 @@ namespace SLAM
             cv::Mat tcw; // Current Camera Translation
             vector<bool> vbTriangulated; // Triangulated Correspondences (mvIniMatches)
 
-            if(mpInitializer->Initialize(mCurrentFrame, mvIniMatches, Rcw, tcw, mvIniP3D, vbTriangulated))
+            if(mpInitializer->Initialize(mCurrentFrame, mvIniMatches, Rcw, tcw, mvIniP3D, vbTriangulated)) // this is returning false
             {
                 for(size_t i=0, iend=mvIniMatches.size(); i<iend;i++)
                 {
@@ -525,7 +525,7 @@ namespace SLAM
         float medianDepth = pKFini->ComputeSceneMedianDepth(2);
         float invMedianDepth = 1.0f/medianDepth;
 
-        if(medianDepth<0 || pKFcur->TrackedMapPoints(1)<100)
+        if(medianDepth<0 || pKFcur->TrackedMapPoints(1)<100) //this is true
         {
             cout << "Wrong initialization, reseting..." << endl;
             Reset();

@@ -106,7 +106,7 @@ public class ReconVM extends ViewModel {
         mTextureMapWrapper = new TextureMapWrapper();
         mTextureMapWrapper.setOnCompleteListener(finalModel ->
                 mProgressListenerHandler.post(() -> {
-                    stopReconstructionThread();
+                    //stopReconstructionThread();
                     showModelPreview(finalModel);
                 }));
         mPoissonWrapper = new PoissonWrapper();
