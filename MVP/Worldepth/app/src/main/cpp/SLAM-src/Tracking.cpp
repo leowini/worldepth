@@ -172,7 +172,7 @@ namespace SLAM
 
         if(mState==NOT_INITIALIZED)
         {
-
+            MonocularInitialization();
 
             if(mState!=OK)
                 return;
