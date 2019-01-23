@@ -172,6 +172,8 @@ namespace SLAM
 
         if(mState==NOT_INITIALIZED)//I think initialization is not happening
         {
+            MonocularInitialization();
+
             if(mState!=OK)
                 return;
         }
