@@ -388,4 +388,9 @@ vector<cv::KeyPoint> System::GetTrackedKeyPointsUn()
     return mTrackedKeyPointsUn;
 }
 
+vector<MapPoint*> System::GetAllMapPoints()
+{
+    return mpMap->GetAllMapPoints();
+}
+
 } //namespace ORB_SLAM

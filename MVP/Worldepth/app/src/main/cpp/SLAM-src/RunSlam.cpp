@@ -31,7 +31,7 @@ namespace SLAM
     void end (std::string filename) {
 
         //get finished map as reference
-        writeMap(filename, slam->GetTrackedMapPoints());
+        writeMap(filename, slam->GetAllMapPoints());
         
 
         slam->Shutdown();
