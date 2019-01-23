@@ -17,10 +17,6 @@ namespace SLAM
         //call the equivalent of System::TrackMonocular for TrackingInit or Tracking directly
         if (im.empty() || tstamp == 0){
             cerr << "could not load image!" << endl;
-        } else if (im.rows==1 && im.cols==1) {  //poison pill
-            //this makes and writes to an internal storage file, reused every time slam is run
-            //we may change this to instead pass it to Poisson
-            end("data/user/0/com.example.leodw.worldepth/files/SLAM.txt");
         } else {
             slam->TrackMonocular(im, tstamp);
         }
