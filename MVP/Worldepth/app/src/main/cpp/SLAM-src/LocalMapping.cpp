@@ -72,7 +72,7 @@ namespace SLAM
                     KeyFrameCulling();
                 }
 
-                //mpLoopCloser->InsertKeyFrame(mpCurrentKeyFrame);
+                mpLoopCloser->InsertKeyFrame(mpCurrentKeyFrame);
             }
             else if(Stop())
             {

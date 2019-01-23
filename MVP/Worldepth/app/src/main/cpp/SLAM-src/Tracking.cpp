@@ -170,10 +170,8 @@ namespace SLAM
         // Get Map Mutex -> Map cannot be changed
         unique_lock<mutex> lock(mpMap->mMutexMapUpdate);
 
-        if(mState==NOT_INITIALIZED)
+        if(mState==NOT_INITIALIZED)//I think initialization is not happening
         {
-
-
             if(mState!=OK)
                 return;
         }
@@ -342,7 +340,7 @@ namespace SLAM
                 mlpTemporalPoints.clear();
 
                 // Check if we need to insert a new keyframe
-                if(NeedNewKeyFrame())
+                if(NeedNewKeyFrame()) //this line is never reached
                     CreateNewKeyFrame();
 
                 // We allow points with high innovation (considererd outliers by the Huber Function)
@@ -882,7 +880,7 @@ namespace SLAM
             return false;
     }
 
-    void Tracking::CreateNewKeyFrame()
+    void Tracking::CreateNewKeyFrame() //this is never being called
     {
 
         if(!mpLocalMapper->SetNotStop(true))
