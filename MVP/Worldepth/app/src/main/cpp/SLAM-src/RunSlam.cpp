@@ -42,7 +42,7 @@ namespace SLAM
     JNIEXPORT void JNICALL
     Java_com_example_leodw_worldepth_slam_Slam_passImageToSlam(JNIEnv *env, jobject instance, jlong img, jlong timeStamp) {
         if (img == 0) { //poison pill
-            end("/sdcard/Worldepth/SLAM.txt"/*"/data/user/0/com.example.leodw.worldepth/files/SLAM.txt"*/);
+            end("/storage/emulated/0/Worldepth/SLAM.txt"/*"/data/user/0/com.example.leodw.worldepth/files/SLAM.txt"*/);
         } else {
             cv::Mat &mat = *(cv::Mat *) img;
             double tframe = (double) timeStamp;
