@@ -11,6 +11,7 @@ namespace SLAM {
         file = fopen(filename.c_str(), "w");
         //std::vector<MapPoint*> vpMapPoints = map.GetAllMapPoints();
         for(MapPoint * pMP: vpMapPoints) {
+            if (pMP == NULL) { continue; }
             cv::Mat pos = pMP->GetWorldPos();
             for(int i = 0; i < pos.rows; i++) {
                 for (int j = 0; j < pos.cols; j++) {
