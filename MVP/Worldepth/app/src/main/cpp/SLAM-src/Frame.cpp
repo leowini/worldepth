@@ -26,7 +26,7 @@ namespace SLAM {
             : mpORBvocabulary(frame.mpORBvocabulary), mpORBextractorLeft(frame.mpORBextractorLeft),
               mTimeStamp(frame.mTimeStamp), mK(frame.mK.clone()),
               mDistCoef(frame.mDistCoef.clone()),
-              mbf(frame.mbf), mThDepth(frame.mThDepth), N(frame.N), mvKeys(frame.mvKeys),
+              mbf(frame.mbf), mThDepth(frame.mThDepth), N(frame.N),
               mvKeys(frame.mvKeys),
               mBowVec(frame.mBowVec), mFeatVec(frame.mFeatVec), mb(frame.mb),
               mDescriptors(frame.mDescriptors.clone()), mvuRight(frame.mvuRight), mvDepth(frame.mvDepth),
