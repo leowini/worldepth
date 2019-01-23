@@ -10,7 +10,6 @@ namespace SLAM {
         FILE * file;
         file = fopen(filename.c_str(), "w");
         for(MapPoint * pMP: vpMapPoints) {
-            if (pMP == NULL) { continue; }
             cv::Mat pos = pMP->GetWorldPos();
             for(int i = 0; i < pos.rows; i++) {
                 for (int j = 0; j < pos.cols; j++) {
