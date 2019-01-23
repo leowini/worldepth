@@ -33,18 +33,23 @@ public class Slam {
         this.mQueue = q;
         this.mPoisonPillBitmap = mPoisonPillBitmap;
         initSystem(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Worldepth/ORBvoc.bin",
-               Environment.getExternalStorageDirectory().getAbsolutePath() + "/Worldepth/TUM1.yaml");
+                Environment.getExternalStorageDirectory().getAbsolutePath() + "/Worldepth/TUM1.yaml");
     }
 
     /**
      * Converts the bitmap frame to a byte array and sends it to the C++ code.
+     *
      * @param frame
      * @param timeStamp
      */
     private void sendFrameToSlam(Bitmap frame, Long timeStamp) {
-        Mat mat = new Mat();
-        Utils.bitmapToMat(frame, mat);
-        passImageToSlam(mat.getNativeObjAddr(), timeStamp);
+        if (frame == mPoisonPillBitmap) {
+            passImageToSlam(0, timeStamp);
+        } else {
+            Mat mat = new Mat();
+            Utils.bitmapToMat(frame, mat);
+            passImageToSlam(mat.getNativeObjAddr(), timeStamp);
+        }
     }
 
     /**
@@ -55,15 +60,15 @@ public class Slam {
             TimeFramePair<Bitmap, Long> timeFramePair = mQueue.take();
             Bitmap bmp = timeFramePair.getFrame();
             Long time = timeFramePair.getTime();
-            do {
+            while (!bmp.equals(mPoisonPillBitmap)) {
                 mFrameCountListener.onNextFrame();
                 sendFrameToSlam(bmp, time);
                 timeFramePair = mQueue.take();
                 bmp = timeFramePair.getFrame();
                 time = timeFramePair.getTime();
-            } while (!bmp.equals(mPoisonPillBitmap));
-        }
-        catch (Exception e) {
+            }
+            sendFrameToSlam(mPoisonPillBitmap, time);
+        } catch (Exception e) {
             System.out.println(Thread.currentThread().getName() + " " + e.getMessage());
         }
         mCompleteListener.onSlamComplete(0);

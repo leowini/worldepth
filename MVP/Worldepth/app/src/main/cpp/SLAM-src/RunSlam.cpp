@@ -17,7 +17,7 @@ namespace SLAM
         //call the equivalent of System::TrackMonocular for TrackingInit or Tracking directly
         if (im.empty() || tstamp == 0){
             cerr << "could not load image!" << endl;
-        } else if (im.rows == 1 && im.cols == 1) {  //poison pill
+        } else if (im.rows==1 && im.cols==1) {  //poison pill
             //this makes and writes to an internal storage file, reused every time slam is run
             //we may change this to instead pass it to Poisson
             end("data/user/0/com.example.leodw.worldepth/files/SLAM.txt");
@@ -45,9 +45,12 @@ namespace SLAM
     extern "C"
     JNIEXPORT void JNICALL
     Java_com_example_leodw_worldepth_slam_Slam_passImageToSlam(JNIEnv *env, jobject instance, jlong img, jlong timeStamp) {
+        if (img == 0) { //poison pill
+            end("data/user/0/com.example.leodw.worldepth/files/SLAM.txt");
+        }
         cv::Mat &mat = *(cv::Mat *) img;
         double tframe = (double) timeStamp;
-        process(mat, tframe);;
+        process(mat, tframe);
     }
 
     extern "C"
