@@ -43,7 +43,7 @@ namespace SLAM
             SetAcceptKeyFrames(false);
 
             // Check if there are keyframes in the queue
-            if(CheckNewKeyFrames())
+            if(CheckNewKeyFrames()) //we are never getting any keyframes :(
             {
                 // BoW conversion and insertion in Map
                 ProcessNewKeyFrame();
@@ -424,7 +424,7 @@ namespace SLAM
                 pMP->AddObservation(mpCurrentKeyFrame,idx1);
                 pMP->AddObservation(pKF2,idx2);
 
-                mpCurrentKeyFrame->AddMapPoint(pMP,idx1);
+                mpCurrentKeyFrame->AddMapPoint(pMP,idx1); //this is never called
                 pKF2->AddMapPoint(pMP,idx2);
 
                 pMP->ComputeDistinctiveDescriptors();

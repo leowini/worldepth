@@ -894,8 +894,6 @@ namespace SLAM
         mpReferenceKF = pKF;
         mCurrentFrame.mpReferenceKF = pKF;
 
-
-
         mpLocalMapper->InsertKeyFrame(pKF);
 
         mpLocalMapper->SetNotStop(false);
