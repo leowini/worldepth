@@ -68,8 +68,7 @@ namespace SLAM {
         if(mvKeys.empty())
             return;
 
-        //I'm gonna take this out because it might not be needed
-        //UndistortKeyPoints();
+        UndistortKeyPoints();
 
         // Set no stereo information
         mvuRight = vector<float>(N,-1);
@@ -278,8 +277,6 @@ namespace SLAM {
         }
     }
 
-    /* This creates errors with Opencv, and since I think our pictures are undistorted (examples
-     * looked like fisheye lenses) we shouldn't need this
     void Frame::UndistortKeyPoints()
     {
         if(mDistCoef.at<float>(0)==0.0)
