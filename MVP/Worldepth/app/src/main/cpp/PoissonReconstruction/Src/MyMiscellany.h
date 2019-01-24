@@ -50,7 +50,7 @@ inline void omp_destroy_lock( omp_lock_t* ){}
 // Time Stuff //
 ////////////////
 #include <string.h>
-#include <sys/timeb.h>
+//#include <sys/timeb.h> //has a compiler error, but doesn't seem to be used
 #ifndef WIN32
 #include <sys/time.h>
 #endif // WIN32
