@@ -342,7 +342,7 @@ namespace SLAM
                 mlpTemporalPoints.clear();
 
                 // Check if we need to insert a new keyframe
-                if(NeedNewKeyFrame()) //this line is never reached
+                if(NeedNewKeyFrame())
                     CreateNewKeyFrame();
 
                 // We allow points with high innovation (considererd outliers by the Huber Function)
