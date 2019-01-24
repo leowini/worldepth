@@ -40,7 +40,7 @@ namespace SLAM
 
         cv::Mat PC = Pos - Ow;
         const float dist = cv::norm(PC);
-        const int level = pFrame->mvKeysUn[idxF].octave;
+        const int level = pFrame->mvKeys[idxF].octave;
         const float levelScaleFactor =  pFrame->mvScaleFactors[level];
         const int nLevels = pFrame->mnScaleLevels;
 
@@ -343,7 +343,7 @@ namespace SLAM
 
         cv::Mat PC = Pos - pRefKF->GetCameraCenter();
         const float dist = cv::norm(PC);
-        const int level = pRefKF->mvKeysUn[observations[pRefKF]].octave;
+        const int level = pRefKF->mvKeys[observations[pRefKF]].octave;
         const float levelScaleFactor =  pRefKF->mvScaleFactors[level];
         const int nLevels = pRefKF->mnScaleLevels;
 

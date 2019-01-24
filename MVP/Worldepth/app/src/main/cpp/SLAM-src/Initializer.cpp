@@ -34,7 +34,7 @@ Initializer::Initializer(const Frame &ReferenceFrame, float sigma, int iteration
 {
     mK = ReferenceFrame.mK.clone();
 
-    mvKeys1 = ReferenceFrame.mvKeysUn;
+    mvKeys1 = ReferenceFrame.mvKeys;
 
     mSigma = sigma;
     mSigma2 = sigma*sigma;
@@ -46,7 +46,7 @@ bool Initializer::Initialize(const Frame &CurrentFrame, const vector<int> &vMatc
 {
     // Fill structures with current keypoints and matches with reference frame
     // Reference Frame: 1, Current Frame: 2
-    mvKeys2 = CurrentFrame.mvKeysUn;
+    mvKeys2 = CurrentFrame.mvKeys;
 
     mvMatches12.clear();
     mvMatches12.reserve(mvKeys2.size());
@@ -117,7 +117,6 @@ bool Initializer::Initialize(const Frame &CurrentFrame, const vector<int> &vMatc
     else //if(pF_HF>0.6)
         return ReconstructF(vbMatchesInliersF,F,mK,R21,t21,vP3D,vbTriangulated,1.0,50);
 
-    return false;
 }
 
 
@@ -718,7 +717,7 @@ bool Initializer::ReconstructH(vector<bool> &vbMatchesInliers, cv::Mat &H21, cv:
     }
 
 
-    if(secondBestGood<0.75*bestGood && bestParallax>=minParallax && bestGood>minTriangulated && bestGood>0.9*N)
+    if(secondBestGood<0.75*bestGood && bestParallax>=minParallax && bestGood>minTriangulated && bestGood>0.9*N) //this is never true
     {
         vR[bestSolutionIdx].copyTo(R21);
         vt[bestSolutionIdx].copyTo(t21);

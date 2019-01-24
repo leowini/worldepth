@@ -102,6 +102,7 @@ namespace SLAM
 
         mpORBextractorLeft = new ORBextractor(nFeatures,fScaleFactor,nLevels,fIniThFAST,fMinThFAST);
 
+        mpIniORBextractor = new ORBextractor(2*nFeatures,fScaleFactor,nLevels,fIniThFAST,fMinThFAST);
 
         cout << endl  << "ORB Extractor Parameters: " << endl;
         cout << "- Number of Features: " << nFeatures << endl;
@@ -171,7 +172,7 @@ namespace SLAM
 
         if(mState==NOT_INITIALIZED)
         {
-
+            MonocularInitialization();
 
             if(mState!=OK)
                 return;
@@ -360,7 +361,7 @@ namespace SLAM
             {
                 if(mpMap->KeyFramesInMap()<=5)
                 {
-                    cout << "Track lost soon after initialisation, reseting..." << endl;
+                    cout << "Track lost soon after initialisation, resetting..." << endl;
                     //mpSystem->Reset();
                     return;
                 }
@@ -404,9 +405,9 @@ namespace SLAM
             {
                 mInitialFrame = Frame(mCurrentFrame);
                 mLastFrame = Frame(mCurrentFrame);
-                mvbPrevMatched.resize(mCurrentFrame.mvKeysUn.size());
-                for(size_t i=0; i<mCurrentFrame.mvKeysUn.size(); i++)
-                    mvbPrevMatched[i]=mCurrentFrame.mvKeysUn[i].pt;
+                mvbPrevMatched.resize(mCurrentFrame.mvKeys.size());
+                for(size_t i=0; i<mCurrentFrame.mvKeys.size(); i++)
+                    mvbPrevMatched[i]=mCurrentFrame.mvKeys[i].pt;
 
                 if(mpInitializer)
                     delete mpInitializer;
@@ -445,7 +446,7 @@ namespace SLAM
             cv::Mat tcw; // Current Camera Translation
             vector<bool> vbTriangulated; // Triangulated Correspondences (mvIniMatches)
 
-            if(mpInitializer->Initialize(mCurrentFrame, mvIniMatches, Rcw, tcw, mvIniP3D, vbTriangulated))
+            if(mpInitializer->Initialize(mCurrentFrame, mvIniMatches, Rcw, tcw, mvIniP3D, vbTriangulated)) // this is returning false
             {
                 for(size_t i=0, iend=mvIniMatches.size(); i<iend;i++)
                 {
@@ -524,7 +525,7 @@ namespace SLAM
         float medianDepth = pKFini->ComputeSceneMedianDepth(2);
         float invMedianDepth = 1.0f/medianDepth;
 
-        if(medianDepth<0 || pKFcur->TrackedMapPoints(1)<100)
+        if(medianDepth<0 || pKFcur->TrackedMapPoints(1)<100) //this is true
         {
             cout << "Wrong initialization, reseting..." << endl;
             Reset();
@@ -881,7 +882,7 @@ namespace SLAM
             return false;
     }
 
-    void Tracking::CreateNewKeyFrame()
+    void Tracking::CreateNewKeyFrame() //this is never being called
     {
 
         if(!mpLocalMapper->SetNotStop(true))
@@ -892,8 +893,6 @@ namespace SLAM
 
         mpReferenceKF = pKF;
         mCurrentFrame.mpReferenceKF = pKF;
-
-
 
         mpLocalMapper->InsertKeyFrame(pKF);
 

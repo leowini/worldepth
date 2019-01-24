@@ -103,10 +103,10 @@ public class StartScreenFragment extends Fragment {
     }
 
     private void login(String email, String password) {
-        FirebaseAuth auth = mFb.getFirebaseAuth();
-        auth.signInWithEmailAndPassword(email, password).
+        mFb.getFirebaseAuth().signInWithEmailAndPassword(email, password).
                 addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
+                        Log.d(TAG, "signed in");
                         ((MainActivity) getActivity()).setLoginState(true);
                         Navigation.findNavController(getView()).navigate(R.id.action_startScreenFragment_to_cameraFragment);
                     } else {

@@ -1,6 +1,7 @@
 package com.example.leodw.worldepth.slam;
 
 import android.graphics.Bitmap;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 
@@ -24,40 +25,50 @@ public class Slam {
 
     private FrameCountListener mFrameCountListener;
 
-    public native void passImageToSlam(int width, int height, long img, long timeStamp);
+    public native void passImageToSlam(long img, long timeStamp);
 
-    public Slam(BlockingQueue<TimeFramePair<Bitmap, Long>> q, Bitmap mPoisonPillBitmap) {
+    public native void initSystem(String vocFile, String settingsFile);
+
+    Slam(BlockingQueue<TimeFramePair<Bitmap, Long>> q, Bitmap mPoisonPillBitmap) {
         this.mQueue = q;
         this.mPoisonPillBitmap = mPoisonPillBitmap;
+        initSystem(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Worldepth/ORBvoc.bin",
+                Environment.getExternalStorageDirectory().getAbsolutePath() + "/Worldepth/TUM1.yaml");
     }
 
     /**
      * Converts the bitmap frame to a byte array and sends it to the C++ code.
+     *
      * @param frame
+     * @param timeStamp
      */
     private void sendFrameToSlam(Bitmap frame, Long timeStamp) {
-        Mat mat = new Mat();
-        Utils.bitmapToMat(frame, mat);
-        passImageToSlam(frame.getWidth(), frame.getHeight(), mat.getNativeObjAddr(), timeStamp);
+        if (frame == mPoisonPillBitmap) {
+            passImageToSlam(0, timeStamp);
+        } else {
+            Mat mat = new Mat();
+            Utils.bitmapToMat(frame, mat);
+            passImageToSlam(mat.getNativeObjAddr(), timeStamp);
+        }
     }
 
     /**
      * This will run in the background on the SlamSenderThread.
      */
-    public void doSlam() {
+    void doSlam() {
         try {
             TimeFramePair<Bitmap, Long> timeFramePair = mQueue.take();
             Bitmap bmp = timeFramePair.getFrame();
             Long time = timeFramePair.getTime();
-            do {
+            while (!bmp.equals(mPoisonPillBitmap)) {
                 mFrameCountListener.onNextFrame();
                 sendFrameToSlam(bmp, time);
                 timeFramePair = mQueue.take();
                 bmp = timeFramePair.getFrame();
                 time = timeFramePair.getTime();
-            } while (!bmp.equals(mPoisonPillBitmap));
-        }
-        catch (Exception e) {
+            }
+            sendFrameToSlam(mPoisonPillBitmap, time);
+        } catch (Exception e) {
             System.out.println(Thread.currentThread().getName() + " " + e.getMessage());
         }
         mCompleteListener.onSlamComplete(0);
@@ -67,7 +78,7 @@ public class Slam {
         void onNextFrame();
     }
 
-    public void setFrameCountListener(FrameCountListener listener) {
+    void setFrameCountListener(FrameCountListener listener) {
         mFrameCountListener = listener;
     }
 
@@ -75,7 +86,7 @@ public class Slam {
         void onSlamComplete(int pointCloud);
     }
 
-    public void setOnSlamCompleteListener(SlamCompleteListener listener) {
+    void setOnCompleteListener(SlamCompleteListener listener) {
         mCompleteListener = listener;
     }
 

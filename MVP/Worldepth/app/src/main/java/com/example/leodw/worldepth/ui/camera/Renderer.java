@@ -14,7 +14,9 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+
 import com.example.leodw.worldepth.slam.Slam;
+
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -48,12 +50,15 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
 
     private final Bitmap mPoisonPillBitmap;
 
+    private static int frameCount = 1;
+
     public Renderer(Bitmap mPoisonPillBitmap) {
         this.mPoisonPillBitmap = mPoisonPillBitmap;
     }
 
     @Override
     public void onFrameAvailable(SurfaceTexture surfaceTexture) {
+        frameCount++;
         long frameTimeStamp = surfaceTexture.getTimestamp();
         // Latch the data.
         renderer.checkGlError("before updateTexImage");
@@ -63,7 +68,9 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
 
         Bitmap bmp = getBitmap();
         try {
-            mFrameRenderedListenerHandler.post(() -> mFrameRenderedListener.onFrameRendered(new TimeFramePair<Bitmap, Long>(bmp, frameTimeStamp)));
+            if (frameCount % 2 == 0) {
+                mFrameRenderedListenerHandler.post(() -> mFrameRenderedListener.onFrameRendered(new TimeFramePair<Bitmap, Long>(bmp, frameTimeStamp)));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

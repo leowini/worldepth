@@ -48,6 +48,8 @@ namespace SLAM
         // Returns the camera pose (empty if tracking fails).
         cv::Mat TrackMonocular(const cv::Mat &im, const double &timestamp);
 
+        vector<MapPoint*> GetAllMapPoints();
+
         // This stops local mapping thread (map building) and performs only camera tracking.
         void ActivateLocalizationMode();
         // This resumes local mapping thread and performs SLAM again.
