@@ -687,7 +687,7 @@ int Execute( int argc , char* argv[] )
 
 //argc is number of cmd line arguments, including the program name.
 //argv is a list of the actual arguments, in an array of strings.
-int main( int argc , char* argv[] )
+int runMain( int argc , char* argv[] )
 {
 	Timer timer;
 #ifdef ARRAY_DEBUG

@@ -28,6 +28,7 @@ DAMAGE.
 
 #include <cassert>
 #include <string.h>
+#include "CmdLineParser.h"
 
 #if defined( WIN32 ) || defined( _WIN64 )
 inline int strcasecmp( const char* c1 , const char* c2 ){ return _stricmp( c1 , c2 ); }
