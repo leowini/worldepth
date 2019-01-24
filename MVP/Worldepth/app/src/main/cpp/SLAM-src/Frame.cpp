@@ -10,6 +10,7 @@
 #include "Converter.h"
 #include "ORBMatcher.h"
 #include <thread>
+#include <opencv2/imgproc.hpp>
 
 namespace SLAM {
 
@@ -308,7 +309,6 @@ namespace SLAM {
             mvKeys[i]=kp;
         }
     }
-     */
 
     void Frame::ComputeImageBounds(const cv::Mat &imLeft)
     {
