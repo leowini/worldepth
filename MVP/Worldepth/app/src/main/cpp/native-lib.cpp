@@ -20,9 +20,9 @@ JNIEXPORT void JNICALL
 Java_com_example_leodw_worldepth_slam_PoissonWrapper_passPointCloudToPoisson(JNIEnv *env, jobject instance) {
     char* args [] = {
             (char*)"PoissonRecon",
-            (char*)"--in: /storage/emulated/0/Worldepth/SLAM.txt",
-            (char*)"--out: /storage/emulated/0/Worldepth/SLAM.ply",
-            (char*)"--depth: 10"
+            (char*)"--in /storage/emulated/0/Worldepth/SLAM.txt",
+            (char*)"--out /storage/emulated/0/Worldepth/SLAM.ply",
+            (char*)"--depth 10"
     };
     int numArgs = 4;
     runMain(numArgs, args);
