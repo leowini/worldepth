@@ -383,7 +383,6 @@ public class CameraFragment extends Fragment {
         }
     }
 
-
     private void stopRecording() {
         nextVideoAbsolutePath = null;
         startPreview();
@@ -527,7 +526,6 @@ public class CameraFragment extends Fragment {
         }
     }
 
-
     /*
      * The camera preview runs on this thread
      */
@@ -576,7 +574,5 @@ public class CameraFragment extends Fragment {
                     (long) rhs.getWidth() * rhs.getHeight());
         }
     }
-
-
 
 }
