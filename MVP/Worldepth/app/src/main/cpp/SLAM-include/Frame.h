@@ -115,6 +115,7 @@ public:
     // In the stereo case, mvKeys is redundant as images must be rectified.
     // In the RGB-D case, RGB images can be distorted.
     std::vector<cv::KeyPoint> mvKeys;
+    std::vector<cv::KeyPoint> mvKeysUn;
 
     // Corresponding stereo coordinate and depth for each keypoint.
     // "Monocular" keypoints have a negative value.
