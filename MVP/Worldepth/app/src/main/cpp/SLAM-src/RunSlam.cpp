@@ -47,6 +47,7 @@ namespace SLAM
             cv::Mat &mat = *(cv::Mat *) img;
             double tframe = (double) timeStamp;
             process(mat, tframe);
+            mat.release();
         }
     }
 
