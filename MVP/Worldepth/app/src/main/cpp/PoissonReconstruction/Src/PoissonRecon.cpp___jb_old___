@@ -699,7 +699,7 @@ int runMain( int argc , char* argv[] )
 	omp_set_num_threads( Threads.value > 1 ? Threads.value : 1 );
 	messageWriter.echoSTDOUT = Verbose.set;
 
-		if( !In.set )
+	if( !In.set )
 	{
 		ShowUsage( argv[0] );
 		return 0;

@@ -698,7 +698,6 @@ int runMain( int argc , char* argv[] )
 	if( MaxMemoryGB.value>0 ) SetPeakMemoryMB( MaxMemoryGB.value<<10 );
 	omp_set_num_threads( Threads.value > 1 ? Threads.value : 1 );
 	messageWriter.echoSTDOUT = Verbose.set;
-
 	if( !In.set )
 	{
 		ShowUsage( argv[0] );
