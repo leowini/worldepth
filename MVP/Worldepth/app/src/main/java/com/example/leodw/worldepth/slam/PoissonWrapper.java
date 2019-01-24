@@ -9,7 +9,7 @@ public class PoissonWrapper {
 
     public native void passPointCloudToPoisson();
 
-    public void runPoisson(int pointCloud) {
+    void runPoisson(int pointCloud) {
         passPointCloudToPoisson();
         listener.onComplete(0);
     }

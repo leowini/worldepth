@@ -27,5 +27,4 @@ Java_com_example_leodw_worldepth_slam_PoissonWrapper_passPointCloudToPoisson(JNI
     int numArgs = 4;
     runMain(numArgs, args);
 
-
 }
