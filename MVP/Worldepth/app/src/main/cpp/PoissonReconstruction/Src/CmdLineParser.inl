@@ -245,7 +245,11 @@ inline void cmdLineParse( int argc , char **argv , cmdLineReadable** params )
 		if( argv[0][0]=='-' && argv[0][1]=='-' )
 		{
 			cmdLineReadable* readable=NULL;
-			for( int i=0 ; params[i]!=NULL && readable==NULL ; i++ ) if( !strcasecmp( params[i]->name , argv[0]+2 ) ) readable = params[i];
+			for( int i=0 ; params[i]!=NULL && readable==NULL ; i++ ) {
+				if( !strcasecmp( params[i]->name , argv[0]+2 ) ) {
+				    readable = params[i];
+				}
+			}
 			if( readable )
 			{
 				int j = readable->read( argv+1 , argc-1 );
