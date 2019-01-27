@@ -13,8 +13,6 @@ Java_com_example_leodw_worldepth_MainActivity_stringFromJNI(
     return env->NewStringUTF(hello.c_str());
 }
 
-
-
 extern "C"
 JNIEXPORT void JNICALL
 Java_com_example_leodw_worldepth_slam_PoissonWrapper_passPointCloudToPoisson(JNIEnv *env, jobject instance) {

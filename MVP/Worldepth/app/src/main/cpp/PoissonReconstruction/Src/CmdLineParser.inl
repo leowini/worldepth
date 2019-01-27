@@ -245,7 +245,12 @@ inline void cmdLineParse( int argc , char **argv , cmdLineReadable** params )
 		if( argv[0][0]=='-' && argv[0][1]=='-' )
 		{
 			cmdLineReadable* readable=NULL;
-			for( int i=0 ; params[i]!=NULL && readable==NULL ; i++ ) if( !strcasecmp( params[i]->name , argv[0]+2 ) ) readable = params[i];
+			for( int i=0 ; params[i]!=NULL && readable==NULL ; i++ ) {
+                std::string paramname = params[i]->name;
+                std::string argvname = argv[0]+2;
+				std::string subbuffname= readParam(argv[0] + 2, 2);
+			    if( !strcasecmp( params[i]->name , readParam(argv[0] + 2, 2)) ) readable = params[i];
+			}
 			if( readable )
 			{
 				int j = readable->read( argv+1 , argc-1 );
@@ -298,4 +303,14 @@ inline char** ReadWords(const char* fileName,int& cnt)
 	}
 	fclose(fp);
 	return names;
+}
+
+char* readParam(char* parameter, int size) {
+	char subbuff[size + 1];
+	int i = 0;
+	while (parameter[i] != ' ') {
+		subbuff[i] = parameter[i];
+		i++;
+	}
+	return subbuff;
 }

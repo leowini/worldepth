@@ -101,6 +101,7 @@ char* DirectoryName( char* fileName );
 char* GetFileExtension( const char* fileName );
 char* GetLocalFileName( const char* fileName );
 char** ReadWords( const char* fileName , int& cnt );
+char* readParam(char* parameter, int size);
 
 #include "CmdLineParser.inl"
 #endif // CMD_LINE_PARSER_INCLUDED
