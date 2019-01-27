@@ -7,10 +7,14 @@ import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
+import android.widget.Toast;
 
 import com.example.leodw.worldepth.ui.camera.TimeFramePair;
+
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+
+import static java.security.AccessController.getContext;
 
 public class ReconVM extends ViewModel {
 
@@ -19,8 +23,7 @@ public class ReconVM extends ViewModel {
     private HandlerThread mReconstructionThread;
     private Handler mReconstructionHandler;
 
-    private ReconstructionCompleteListener mCompleteListener;
-    private Handler mCompleteListenerHandler;
+    private Handler mProgressListenerHandler;
 
     private Handler mFrameCountHandler;
 
@@ -39,30 +42,27 @@ public class ReconVM extends ViewModel {
     private TextureMapWrapper mTextureMapWrapper;
 
     public enum ReconProgress {
-        SLAM, POISSON, TM
+        INIT, READY, SLAM, POISSON, TM, COMPLETE
     }
 
     public ReconVM() {
+        mReconProgress.setValue(ReconProgress.INIT);
         mRenderedFrames = 0;
         mProcessedFrames = 0;
-        mCompleteListener = finalModel -> {
-            stopReconstructionThread();
-            showModelPreview(finalModel);
-        };
-        mCompleteListenerHandler = new Handler(Looper.getMainLooper());
+        mProgressListenerHandler = new Handler(Looper.getMainLooper());
         mFrameCountHandler = new Handler(Looper.getMainLooper());
         mQueue = new LinkedBlockingQueue<>();
         startReconstructionThread();
-        mReconstructionHandler.post(this::reconstruct);
     }
 
     private void startReconstructionThread() {
         mReconstructionThread = new HandlerThread("ReconstructionThread");
         mReconstructionThread.start();
         mReconstructionHandler = new Handler(mReconstructionThread.getLooper());
+        mReconstructionHandler.post(this::reconstruct);
     }
 
-    public void stopReconstructionThread() {
+    private void stopReconstructionThread() {
         mReconstructionThread.quitSafely();
         try {
             mReconstructionThread.join();
@@ -75,7 +75,7 @@ public class ReconVM extends ViewModel {
     }
 
     private void showModelPreview(int finalModel) {
-
+        mReconProgress.setValue(ReconProgress.COMPLETE);
     }
 
     private void frameProcessed() {
@@ -105,19 +105,26 @@ public class ReconVM extends ViewModel {
     private void reconstruct() {
         mTextureMapWrapper = new TextureMapWrapper();
         mTextureMapWrapper.setOnCompleteListener(finalModel ->
-                mCompleteListenerHandler.post(() ->
-                        mCompleteListener.onReconstructionComplete(finalModel)));
+                mProgressListenerHandler.post(() -> {
+                    //stopReconstructionThread();
+                    showModelPreview(finalModel);
+                }));
         mPoissonWrapper = new PoissonWrapper();
-        mPoissonWrapper.setOnCompleteListener(mesh -> mTextureMapWrapper.runMapping(mesh));
+        mPoissonWrapper.setOnCompleteListener(mesh -> {
+            mProgressListenerHandler.post(() -> mReconProgress.setValue(ReconProgress.TM));
+            mTextureMapWrapper.runMapping(mesh);
+        });
         mSlam = new Slam(mQueue, mPoisonPillBitmap);
-        mSlam.setOnSlamCompleteListener(pointCloud -> {
+        mSlam.setOnCompleteListener(pointCloud -> {
             mFrameCountHandler.post(() -> {
                 mProcessedFrames = mRenderedFrames;
                 updateSlamProgress();
             });
+            mProgressListenerHandler.post(() -> mReconProgress.setValue(ReconProgress.POISSON));
             mPoissonWrapper.runPoisson(pointCloud);
         });
         mSlam.setFrameCountListener(() -> mFrameCountHandler.post(this::frameProcessed));
+        mProgressListenerHandler.post(() -> mReconProgress.setValue(ReconProgress.READY));
         mSlam.doSlam();
     }
 
@@ -131,10 +138,6 @@ public class ReconVM extends ViewModel {
 
     public LiveData<ReconProgress> getReconProgress() {
         return mReconProgress;
-    }
-
-    public interface ReconstructionCompleteListener {
-        void onReconstructionComplete(int finalModel);
     }
 
 }

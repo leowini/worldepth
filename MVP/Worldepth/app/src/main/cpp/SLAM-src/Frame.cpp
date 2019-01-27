@@ -10,6 +10,7 @@
 #include "Converter.h"
 #include "ORBMatcher.h"
 #include <thread>
+#include <opencv2/imgproc.hpp>
 
 namespace SLAM {
 
@@ -43,7 +44,8 @@ namespace SLAM {
             SetPose(frame.mTcw);
     }
 
-    Frame::Frame(const cv::Mat &imGray, const double &timeStamp, ORBextractor* extractor,ORBVocabulary* voc, cv::Mat &K, cv::Mat &distCoef, const float &bf, const float &thDepth)
+    Frame::Frame(const cv::Mat &imGray, const double &timeStamp, ORBextractor* extractor /*this appears to be null, making the sigsegv error :( */
+            ,ORBVocabulary* voc, cv::Mat &K, cv::Mat &distCoef, const float &bf, const float &thDepth)
             :mpORBvocabulary(voc),mpORBextractorLeft(extractor),
              mTimeStamp(timeStamp), mK(K.clone()),mDistCoef(distCoef.clone()), mbf(bf), mThDepth(thDepth)
     {
@@ -67,8 +69,7 @@ namespace SLAM {
         if(mvKeys.empty())
             return;
 
-        //I'm gonna take this out because it might not be needed
-        //UndistortKeyPoints();
+        UndistortKeyPoints();
 
         // Set no stereo information
         mvuRight = vector<float>(N,-1);
@@ -276,8 +277,6 @@ namespace SLAM {
         }
     }
 
-    /* This creates errors with Opencv, and since I think our pictures are undistorted (examples
-     * looked like fisheye lenses) we shouldn't need this
     void Frame::UndistortKeyPoints()
     {
         if(mDistCoef.at<float>(0)==0.0)
@@ -309,7 +308,6 @@ namespace SLAM {
             mvKeysUn[i]=kp;
         }
     }
-     */
 
     void Frame::ComputeImageBounds(const cv::Mat &imLeft)
     {

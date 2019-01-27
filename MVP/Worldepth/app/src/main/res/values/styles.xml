@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/inputColor</item>
+        <item name="android:windowBackground">@color/backgroundColor</item>
     </style>
 
     <style name="WorldepthEditText" parent="">
@@ -15,5 +16,4 @@
     <style name="BlankEditText">
         <item name="android:background">@null</item>
     </style>
-
 </resources>

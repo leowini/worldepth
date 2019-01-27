@@ -10,6 +10,7 @@
 
 
 #include <opencv2/core/mat.hpp>
+#include <opencv2/opencv.hpp>
 
 #include "ORBExtractor.h"
 #include "ORBVocabulary.h"
@@ -112,7 +113,7 @@ public:
     int N;
 
     // Vector of keypoints (original for visualization) and undistorted (actually used by the system).
-    // In the stereo case, mvKeysUn is redundant as images must be rectified.
+    // In the stereo case, mvKeys is redundant as images must be rectified.
     // In the RGB-D case, RGB images can be distorted.
     std::vector<cv::KeyPoint> mvKeys;
     std::vector<cv::KeyPoint> mvKeysUn;

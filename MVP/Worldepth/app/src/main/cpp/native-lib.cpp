@@ -2,6 +2,8 @@
 #include <string>
 #include <opencv2/core/core.hpp>
 
+using namespace std;
+
 extern "C" JNIEXPORT jstring JNICALL
 Java_com_example_leodw_worldepth_MainActivity_stringFromJNI(
         JNIEnv *env,
@@ -12,14 +14,7 @@ Java_com_example_leodw_worldepth_MainActivity_stringFromJNI(
 
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_example_leodw_worldepth_slam_Slam_passImageToSlam(JNIEnv *env, jobject instance, jint width, jint height, jlong img, jlong timeStamp) {
-    cv::Mat &mat = *(cv::Mat *) img;
-    double tframe = (double) timeStamp;
-    //SLAM.TrackMonocular(mimg, tframe);
-}
 
-extern "C"
-JNIEXPORT void JNICALL
 Java_com_example_leodw_worldepth_slam_PoissonWrapper_passPointCloudToPoisson(JNIEnv *env, jobject instance, jint x) {
 
 }

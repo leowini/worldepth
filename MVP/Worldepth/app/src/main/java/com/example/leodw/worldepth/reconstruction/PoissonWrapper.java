@@ -6,15 +6,16 @@ public class PoissonWrapper {
 
     private OnCompleteListener listener;
 
-    public void runPoisson(int pointCloud) {
+    void runPoisson(int pointCloud) {
         listener.onComplete(0);
     }
 
-    public void setOnCompleteListener(OnCompleteListener listener) {
+    void setOnCompleteListener(OnCompleteListener listener) {
         this.listener = listener;
     }
 
     public interface OnCompleteListener {
         void onComplete(int mesh);
     }
+
 }

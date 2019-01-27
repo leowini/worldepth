@@ -131,3 +131,4 @@ target_link_libraries( # Specifies the target library.
         lib_g2o
         lib_DBoW2
         lib_opencv)
+

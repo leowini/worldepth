@@ -30,6 +30,7 @@
         android:layout_marginTop="212dp"
         android:layout_marginEnd="107dp"
         android:text="@string/loading"
+        android:textColor="@color/inputColor"
         android:textSize="50sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"

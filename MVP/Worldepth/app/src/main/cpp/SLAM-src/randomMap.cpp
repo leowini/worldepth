@@ -9,7 +9,7 @@ namespace SLAM {
     void writeMap(std::string filename, std::vector<MapPoint *> vpMapPoints) {
         FILE * file;
         file = fopen(filename.c_str(), "w");
-        //std::vector<MapPoint*> vpMapPoints = map.GetAllMapPoints();
+        //if (NULL == file) { exit(1); }
         for(MapPoint * pMP: vpMapPoints) {
             cv::Mat pos = pMP->GetWorldPos();
             for(int i = 0; i < pos.rows; i++) {

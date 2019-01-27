@@ -1,5 +1,6 @@
 package com.example.leodw.worldepth.ui;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -8,8 +9,12 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
+import android.content.res.AssetManager;
 import android.os.Build;
 import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -33,16 +38,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-
-import static android.provider.AlarmClock.EXTRA_MESSAGE;
-import static java.security.AccessController.getContext;
 
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.fragment.FragmentNavigator;
 import androidx.navigation.fragment.NavHostFragment;
+
+/*import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
+import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
+import org.apache.commons.compress.utils.IOUtils;*/
 
 public class MainActivity extends AppCompatActivity {
 
@@ -59,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
 
     private SharedPreferences mPreferences;
     private static final String sharedPrefFile = "com.example.android.leodw.worldepth";
+
+    private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 2909;
 
     // Used to load the 'native-lib' library on application startup.
     static {
@@ -84,14 +88,21 @@ public class MainActivity extends AppCompatActivity {
         dt = new DataTransfer();
         createNotificationChannel();
         //listenForNotifications();
-        loadFiles();
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            }, REQUEST_WRITE_EXTERNAL_STORAGE);
+            Log.i(TAG, "permission not granted, asking");
+        }
     }
 
-    public FirebaseWrapper getFirebaseWrapper(){
+    public FirebaseWrapper getFirebaseWrapper() {
         return this.fb;
     }
 
-    public DataTransfer getDataTransfer() { return this.dt; }
+    public DataTransfer getDataTransfer() {
+        return this.dt;
+    }
 
     @Override
     protected void onPause() {
@@ -148,80 +159,95 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private boolean checkAndWriteFile(String filename){
+    private File checkAndWriteFile(String filename) {
         String externDir = Environment.getExternalStorageDirectory().getAbsolutePath();
         File wdDir = new File(externDir + "/Worldepth");
-        if(!wdDir.exists()){
+        if (!wdDir.exists()) {
             Log.i(TAG, "Worldepth folder not found, making it...");
             wdDir.mkdir();
-            if(!wdDir.exists()){
+            if (!wdDir.exists()) {
                 Log.e(TAG, "Unable to create worldepth folder");
             }
         }
         File targetFile = new File(externDir + "/Worldepth/" + filename);
-        if(targetFile.exists()){
+        if (targetFile.exists()) {
             Log.i(TAG, targetFile.getAbsolutePath() + " already exists");
-            return false;
+            return null;
         }
-        else {
-            try {
-                targetFile.createNewFile();
-                if(!targetFile.exists()){
-                    Log.e(TAG, "Could not make file!");
-                }
-                InputStream initialStream = this.getApplicationContext().getAssets().open(filename);
-                byte[] buffer = new byte[initialStream.available()];
-                initialStream.read(buffer);
 
-                OutputStream outStream = new FileOutputStream(targetFile);
-                outStream.write(buffer);
-
-            }catch (IOException e){
-                e.printStackTrace();
-            }
-            return true;
-        }
-    }
-
-    private void unzip(File zipFile, File targetDirectory) throws IOException {
-        ZipInputStream zis = new ZipInputStream(
-                new BufferedInputStream(new FileInputStream(zipFile)));
         try {
-            ZipEntry ze;
-            int count;
-            byte[] buffer = new byte[8192];
-            while ((ze = zis.getNextEntry()) != null) {
-                File file = new File(targetDirectory, ze.getName());
-                File dir = ze.isDirectory() ? file : file.getParentFile();
-                if (!dir.isDirectory() && !dir.mkdirs())
-                    throw new FileNotFoundException("Failed to ensure directory: " +
-                            dir.getAbsolutePath());
-                if (ze.isDirectory())
-                    continue;
-                FileOutputStream fout = new FileOutputStream(file);
-                try {
-                    while ((count = zis.read(buffer)) != -1)
-                        fout.write(buffer, 0, count);
-                } finally {
-                    fout.close();
-                }
+            targetFile.createNewFile();
+            if (!targetFile.exists()) {
+                Log.e(TAG, "Could not make file!");
             }
-        } finally {
-            zis.close();
-        }
+            String[] assetsRoot = getAssets().list("");
+            InputStream initialStream = getAssets().open(filename);
+            byte[] buffer = new byte[initialStream.available()];
+            initialStream.read(buffer);
 
+            OutputStream outStream = new FileOutputStream(targetFile);
+            outStream.write(buffer);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return targetFile;
     }
 
     private void loadFiles() {
-        boolean wasWritten = checkAndWriteFile("ORBvoc.txt.tar.gz");
+        /*File tarFile = */checkAndWriteFile("ORBvoc.bin");
         checkAndWriteFile("TUM1.yaml");
-        if(wasWritten) {
+        /*if (tarFile != null) {
             String externDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Worldepth";
-
             try {
-                unzip(new File(externDir + "/ORBvoc.txt.tar.gz"), Environment.getExternalStorageDirectory());
+                File unTarFile = new File(externDir);
+                unTar(tarFile, unTarFile);
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+        }*/
+    }
+
+    /*
+    private void unTar(File tarFile, File destFile) throws IOException {
+        FileInputStream fis = new FileInputStream(tarFile);
+        TarArchiveInputStream tis = new TarArchiveInputStream(fis);
+        TarArchiveEntry tarEntry = null;
+
+        // tarIn is a TarArchiveInputStream
+        while ((tarEntry = tis.getNextTarEntry()) != null) {
+            File outputFile = new File(destFile + File.separator + tarEntry.getName());
+
+            if (tarEntry.isDirectory()) {
+
+                System.out.println("outputFile Directory ---- "
+                        + outputFile.getAbsolutePath());
+                if (!outputFile.exists()) {
+                    outputFile.mkdirs();
+                }
+            } else {
+                //File outputFile = new File(destFile + File.separator + tarEntry.getName());
+                System.out.println("outputFile File ---- " + outputFile.getAbsolutePath());
+                outputFile.getParentFile().mkdirs();
+                //outputFile.createNewFile();
+                FileOutputStream fos = new FileOutputStream(outputFile);
+                IOUtils.copy(tis, fos);
+                fos.close();
+            }
+        }
+        tis.close();
+    }
+    */
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_WRITE_EXTERNAL_STORAGE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                loadFiles();
+            } else if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                Toast.makeText(this, "Can't write to external storage without permission", Toast.LENGTH_SHORT).show();
+                this.finish();
             }
         }
     }

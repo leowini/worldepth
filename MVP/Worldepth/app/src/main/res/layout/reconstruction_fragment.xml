@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="98dp"
         android:text="@string/_0"
+        android:textColor="@color/inputColor"
         android:textSize="50sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
