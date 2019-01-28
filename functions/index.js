@@ -47,6 +47,7 @@ exports.sendNotification = functions.database.ref('/messages/{userId}/{messageId
 			return admin.messaging().sendToDevice(token, payload)
 						.then(function(response) {
 							console.log("Successfully sent message:", response);
+							return true;
 						  })
 						  .catch(function(error) {
 							console.log("Error sending message:", error);
