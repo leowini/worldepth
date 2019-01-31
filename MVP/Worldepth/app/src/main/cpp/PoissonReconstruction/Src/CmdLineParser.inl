@@ -248,8 +248,8 @@ inline void cmdLineParse( int argc , char **argv , cmdLineReadable** params )
 			for( int i=0 ; params[i]!=NULL && readable==NULL ; i++ ) {
                 std::string paramname = params[i]->name;
                 std::string argvname = argv[0]+2;
-				std::string subbuffname= readParam(argv[0] + 2, 2);
-			    if( !strcasecmp( params[i]->name , readParam(argv[0] + 2, 2)) ) readable = params[i];
+				std::string subbuffname= readParam(argv[0] + 2, strlen(params[i]->name));
+			    if( !strcasecmp( params[i]->name , readParam(argv[0] + 2, strlen(params[i]->name))) ) readable = params[i];
 			}
 			if( readable )
 			{
@@ -312,5 +312,6 @@ char* readParam(char* parameter, int size) {
 		subbuff[i] = parameter[i];
 		i++;
 	}
+	subbuff[size] = '\0';
 	return subbuff;
 }
