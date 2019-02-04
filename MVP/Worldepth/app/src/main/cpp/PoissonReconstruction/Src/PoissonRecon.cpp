@@ -421,6 +421,7 @@ int Execute( int argc , char* argv[] , UIntPack< FEMSigs ... > )
 	{
 		profiler.start();
 		InputPointStream* pointStream;
+		std::string inValue = In.value;
 		char* ext = GetFileExtension( In.value );
 		sampleData = new std::vector< TotalPointSampleData >();
 		if     ( !strcasecmp( ext , "bnpts" ) ) pointStream = new BinaryInputPointStreamWithData< Real , Dim , TotalPointSampleData >( In.value , TotalPointSampleData::ReadBinary );
