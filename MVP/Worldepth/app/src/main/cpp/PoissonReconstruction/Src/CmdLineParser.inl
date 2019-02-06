@@ -88,7 +88,7 @@ int cmdLineParameter< Type >::read( char** argv , int argc )
 {
 	if( argc>0 )
 	{
-		cmdLineCleanUp< Type >( &value ) , value = cmdLineStringToType< Type >( argv[0] );
+		cmdLineCleanUp< Type >( &value ) , value = cmdLineStringToType< Type >( argv[0] + 5);
 		set = true;
 		return 1;
 	}
@@ -253,7 +253,7 @@ inline void cmdLineParse( int argc , char **argv , cmdLineReadable** params )
 			}
 			if( readable )
 			{
-				int j = readable->read( argv+1 , argc-1 );
+				int j = readable->read( argv , argc );
 				argv += j , argc -= j;
 			}
 			else
@@ -262,8 +262,10 @@ inline void cmdLineParse( int argc , char **argv , cmdLineReadable** params )
 				for( int i=0 ; params[i]!=NULL ; i++ ) printf( "\t--%s\n" , params[i]->name );
 			}
 		}
-		else fprintf( stderr , "[WARNING] Parameter name should be of the form --<name>: %s\n" , argv[0] );
-		++argv , --argc;
+		else {
+			fprintf( stderr , "[WARNING] Parameter name should be of the form --<name>: %s\n" , argv[0] );
+			++argv , --argc;
+		}
 	}
 }
 

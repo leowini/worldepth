@@ -241,7 +241,9 @@ int _Execute( int argc , char* argv[] )
 	for( int i=0 ; params[i] ; i++ )
 		if( params[i]->set )
 		{
+			std::string valueWritten = params[i]->name;
 			params[i]->writeValue( str );
+			std::string valueWrote = str;
 			if( strlen( str ) ) messageWriter( comments , "\t--%s %s\n" , params[i]->name , str );
 			else                messageWriter( comments , "\t--%s\n" , params[i]->name );
 		}
