@@ -19,7 +19,7 @@ Java_com_example_leodw_worldepth_slam_PoissonWrapper_passPointCloudToPoisson(JNI
     char* args [] = {
             (char*)"PoissonRecon",
             (char*)"--in",
-            (char*)"/storage/emulated/0/Worldepth/SLAM.txt",
+            (char*)"/storage/emulated/0/Worldepth/Pointcloud.txt",
             (char*)"--out",
             (char*)"/storage/emulated/0/Worldepth/SLAM.ply",
             (char*)"--depth",

@@ -189,6 +189,7 @@ public class MainActivity extends AppCompatActivity {
     private void loadFiles() {
         /*File tarFile = */checkAndWriteFile("ORBvoc.bin");
         checkAndWriteFile("TUM1.yaml");
+        checkAndWriteFile("Pointcloud.txt");
         /*if (tarFile != null) {
             String externDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Worldepth";
             try {
