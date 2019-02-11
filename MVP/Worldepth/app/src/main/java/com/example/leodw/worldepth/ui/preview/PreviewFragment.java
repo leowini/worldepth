@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -27,6 +28,8 @@ import com.example.leodw.worldepth.ui.preview.stl.StlModel;
 import com.example.leodw.worldepth.ui.preview.util.Util;
 import com.example.leodw.worldepth.R;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -243,9 +246,12 @@ public class PreviewFragment extends Fragment {
 
     private void loadSampleModel() {
         try {
-            InputStream stream = getActivity().getApplicationContext().getAssets()
-                    .open(SAMPLE_MODELS[sampleModelIndex++ % SAMPLE_MODELS.length]);
-            setCurrentModel(new StlModel(stream));
+            /*InputStream stream = getActivity().getApplicationContext().getAssets()
+                    .open(SAMPLE_MODELS[sampleModelIndex++ % SAMPLE_MODELS.length]);*/
+            File file = new File(Environment.getExternalStorageDirectory()
+                    .getAbsolutePath() + "/Worldepth/", "SLAM.ply");
+            InputStream stream = new FileInputStream(file);
+            setCurrentModel(new PlyModel(stream));
             stream.close();
         } catch (IOException e) {
             e.printStackTrace();
