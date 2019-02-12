@@ -56,21 +56,21 @@ public class Slam {
      * This will run in the background on the SlamSenderThread.
      */
     void doSlam() {
-//        try {
-//            TimeFramePair<Bitmap, Long> timeFramePair = mQueue.take();
-//            Bitmap bmp = timeFramePair.getFrame();
-//            Long time = timeFramePair.getTime();
-//            while (!bmp.equals(mPoisonPillBitmap)) {
-//                mFrameCountListener.onNextFrame();
-//                sendFrameToSlam(bmp, time);
-//                timeFramePair = mQueue.take();
-//                bmp = timeFramePair.getFrame();
-//                time = timeFramePair.getTime();
-//            }
-//            sendFrameToSlam(mPoisonPillBitmap, time);
-//        } catch (Exception e) {
-//            System.out.println(Thread.currentThread().getName() + " " + e.getMessage());
-//        }
+        try {
+            TimeFramePair<Bitmap, Long> timeFramePair = mQueue.take();
+            Bitmap bmp = timeFramePair.getFrame();
+            Long time = timeFramePair.getTime();
+            while (!bmp.equals(mPoisonPillBitmap)) {
+                mFrameCountListener.onNextFrame();
+                sendFrameToSlam(bmp, time);
+                timeFramePair = mQueue.take();
+                bmp = timeFramePair.getFrame();
+                time = timeFramePair.getTime();
+            }
+            sendFrameToSlam(mPoisonPillBitmap, time);
+        } catch (Exception e) {
+            System.out.println(Thread.currentThread().getName() + " " + e.getMessage());
+        }
         mCompleteListener.onSlamComplete(0);
     }
 
