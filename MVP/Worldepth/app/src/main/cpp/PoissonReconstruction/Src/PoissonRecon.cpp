@@ -687,7 +687,7 @@ int Execute( int argc , char* argv[] )
 
 //argc is number of cmd line arguments, including the program name.
 //argv is a list of the actual arguments, in an array of strings.
-int main( int argc , char* argv[] )
+int runMain( int argc , char* argv[] )
 {
 	Timer timer;
 #ifdef ARRAY_DEBUG
@@ -698,7 +698,6 @@ int main( int argc , char* argv[] )
 	if( MaxMemoryGB.value>0 ) SetPeakMemoryMB( MaxMemoryGB.value<<10 );
 	omp_set_num_threads( Threads.value > 1 ? Threads.value : 1 );
 	messageWriter.echoSTDOUT = Verbose.set;
-
 	if( !In.set )
 	{
 		ShowUsage( argv[0] );

@@ -6,6 +6,7 @@
 set(SLAM-SRC ${PROJECT_SOURCE_DIR}/src/main/cpp/SLAM-src)
 set(DBoW2 ${PROJECT_SOURCE_DIR}/src/main/cpp/DBoW2)
 set(G2O ${PROJECT_SOURCE_DIR}/src/main/cpp/g2o)
+set(POISSON ${PROJECT_SOURCE_DIR}/src/main/cpp/PoissonReconstruction/Src)
 
 cmake_minimum_required(VERSION 3.4.1)
 
@@ -19,6 +20,7 @@ include_directories(${PROJECT_SOURCE_DIR}/src/main/cpp/SLAM-include)
 include_directories(${DBoW2})
 include_directories(${PROJECT_SOURCE_DIR}/src/main/cpp)
 include_directories(${G2O})
+include_directories(${POISSON})
 
 add_library(lib_DBoW2
         SHARED
@@ -102,6 +104,16 @@ add_library( lib_opencv SHARED IMPORTED)
 set_target_properties(lib_opencv PROPERTIES IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/src/main/jniLibs/${ANDROID_ABI}/libopencv_java3.so)
 
 
+add_library(
+        lib_poisson
+
+        SHARED
+
+        ${POISSON}/PoissonRecon.cpp
+        ${POISSON}/PlyFile.cpp
+)
+
+
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because CMake includes system libraries in the search path by
 # default, you only need to specify the name of the public NDK library
@@ -130,5 +142,5 @@ target_link_libraries( # Specifies the target library.
         ${log-lib}
         lib_g2o
         lib_DBoW2
-        lib_opencv)
-
+        lib_opencv
+        lib_poisson)

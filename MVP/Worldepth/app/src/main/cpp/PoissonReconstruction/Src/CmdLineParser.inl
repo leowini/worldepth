@@ -28,6 +28,7 @@ DAMAGE.
 
 #include <cassert>
 #include <string.h>
+#include "CmdLineParser.h"
 
 #if defined( WIN32 ) || defined( _WIN64 )
 inline int strcasecmp( const char* c1 , const char* c2 ){ return _stricmp( c1 , c2 ); }
@@ -244,7 +245,11 @@ inline void cmdLineParse( int argc , char **argv , cmdLineReadable** params )
 		if( argv[0][0]=='-' && argv[0][1]=='-' )
 		{
 			cmdLineReadable* readable=NULL;
-			for( int i=0 ; params[i]!=NULL && readable==NULL ; i++ ) if( !strcasecmp( params[i]->name , argv[0]+2 ) ) readable = params[i];
+			for( int i=0 ; params[i]!=NULL && readable==NULL ; i++ ) {
+				if( !strcasecmp( params[i]->name , argv[0]+2 ) ) {
+				    readable = params[i];
+				}
+			}
 			if( readable )
 			{
 				int j = readable->read( argv+1 , argc-1 );
