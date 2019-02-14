@@ -1,5 +1,6 @@
 package com.example.leodw.worldepth.ui.map;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.leodw.worldepth.R;
+import com.example.leodw.worldepth.slam.ReconVM;
 import com.example.leodw.worldepth.ui.MainActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -27,6 +29,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private static final String TAG = "MapFragment";
 
     private GoogleMap mMap;
+
+    private ReconVM mReconVM;
 
     @Nullable
     @Override
@@ -47,6 +51,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mProfileButton.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_mapFragment_to_profileFragment));
         mCameraButton.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_mapFragment_to_cameraFragment));
         mMessageButton.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_mapFragment_to_messageFragment));
+        mReconVM = ViewModelProviders.of(getActivity()).get(ReconVM.class);
+        //mReconVM.getReconProgress().observe(this, item -> updateUI());
+        mReconVM.getSlamProgress().observe(this, progress -> updateReconUI(progress));
     }
 
     /**
@@ -66,5 +73,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         LatLng sydney = new LatLng(-34, 151);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+    }
+
+    private void updateReconUI(String progress) {
+        int percentComplete = Integer.getInteger(progress);
+        //update the minimized reconstruction bubble to show progress
     }
 }
