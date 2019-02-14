@@ -75,6 +75,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 
+    /**
+     * Updates the minimized reconstruction bubble. percentComplete is the percent progress of Slam
+     * from 0 to 100.
+     * @param progress
+     */
     private void updateReconUI(String progress) {
         int percentComplete = Integer.getInteger(progress);
         //update the minimized reconstruction bubble to show progress
