@@ -152,8 +152,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private File checkAndWriteFile(String filename) {
-        String externDir = Environment.getExternalStorageDirectory().getAbsolutePath();
-        File wdDir = new File(externDir + "/Worldepth");
+        //String externDir = Environment.getExternalStorageDirectory().getAbsolutePath();
+        File wdDir = getFilesDir();
+        String dirName = wdDir.getAbsolutePath();
         if (!wdDir.exists()) {
             Log.i(TAG, "Worldepth folder not found, making it...");
             wdDir.mkdir();
@@ -161,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.e(TAG, "Unable to create worldepth folder");
             }
         }
-        File targetFile = new File(externDir + "/Worldepth/" + filename);
+        File targetFile = new File(dirName + filename);
         if (targetFile.exists()) {
             Log.i(TAG, targetFile.getAbsolutePath() + " already exists");
             return null;
