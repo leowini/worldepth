@@ -75,6 +75,10 @@ namespace SLAM
         Frame mCurrentFrame;
         cv::Mat mImGray;
 
+        //this tells if the last frame was turned into a keyFrame, set to false
+        //at the start of each Track() call
+        bool frameKeyed;
+
         // Initialization Variables (Monocular)
         std::vector<int> mvIniLastMatches;
         std::vector<int> mvIniMatches;

@@ -10,6 +10,7 @@ namespace SLAM
     void start (std::string & vocFile, std::string & settingsFile) {
         //now with binary
         slam = new System(vocFile, settingsFile);
+        vKFImColor = new vector<cv::Mat>();
     }
 
     //I still don't know how to do the initializer, if it's not automatically Idk how this is done
@@ -18,9 +19,18 @@ namespace SLAM
         if (im.empty() || tstamp == 0){
             cerr << "could not load image!" << endl;
         } else {
-            slam->TrackMonocular(im, tstamp);
+            if(slam->TrackMonocular(im, tstamp)){
+                vKFImColor->push_back(im.clone());
+            }
         }
 
+    }
+
+    //WHEN YOU CALL THIS METHOD IN TEXTURE MAPPING MAKE SURE TO RUN
+    //delete vKFImColor;
+    //or whatever you called the pointer. Failing to do so will leak the memory
+    vector<cv::Mat> * getKeyFrameImages() {
+        return vKFImColor;
     }
 
 
@@ -36,6 +46,9 @@ namespace SLAM
 
         //close any other threads (should be done already in System.Reset()
         delete slam;
+
+        //LEO REMOVE THIS LINE FOR TEXTURE MAPPING TO WORK
+        delete vKFImColor;
     }
 
     extern "C"
