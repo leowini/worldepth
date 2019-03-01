@@ -1,8 +1,0 @@
-<resources>
-    <string name = "app_name">worldepthFragments</string>
-    <string name = "action_settings">Settings</string>
-    <string name = "blueFragTitle">Welcome to the blue fragment</string>
-    <string name = "redFragTitle">Welcome to the red fragment</string>
-    <string name = "blueFragNav">Go to Blue Fragment</string>
-    <string name = "redFragNav">Go to Red Fragment</string>
-</resources>
