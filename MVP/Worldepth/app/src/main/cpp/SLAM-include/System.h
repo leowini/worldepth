@@ -45,8 +45,8 @@ namespace SLAM
 
         // Proccess the given monocular frame
         // Input images: RGB (CV_8UC3) or grayscale (CV_8U). RGB is converted to grayscale.
-        // Returns whether a frame was turned into a keyFrame
-        bool TrackMonocular(const cv::Mat &im, const double &timestamp);
+        // Returns the pose if a frame was turned into a keyFrame
+        cv::Mat TrackMonocular(const cv::Mat &im, const double &timestamp);
 
         vector<MapPoint*> GetAllMapPoints();
 

@@ -124,7 +124,7 @@ System::System(const string &strVocFile, const string &strSettingsFile):
 }
 
 
-bool System::TrackMonocular(const cv::Mat &im, const double &timestamp)
+cv::Mat System::TrackMonocular(const cv::Mat &im, const double &timestamp)
 {
 
     // Check mode change
@@ -168,7 +168,9 @@ bool System::TrackMonocular(const cv::Mat &im, const double &timestamp)
     mTrackedMapPoints = mpTracker->mCurrentFrame.mvpMapPoints;
     mTrackedKeyPointsUn = mpTracker->mCurrentFrame.mvKeysUn;
 
-    return mpTracker -> frameKeyed;
+    if(mpTracker -> frameKeyed) {
+        return Tcw;
+    };
 }
 
 void System::ActivateLocalizationMode()

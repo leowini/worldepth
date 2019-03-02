@@ -36,6 +36,7 @@ extern "C" JNIEXPORT void JNICALL Java_com_example_leodw_worldepth_slam_Slam_ini
 
 System *slam;
 vector<cv::Mat> *vKFImColor;
+vector<cv::Mat> *vKFTCW;
 
 } //namespace SLAM
 
