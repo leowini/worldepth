@@ -75,17 +75,6 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
             e.printStackTrace();
         }
 
-//        if (decodeCount <= 10) {
-//            File outputFile = new File(FILES_DIR,
-//                    String.format("frame-%02d.png", decodeCount));
-//            try {
-//                saveFrame(outputFile.toString());
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//            Log.d(TAG, "Image Saved!");
-//            decodeCount++;
-//        }
     }
 
     /**

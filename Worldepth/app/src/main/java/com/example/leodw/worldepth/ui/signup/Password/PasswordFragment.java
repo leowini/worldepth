@@ -165,9 +165,9 @@ public class PasswordFragment extends Fragment {
     }
 
     /*checks for illegal characters. Only the following are permitted:
--Lower and uppercase English letters (A-Z)
--Digits of Hindu-Arabic number system (0-9)
--' '(space), '!', '#', '$', '%', '&', '(', ')', '*', '+', '-', '.', '/', '[', ']', '^', '_', '`' */
+    -Lower and uppercase English letters (A-Z)
+    -Digits of Hindu-Arabic number system (0-9)
+    -' '(space), '!', '#', '$', '%', '&', '(', ')', '*', '+', '-', '.', '/', '[', ']', '^', '_', '`' */
     private boolean containsIllegalChars(String password) {
         for (int i = 0; i < password.length(); i++) {
             int test = (int) (password.charAt(i)); //casting char into an int to check against ASCII

@@ -1,6 +1,5 @@
 package com.example.leodw.worldepth.ui.loading;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,12 +8,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.example.leodw.worldepth.R;
-import com.example.leodw.worldepth.slam.ReconVM;
 
 import androidx.navigation.Navigation;
 
