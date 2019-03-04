@@ -170,7 +170,9 @@ cv::Mat System::TrackMonocular(const cv::Mat &im, const double &timestamp)
 
     if(mpTracker -> frameKeyed) {
         return Tcw;
-    };
+    }else {
+        return cv::Mat();
+    }
 }
 
 void System::ActivateLocalizationMode()
