@@ -1,8 +1,11 @@
 package com.example.leodw.worldepth.ui.preview.ply;
 
+import android.icu.lang.UCharacter;
+import android.icu.lang.UCharacterCategory;
 import android.opengl.GLES20;
 import android.opengl.Matrix;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.ui.preview.IndexedModel;
@@ -19,11 +22,13 @@ import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.opengl.GLES20.GL_ELEMENT_ARRAY_BUFFER;
 import static com.example.leodw.worldepth.ui.preview.util.Util.readIntLe;
 
 public class PlyModel extends IndexedModel {
 
-    private final float[] pointColor = new float[] { 1.0f, 1.0f, 1.0f };
+    private final float[] pointColor = new float[]{1.0f, 1.0f, 1.0f};
+    private int faceCount;
 
     public PlyModel(@NonNull InputStream inputStream) throws IOException {
         super();
@@ -41,7 +46,7 @@ public class PlyModel extends IndexedModel {
             glProgram = -1;
         }
         glProgram = Util.compileProgram(R.raw.point_cloud_vertex, R.raw.single_color_fragment,
-                new String[] {"a_Position"});
+                new String[]{"a_Position"});
         initModelMatrix(boundSize);
     }
 
@@ -50,12 +55,15 @@ public class PlyModel extends IndexedModel {
         final float yRotation = 180f;
         initModelMatrix(boundSize, 0.0f, yRotation, 0.0f);
         float scale = getBoundScale(boundSize);
-        if (scale == 0.0f) { scale = 1.0f; }
+        if (scale == 0.0f) {
+            scale = 1.0f;
+        }
         floorOffset = (minY - centerMassY) / scale;
     }
 
     private void readText(@NonNull BufferedInputStream stream) throws IOException {
         List<Float> vertices = new ArrayList<>();
+        List<Integer> faces = new ArrayList<>();
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(stream), INPUT_BUFFER_SIZE);
         String line;
@@ -79,6 +87,10 @@ public class PlyModel extends IndexedModel {
             } else if (line.startsWith("element vertex")) {
                 lineArr = line.split(" ");
                 vertexCount = Integer.parseInt(lineArr[2]);
+            } else if (line.startsWith("element face")) {
+                lineArr = line.split(" ");
+                faceCount = Integer.parseInt(lineArr[2]);
+                System.out.println(faceCount);
             } else if (line.startsWith("end_header")) {
                 break;
             }
@@ -90,9 +102,12 @@ public class PlyModel extends IndexedModel {
 
         if (isBinary) {
             stream.reset();
-            readVerticesBinary(vertices, stream);
+            System.out.println("binary");
+            readVerticesBinary(vertices, faces, stream);
         } else {
+            System.out.println("text");
             readVerticesText(vertices, reader);
+            readFacesText(faces, reader);
         }
 
         float[] floatArray = new float[vertices.size()];
@@ -104,6 +119,16 @@ public class PlyModel extends IndexedModel {
         vertexBuffer = vbb.asFloatBuffer();
         vertexBuffer.put(floatArray);
         vertexBuffer.position(0);
+
+        int[] intArray = new int[faces.size()];
+        for (int i = 0; i < faces.size(); i++) {
+            intArray[i] = faces.get(i);
+        }
+        ByteBuffer fbb = ByteBuffer.allocateDirect(intArray.length * BYTES_PER_INT);
+        fbb.order(ByteOrder.nativeOrder());
+        faceIndexBuffer = fbb.asIntBuffer();
+        faceIndexBuffer.put(intArray);
+        faceIndexBuffer.position(0);
     }
 
     private void readVerticesText(List<Float> vertices, BufferedReader reader) throws IOException {
@@ -129,12 +154,12 @@ public class PlyModel extends IndexedModel {
             centerMassZ += z;
         }
 
-        this.centerMassX = (float)(centerMassX / vertexCount);
-        this.centerMassY = (float)(centerMassY / vertexCount);
-        this.centerMassZ = (float)(centerMassZ / vertexCount);
+        this.centerMassX = (float) (centerMassX / vertexCount);
+        this.centerMassY = (float) (centerMassY / vertexCount);
+        this.centerMassZ = (float) (centerMassZ / vertexCount);
     }
 
-    private void readVerticesBinary(List<Float> vertices, BufferedInputStream stream) throws IOException {
+    private void readVerticesBinary(List<Float> vertices, List<Integer> faces, @NonNull BufferedInputStream stream) throws IOException {
         byte[] tempBytes = new byte[0x1000];
         stream.mark(1);
         stream.read(tempBytes);
@@ -164,9 +189,30 @@ public class PlyModel extends IndexedModel {
             centerMassZ += z;
         }
 
-        this.centerMassX = (float)(centerMassX / vertexCount);
-        this.centerMassY = (float)(centerMassY / vertexCount);
-        this.centerMassZ = (float)(centerMassZ / vertexCount);
+        this.centerMassX = (float) (centerMassX / vertexCount);
+        this.centerMassY = (float) (centerMassY / vertexCount);
+        this.centerMassZ = (float) (centerMassZ / vertexCount);
+
+        for (int i = 0; i < faceCount; i++) {
+            stream.read(tempBytes, 0, 1);
+            byte[] temp = tempBytes;
+            int length = (tempBytes[0] & 0xff);
+            stream.read(tempBytes, 0, BYTES_PER_INT * length);
+            for (int j = 0; j < length; j++) {
+                faces.add(readIntLe(tempBytes, BYTES_PER_INT * j));
+            }
+        }
+    }
+
+    private void readFacesText(List<Integer> faces, BufferedReader reader) throws IOException {
+        String[] lineArr;
+
+        for (int i = 0; i < faceCount; i++) {
+            lineArr = reader.readLine().trim().split(" ");
+            for (int j = 1; j < lineArr.length; j++) {
+                faces.add(Integer.parseInt(lineArr[j]));
+            }
+        }
     }
 
     @Override
@@ -192,7 +238,7 @@ public class PlyModel extends IndexedModel {
         GLES20.glUniform1f(pointThicknessHandle, 3.0f);
         GLES20.glUniform3fv(ambientColorHandle, 1, pointColor, 0);
 
-        GLES20.glDrawArrays(GLES20.GL_POINTS, 0, vertexCount);
+        GLES20.glDrawElements(GLES20.GL_TRIANGLES, faceCount * 3, GLES20.GL_UNSIGNED_INT, faceIndexBuffer);
 
         GLES20.glDisableVertexAttribArray(positionHandle);
     }
