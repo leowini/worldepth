@@ -40,10 +40,6 @@ import java.io.OutputStream;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
-/*import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
-import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
-import org.apache.commons.compress.utils.IOUtils;*/
-
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
@@ -79,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
         fb = new FirebaseWrapper();
         dt = new DataTransfer();
         createNotificationChannel();
-        //listenForNotifications();
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{
                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -187,50 +182,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadFiles() {
-        /*File tarFile = */checkAndWriteFile("ORBvoc.bin");
+        checkAndWriteFile("ORBvoc.bin");
         checkAndWriteFile("TUM1.yaml");
         checkAndWriteFile("Pointcloud.txt");
-        /*if (tarFile != null) {
-            String externDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Worldepth";
-            try {
-                File unTarFile = new File(externDir);
-                unTar(tarFile, unTarFile);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }*/
     }
-
-    /*
-    private void unTar(File tarFile, File destFile) throws IOException {
-        FileInputStream fis = new FileInputStream(tarFile);
-        TarArchiveInputStream tis = new TarArchiveInputStream(fis);
-        TarArchiveEntry tarEntry = null;
-
-        // tarIn is a TarArchiveInputStream
-        while ((tarEntry = tis.getNextTarEntry()) != null) {
-            File outputFile = new File(destFile + File.separator + tarEntry.getName());
-
-            if (tarEntry.isDirectory()) {
-
-                System.out.println("outputFile Directory ---- "
-                        + outputFile.getAbsolutePath());
-                if (!outputFile.exists()) {
-                    outputFile.mkdirs();
-                }
-            } else {
-                //File outputFile = new File(destFile + File.separator + tarEntry.getName());
-                System.out.println("outputFile File ---- " + outputFile.getAbsolutePath());
-                outputFile.getParentFile().mkdirs();
-                //outputFile.createNewFile();
-                FileOutputStream fos = new FileOutputStream(outputFile);
-                IOUtils.copy(tis, fos);
-                fos.close();
-            }
-        }
-        tis.close();
-    }
-    */
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

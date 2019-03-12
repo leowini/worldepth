@@ -22,7 +22,7 @@ public class ProfileViewModel extends ViewModel {
     private FirebaseDatabase mDb;
 
     public ProfileViewModel() {
-        mFb = new FirebaseWrapper();//((MainActivity) getActivity()).getFirebaseWrapper();
+        mFb = new FirebaseWrapper();
         mDb = mFb.getFirebaseDatabase();
         setName();
         setFriendCount();
