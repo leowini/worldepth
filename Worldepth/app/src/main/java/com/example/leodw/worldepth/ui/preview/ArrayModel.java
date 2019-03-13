@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.ui.preview.util.Util;
 import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 
 public class ArrayModel extends Model {
     protected static final int BYTES_PER_FLOAT = 4;
@@ -18,6 +19,7 @@ public class ArrayModel extends Model {
     protected int vertexCount;
     @Nullable protected FloatBuffer vertexBuffer;
     @Nullable protected FloatBuffer normalBuffer;
+    @Nullable protected IntBuffer faceIndexBuffer;
 
     @Override
     public void init(float boundSize) {
