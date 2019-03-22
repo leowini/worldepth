@@ -1,5 +1,4 @@
 #include <vector>
-#include <opencv.hpp>
 #include <thread>
 #include <chrono>
 #include <vector>
@@ -8,6 +7,8 @@
 #include <iostream>
 #include <cstring>
 #include <iterator>
+#include <opencv2/core/mat.hpp>
+#include <opencv2/core.hpp>
 
 #include "tinyply.h"
 #include "TextureMapper.h"

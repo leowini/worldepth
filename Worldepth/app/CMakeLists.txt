@@ -21,6 +21,7 @@ include_directories(${DBoW2})
 include_directories(${PROJECT_SOURCE_DIR}/src/main/cpp)
 include_directories(${G2O})
 include_directories(${POISSON})
+include_directories(${PROJECT_SOURCE_DIR}/src/main/cpp/TextureMapping)
 
 add_library(lib_DBoW2
         SHARED
@@ -76,6 +77,9 @@ add_library( # Sets the name of the library.
 
         # Provides a relative path to your source file(s).
         src/main/cpp/native-lib.cpp
+        #Texture Mapping
+        src/main/cpp/TextureMapping/TextureMapper.cpp
+        src/main/cpp/TextureMapping/tinyply.cpp
         #SLAM
         ${SLAM-SRC}/Frame.cpp
         ${SLAM-SRC}/ORBExtractor.cpp
