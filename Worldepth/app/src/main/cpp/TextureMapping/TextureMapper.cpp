@@ -436,7 +436,7 @@ bool TextureMapper::projectToSurface() {
 
             //THIS IS WHERE THE SEARCH FOR VERTICES IS
             // For vertex in model
-            for (int vertex; vertex < this->vertices->count; vertex++) {
+            for (int vertex; vertex < vertices.size(); vertex++) {
                 //project point to image space
                 //get vector from the point-to-be-colored to the camera center
                 //if inside image
