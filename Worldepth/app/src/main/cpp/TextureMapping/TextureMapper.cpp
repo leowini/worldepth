@@ -13,6 +13,8 @@
 #include "tinyply.h"
 #include "TextureMapper.h"
 
+using namespace tinyply;
+
 /** 
 ** Assuming that source is a vector of cv::Mats
 **/
@@ -444,11 +446,11 @@ bool TextureMapper::projectToSurface() {
     // Paint model vertices with colors
 }
 
-int max(int x, int y, int z) {
+int TextureMapper::max(int x, int y, int z) {
     return std::max(std::max(x, y), z);
 }
 
-int min(int x, int y, int z){
+int TextureMapper::min(int x, int y, int z){
     return std::min(std::min(x, y), z);
 }
 
