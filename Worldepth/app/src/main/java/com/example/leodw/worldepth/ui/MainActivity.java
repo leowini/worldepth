@@ -75,12 +75,13 @@ public class MainActivity extends AppCompatActivity {
         fb = new FirebaseWrapper();
         dt = new DataTransfer();
         createNotificationChannel();
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+        loadFiles();
+        /*if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{
                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
             }, REQUEST_WRITE_EXTERNAL_STORAGE);
             Log.i(TAG, "permission not granted, asking");
-        }
+        }*/
     }
 
     public FirebaseWrapper getFirebaseWrapper() {
@@ -157,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.e(TAG, "Unable to create worldepth folder");
             }
         }
-        File targetFile = new File(dirName + filename);
+        File targetFile = new File(dirName + "/" + filename);
         if (targetFile.exists()) {
             Log.i(TAG, targetFile.getAbsolutePath() + " already exists");
             return null;
@@ -188,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
         checkAndWriteFile("Pointcloud.txt");
     }
 
-    @Override
+    /*@Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_WRITE_EXTERNAL_STORAGE) {
@@ -199,6 +200,6 @@ public class MainActivity extends AppCompatActivity {
                 this.finish();
             }
         }
-    }
+    }*/
 }
 
