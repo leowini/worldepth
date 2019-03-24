@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/startScreenFragment">
+
+    <fragment
+        android:id="@+id/startScreenFragment"
+        android:name="com.example.leodw.worldepth.ui.StartScreen.StartScreenFragment"
+        android:label="start_screen_fragment"
+        tools:layout="@layout/start_screen_fragment" >
+        <action
+            android:id="@+id/action_startScreenFragment_to_startSignupFragment"
+            app:destination="@id/startSignupFragment" />
+        <action
+            android:id="@+id/action_startScreenFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/passwordFragment"
+        android:name="com.example.leodw.worldepth.ui.signup.Password.PasswordFragment"
+        android:label="password_fragment"
+        tools:layout="@layout/password_fragment" >
+        <action
+            android:id="@+id/action_passwordFragment_to_birthdayFragment"
+            app:destination="@id/birthdayFragment" />
+        <action
+            android:id="@+id/action_passwordFragment_to_loadingFragment"
+            app:destination="@id/loadingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/cameraFragment"
+        android:name="com.example.leodw.worldepth.ui.camera.CameraFragment"
+        android:label="camera_fragment"
+        tools:layout="@layout/camera_fragment" >
+        <action
+            android:id="@+id/action_cameraFragment_to_settings"
+            app:destination="@id/settings" />
+        <action
+            android:id="@+id/action_cameraFragment_to_mapFragment"
+            app:destination="@id/mapFragment"
+            app:enterAnim="@animator/slide_down_in"
+            app:exitAnim="@animator/slide_down_out" />
+        <action
+            android:id="@+id/action_cameraFragment_to_mapFragment2"
+            app:destination="@id/mapFragment" />
+        <action
+            android:id="@+id/action_cameraFragment_to_mapFragment3"
+            app:destination="@id/mapFragment" />
+        <action
+            android:id="@+id/action_cameraFragment_to_reconstructionFragment"
+            app:destination="@id/reconstructionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/nameFragment"
+        android:name="com.example.leodw.worldepth.ui.signup.Name.NameFragment"
+        android:label="name_fragment"
+        tools:layout="@layout/name_fragment" >
+        <action
+            android:id="@+id/action_nameFragment_to_birthdayFragment"
+            app:destination="@id/birthdayFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/birthdayFragment"
+        android:name="com.example.leodw.worldepth.ui.signup.Birthday.BirthdayFragment"
+        android:label="birthday_fragment"
+        tools:layout="@layout/birthday_fragment" >
+        <action
+            android:id="@+id/action_birthdayFragment_to_passwordFragment"
+            app:destination="@id/passwordFragment" />
+        <action
+            android:id="@+id/action_birthdayFragment_to_nameFragment"
+            app:destination="@id/nameFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/startSignupFragment"
+        android:name="com.example.leodw.worldepth.ui.signup.StartSignup.StartSignupFragment"
+        android:label="start_signup_fragment"
+        tools:layout="@layout/start_signup_fragment" >
+        <action
+            android:id="@+id/action_startSignupFragment_to_phoneFragment"
+            app:destination="@id/phoneFragment" />
+        <action
+            android:id="@+id/action_startSignupFragment_to_startScreenFragment"
+            app:destination="@id/startScreenFragment" />
+        <action
+            android:id="@+id/action_startSignupFragment_to_emailFragment"
+            app:destination="@id/emailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/phoneFragment"
+        android:name="com.example.leodw.worldepth.ui.signup.Phone.PhoneFragment"
+        android:label="phone_fragment"
+        tools:layout="@layout/phone_fragment" >
+        <action
+            android:id="@+id/action_phoneFragment_to_nameFragment"
+            app:destination="@id/nameFragment" />
+        <action
+            android:id="@+id/action_phoneFragment_to_startSignupFragment"
+            app:destination="@id/startSignupFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/emailFragment"
+        android:name="com.example.leodw.worldepth.ui.signup.Email.EmailFragment"
+        android:label="email_fragment"
+        tools:layout="@layout/email_fragment">
+        <action
+            android:id="@+id/action_emailFragment_to_startSignupFragment"
+            app:destination="@id/startSignupFragment" />
+        <action
+            android:id="@+id/action_emailFragment_to_nameFragment"
+            app:destination="@id/nameFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settings"
+        android:name="com.example.leodw.worldepth.ui.settings.Settings"
+        android:label="settings_fragment"
+        tools:layout="@layout/settings_fragment" >
+        <action
+            android:id="@+id/action_settings_to_startScreenFragment"
+            app:destination="@id/startScreenFragment" />
+        <action
+            android:id="@+id/action_settings_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
+        <action
+            android:id="@+id/action_settings_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/viewerFragment"
+        android:name="com.example.leodw.worldepth.ui.preview.PreviewFragment"
+        android:label="viewer_fragment"
+        tools:layout="@layout/viewer_fragment" >
+        <action
+            android:id="@+id/action_viewerFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
+        <action
+            android:id="@+id/action_viewerFragment_to_cameraFragment2"
+            app:destination="@id/cameraFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loadingFragment"
+        android:name="com.example.leodw.worldepth.ui.loading.LoadingFragment"
+        android:label="loading_fragment"
+        tools:layout="@layout/loading_fragment" >
+        <action
+            android:id="@+id/action_loadingFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.example.leodw.worldepth.ui.map.MapFragment"
+        android:label="map_fragment"
+        tools:layout="@layout/map_fragment" >
+        <action
+            android:id="@+id/action_mapFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_mapFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment"
+            app:enterAnim="@animator/slide_up_in"
+            app:exitAnim="@animator/slide_up_out" />
+        <action
+            android:id="@+id/action_mapFragment_to_messageFragment"
+            app:destination="@id/messageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.leodw.worldepth.ui.profile.ProfileFragment"
+        android:label="profile_fragment"
+        tools:layout="@layout/profile_fragment" >
+        <action
+            android:id="@+id/action_profileFragment_to_settings"
+            app:destination="@id/settings" />
+        <action
+            android:id="@+id/action_profileFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/messageFragment"
+        android:name="com.example.leodw.worldepth.ui.messages.MessageFragment"
+        android:label="message_fragment"
+        tools:layout="@layout/message_fragment" >
+        <action
+            android:id="@+id/action_messageFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/reconstructionFragment"
+        android:name="com.example.leodw.worldepth.ui.reconstruction.ReconstructionFragment"
+        android:label="reconstruction_fragment"
+        tools:layout="@layout/reconstruction_fragment" >
+        <action
+            android:id="@+id/action_reconstructionFragment_to_viewerFragment"
+            app:destination="@id/viewerFragment" />
+        <action
+            android:id="@+id/action_reconstructionFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
+    </fragment>
+</navigation>
