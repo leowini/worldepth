@@ -18,7 +18,7 @@ using namespace tinyply;
 /** 
 ** Assuming that source is a vector of cv::Mats
 **/
-TextureMapper::TextureMapper(std::string plyFilename, std::vector<cv::Mat> source, std::vector<cv::Mat> TcwPoses, int patchSize = 7) : source(source), TcwPoses(TcwPoses), patchSize(patchSize) {
+TextureMapper::TextureMapper(std::string plyFilename, std::vector<cv::Mat> source, std::vector<cv::Mat> TcwPoses, int patchSize) : source(source), TcwPoses(TcwPoses), patchSize(patchSize) {
     read_ply_file(plyFilename); //gets vertices from the file
 /*
        init(); //clones source and target
@@ -333,7 +333,7 @@ int TextureMapper::Tixi(std::vector<std::vector<int>> completenessPatches, std::
     int V = coherencePatches.size();
     int L = 49; //L is the number of pixels in a patch (7 x 7 = 49)
     int alpha = 2;
-    int lambda = 0.1;
+    double lambda = 0.1;
     int sum1 = 0;
     int N = texture.size(); //N is the number of texture images.
     for (int u = 0; u < U; u++) {
