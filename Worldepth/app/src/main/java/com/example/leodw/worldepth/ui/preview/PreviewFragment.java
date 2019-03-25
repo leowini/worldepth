@@ -246,8 +246,7 @@ public class PreviewFragment extends Fragment {
 
     private void loadSampleModel() {
         try {
-            File file = new File(Environment.getExternalStorageDirectory()
-                    .getAbsolutePath() + "/Worldepth/", "SLAM.ply");
+            File file = new File(getContext().getFilesDir().getAbsolutePath() + "/", "SLAM.ply");
             InputStream stream = new FileInputStream(file);
             setCurrentModel(new PlyModel(stream));
             stream.close();
