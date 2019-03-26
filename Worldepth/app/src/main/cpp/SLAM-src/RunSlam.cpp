@@ -3,6 +3,7 @@
 //
 
 #include <RunSlam.h>
+#include "TextureMapper.h"
 
 namespace SLAM
 {
@@ -55,7 +56,7 @@ namespace SLAM
         //close any other threads (should be done already in System.Reset()
         delete slam;
 
-        //LEO REMOVE THESE TWO LINES FOR TEXTURE MAPPING TO WORK
+        TextureMapper *textureMapper = new TextureMapper("plyfile", vKFImColor, vKFTCW);
         delete vKFImColor;
         delete vKFTCW;
     }
