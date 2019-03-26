@@ -5,7 +5,7 @@
 
 class Reconstructor {
 public:
-
+    void reconstruct();
 private:
     std::vector<cv::Mat> *vKFImColor;
     std::vector<cv::Mat> *vKFTcw;
