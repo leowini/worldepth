@@ -6,7 +6,10 @@ public class TextureMapWrapper {
 
     private OnCompleteListener listener;
 
+    public native void textureMap();
+
     void runMapping(int mesh) {
+        textureMap();
         listener.onComplete(0);
     }
 

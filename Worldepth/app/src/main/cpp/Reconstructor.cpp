@@ -32,3 +32,7 @@ void Reconstructor::endSlam(std::string filename) {
     delete vKFImColor;
     delete vKFTcw;
 }
+
+void Reconstructor::textureMap() {
+    //textureMapper->textureMap();
+}

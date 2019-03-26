@@ -62,3 +62,9 @@ Java_com_example_leodw_worldepth_slam_Slam_initSystem(JNIEnv *env, jobject insta
     env->ReleaseStringUTFChars(vocFile, _vocFile);
     env->ReleaseStringUTFChars(settingsFile, _settingsFile);
 }
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_example_leodw_worldepth_slam_TextureMapWrapper_textureMap(JNIEnv *env, jobject instance) {
+    reconstructor->textureMap();
+}
