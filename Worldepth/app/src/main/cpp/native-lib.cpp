@@ -2,8 +2,11 @@
 #include <string>
 #include <opencv2/core/core.hpp>
 #include <PoissonRecon.cpp>
+#include "Reconstructor.h"
 
 using namespace std;
+
+Reconstructor *reconstructor;
 
 extern "C" JNIEXPORT jstring JNICALL
 Java_com_example_leodw_worldepth_MainActivity_stringFromJNI(
@@ -33,4 +36,17 @@ Java_com_example_leodw_worldepth_slam_PoissonWrapper_passPointCloudToPoisson(JNI
     };
     int numArgs = 9;
     runMain(numArgs, args);
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_example_leodw_worldepth_slam_Slam_passImageToSlam(JNIEnv *env, jobject instance, jlong img, jlong timeStamp) {
+    if (img == 0) { //poison pill
+        reconstructor->endSlam(/*"/storage/emulated/0/Worldepth/SLAM.npts"*/"/data/user/0/com.example.leodw.worldepth/files/SLAM.txt");
+    } else {
+        cv::Mat &mat = *(cv::Mat *) img;
+        double tframe = (double) timeStamp;
+        reconstructor->passImageToSlam(mat, tframe);
+        mat.release();
+    }
 }
