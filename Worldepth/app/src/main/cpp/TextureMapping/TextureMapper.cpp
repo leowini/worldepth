@@ -15,7 +15,7 @@
 
 using namespace tinyply;
 
-/** 
+/**
 ** Assuming that source is a vector of cv::Mats
 **/
 TextureMapper::TextureMapper(std::string plyFilename, std::vector<cv::Mat> source, std::vector<cv::Mat> TcwPoses, int patchSize) : source(source), TcwPoses(TcwPoses), patchSize(patchSize) {
