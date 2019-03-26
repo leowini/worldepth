@@ -77,7 +77,7 @@ add_library( # Sets the name of the library.
         # Provides a relative path to your source file(s).
         src/main/cpp/native-lib.cpp
         #Reconstructor
-        ${PROJECT_SOURCE_DIR}/src/main/cpp/Reconstructor.cpp
+        src/main/cpp/Reconstructor.cpp
         #SLAM
         ${SLAM-SRC}/Frame.cpp
         ${SLAM-SRC}/ORBExtractor.cpp

@@ -1,7 +1,7 @@
 #include "Reconstructor.h"
 
 void Reconstructor::reconstruct() {
-    Slam();
+    slam = new System(vocFile, settingsFile);
     Poisson();
     TextureMap();
 }
