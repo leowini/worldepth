@@ -10,6 +10,8 @@ namespace SLAM
     void start (std::string & vocFile, std::string & settingsFile) {
         //now with binary
         slam = new System(vocFile, settingsFile);
+        vKFImColor = new vector<cv::Mat>();
+        vKFTCW = new vector<cv::Mat>();
     }
 
     //I still don't know how to do the initializer, if it's not automatically Idk how this is done
@@ -18,9 +20,25 @@ namespace SLAM
         if (im.empty() || tstamp == 0){
             cerr << "could not load image!" << endl;
         } else {
-            slam->TrackMonocular(im, tstamp);
+            cv::Mat Tcw = slam->TrackMonocular(im, tstamp);
+            if(!Tcw.empty()){
+                vKFImColor->push_back(im.clone());
+                vKFTCW->push_back(Tcw.clone());
+            }
         }
 
+    }
+
+    //WHEN YOU CALL THIS METHOD IN TEXTURE MAPPING MAKE SURE TO RUN
+    //delete vKFImColor;
+    //or whatever you called the pointer. Failing to do so will leak the memory
+    vector<cv::Mat> * getKeyFrameImages() {
+        return vKFImColor;
+    }
+
+    //Same as the getKeyFrameImages(), delete the resulting vector when used
+    vector<cv::Mat> * getKeyFramePoses() {
+        return vKFTCW;
     }
 
 
@@ -28,7 +46,7 @@ namespace SLAM
 
         //get finished map as reference
         writeMap(filename, slam->GetAllMapPoints());
-        
+
 
         slam->Shutdown();
         //System actually has a clear func, it's
@@ -36,6 +54,10 @@ namespace SLAM
 
         //close any other threads (should be done already in System.Reset()
         delete slam;
+
+        //LEO REMOVE THESE TWO LINES FOR TEXTURE MAPPING TO WORK
+        delete vKFImColor;
+        delete vKFTCW;
     }
 
     extern "C"
