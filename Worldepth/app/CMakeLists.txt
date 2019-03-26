@@ -95,7 +95,6 @@ add_library( # Sets the name of the library.
         ${SLAM-SRC}/LoopClosing.cpp
         ${SLAM-SRC}/Optimizer.cpp
         ${SLAM-SRC}/Sim3Solver.cpp
-        ${SLAM-SRC}/RunSlam.cpp
         ${SLAM-SRC}/KeyFrameDatabase.cpp
         ${SLAM-SRC}/Initializer.cpp
         ${SLAM-SRC}/System.cpp
