@@ -9,7 +9,7 @@ using namespace SLAM;
 
 class Reconstructor {
 public:
-    void reconstruct();
+    Reconstructor(std::string & vocFile, std::string & settingsFile);
     void passImageToSlam(cv::Mat &im, double &tstamp);
     void endSlam(std::string filename);
 private:
