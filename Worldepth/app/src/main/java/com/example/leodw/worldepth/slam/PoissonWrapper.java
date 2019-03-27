@@ -7,10 +7,10 @@ public class PoissonWrapper {
     private OnCompleteListener listener;
 
 
-    public native void passPointCloudToPoisson();
+    public native void startPoisson();
 
-    void runPoisson(int pointCloud) {
-        passPointCloudToPoisson();
+    void runPoisson() {
+        startPoisson();
         listener.onComplete(0);
     }
 

@@ -18,7 +18,7 @@ Java_com_example_leodw_worldepth_MainActivity_stringFromJNI(
 
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_example_leodw_worldepth_slam_PoissonWrapper_passPointCloudToPoisson(JNIEnv *env, jobject instance) {
+Java_com_example_leodw_worldepth_slam_PoissonWrapper_startPoisson(JNIEnv *env, jobject instance) {
     char* args [] = {
             (char*)"PoissonRecon",
             (char*)"--in",
