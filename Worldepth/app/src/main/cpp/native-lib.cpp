@@ -1,7 +1,7 @@
 #include <jni.h>
 #include <string>
 #include <opencv2/core/core.hpp>
-#include <PoissonRecon.cpp>
+#include <PoissonRecon.h>
 #include "Reconstructor.h"
 
 using namespace std;
