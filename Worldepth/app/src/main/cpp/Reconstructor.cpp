@@ -28,7 +28,7 @@ void Reconstructor::endSlam(std::string filename) {
     slam->Reset();
     //close any other threads (should be done already in System.Reset()
     delete slam;
-    textureMapper = new TextureMapper("plyfile", vKFImColor, vKFTcw);
+    textureMapper = new TextureMapper("/data/users/0/com.example.leodw.worldepth/Horse.ply", *vKFImColor, *vKFTcw);
     delete vKFImColor;
     delete vKFTcw;
 }

@@ -187,6 +187,7 @@ public class MainActivity extends AppCompatActivity {
         checkAndWriteFile("ORBvoc.bin");
         checkAndWriteFile("TUM1.yaml");
         checkAndWriteFile("Pointcloud.txt");
+        checkAndWriteFile("Horse.ply");
     }
 
     /*@Override
