@@ -3,7 +3,7 @@
 
 #include <opencv2/core/mat.hpp>
 #include "System.h"
-//#include "TextureMapper.h"
+#include "TextureMapping/TextureMapper.h"
 
 using namespace SLAM;
 
@@ -17,7 +17,7 @@ public:
 
 private:
     System *slam;
-    //TextureMapper *textureMapper;
+    TextureMapper *textureMapper;
     std::vector<cv::Mat> *vKFImColor;
     std::vector<cv::Mat> *vKFTcw;
 

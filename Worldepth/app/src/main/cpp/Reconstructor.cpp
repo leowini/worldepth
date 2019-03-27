@@ -28,7 +28,7 @@ void Reconstructor::endSlam(std::string filename) {
     slam->Reset();
     //close any other threads (should be done already in System.Reset()
     delete slam;
-    //textureMapper = new TextureMapper("plyfile", vKFImColor, vKFTcw);
+    textureMapper = new TextureMapper("plyfile", vKFImColor, vKFTcw);
     delete vKFImColor;
     delete vKFTcw;
 }
