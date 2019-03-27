@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
     private void notifyUser() {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, mChannel.getId())
                 .setSmallIcon(R.drawable.logo)
-                .setContentTitle("Fuck you Johann!!!")
+                .setContentTitle("Notification")
                 .setContentText("You have a friend request")
                 .setPriority(NotificationCompat.PRIORITY_MAX);
         mBuilder.setVisibility(Notification.VISIBILITY_PUBLIC);
