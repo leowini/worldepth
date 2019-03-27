@@ -76,6 +76,8 @@ add_library( # Sets the name of the library.
 
         # Provides a relative path to your source file(s).
         src/main/cpp/native-lib.cpp
+        #Reconstructor
+        src/main/cpp/Reconstructor.cpp
         #SLAM
         ${SLAM-SRC}/Frame.cpp
         ${SLAM-SRC}/ORBExtractor.cpp
@@ -93,7 +95,6 @@ add_library( # Sets the name of the library.
         ${SLAM-SRC}/LoopClosing.cpp
         ${SLAM-SRC}/Optimizer.cpp
         ${SLAM-SRC}/Sim3Solver.cpp
-        ${SLAM-SRC}/RunSlam.cpp
         ${SLAM-SRC}/KeyFrameDatabase.cpp
         ${SLAM-SRC}/Initializer.cpp
         ${SLAM-SRC}/System.cpp
