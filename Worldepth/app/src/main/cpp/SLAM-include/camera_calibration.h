@@ -39,8 +39,6 @@ namespace calib {
 
         void validate();
 
-        Mat nextImage();
-
         bool readStringList(const string &filename, vector<string> &l);
 
         bool isListOfImages(const string &filename);

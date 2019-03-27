@@ -47,6 +47,9 @@ namespace SLAM
     Java_com_example_leodw_worldepth_slam_Slam_passImageToSlam(JNIEnv *env, jobject instance, jlong img, jlong timeStamp) {
         if (img == 0) { //poison pill
             end("/data/user/0/com.example.leodw.worldepth/files/SLAM.txt");
+            //send an empty frame to calib to complete calibration
+            cv::Mat mat = cv::Mat();
+            sptr->calib::Settings::processImage(mat);
         } else {
             cv::Mat &mat = *(cv::Mat *) img;
             double tframe = (double) timeStamp;
