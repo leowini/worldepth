@@ -11,7 +11,7 @@ public class PoissonWrapper {
 
     void runPoisson() {
         startPoisson();
-        listener.onComplete(0);
+        listener.onComplete();
     }
 
     void setOnCompleteListener(OnCompleteListener listener) {
@@ -19,7 +19,7 @@ public class PoissonWrapper {
     }
 
     public interface OnCompleteListener {
-        void onComplete(int mesh);
+        void onComplete();
     }
 
 }
