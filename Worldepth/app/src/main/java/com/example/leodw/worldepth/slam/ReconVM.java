@@ -110,9 +110,9 @@ public class ReconVM extends ViewModel {
                     showModelPreview(finalModel);
                 }));
         mPoissonWrapper = new PoissonWrapper();
-        mPoissonWrapper.setOnCompleteListener(mesh -> {
+        mPoissonWrapper.setOnCompleteListener(() -> {
             mProgressListenerHandler.post(() -> mReconProgress.setValue(ReconProgress.TM));
-            mTextureMapWrapper.runMapping(mesh);
+            mTextureMapWrapper.runMapping();
         });
         mSlam = new Slam(mQueue, mPoisonPillBitmap);
         mSlam.setOnCompleteListener(pointCloud -> {
@@ -121,7 +121,7 @@ public class ReconVM extends ViewModel {
                 updateSlamProgress();
             });
             mProgressListenerHandler.post(() -> mReconProgress.setValue(ReconProgress.POISSON));
-            mPoissonWrapper.runPoisson(pointCloud);
+            mPoissonWrapper.runPoisson();
         });
         mSlam.setFrameCountListener(() -> mFrameCountHandler.post(this::frameProcessed));
         mProgressListenerHandler.post(() -> mReconProgress.setValue(ReconProgress.READY));
