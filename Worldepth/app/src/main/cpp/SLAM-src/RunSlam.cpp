@@ -12,6 +12,8 @@ namespace SLAM
         //now with binary
         slam = new System(vocFile, settingsFile);
         sptr = new calib::Settings();
+        vKFImColor = new vector<cv::Mat>();
+        vKFTCW = new vector<cv::Mat>();
     }
 
     //I still don't know how to do the initializer, if it's not automatically Idk how this is done
@@ -22,8 +24,25 @@ namespace SLAM
         } else {
             sptr->calib::Settings::processImage(im);
             slam->TrackMonocular(im, tstamp);
+            cv::Mat Tcw = slam->TrackMonocular(im, tstamp);
+            if(!Tcw.empty()){
+                vKFImColor->push_back(im.clone());
+                vKFTCW->push_back(Tcw.clone());
+            }
         }
 
+    }
+
+    //WHEN YOU CALL THIS METHOD IN TEXTURE MAPPING MAKE SURE TO RUN
+    //delete vKFImColor;
+    //or whatever you called the pointer. Failing to do so will leak the memory
+    vector<cv::Mat> * getKeyFrameImages() {
+        return vKFImColor;
+    }
+
+    //Same as the getKeyFrameImages(), delete the resulting vector when used
+    vector<cv::Mat> * getKeyFramePoses() {
+        return vKFTCW;
     }
 
 
@@ -31,7 +50,7 @@ namespace SLAM
 
         //get finished map as reference
         writeMap(filename, slam->GetAllMapPoints());
-        
+
 
         slam->Shutdown();
         //System actually has a clear func, it's
@@ -40,16 +59,20 @@ namespace SLAM
         //close any other threads (should be done already in System.Reset()
         delete slam;
         delete sptr;
+
+        //LEO REMOVE THESE TWO LINES FOR TEXTURE MAPPING TO WORK
+        delete vKFImColor;
+        delete vKFTCW;
     }
 
     extern "C"
     JNIEXPORT void JNICALL
     Java_com_example_leodw_worldepth_slam_Slam_passImageToSlam(JNIEnv *env, jobject instance, jlong img, jlong timeStamp) {
         if (img == 0) { //poison pill
-            end("/data/user/0/com.example.leodw.worldepth/files/SLAM.txt");
             //send an empty frame to calib to complete calibration
             cv::Mat mat = cv::Mat();
             sptr->calib::Settings::processImage(mat);
+            end(/*"/storage/emulated/0/Worldepth/SLAM.npts"*/"/data/user/0/com.example.leodw.worldepth/files/SLAM.txt");
         } else {
             cv::Mat &mat = *(cv::Mat *) img;
             double tframe = (double) timeStamp;

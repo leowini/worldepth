@@ -12,6 +12,7 @@
 #include <camera_calibration.h>
 #include <jni.h>
 #include <string>
+#include <vector>
 
 namespace SLAM
 {
@@ -28,12 +29,16 @@ void process(cv::Mat &im, double &tstamp);
 //This could then read into reconstruction or go to the database so it isn't stored on the phone
 void end(std::string filename);
 
+vector<cv::Mat>* getKeyFrameImages();
+
 extern "C" JNIEXPORT void JNICALL Java_com_example_leodw_worldepth_slam_Slam_passImageToSlam(JNIEnv *env, jobject instance, jlong img, jlong timeStamp);
 
 extern "C" JNIEXPORT void JNICALL Java_com_example_leodw_worldepth_slam_Slam_initSystem(JNIEnv *env, jobject instance, jstring vocFile, jstring settingsFile);
 
 System *slam;
 calib::Settings * sptr;
+vector<cv::Mat> *vKFImColor;
+vector<cv::Mat> *vKFTCW;
 
 } //namespace SLAM
 

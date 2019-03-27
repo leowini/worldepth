@@ -176,6 +176,7 @@ namespace SLAM
 
     void Tracking::Track()
     {
+        frameKeyed = false;
         if(mState==NO_IMAGES_YET)
         {
             mState = NOT_INITIALIZED;
@@ -358,8 +359,10 @@ namespace SLAM
                 mlpTemporalPoints.clear();
 
                 // Check if we need to insert a new keyframe
-                if(NeedNewKeyFrame())
+                if(NeedNewKeyFrame()) {
                     CreateNewKeyFrame();
+                    frameKeyed = true;
+                }
 
                 // We allow points with high innovation (considererd outliers by the Huber Function)
                 // pass to the new keyframe, so that bundle adjustment will finally decide

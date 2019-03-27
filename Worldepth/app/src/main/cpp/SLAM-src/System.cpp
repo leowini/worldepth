@@ -168,7 +168,11 @@ cv::Mat System::TrackMonocular(const cv::Mat &im, const double &timestamp)
     mTrackedMapPoints = mpTracker->mCurrentFrame.mvpMapPoints;
     mTrackedKeyPointsUn = mpTracker->mCurrentFrame.mvKeysUn;
 
-    return Tcw;
+    if(mpTracker -> frameKeyed) {
+        return Tcw;
+    }else {
+        return cv::Mat();
+    }
 }
 
 void System::ActivateLocalizationMode()
