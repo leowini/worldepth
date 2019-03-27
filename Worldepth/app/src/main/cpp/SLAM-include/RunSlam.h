@@ -9,6 +9,7 @@
 #include <System.h>
 #include <TrackingInit.h>
 #include <RandomMap.h>
+#include <camera_calibration.h>
 #include <jni.h>
 #include <string>
 
@@ -32,6 +33,7 @@ extern "C" JNIEXPORT void JNICALL Java_com_example_leodw_worldepth_slam_Slam_pas
 extern "C" JNIEXPORT void JNICALL Java_com_example_leodw_worldepth_slam_Slam_initSystem(JNIEnv *env, jobject instance, jstring vocFile, jstring settingsFile);
 
 System *slam;
+calib::Settings * sptr;
 
 } //namespace SLAM
 

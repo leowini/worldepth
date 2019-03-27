@@ -17,6 +17,7 @@ cmake_minimum_required(VERSION 3.4.1)
 
 include_directories(${PROJECT_SOURCE_DIR}/src/main/cpp/opencv-include)
 include_directories(${PROJECT_SOURCE_DIR}/src/main/cpp/SLAM-include)
+include_directories(${PROJECT_SOURCE_DIR}/src/main/cpp/SLAM-src/camera_calibration.cpp)
 include_directories(${DBoW2})
 include_directories(${PROJECT_SOURCE_DIR}/src/main/cpp)
 include_directories(${G2O})

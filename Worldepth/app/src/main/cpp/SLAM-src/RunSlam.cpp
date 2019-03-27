@@ -4,12 +4,14 @@
 
 #include <RunSlam.h>
 
+
 namespace SLAM
 {
 
     void start (std::string & vocFile, std::string & settingsFile) {
         //now with binary
         slam = new System(vocFile, settingsFile);
+        sptr = new calib::Settings();
     }
 
     //I still don't know how to do the initializer, if it's not automatically Idk how this is done
@@ -18,6 +20,7 @@ namespace SLAM
         if (im.empty() || tstamp == 0){
             cerr << "could not load image!" << endl;
         } else {
+            sptr->calib::Settings::processImage(im);
             slam->TrackMonocular(im, tstamp);
         }
 
@@ -36,6 +39,7 @@ namespace SLAM
 
         //close any other threads (should be done already in System.Reset()
         delete slam;
+        delete sptr;
     }
 
     extern "C"
