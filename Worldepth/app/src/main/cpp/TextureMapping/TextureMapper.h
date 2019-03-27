@@ -7,6 +7,7 @@ class TextureMapper {
 
 public:
     TextureMapper(std::string plyFilename, std::vector<cv::Mat> source, std::vector<cv::Mat> TcwPoses, int patchSize = 7);
+    void textureMap();
 
 private:
     int patchSize;

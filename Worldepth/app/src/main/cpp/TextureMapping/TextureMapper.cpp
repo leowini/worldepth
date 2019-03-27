@@ -27,6 +27,10 @@ TextureMapper::TextureMapper(std::string plyFilename, std::vector<cv::Mat> sourc
     //projectToSurface();
 }
 
+void TextureMapper::textureMap() {
+
+}
+
 //void TextureMapper::align(std::vector<cv::Mat> source, std::vector<cv::Mat> target) {
 //    int iterations = 1;
 //    cv::Mat completenessPatchMatches = patchSearch(source, target, iterations);
