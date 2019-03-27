@@ -525,4 +525,4 @@ void TextureMapper::read_ply_file(const std::string & filepath)
 	{
 		std::cerr << "Caught tinyply exception: " << e.what() << std::endl;
 	}
-}
+9}
