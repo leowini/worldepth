@@ -60,14 +60,13 @@ public class Slam {
             TimeFramePair<Bitmap, Long> timeFramePair = mQueue.take();
             Bitmap bmp = timeFramePair.getFrame();
             Long time = timeFramePair.getTime();
-            while (!bmp.equals(mPoisonPillBitmap)) {
+            do {
                 mFrameCountListener.onNextFrame();
                 sendFrameToSlam(bmp, time);
                 timeFramePair = mQueue.take();
                 bmp = timeFramePair.getFrame();
                 time = timeFramePair.getTime();
-            }
-            sendFrameToSlam(mPoisonPillBitmap, time);
+            } while (!bmp.equals(mPoisonPillBitmap));
         } catch (Exception e) {
             System.out.println(Thread.currentThread().getName() + " " + e.getMessage());
         }
