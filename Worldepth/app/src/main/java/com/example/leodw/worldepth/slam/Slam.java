@@ -52,6 +52,11 @@ public class Slam {
         }
     }
 
+    /**
+     * Returns boolean based on whether SLAM was successful (found keyframes)
+     * This is to make sure Texture Mapping has source images.
+     * @return
+     */
     void doSlam() {
         try {
             TimeFramePair<Bitmap, Long> timeFramePair = mQueue.take();
