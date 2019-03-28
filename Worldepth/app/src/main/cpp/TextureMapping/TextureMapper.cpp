@@ -21,14 +21,11 @@ using namespace tinyply;
 TextureMapper::TextureMapper(std::string plyFilename, std::vector<cv::Mat> source, std::vector<cv::Mat> TcwPoses, int patchSize) : source(source), TcwPoses(TcwPoses), patchSize(patchSize) {
     read_ply_file(plyFilename); //gets vertices from the file
     init(); //clones source and target
-/*
-        align(source, target);
-        reconstruct(); */
-    //projectToSurface();
 }
 
 void TextureMapper::textureMap() {
     align(source, target);
+    //reconstruct();
 }
 
 void TextureMapper::align(std::vector<cv::Mat> source, std::vector<cv::Mat> target) {
