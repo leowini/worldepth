@@ -76,7 +76,7 @@ public class Slam {
         } catch (Exception e) {
             System.out.println(Thread.currentThread().getName() + " " + e.getMessage());
         }
-        if (success) mCompleteListener.onSlamComplete(0);
+        mCompleteListener.onSlamComplete(success);
     }
 
     public interface FrameCountListener {
@@ -88,7 +88,7 @@ public class Slam {
     }
 
     public interface SlamCompleteListener {
-        void onSlamComplete(int pointCloud);
+        void onSlamComplete(boolean success);
     }
 
     void setOnCompleteListener(SlamCompleteListener listener) {
