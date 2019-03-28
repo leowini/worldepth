@@ -18,7 +18,7 @@ using namespace tinyply;
 /**
 ** Assuming that source is a vector of cv::Mats
 **/
-TextureMapper::TextureMapper(std::string plyFilename, std::vector<cv::Mat> source, std::vector<cv::Mat> TcwPoses, int patchSize) : source(source), TcwPoses(TcwPoses), patchSize(patchSize) {
+TextureMapper::TextureMapper(std::string plyFilename, std::vector<cv::Mat> *source, std::vector<cv::Mat> *TcwPoses, int patchSize) : source(source), TcwPoses(TcwPoses), patchSize(patchSize) {
     read_ply_file(plyFilename); //gets vertices from the file
     init(); //clones source and target
 }
@@ -42,19 +42,19 @@ cv::Mat TextureMapper::patchSearch(int iterations) {
 
     // For each source pixel, output a 3-vector to the best match in
     // the target, with an error as the last channel. The 3-vector should be the location of the patch center.
-    int sizes[3] = {source[0].size().width, source[0].size().height, /*number of frames*/ static_cast<int>(source.size())}; //sigsegv on this line
+    int sizes[3] = {(*source)[0].size().width, (*source)[0].size().height, /*number of frames*/ static_cast<int>(source->size())}; //sigsegv on this line
     cv::Mat out(3, sizes, CV_32FC(4));
 
     // Iterate over source frames, finding a match in the target where
     // the mask is high.
 
-    for (int t = 0; t < source.size(); t++) {
+    for (int t = 0; t < source->size(); t++) {
         // INITIALIZATION - uniform random assignment of out matrix values.
-        for (int y = 0; y < source[0].size().height; y++) {
-            for (int x = 0; x < source[0].size().width; x++) {
-                int dx = randomInt(patchSize, target[0].size().width-patchSize-1);
-                int dy = randomInt(patchSize, target[0].size().height-patchSize-1);
-                int dt = randomInt(0, target.size()-1);
+        for (int y = 0; y < (*source)[0].size().height; y++) {
+            for (int x = 0; x < (*source)[0].size().width; x++) {
+                int dx = randomInt(patchSize, (*target)[0].size().width-patchSize-1);
+                int dy = randomInt(patchSize, (*target)[0].size().height-patchSize-1);
+                int dt = randomInt(0, target->size()-1);
                 unsigned char* p = out.ptr(x, y, t) + 0;
                 *p = dx;
                 p = out.ptr(x, y, t) + 1;
@@ -82,9 +82,9 @@ cv::Mat TextureMapper::patchSearch(int iterations) {
         // PROPAGATION
         if (forwardSearch) {
             // Forward propagation - compare left, center and up
-            for (int t = 0; t < source.size(); t++) {
-                for (int y = 1; y < source[0].size().height; y++) {
-                    for (int x = 1; x < source[0].size().width; x++) {
+            for (int t = 0; t < source->size(); t++) {
+                for (int y = 1; y < (*source)[0].size().height; y++) {
+                    for (int x = 1; x < (*source)[0].size().width; x++) {
                         if (*error.ptr(x, y, t) + 0 > 0) {
                             float distLeft = distance(x, y, t,
                                                       (*dx.ptr(x-1, y, t)) + 1,
@@ -121,9 +121,9 @@ cv::Mat TextureMapper::patchSearch(int iterations) {
 
         } else {
             // Backward propagation - compare right, center and down
-            for (int t = source.size()-1; t >= 0; t--) {
-                for (int y = source[0].size().height-2; y >= 0; y--) {
-                    for (int x = source[0].size().width-2; x >= 0; x--) {
+            for (int t = source->size()-1; t >= 0; t--) {
+                for (int y = (*source)[0].size().height-2; y >= 0; y--) {
+                    for (int x = (*source)[0].size().width-2; x >= 0; x--) {
                         if (*error.ptr(x, y, t) > 0) {
                             float distRight = distance(x, y, t,
                                                        (*dx.ptr(x+1, y, t))-1,
@@ -162,12 +162,12 @@ cv::Mat TextureMapper::patchSearch(int iterations) {
         forwardSearch = !forwardSearch;
 
         // RANDOM SEARCH
-        for (int t = 0; t < source.size(); t++) {
-            for (int y = 0; y < source[0].size().height; y++) {
-                for (int x = 0; x < source[0].size().width; x++) {
+        for (int t = 0; t < source->size(); t++) {
+            for (int y = 0; y < (*source)[0].size().height; y++) {
+                for (int x = 0; x < (*source)[0].size().width; x++) {
                     if (*error.ptr(x, y, t) > 0) {
 
-                        int radius = target[0].size().width > target[0].size().height ? target[0].size().width : target[0].size().height;
+                        int radius = (*target)[0].size().width > (*target)[0].size().height ? (*target)[0].size().width : (*target)[0].size().height;
 
                         // search an exponentially smaller window each iteration
                         while (radius > 8) {
@@ -179,13 +179,13 @@ cv::Mat TextureMapper::patchSearch(int iterations) {
                             int minY = (int)(*dy.ptr(x, y, t)) - radius;
                             int maxY = (int)(*dy.ptr(x, y, t)) + radius + 1;
                             if (minX < 0) { minX = 0; }
-                            if (maxX > target[0].size().width) { maxX = target[0].size().width; }
+                            if (maxX > (*target)[0].size().width) { maxX = (*target)[0].size().width; }
                             if (minY < 0) { minY = 0; }
-                            if (maxY > target[0].size().height) { maxY = target[0].size().height; }
+                            if (maxY > (*target)[0].size().height) { maxY = (*target)[0].size().height; }
 
                             int randX = randomInt(minX, maxX-1);
                             int randY = randomInt(minY, maxY-1);
-                            int randT = randomInt(0, target.size() - 1);
+                            int randT = randomInt(0, target->size() - 1);
                             float dist = distance(x, y, t,
                                                   randX, randY, randT,
                                                   patchSize, *error.ptr(x, y, t));
@@ -218,8 +218,8 @@ float TextureMapper::distance(int sx, int sy, int st,
                                 int patchSize, float threshold) {
 
     // Do not use patches on boundaries
-    if (tx < patchSize || tx >= target[0].size().width-patchSize ||
-        ty < patchSize || ty >= target[0].size().height-patchSize) {
+    if (tx < patchSize || tx >= (*target)[0].size().width-patchSize ||
+        ty < patchSize || ty >= (*target)[0].size().height-patchSize) {
         return HUGE_VAL;
     }
 
@@ -228,16 +228,16 @@ float TextureMapper::distance(int sx, int sy, int st,
     float dist = 0;
 
     int x1 = max(-patchSize, -sx, -tx);
-    int x2 = min(patchSize, -sx+source[0].size().width-1, -tx+target[0].size().width-1);
+    int x2 = min(patchSize, -sx+(*source)[0].size().width-1, -tx+(*target)[0].size().width-1);
     int y1 = max(-patchSize, -sy, -ty);
-    int y2 = min(patchSize, -sy+source[0].size().height-1, -ty+target[0].size().height-1);
+    int y2 = min(patchSize, -sy+(*source)[0].size().height-1, -ty+(*target)[0].size().height-1);
 
-    for (int c = 0; c < target[0].channels() /*color channels*/; c++) {
+    for (int c = 0; c < (*target)[0].channels() /*color channels*/; c++) {
         for (int y = y1; y <= y2; y++) {
             for (int x = x1; x <= x2; x++) {
 
-                uint8_t const* sourceValue_ptr(source[st].ptr(sx+x, sy+y) + c);
-                uint8_t const* targetValue_ptr(target[tt].ptr(tx+x, ty+y) + c);
+                uint8_t const* sourceValue_ptr((*source)[st].ptr(sx+x, sy+y) + c);
+                uint8_t const* targetValue_ptr((*target)[tt].ptr(tx+x, ty+y) + c);
 
                 float delta = *sourceValue_ptr - *targetValue_ptr;
                 dist += delta * delta;
@@ -279,15 +279,15 @@ std::vector<std::vector<std::vector<int>>> TextureMapper::findSourcePatches(cv::
     int targetx = x;
     int targety = y;
     int x1 = std::max(-patchSize, -targetx);
-    int x2 = std::min(patchSize, -targetx+target[0].size().width-1);
+    int x2 = std::min(patchSize, -targetx+(*target)[0].size().width-1);
     int y1 = std::max(-patchSize, -targety);
-    int y2 = std::min(patchSize, -targety+target[0].size().height-1);
+    int y2 = std::min(patchSize, -targety+(*target)[0].size().height-1);
 
     //Completeness: Find Source patches that have target patches as their most similar patch
     //For each pixel in completenessPatchMatches
-    for (int st = 0; st < source.size(); st++) {
-        for (int sy = 0; sy < source[0].size().height; sy++) {
-            for (int sx = 0; sx < source[0].size().width; sx++) {
+    for (int st = 0; st < source->size(); st++) {
+        for (int sy = 0; sy < (*source)[0].size().height; sy++) {
+            for (int sx = 0; sx < (*source)[0].size().width; sx++) {
                 cv::Vec<float, 4> patchMatch = completenessPatchMatches.at<cv::Vec<float, 4>>(st, sy, st);
                 int stx = patchMatch[0], sty = patchMatch[1], stt = patchMatch[2];
                 if ( /* is in x range */(stx >= x1 && stx <= x2) && /** is in y range */ (sty >= y1 && sty <= y2) && stt == t) {
@@ -296,8 +296,8 @@ std::vector<std::vector<std::vector<int>>> TextureMapper::findSourcePatches(cv::
                     //Find target pixel in source patch
                     int targetPixelX = (x - stx) + sx;
                     int targetPixelY = (y - sty) + sy;
-                    for (int c = 0; c < source[0].channels(); c++) {
-                        targetPixel.push_back(source[st].at<cv::Vec<float, 4>>(targetPixelX, targetPixelY)[c]);
+                    for (int c = 0; c < (*source)[0].channels(); c++) {
+                        targetPixel.push_back((*source)[st].at<cv::Vec<float, 4>>(targetPixelX, targetPixelY)[c]);
                     }
                     sourcePatches[0].push_back(targetPixel);
                 }
@@ -314,8 +314,8 @@ std::vector<std::vector<std::vector<int>>> TextureMapper::findSourcePatches(cv::
             //Find target pixel in source patch
             int targetPixelX = (x - patchx) + sourcePatchVec[0];
             int targetPixelY = (y - patchy) + sourcePatchVec[1];
-            for (int c = 0; c < source[0].channels(); c++) {
-                targetPixel.push_back(source[sourcePatchVec[2]].at<cv::Vec<float, 4>>(targetPixelX, targetPixelY)[c]);
+            for (int c = 0; c < (*source)[0].channels(); c++) {
+                targetPixel.push_back((*source)[sourcePatchVec[2]].at<cv::Vec<float, 4>>(targetPixelX, targetPixelY)[c]);
             }
             sourcePatches[0].push_back(targetPixel);
         }
@@ -389,9 +389,9 @@ std::vector<std::vector<std::vector<int>>> TextureMapper::findSourcePatches(cv::
 ** i.e., Ti = Si and Mi = Si.
 **/
 void TextureMapper::init() {
-    for (int t = 0; t < source.size(); t++) {
-        target[t] = source[t].clone();
-        texture[t] = source[t].clone();
+    for (int t = 0; t < source->size(); t++) {
+        target[t] = (*source)[t].clone();
+        texture[t] = (*source)[t].clone();
     }
 }
 
@@ -520,7 +520,7 @@ void TextureMapper::read_ply_file(const std::string & filepath)
 		std::vector<float3> verts(vertices->count);
 		std::memcpy(verts.data(), vertices->buffer.get(), numVerticesBytes);
         
-        TextureMapper::vertices = verts;
+        TextureMapper::vertices = &verts;
 	}
 	catch (const std::exception & e)
 	{
