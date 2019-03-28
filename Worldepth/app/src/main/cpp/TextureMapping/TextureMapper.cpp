@@ -42,7 +42,7 @@ cv::Mat TextureMapper::patchSearch(std::vector<cv::Mat> source, std::vector<cv::
 
     // For each source pixel, output a 3-vector to the best match in
     // the target, with an error as the last channel. The 3-vector should be the location of the patch center.
-    int sizes[3] = {source[0].size().width, source[0].size().height, /*number of frames*/ static_cast<int>(source.size())};
+    int sizes[3] = {source[0].size().width, source[0].size().height, /*number of frames*/ static_cast<int>(source.size())}; //sigsegv on this line
     cv::Mat out(3, sizes, CV_32FC(4));
 
     // Iterate over source frames, finding a match in the target where
