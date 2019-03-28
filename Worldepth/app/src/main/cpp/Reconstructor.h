@@ -13,7 +13,7 @@ public:
     Reconstructor(std::string & vocFile, std::string & settingsFile);
     bool hasKeyframes();
     void passImageToSlam(cv::Mat &im, double &tstamp);
-    void endSlam(std::string filename);
+    void endSlam(std::string filename, bool slamSuccess);
     void textureMap();
 
 private:

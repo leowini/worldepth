@@ -8,7 +8,7 @@ Reconstructor::Reconstructor(std::string & vocFile, std::string & settingsFile) 
 }
 
 bool Reconstructor::hasKeyframes() {
-    return (vKFImColor->size() != 0);
+    return (!vKFImColor->empty());
 }
 
 void Reconstructor::passImageToSlam(cv::Mat &im, double &tstamp) {
@@ -24,7 +24,7 @@ void Reconstructor::passImageToSlam(cv::Mat &im, double &tstamp) {
     }
 }
 
-void Reconstructor::endSlam(std::string filename) {
+void Reconstructor::endSlam(std::string filename, bool slamSuccess) {
     //get finished map as reference
     writeMap(filename, slam->GetAllMapPoints());
     slam->Shutdown();
@@ -32,7 +32,7 @@ void Reconstructor::endSlam(std::string filename) {
     slam->Reset();
     //close any other threads (should be done already in System.Reset()
     delete slam;
-    textureMapper = new TextureMapper("/data/user/0/com.example.leodw.worldepth/files/Horse.ply", vKFImColor, vKFTcw);
+    if (slamSuccess) textureMapper = new TextureMapper("/data/user/0/com.example.leodw.worldepth/files/Horse.ply", vKFImColor, vKFTcw);
     delete vKFImColor;
     delete vKFTcw;
 }
