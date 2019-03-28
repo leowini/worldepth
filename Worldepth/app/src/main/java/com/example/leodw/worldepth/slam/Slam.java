@@ -43,7 +43,7 @@ public class Slam {
      * @param timeStamp
      */
     private void sendFrameToSlam(Bitmap frame, Long timeStamp) {
-        if (frame == mPoisonPillBitmap) {
+        if (frame.equals(mPoisonPillBitmap)) {
             passImageToSlam(0, timeStamp);
         } else {
             Mat mat = new Mat();
@@ -60,13 +60,14 @@ public class Slam {
             TimeFramePair<Bitmap, Long> timeFramePair = mQueue.take();
             Bitmap bmp = timeFramePair.getFrame();
             Long time = timeFramePair.getTime();
-            do {
+            while (!bmp.equals(mPoisonPillBitmap)){
                 mFrameCountListener.onNextFrame();
                 sendFrameToSlam(bmp, time);
                 timeFramePair = mQueue.take();
                 bmp = timeFramePair.getFrame();
                 time = timeFramePair.getTime();
-            } while (!bmp.equals(mPoisonPillBitmap));
+            }
+            sendFrameToSlam(bmp, time);
         } catch (Exception e) {
             System.out.println(Thread.currentThread().getName() + " " + e.getMessage());
         }
