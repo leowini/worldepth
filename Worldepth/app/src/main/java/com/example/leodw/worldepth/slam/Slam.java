@@ -51,7 +51,7 @@ public class Slam {
             passImageToSlam(mat.getNativeObjAddr(), timeStamp);
         }
     }
-    
+
     void doSlam() {
         try {
             TimeFramePair<Bitmap, Long> timeFramePair = mQueue.take();
