@@ -36,16 +36,18 @@ Java_com_example_leodw_worldepth_slam_PoissonWrapper_startPoisson(JNIEnv *env, j
 }
 
 extern "C"
-JNIEXPORT void JNICALL
+JNIEXPORT bool JNICALL
 Java_com_example_leodw_worldepth_slam_Slam_passImageToSlam(JNIEnv *env, jobject instance, jlong img, jlong timeStamp) {
     if (img == 0) { //poison pill
         reconstructor->endSlam("/data/user/0/com.example.leodw.worldepth/files/SLAM.txt");
+        return reconstructor->hasKeyframes();
     } else {
         cv::Mat &mat = *(cv::Mat *) img;
         double tframe = (double) timeStamp;
         reconstructor->passImageToSlam(mat, tframe);
         mat.release();
     }
+    return true;
 }
 
 extern "C"

@@ -25,7 +25,7 @@ public class Slam {
 
     private FrameCountListener mFrameCountListener;
 
-    public native void passImageToSlam(long img, long timeStamp);
+    public native boolean passImageToSlam(long img, long timeStamp);
 
     public native void initSystem(String vocFile, String settingsFile);
 
@@ -42,14 +42,16 @@ public class Slam {
      * @param frame
      * @param timeStamp
      */
-    private void sendFrameToSlam(Bitmap frame, Long timeStamp) {
+    private boolean sendFrameToSlam(Bitmap frame, Long timeStamp) {
+        boolean success = true;
         if (frame.equals(mPoisonPillBitmap)) {
-            passImageToSlam(0, timeStamp);
+            success = passImageToSlam(0, timeStamp);
         } else {
             Mat mat = new Mat();
             Utils.bitmapToMat(frame, mat);
-            passImageToSlam(mat.getNativeObjAddr(), timeStamp);
+            success = passImageToSlam(mat.getNativeObjAddr(), timeStamp);
         }
+        return success;
     }
 
     /**
@@ -58,22 +60,23 @@ public class Slam {
      * @return
      */
     void doSlam() {
+        boolean success = true;
         try {
             TimeFramePair<Bitmap, Long> timeFramePair = mQueue.take();
             Bitmap bmp = timeFramePair.getFrame();
             Long time = timeFramePair.getTime();
             while (!bmp.equals(mPoisonPillBitmap)){
                 mFrameCountListener.onNextFrame();
-                sendFrameToSlam(bmp, time);
+                success = sendFrameToSlam(bmp, time);
                 timeFramePair = mQueue.take();
                 bmp = timeFramePair.getFrame();
                 time = timeFramePair.getTime();
             }
-            sendFrameToSlam(bmp, time);
+            success = sendFrameToSlam(bmp, time);
         } catch (Exception e) {
             System.out.println(Thread.currentThread().getName() + " " + e.getMessage());
         }
-        mCompleteListener.onSlamComplete(0);
+        if (success) mCompleteListener.onSlamComplete(0);
     }
 
     public interface FrameCountListener {

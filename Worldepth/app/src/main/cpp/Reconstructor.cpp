@@ -7,6 +7,10 @@ Reconstructor::Reconstructor(std::string & vocFile, std::string & settingsFile) 
     vKFTcw = new std::vector<cv::Mat>();
 }
 
+bool Reconstructor::hasKeyframes() {
+    return (vKFImColor->size() != 0);
+}
+
 void Reconstructor::passImageToSlam(cv::Mat &im, double &tstamp) {
     //call the equivalent of System::TrackMonocular for TrackingInit or Tracking directly
     if (im.empty() || tstamp == 0){
