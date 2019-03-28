@@ -24,18 +24,18 @@ TextureMapper::TextureMapper(std::string plyFilename, std::vector<cv::Mat> sourc
 }
 
 void TextureMapper::textureMap() {
-    align(source, target);
+    align();
     //reconstruct();
 }
 
-void TextureMapper::align(std::vector<cv::Mat> source, std::vector<cv::Mat> target) {
+void TextureMapper::align() {
     int iterations = 1;
-    cv::Mat completenessPatchMatches = patchSearch(source, target, iterations);
-    cv::Mat coherencePatchMatches = patchSearch(target, source, iterations);
+    cv::Mat completenessPatchMatches = patchSearch(iterations);
+    cv::Mat coherencePatchMatches = patchSearch(iterations);
     //vote(completenessPatchMatches, coherencePatchMatches);
 }
 
-cv::Mat TextureMapper::patchSearch(std::vector<cv::Mat> source, std::vector<cv::Mat> target, int iterations) {
+cv::Mat TextureMapper::patchSearch(int iterations) {
 
     // convert patch diameter to patch radius
     patchSize /= 2;

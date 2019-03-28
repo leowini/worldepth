@@ -19,10 +19,10 @@ private:
 
     void init();
     void read_ply_file(const std::string & filepath);
-    void align(std::vector<cv::Mat> source, std::vector<cv::Mat> target);
+    void align();
     //void reconstruct();
     //int Mixi();
-    cv::Mat patchSearch(std::vector<cv::Mat> source, std::vector<cv::Mat> target, int iterations);
+    cv::Mat patchSearch(int iterations);
 //    void vote(cv::Mat completenessPatchMatches, cv::Mat coherencePatchMatches);
     std::vector<std::vector<std::vector<int>>> findSourcePatches(cv::Mat completenessPatchMatches, cv::Mat coherencePatchMatches,
                                                                     int x, int y, int t);
