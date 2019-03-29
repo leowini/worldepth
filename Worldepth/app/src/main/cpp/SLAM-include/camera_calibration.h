@@ -51,9 +51,6 @@ namespace calib {
                                                 const Mat &cameraMatrix, const Mat &distCoeffs,
                                                 vector<float> &perViewErrors, bool fisheye);
 
-        static void
-        calcBoardCornerPositions(Size boardSize, float squareSize, vector<Point3f> &corners,
-                                 Settings::Pattern patternType /*= Settings::CHESSBOARD*/);
 
         static void
         saveCameraParams(Settings &s, Size &imageSize, Mat &cameraMatrix, Mat &distCoeffs,
@@ -87,6 +84,12 @@ namespace calib {
         bool fixK3;                  // fix K3 distortion coefficient
         bool fixK4;                  // fix K4 distortion coefficient
         bool fixK5;                  // fix K5 distortion coefficient
+
+        Size imageSize;
+        vector<vector<Point2f> > imagePoints;
+        Mat cameraMatrix, distCoeffs;
+        int mode;
+        clock_t prevTimestamp;
 
         int cameraID;
         vector<string> imageList;
