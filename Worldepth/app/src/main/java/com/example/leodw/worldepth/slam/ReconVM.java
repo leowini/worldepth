@@ -7,14 +7,11 @@ import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
-import android.widget.Toast;
 
 import com.example.leodw.worldepth.ui.camera.TimeFramePair;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
-
-import static java.security.AccessController.getContext;
 
 public class ReconVM extends ViewModel {
 
@@ -42,7 +39,7 @@ public class ReconVM extends ViewModel {
     private TextureMapWrapper mTextureMapWrapper;
 
     public enum ReconProgress {
-        INIT, READY, SLAM, POISSON, TM, COMPLETE
+        INIT, READY, SLAMINIT, SLAM, POISSON, TM, COMPLETE
     }
 
     public ReconVM() {
@@ -74,7 +71,7 @@ public class ReconVM extends ViewModel {
         }
     }
 
-    private void showModelPreview(int finalModel) {
+    private void showModelPreview() {
         mReconProgress.setValue(ReconProgress.COMPLETE);
     }
 
@@ -104,10 +101,15 @@ public class ReconVM extends ViewModel {
 
     private void reconstruct() {
         mTextureMapWrapper = new TextureMapWrapper();
-        mTextureMapWrapper.setOnCompleteListener(finalModel ->
+        mTextureMapWrapper.setOnCompleteListener(() ->
                 mProgressListenerHandler.post(() -> {
+<<<<<<< Updated upstream
                     //stopReconstructionThread();
                     showModelPreview(finalModel);
+=======
+                    showModelPreview();
+                    stopReconstructionThread();
+>>>>>>> Stashed changes
                 }));
         mPoissonWrapper = new PoissonWrapper();
         mPoissonWrapper.setOnCompleteListener(() -> {
@@ -124,7 +126,7 @@ public class ReconVM extends ViewModel {
             mPoissonWrapper.runPoisson();
         });
         mSlam.setFrameCountListener(() -> mFrameCountHandler.post(this::frameProcessed));
-        mProgressListenerHandler.post(() -> mReconProgress.setValue(ReconProgress.READY));
+        mProgressListenerHandler.post(() -> mReconProgress.setValue(ReconProgress.SLAMINIT));
         mSlam.doSlam();
     }
 
