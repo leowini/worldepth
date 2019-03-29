@@ -17,16 +17,26 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContentResolverCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.example.leodw.worldepth.data.FirebaseWrapper;
+import com.example.leodw.worldepth.ui.MainActivity;
 import com.example.leodw.worldepth.ui.preview.obj.ObjModel;
 import com.example.leodw.worldepth.ui.preview.ply.PlyModel;
 import com.example.leodw.worldepth.ui.preview.stl.StlModel;
 import com.example.leodw.worldepth.ui.preview.util.Util;
 import com.example.leodw.worldepth.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -55,6 +65,10 @@ public class PreviewFragment extends Fragment {
     private ViewGroup containerView;
 
     private Button mLoadSample;
+    private FirebaseStorage mStorage;
+    private FirebaseWrapper mFb;
+
+    private String modelName;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,6 +85,9 @@ public class PreviewFragment extends Fragment {
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         app = ModelViewerApplication.getInstance();
+        mStorage = FirebaseStorage.getInstance();
+        mFb = ((MainActivity) this.getActivity()).getFirebaseWrapper();
+        modelName = null;
 
         containerView = view.findViewById(R.id.container_view);
         if (getActivity().getIntent().getData() != null && savedInstanceState == null) {
@@ -80,11 +97,20 @@ public class PreviewFragment extends Fragment {
         mLoadSample.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loadSampleModel();
+                loadModel();
             }
         });
         Button backToCamera = view.findViewById(R.id.viewerBackToCamera);
         backToCamera.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_viewerFragment_to_cameraFragment));
+
+        Button loadFromFirebase = view.findViewById(R.id.loadButton);
+        loadFromFirebase.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               loadFirebaseModel(modelName);
+            }
+        });
+
     }
 
     @Override
@@ -244,16 +270,72 @@ public class PreviewFragment extends Fragment {
     }
 
 
-    private void loadSampleModel() {
+    private void loadModel() {
         try {
             File file = new File(Environment.getExternalStorageDirectory()
                     .getAbsolutePath() + "/Worldepth/", "SLAM.ply");
             InputStream stream = new FileInputStream(file);
             setCurrentModel(new PlyModel(stream));
+            sendModel(file, modelName).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    Log.d(TAG, exception.getMessage());
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                    // ...
+                    //notification to user
+
+                }
+            });
             stream.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void loadFirebaseModel(String name) {
+        try {
+            StorageReference storageRef = mStorage.getReference();
+            StorageReference modelRef = storageRef.child("Models/" + mFb.getFirebaseUser().getUid());
+
+            File localFile = File.createTempFile("tmp", "ply", Environment.getExternalStorageDirectory());
+
+            modelRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    // Local temp file has been created
+                    Log.d(TAG, "got the file from firebase");
+                    try {
+                        InputStream stream = new FileInputStream(localFile);
+                        setCurrentModel(new PlyModel(stream));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle any errors
+                    Log.d(TAG, exception.getMessage());
+                }
+            });
+            localFile.deleteOnExit();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private UploadTask sendModel(File file, String name) {
+        StorageReference storageRef = mStorage.getReference();
+        StorageReference modelRef = storageRef.child("Models/" + mFb.getFirebaseUser().getUid());
+        Uri uri = Uri.fromFile(file);
+
+        UploadTask uploadTask = modelRef.putFile(uri);
+        return uploadTask;
     }
 
 }

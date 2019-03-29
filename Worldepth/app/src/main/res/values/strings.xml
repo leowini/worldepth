@@ -2,6 +2,7 @@
     <string name="app_name">Worldepth</string>
     <string name="capture">Capture</string>
     <string name="load_sample">Load sample</string>
+    <string name="load_text">Load</string>
     <string name="read_permission_failed">Please allow read permission to open model files.</string>
     <string name="open_model">Open model…</string>
     <string name="open_model_success">Model loaded successfully.</string>
