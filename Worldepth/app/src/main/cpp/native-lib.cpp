@@ -23,8 +23,8 @@ Java_com_example_leodw_worldepth_slam_PoissonWrapper_startPoisson(JNIEnv *env, j
             (char*)"PoissonRecon",
             (char*)"--in",
 //            (char*)"/storage/emulated/0/Worldepth/Pointcloud.txt",
-//            (char*) "/data/user/0/com.example.leodw.worldepth/files/SLAM.txt",
-            (char*) "/data/user/0/com.example.leodw.worldepth/files/Pointcloud.txt",
+            (char*) "/data/user/0/com.example.leodw.worldepth/files/SLAM.txt",
+//            (char*) "/data/user/0/com.example.leodw.worldepth/files/Pointcloud.txt",
             (char*)"--out",
 //            (char*)"/storage/emulated/0/Worldepth/SLAM.ply",
             (char*) "/data/user/0/com.example.leodw.worldepth/files/SLAM.ply",
@@ -42,7 +42,7 @@ extern "C"
 JNIEXPORT void JNICALL
 Java_com_example_leodw_worldepth_slam_Slam_passImageToSlam(JNIEnv *env, jobject instance, jlong img, jlong timeStamp) {
     if (img == 0) { //poison pill
-        reconstructor->endSlam(/*"/storage/emulated/0/Worldepth/SLAM.npts"*/"/data/user/0/com.example.leodw.worldepth/files/SLAM.txt");
+        reconstructor->endSlam("/data/user/0/com.example.leodw.worldepth/files/SLAM.txt");
     } else {
         cv::Mat &mat = *(cv::Mat *) img;
         double tframe = (double) timeStamp;
