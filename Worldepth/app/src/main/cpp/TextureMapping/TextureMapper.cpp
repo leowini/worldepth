@@ -519,8 +519,7 @@ void TextureMapper::read_ply_file(const std::string & filepath)
 		const size_t numVerticesBytes = vertices->buffer.size_bytes();
 		std::vector<float3> verts(vertices->count);
 		std::memcpy(verts.data(), vertices->buffer.get(), numVerticesBytes);
-        
-        TextureMapper::vertices = &verts;
+        TextureMapper::vertices = verts;
 	}
 	catch (const std::exception & e)
 	{

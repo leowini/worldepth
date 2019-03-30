@@ -11,7 +11,7 @@ public:
 
 private:
     int patchSize;
-    std::vector<float3> *vertices;
+    std::vector<float3> vertices;
     std::vector<cv::Mat> *TcwPoses;
     std::vector<cv::Mat> *source;
     std::vector<cv::Mat> *target;
