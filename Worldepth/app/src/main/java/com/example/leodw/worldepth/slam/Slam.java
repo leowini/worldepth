@@ -76,7 +76,7 @@ public class Slam {
         } catch (Exception e) {
             System.out.println(Thread.currentThread().getName() + " " + e.getMessage());
         }
-        mCompleteListener.onSlamComplete(true);
+        mCompleteListener.onSlamComplete(success);
     }
 
     public interface FrameCountListener {
