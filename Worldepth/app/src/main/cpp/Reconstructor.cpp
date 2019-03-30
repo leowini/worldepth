@@ -32,7 +32,7 @@ void Reconstructor::endSlam(std::string filename, bool slamSuccess) {
     slam->Reset();
     //close any other threads (should be done already in System.Reset()
     delete slam;
-    if (slamSuccess) textureMapper = new TextureMapper("/data/user/0/com.example.leodw.worldepth/files/Horse.ply", vKFImColor, vKFTcw);
+    /*if (slamSuccess)*/ textureMapper = new TextureMapper("/data/user/0/com.example.leodw.worldepth/files/Horse.ply", vKFImColor, vKFTcw);
     delete vKFImColor;
     delete vKFTcw;
 }
