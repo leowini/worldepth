@@ -186,6 +186,7 @@ public class MainActivity extends AppCompatActivity {
     private void loadFiles() {
         checkAndWriteFile("ORBvoc.bin");
         checkAndWriteFile("TUM1.yaml");
+        checkAndWriteFile("Horse.txt");
         checkAndWriteFile("Horse.ply");
     }
 
