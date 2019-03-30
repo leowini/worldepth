@@ -60,23 +60,23 @@ public class Slam {
      * @return
      */
     void doSlam() {
-        boolean success = true;
-        try {
-            TimeFramePair<Bitmap, Long> timeFramePair = mQueue.take();
-            Bitmap bmp = timeFramePair.getFrame();
-            Long time = timeFramePair.getTime();
-            while (!bmp.equals(mPoisonPillBitmap)){
-                mFrameCountListener.onNextFrame();
-                success = sendFrameToSlam(bmp, time);
-                timeFramePair = mQueue.take();
-                bmp = timeFramePair.getFrame();
-                time = timeFramePair.getTime();
-            }
-            success = sendFrameToSlam(bmp, time);
-        } catch (Exception e) {
-            System.out.println(Thread.currentThread().getName() + " " + e.getMessage());
-        }
-        mCompleteListener.onSlamComplete(success);
+//        boolean success = true;
+//        try {
+//            TimeFramePair<Bitmap, Long> timeFramePair = mQueue.take();
+//            Bitmap bmp = timeFramePair.getFrame();
+//            Long time = timeFramePair.getTime();
+//            while (!bmp.equals(mPoisonPillBitmap)){
+//                mFrameCountListener.onNextFrame();
+//                success = sendFrameToSlam(bmp, time);
+//                timeFramePair = mQueue.take();
+//                bmp = timeFramePair.getFrame();
+//                time = timeFramePair.getTime();
+//            }
+//            success = sendFrameToSlam(bmp, time);
+//        } catch (Exception e) {
+//            System.out.println(Thread.currentThread().getName() + " " + e.getMessage());
+//        }
+        mCompleteListener.onSlamComplete(true);
     }
 
     public interface FrameCountListener {
