@@ -8,7 +8,7 @@ public class TextureMapWrapper {
 
     public native void textureMap();
 
-    void runMapping() {
+    void map() {
         textureMap();
         listener.onComplete();
     }

@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.slam.ReconVM;
 
+import java.util.Objects;
+
 import androidx.navigation.Navigation;
 
 public class ReconstructionFragment extends Fragment {
@@ -36,8 +38,8 @@ public class ReconstructionFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         mReconVM = ViewModelProviders.of(getActivity()).get(ReconVM.class);
+        mReconProgress = view.findViewById(R.id.reconReconProgress);
         mReconVM.getReconProgress().observe(this, this::updateUI);
-        mReconProgress = view.findViewById(R.id.reconProgress);
         mSlamProgress = view.findViewById(R.id.reconSlamProgress);
         mReconVM.getSlamProgress().observe(this, progress -> mSlamProgress.setText(progress + " %"));
         mNextButton = view.findViewById(R.id.reconNextButton);
@@ -47,11 +49,19 @@ public class ReconstructionFragment extends Fragment {
     }
 
     private void updateUI(ReconVM.ReconProgress progress) {
-        if (progress == ReconVM.ReconProgress.TM) {
-            mReconProgress.setText("Poisson Complete");
-        }
-        if (progress == ReconVM.ReconProgress.COMPLETE) {
-            mReconProgress.setText("Texture Mapping Complete");
+        switch (progress) {
+            case SLAM:
+                mReconProgress.setText("Running SLAM...");
+                break;
+            case POISSON:
+                mReconProgress.setText("Running Poisson...");
+                break;
+            case TM:
+                mReconProgress.setText("Texture Mapping...");
+                break;
+            case COMPLETE:
+                Navigation.findNavController(Objects.requireNonNull(getView())).navigate(R.id.action_reconstructionFragment_to_viewerFragment);
+                break;
         }
     }
 }
