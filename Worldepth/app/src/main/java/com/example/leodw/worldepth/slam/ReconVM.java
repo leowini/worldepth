@@ -74,7 +74,7 @@ public class ReconVM extends ViewModel {
         }
     }
 
-    private void showModelPreview(int finalModel) {
+    private void showModelPreview() {
         mReconProgress.setValue(ReconProgress.COMPLETE);
     }
 
@@ -104,9 +104,9 @@ public class ReconVM extends ViewModel {
 
     private void reconstruct() {
         mTextureMapWrapper = new TextureMapWrapper();
-        mTextureMapWrapper.setOnCompleteListener(finalModel ->
+        mTextureMapWrapper.setOnCompleteListener(() ->
                 mProgressListenerHandler.post(() -> {
-                    showModelPreview(finalModel);
+                    showModelPreview();
                     stopReconstructionThread();
                 }));
         mPoissonWrapper = new PoissonWrapper();
