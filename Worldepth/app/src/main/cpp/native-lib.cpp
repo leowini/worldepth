@@ -44,7 +44,7 @@ Java_com_example_leodw_worldepth_slam_Slam_passImageToSlam(JNIEnv *env, jobject 
         return static_cast<jboolean>(success);
     } else {
         cv::Mat &mat = *(cv::Mat *) img;
-        double tframe = (double) timeStamp;
+        auto tframe = (double) timeStamp;
         reconstructor->passImageToSlam(mat, tframe);
         mat.release();
     }
