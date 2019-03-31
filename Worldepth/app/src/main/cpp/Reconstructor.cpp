@@ -1,30 +1,30 @@
 #include <RandomMap.h>
 #include "Reconstructor.h"
 
-Reconstructor::Reconstructor(std::string & vocFile, std::string & settingsFile) {
+Reconstructor::Reconstructor(const std::string & vocFile, const std::string & settingsFile) {
     slam = new System(vocFile, settingsFile);
-    vKFImColor = new std::vector<cv::Mat>();
-    vKFTcw = new std::vector<cv::Mat>();
+    vKFImColor = std::vector<cv::Mat>();
+    vKFTcw = std::vector<cv::Mat>();
 }
 
 bool Reconstructor::hasKeyframes() {
-    return (!vKFImColor->empty());
+    return (!vKFImColor.empty());
 }
 
-void Reconstructor::passImageToSlam(cv::Mat &im, double &tstamp) {
+void Reconstructor::passImageToSlam(cv::Mat &im, double tstamp) {
     //call the equivalent of System::TrackMonocular for TrackingInit or Tracking directly
     if (im.empty() || tstamp == 0){
         cerr << "could not load image!" << endl;
     } else {
         cv::Mat Tcw = slam->TrackMonocular(im, tstamp);
         if(!Tcw.empty()){
-            vKFImColor->push_back(im.clone());
-            vKFTcw->push_back(Tcw.clone());
+            vKFImColor.push_back(im.clone());
+            vKFTcw.push_back(Tcw.clone());
         }
     }
 }
 
-void Reconstructor::endSlam(std::string filename, bool slamSuccess) {
+void Reconstructor::endSlam(const std::string &filename, const bool slamSuccess) {
     //get finished map as reference
     writeMap(filename, slam->GetAllMapPoints());
     slam->Shutdown();
@@ -37,6 +37,7 @@ void Reconstructor::endSlam(std::string filename, bool slamSuccess) {
 
 void Reconstructor::textureMap() {
     textureMapper->textureMap();
-    delete vKFImColor;
-    delete vKFTcw;
+    delete textureMapper;
+    vKFImColor.clear();
+    vKFTcw.clear();
 }

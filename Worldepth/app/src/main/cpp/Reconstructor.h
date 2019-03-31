@@ -10,17 +10,17 @@ using namespace SLAM;
 class Reconstructor {
 
 public:
-    Reconstructor(std::string & vocFile, std::string & settingsFile);
+    Reconstructor(const std::string & vocFile, const std::string & settingsFile);
     bool hasKeyframes();
-    void passImageToSlam(cv::Mat &im, double &tstamp);
-    void endSlam(std::string filename, bool slamSuccess);
+    void passImageToSlam(cv::Mat &im, double tstamp);
+    void endSlam(const std::string &filename, bool slamSuccess);
     void textureMap();
 
 private:
     System *slam;
     TextureMapper *textureMapper;
-    std::vector<cv::Mat> *vKFImColor;
-    std::vector<cv::Mat> *vKFTcw;
+    std::vector<cv::Mat> vKFImColor;
+    std::vector<cv::Mat> vKFTcw;
 
 };
 
