@@ -22,6 +22,7 @@ public class ReconstructionFragment extends Fragment {
 
     private ReconVM mReconVM;
     private TextView mSlamProgress;
+    private TextView mReconProgress;
 
     private Button mNextButton;
     private Button mBackButton;
@@ -35,7 +36,8 @@ public class ReconstructionFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         mReconVM = ViewModelProviders.of(getActivity()).get(ReconVM.class);
-        mReconVM.getReconProgress().observe(this, item -> updateUI());
+        mReconVM.getReconProgress().observe(this, this::updateUI);
+        mReconProgress = view.findViewById(R.id.reconProgress);
         mSlamProgress = view.findViewById(R.id.reconSlamProgress);
         mReconVM.getSlamProgress().observe(this, progress -> mSlamProgress.setText(progress + " %"));
         mNextButton = view.findViewById(R.id.reconNextButton);
@@ -44,7 +46,12 @@ public class ReconstructionFragment extends Fragment {
         mBackButton.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_reconstructionFragment_to_cameraFragment));
     }
 
-    private void updateUI() {
-
+    private void updateUI(ReconVM.ReconProgress progress) {
+        if (progress == ReconVM.ReconProgress.TM) {
+            mReconProgress.setText("Poisson Complete");
+        }
+        if (progress == ReconVM.ReconProgress.COMPLETE) {
+            mReconProgress.setText("Texture Mapping Complete");
+        }
     }
 }
