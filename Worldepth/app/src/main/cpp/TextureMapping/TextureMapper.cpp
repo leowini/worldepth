@@ -18,7 +18,7 @@ using namespace tinyply;
 /**
 ** Assuming that source is a vector of cv::Mats
 **/
-TextureMapper::TextureMapper(std::string plyFilename, std::vector<cv::Mat> &source, std::vector<cv::Mat> &TcwPoses, int patchSize) : source(source), TcwPoses(TcwPoses), patchSize(patchSize) {
+TextureMapper::TextureMapper(const std::string &plyFilename, std::vector<cv::Mat> &source, std::vector<cv::Mat> &TcwPoses, int patchSize) : source(source), TcwPoses(TcwPoses), patchSize(patchSize) {
     read_ply_file(plyFilename); //gets vertices from the file
     init(); //clones source and target
 }
@@ -56,15 +56,15 @@ cv::Mat TextureMapper::patchSearch(int iterations) {
                 int dy = randomInt(patchSize, target[0].size().height-patchSize-1);
                 int dt = randomInt(0, target.size()-1);
                 unsigned char* p = out.ptr(x, y, t) + 0;
-                *p = dx;
+                *p = static_cast<unsigned char>(dx);
                 p = out.ptr(x, y, t) + 1;
-                *p = dy;
+                *p = static_cast<unsigned char>(dy);
                 p = out.ptr(x, y, t) + 2;
-                *p = dt;
+                *p = static_cast<unsigned char>(dt);
                 p = out.ptr(x, y, t) + 3;
-                *p = distance(x, y, t,
-                                dx, dy, dt,
-                                patchSize, HUGE_VAL);
+                *p = static_cast<unsigned char>(distance(x, y, t,
+                                                         dx, dy, dt,
+                                                         patchSize, HUGE_VAL));
             }
         }
     }
@@ -93,10 +93,10 @@ cv::Mat TextureMapper::patchSearch(int iterations) {
                                                       patchSize, *error.ptr(x, y, t));
 
                             if (distLeft < *error.ptr(x, y, t)) {
-                                *dx.ptr(x, y, t) = (*dx.ptr(x-1, y, t))+1;
+                                *dx.ptr(x, y, t) = static_cast<uchar>((*dx.ptr(x - 1, y, t)) + 1);
                                 *dy.ptr(x, y, t) = *dy.ptr(x-1, y, t);
                                 *dt.ptr(x, y, t) = *dt.ptr(x-1, y, t);
-                                *error.ptr(x, y, t) = distLeft;
+                                *error.ptr(x, y, t) = static_cast<uchar>(distLeft);
                             }
 
                             float distUp = distance(x, y, t,
@@ -107,9 +107,9 @@ cv::Mat TextureMapper::patchSearch(int iterations) {
 
                             if (distUp < *error.ptr(x, y, t)) {
                                 *dx.ptr(x, y, t) = *dx.ptr(x, y-1, t);
-                                *dy.ptr(x, y, t) = (*dy.ptr(x, y-1, t))+1;
+                                *dy.ptr(x, y, t) = static_cast<uchar>((*dy.ptr(x, y - 1, t)) + 1);
                                 *dt.ptr(x, y, t) = *dt.ptr(x, y-1, t);
-                                *error.ptr(x, y, t) = distUp;
+                                *error.ptr(x, y, t) = static_cast<uchar>(distUp);
                             }
                         }
 
@@ -132,10 +132,10 @@ cv::Mat TextureMapper::patchSearch(int iterations) {
                                                        patchSize, *error.ptr(x, y, t));
 
                             if (distRight < *error.ptr(x, y, t)) {
-                                *dx.ptr(x, y, t) = (*dx.ptr(x+1, y, t))-1;
+                                *dx.ptr(x, y, t) = static_cast<uchar>((*dx.ptr(x + 1, y, t)) - 1);
                                 *dy.ptr(x, y, t) = *dy.ptr(x+1, y, t);
                                 *dt.ptr(x, y, t) = *dt.ptr(x+1, y, t);
-                                *error.ptr(x, y, t) = distRight;
+                                *error.ptr(x, y, t) = static_cast<uchar>(distRight);
                             }
 
                             float distDown = distance(x, y, t,
@@ -146,9 +146,9 @@ cv::Mat TextureMapper::patchSearch(int iterations) {
 
                             if (distDown < *error.ptr(x, y, t)) {
                                 *dx.ptr(x, y, t) = *dx.ptr(x, y+1, t);
-                                *dy.ptr(x, y, t) = (*dy.ptr(x, y+1, t))-1;
+                                *dy.ptr(x, y, t) = static_cast<uchar>((*dy.ptr(x, y + 1, t)) - 1);
                                 *dt.ptr(x, y, t) = *dt.ptr(x, y+1, t);
-                                *error.ptr(x, y, t) = distDown;
+                                *error.ptr(x, y, t) = static_cast<uchar>(distDown);
                             }
                         }
 
@@ -190,10 +190,10 @@ cv::Mat TextureMapper::patchSearch(int iterations) {
                                                   randX, randY, randT,
                                                   patchSize, *error.ptr(x, y, t));
                             if (dist < *error.ptr(x, y, t)) {
-                                *dx.ptr(x, y, t) = randX;
-                                *dy.ptr(x, y, t) = randY;
-                                *dt.ptr(x, y, t) = randT;
-                                *error.ptr(x, y, t) = dist;
+                                *dx.ptr(x, y, t) = static_cast<uchar>(randX);
+                                *dy.ptr(x, y, t) = static_cast<uchar>(randY);
+                                *dt.ptr(x, y, t) = static_cast<uchar>(randT);
+                                *error.ptr(x, y, t) = static_cast<uchar>(dist);
                             }
 
                             radius >>= 1;
@@ -232,7 +232,7 @@ float TextureMapper::distance(int sx, int sy, int st,
     int y1 = max(-patchSize, -sy, -ty);
     int y2 = min(patchSize, -sy+source[0].size().height-1, -ty+target[0].size().height-1);
 
-    for (int c = 0; c < (*target)[0].channels() /*color channels*/; c++) {
+    for (int c = 0; c < target[0].channels() /*color channels*/; c++) {
         for (int y = y1; y <= y2; y++) {
             for (int x = x1; x <= x2; x++) {
 
@@ -250,26 +250,26 @@ float TextureMapper::distance(int sx, int sy, int st,
 
     return dist;
 }
-//
-//void TextureMapper::vote(cv::Mat completenessPatchMatches, cv::Mat coherencePatchMatches) {
-//    //For each pixel in the target
-//    for (int t = 0; t < target.size(); t++) {
-//        for (int y = 0; y < target[0].size().height; y++) {
-//            for (int x = 0; x < target[0].size().width; x++) {
-//                std::vector<std::vector<std::vector<int>>> patches = findSourcePatches(completenessPatchMatches, coherencePatchMatches, x, y, t);
-//                std::vector<std::vector<int>> completenessPatches = patches[0];
-//                std::vector<std::vector<int>> coherencePatches = patches[1];
-//
-//                for (int c = 0; c < source[0].channels(); c++) {
-//                    Tixi(completenessPatches, coherencePatches, c);
-//                }
-//
-//            }
-//        }
-//    }
-//}
-//
-std::vector<std::vector<std::vector<int>>> TextureMapper::findSourcePatches(cv::Mat completenessPatchMatches, cv::Mat coherencePatchMatches, int x, int y, int t) {
+
+void TextureMapper::vote(cv::Mat &completenessPatchMatches, cv::Mat &coherencePatchMatches) {
+    //For each pixel in the target
+    for (int t = 0; t < target.size(); t++) {
+        for (int y = 0; y < target[0].size().height; y++) {
+            for (int x = 0; x < target[0].size().width; x++) {
+                std::vector<std::vector<std::vector<int>>> patches = findSourcePatches(completenessPatchMatches, coherencePatchMatches, x, y, t);
+                std::vector<std::vector<int>> completenessPatches = patches[0];
+                std::vector<std::vector<int>> coherencePatches = patches[1];
+
+                for (int c = 0; c < source[0].channels(); c++) {
+                    Tixi(completenessPatches, coherencePatches, c);
+                }
+
+            }
+        }
+    }
+}
+
+std::vector<std::vector<std::vector<int>>> TextureMapper::findSourcePatches(cv::Mat &completenessPatchMatches, cv::Mat &coherencePatchMatches, int x, int y, int t) {
     std::vector<std::vector<std::vector<int>>> sourcePatches;
     std::vector<std::vector<int>> completenessPatches;
     sourcePatches[0] = completenessPatches;
@@ -285,11 +285,11 @@ std::vector<std::vector<std::vector<int>>> TextureMapper::findSourcePatches(cv::
 
     //Completeness: Find Source patches that have target patches as their most similar patch
     //For each pixel in completenessPatchMatches
-    for (int st = 0; st < source->size(); st++) {
-        for (int sy = 0; sy < (*source)[0].size().height; sy++) {
-            for (int sx = 0; sx < (*source)[0].size().width; sx++) {
+    for (int st = 0; st < source.size(); st++) {
+        for (int sy = 0; sy < source[0].size().height; sy++) {
+            for (int sx = 0; sx < source[0].size().width; sx++) {
                 cv::Vec<float, 4> patchMatch = completenessPatchMatches.at<cv::Vec<float, 4>>(st, sy, st);
-                int stx = patchMatch[0], sty = patchMatch[1], stt = patchMatch[2];
+                int stx = static_cast<int>(patchMatch[0]), sty = static_cast<int>(patchMatch[1]), stt = static_cast<int>(patchMatch[2]);
                 if ( /* is in x range */(stx >= x1 && stx <= x2) && /** is in y range */ (sty >= y1 && sty <= y2) && stt == t) {
                     //return value of the target pixel within the source patch
                     std::vector<int> targetPixel;
@@ -297,7 +297,8 @@ std::vector<std::vector<std::vector<int>>> TextureMapper::findSourcePatches(cv::
                     int targetPixelX = (x - stx) + sx;
                     int targetPixelY = (y - sty) + sy;
                     for (int c = 0; c < source[0].channels(); c++) {
-                        targetPixel.push_back(source[st].at<cv::Vec<float, 4>>(targetPixelX, targetPixelY)[c]);
+                        targetPixel.push_back(
+                                static_cast<int &&>(source[st].at<cv::Vec<float, 4>>(targetPixelX, targetPixelY)[c]));
                     }
                     sourcePatches[0].push_back(targetPixel);
                 }
@@ -312,10 +313,11 @@ std::vector<std::vector<std::vector<int>>> TextureMapper::findSourcePatches(cv::
             //return value of the target pixel within the source patch
             std::vector<int> targetPixel;
             //Find target pixel in source patch
-            int targetPixelX = (x - patchx) + sourcePatchVec[0];
-            int targetPixelY = (y - patchy) + sourcePatchVec[1];
+            int targetPixelX = static_cast<int>((x - patchx) + sourcePatchVec[0]);
+            int targetPixelY = static_cast<int>((y - patchy) + sourcePatchVec[1]);
             for (int c = 0; c < source[0].channels(); c++) {
-                targetPixel.push_back(source[sourcePatchVec[2]].at<cv::Vec<float, 4>>(targetPixelX, targetPixelY)[c]);
+                targetPixel.push_back(
+                        static_cast<int &&>(source[sourcePatchVec[2]].at<cv::Vec<float, 4>>(targetPixelX, targetPixelY)[c]));
             }
             sourcePatches[0].push_back(targetPixel);
         }
@@ -324,64 +326,64 @@ std::vector<std::vector<std::vector<int>>> TextureMapper::findSourcePatches(cv::
     return sourcePatches;
 }
 
-//int TextureMapper::Tixi(std::vector<std::vector<int>> completenessPatches, std::vector<std::vector<int>> coherencePatches, int c /*color channel*/) {
-//    //su and sv are the source patches overlapping with pixel xi of the target for the completeness and coherence terms, respectively.
-//    //yu and yv refer to a single pixel in su and sv , respectively, corresponding to the Xith pixel of the target image.
-//    //U and V refer to the number of patches for the completeness and coherence terms, respectively.
-//    //wj = (cos(θ)**2) / (d**2), where θ is the angle between the surface
-//    //normal and the viewing direction at image j and d denotes the distance between the camera and the surface.
-//    int U = completenessPatches.size();
-//    int V = coherencePatches.size();
-//    int L = 49; //L is the number of pixels in a patch (7 x 7 = 49)
-//    int alpha = 2;
-//    double lambda = 0.1;
-//    int sum1 = 0;
-//    int N = texture.size(); //N is the number of texture images.
-//    for (int u = 0; u < U; u++) {
-//        int upatch = completenessPatches[u][c];
-//        sum1 += upatch;
-//    }
-//    int term1 = (1/L)*sum1;
-//    int sum2 = 0;
-//    for (int v; v < V; v++) {
-//        int vpatch = coherencePatches[v][c];
-//        sum2 += vpatch;
-//    }
-//    int term2 = (alpha / L) * sum2;
-//    int sum3 = 0;
-//    for (int k = 0; k < N; k++) {
-//        //Mk(Xi->k) RGB color of the kth texture at pixel Xi->k, i.e., the result of projecting texture k to camera i
-//        // (Xi->k is pixel position projected from image i to k)
-//        sum3 += Mk(Xi->k);
-//    }
-//    int term3 = (lambda / N) * wi(xi) * sum3;
-//    int denominator = (U / L) + ((alpha * V) / L) + (lambda * wi(xi));
-//    return ((term1 + term2 + term3) / denominator);
-//}
-//
-//void TextureMapper::reconstruct() {
-//    for (int t = 0; t < texture.size(); t++) {
-//        for (int y = 0; y < texture[0].size().height; y++) {
-//            for (int x = 0; x < texture[0].size().width; x++) {
-//                *texture[t].ptr(x,y) = Mixi();
-//            }
-//        }
-//    }
-//}
-//
-//int TextureMapper::Mixi() {
-//    int N = texture.size();
-//    int numerator = 0;
-//    for (int j = 0; j < N; j++) {
-//        //Tj(Xi->j) is the result of projecting target j to camera i
-//        numerator += wj(Xi->j) * Tj(Xi->j);
-//    }
-//    int denominator = 0;
-//    for (int j = 0; j < N; j++) {
-//        denominator += wj(Xi->j);
-//    }
-//    return numerator / denominator;
-//}
+int TextureMapper::Tixi(std::vector<std::vector<int>> &completenessPatches, std::vector<std::vector<int>> &coherencePatches, int c /*color channel*/) {
+    //su and sv are the source patches overlapping with pixel xi of the target for the completeness and coherence terms, respectively.
+    //yu and yv refer to a single pixel in su and sv , respectively, corresponding to the Xith pixel of the target image.
+    //U and V refer to the number of patches for the completeness and coherence terms, respectively.
+    //wj = (cos(θ)**2) / (d**2), where θ is the angle between the surface
+    //normal and the viewing direction at image j and d denotes the distance between the camera and the surface.
+    int U = completenessPatches.size();
+    int V = coherencePatches.size();
+    int L = 49; //L is the number of pixels in a patch (7 x 7 = 49)
+    int alpha = 2;
+    double lambda = 0.1;
+    int sum1 = 0;
+    int N = texture.size(); //N is the number of texture images.
+    for (int u = 0; u < U; u++) {
+        int upatch = completenessPatches[u][c];
+        sum1 += upatch;
+    }
+    int term1 = (1/L)*sum1;
+    int sum2 = 0;
+    for (int v; v < V; v++) {
+        int vpatch = coherencePatches[v][c];
+        sum2 += vpatch;
+    }
+    int term2 = (alpha / L) * sum2;
+    int sum3 = 0;
+    for (int k = 0; k < N; k++) {
+        //Mk(Xi->k) RGB color of the kth texture at pixel Xi->k, i.e., the result of projecting texture k to camera i
+        // (Xi->k is pixel position projected from image i to k)
+        sum3 += Mk(Xi->k);
+    }
+    int term3 = (lambda / N) * wi(xi) * sum3;
+    int denominator = (U / L) + ((alpha * V) / L) + (lambda * wi(xi));
+    return ((term1 + term2 + term3) / denominator);
+}
+
+void TextureMapper::reconstruct() {
+    for (int t = 0; t < texture.size(); t++) {
+        for (int y = 0; y < texture[0].size().height; y++) {
+            for (int x = 0; x < texture[0].size().width; x++) {
+                *texture[t].ptr(x,y) = Mixi();
+            }
+        }
+    }
+}
+
+int TextureMapper::Mixi() {
+    int N = texture.size();
+    int numerator = 0;
+    for (int j = 0; j < N; j++) {
+        //Tj(Xi->j) is the result of projecting target j to camera i
+        numerator += wj(Xi->j) * Tj(Xi->j);
+    }
+    int denominator = 0;
+    for (int j = 0; j < N; j++) {
+        denominator += wj(Xi->j);
+    }
+    return numerator / denominator;
+}
 
 /**
 ** Initialize
@@ -398,54 +400,54 @@ void TextureMapper::init() {
 int TextureMapper::randomInt(int min, int max) {
     return min + (rand() % static_cast<int>(max - min + 1));
 }
-//
-//std::vector<cv::Mat> TextureMapper::getRGBD(std::vector<cv::Mat> target, std::vector<cv::Mat> TcwPoses) {
-//    //Get depth for all of the pixels. This will either require rasterization or ray-tracing (I need to do more research to determine which one).
-//
-//}
-//
-//bool TextureMapper::projectToSurface() {
-//    // accumulation buffers for colors and weights
-//    int buff_ind;
-//    double *weights;
-//    double *acc_red;
-//    double *acc_grn;
-//    double *acc_blu;
-//
-//    // init accumulation buffers for colors and weights
-//    acc_red = new double[model->cm.vn];
-//    acc_grn = new double[model->cm.vn];
-//    acc_blu = new double[model->cm.vn];
-//    for(int buff_ind=0; buff_ind<model->cm.vn; buff_ind++)
-//    {
-//        acc_red[buff_ind] = 0.0;
-//        acc_grn[buff_ind] = 0.0;
-//        acc_blu[buff_ind] = 0.0;
-//    }
-//
-//    //for each camera
-//    for (int cam = 0; cam < TcwPoses.size(); cam++) {
-//        //if raster is good
-//            glContext->makeCurrent();
-//
-//            // render normal & depth
-//            rendermanager->renderScene(raster->shot, model, RenderHelper::NORMAL, glContext, my_near[cam_ind]*0.5, my_far[cam_ind]*1.25);
-//
-//            // Unmaking context current
-//            glContext->doneCurrent();
-//
-//
-//            //THIS IS WHERE THE SEARCH FOR VERTICES IS
-//            // For vertex in model
-//            for (int vertex; vertex < vertices.size(); vertex++) {
-//                //project point to image space
-//                //get vector from the point-to-be-colored to the camera center
-//                //if inside image
-//                    // add color buffers
-//            } //end for each vertex
-//    } //end for each camera
-//    // Paint model vertices with colors
-//}
+
+std::vector<cv::Mat> TextureMapper::getRGBD(std::vector<cv::Mat> &target, std::vector<cv::Mat> &TcwPoses) {
+    //Get depth for all of the pixels. This will either require rasterization or ray-tracing (I need to do more research to determine which one).
+
+}
+
+bool TextureMapper::projectToSurface() {
+    // accumulation buffers for colors and weights
+    int buff_ind;
+    double *weights;
+    double *acc_red;
+    double *acc_grn;
+    double *acc_blu;
+
+    // init accumulation buffers for colors and weights
+    acc_red = new double[model->cm.vn];
+    acc_grn = new double[model->cm.vn];
+    acc_blu = new double[model->cm.vn];
+    for(int buff_ind=0; buff_ind<model->cm.vn; buff_ind++)
+    {
+        acc_red[buff_ind] = 0.0;
+        acc_grn[buff_ind] = 0.0;
+        acc_blu[buff_ind] = 0.0;
+    }
+
+    //for each camera
+    for (int cam = 0; cam < TcwPoses.size(); cam++) {
+        //if raster is good
+            glContext->makeCurrent();
+
+            // render normal & depth
+            rendermanager->renderScene(raster->shot, model, RenderHelper::NORMAL, glContext, my_near[cam_ind]*0.5, my_far[cam_ind]*1.25);
+
+            // Unmaking context current
+            glContext->doneCurrent();
+
+
+            //THIS IS WHERE THE SEARCH FOR VERTICES IS
+            // For vertex in model
+            for (int vertex; vertex < vertices.size(); vertex++) {
+                //project point to image space
+                //get vector from the point-to-be-colored to the camera center
+                //if inside image
+                    // add color buffers
+            } //end for each vertex
+    } //end for each camera
+    // Paint model vertices with colors
+}
 
 int TextureMapper::max(int x, int y, int z) {
     return std::max(std::max(x, y), z);
