@@ -544,7 +544,7 @@ namespace SLAM
         float medianDepth = pKFini->ComputeSceneMedianDepth(2);
         float invMedianDepth = 1.0f/medianDepth;
 
-        if(medianDepth<0 || pKFcur->TrackedMapPoints(1)<100) //this is true
+        if(medianDepth<0 || pKFcur->TrackedMapPoints(1)<80) //this is true
         {
             cout << "Wrong initialization, reseting..." << endl;
             Reset();

@@ -348,7 +348,7 @@ public class CameraFragment extends Fragment {
             return;
         }
         try {
-            closePreviewSession();
+            //closePreviewSession();
             SurfaceTexture texture = mTextureView.getSurfaceTexture();
             assert texture != null;
             texture.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
