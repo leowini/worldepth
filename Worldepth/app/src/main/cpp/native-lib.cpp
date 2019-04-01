@@ -22,7 +22,7 @@ Java_com_example_leodw_worldepth_slam_PoissonWrapper_startPoisson(JNIEnv *env, j
     char* args [] = {
             (char*)"PoissonRecon",
             (char*)"--in",
-            (char*) "/data/user/0/com.example.leodw/worldepth/files/Pointcloud.txt",
+            (char*) "/data/user/0/com.example.leodw/worldepth/files/SLAM.txt",
             //(char*) "/data/user/0/com.example.leodw.worldepth/files/Horse.txt",
             (char*)"--out",
             (char*) "/data/user/0/com.example.leodw.worldepth/files/SLAM.ply",
@@ -39,13 +39,13 @@ extern "C"
 JNIEXPORT jboolean JNICALL
 Java_com_example_leodw_worldepth_slam_Slam_passImageToSlam(JNIEnv *env, jobject instance, jlong img, jlong timeStamp) {
     if (img == 0) { //poison pill
-        bool success = reconstructor->hasKeyframes();
-        reconstructor->endSlam("/data/user/0/com.example.leodw.worldepth/files/Pointcloud.txt", success);
-        return static_cast<jboolean>(success);
+//        bool success = reconstructor->hasKeyframes();
+//        reconstructor->endSlam("/data/user/0/com.example.leodw.worldepth/files/Pointcloud.txt", success);
+        return static_cast<jboolean>(true/*success*/);
     } else {
         cv::Mat &mat = *(cv::Mat *) img;
         auto tframe = (double) timeStamp;
-        reconstructor->passImageToSlam(mat, tframe);
+        //reconstructor->passImageToSlam(mat, tframe);
         mat.release();
     }
     return static_cast<jboolean>(true);
