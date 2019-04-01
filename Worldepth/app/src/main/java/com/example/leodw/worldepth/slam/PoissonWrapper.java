@@ -4,7 +4,7 @@ public class PoissonWrapper {
 
     private static final String TAG = "PoissonWrapper";
 
-    private OnCompleteListener listener;[]
+    private OnCompleteListener listener;
 
     public native void startPoisson();
 
