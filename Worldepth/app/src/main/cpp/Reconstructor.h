@@ -21,7 +21,8 @@ private:
     TextureMapper *textureMapper;
     std::vector<cv::Mat> vKFImColor;
     std::vector<cv::Mat> vKFTcw;
-
+    void vecmatwrite(const string& filename, const vector<cv::Mat>& matrices);
+    vector<cv::Mat> vecmatread(const string& filename);
 };
 
 #endif

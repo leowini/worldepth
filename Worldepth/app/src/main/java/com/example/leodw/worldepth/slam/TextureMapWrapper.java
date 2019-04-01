@@ -9,7 +9,7 @@ public class TextureMapWrapper {
     public native void textureMap();
 
     void map() {
-        //textureMap();
+        textureMap();
         listener.onComplete();
     }
 

@@ -391,9 +391,9 @@ std::vector<std::vector<std::vector<int>>> TextureMapper::findSourcePatches(cv::
 ** i.e., Ti = Si and Mi = Si.
 **/
 void TextureMapper::init() {
-    for (int t = 0; t < source.size(); t++) {
-        target.push_back(source.at(static_cast<unsigned long>(t)).clone());
-        texture.push_back(source.at(static_cast<unsigned long>(t)).clone());
+    for (unsigned long t = 0; t < source.size(); t++) {
+        target.push_back(source.at(t).clone());
+        texture.push_back(source.at(t).clone());
     }
 }
 
