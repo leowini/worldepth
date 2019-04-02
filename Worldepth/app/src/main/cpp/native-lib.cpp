@@ -22,7 +22,7 @@ Java_com_example_leodw_worldepth_slam_PoissonWrapper_startPoisson(JNIEnv *env, j
     char* args [] = {
             (char*)"PoissonRecon",
             (char*)"--in",
-            (char*)"/data/user/0/com.example.leodw/worldepth/files/SLAM.txt",
+            (char*)"/data/user/0/com.example.leodw.worldepth/files/SLAM.txt",
             //(char*) "/data/user/0/com.example.leodw.worldepth/files/Horse.txt",
             (char*)"--out",
             (char*) "/data/user/0/com.example.leodw.worldepth/files/SLAM.ply",
