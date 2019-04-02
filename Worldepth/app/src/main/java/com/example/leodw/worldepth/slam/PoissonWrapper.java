@@ -10,7 +10,7 @@ public class PoissonWrapper {
     public native void startPoisson();
 
     void runPoisson() {
-        //startPoisson();
+        startPoisson();
         listener.onComplete();
     }
 
