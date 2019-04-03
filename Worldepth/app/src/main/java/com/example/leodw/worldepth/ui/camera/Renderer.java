@@ -67,6 +67,8 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
         renderer.drawFrame(mEglSurfaceTexture, false);
 
         Bitmap bmp = getBitmap();
+        Log.d(TAG, ""+bmp.getHeight());
+        Log.d(TAG, ""+bmp.getWidth());
         try {
             if (frameCount % 2 == 0) {
                 mFrameRenderedListenerHandler.post(() -> mFrameRenderedListener.onFrameRendered(new TimeFramePair<Bitmap, Long>(bmp, frameTimeStamp)));
@@ -91,8 +93,9 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
         Bitmap bmp = Bitmap.createBitmap(mSurfaceWidth, mSurfaceHeight, Bitmap.Config.ARGB_8888);
         mPixelBuf.rewind();
         bmp.copyPixelsFromBuffer(mPixelBuf);
-//        bmp.recycle();
-        return bmp;
+//
+        //return bmp;
+        return Bitmap.createScaledBitmap(bmp, 640, (640 * mSurfaceHeight / mSurfaceWidth), true);
     }
 
     /**
