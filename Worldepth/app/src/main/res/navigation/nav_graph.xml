@@ -197,5 +197,8 @@
         <action
             android:id="@+id/action_reconstructionFragment_to_cameraFragment"
             app:destination="@id/cameraFragment" />
+        <action
+            android:id="@+id/action_reconstructionFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
     </fragment>
 </navigation>

@@ -102,4 +102,16 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.008" />
 
+    <Button
+        android:id="@+id/CalibButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Calibrate"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias=".5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.10" />
+
 </android.support.constraint.ConstraintLayout>

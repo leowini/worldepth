@@ -23,6 +23,9 @@ public class ReconVM extends ViewModel {
     private HandlerThread mReconstructionThread;
     private Handler mReconstructionHandler;
 
+    private HandlerThread mCalibrationThread;
+    private Handler mCalibrationHandler;
+
     private Handler mProgressListenerHandler;
 
     private Handler mFrameCountHandler;
@@ -40,6 +43,9 @@ public class ReconVM extends ViewModel {
     private Slam mSlam;
     private PoissonWrapper mPoissonWrapper;
     private TextureMapWrapper mTextureMapWrapper;
+    private CalibWrapper mCalibWrapper;
+
+    public boolean calibration;
 
     public enum ReconProgress {
         INIT, READY, SLAM, POISSON, TM, COMPLETE
@@ -52,7 +58,8 @@ public class ReconVM extends ViewModel {
         mProgressListenerHandler = new Handler(Looper.getMainLooper());
         mFrameCountHandler = new Handler(Looper.getMainLooper());
         mQueue = new LinkedBlockingQueue<>();
-        startReconstructionThread();
+        //startReconstructionThread();
+        startCalibrationThread();
     }
 
     private void startReconstructionThread() {
@@ -60,9 +67,11 @@ public class ReconVM extends ViewModel {
         mReconstructionThread.start();
         mReconstructionHandler = new Handler(mReconstructionThread.getLooper());
         mReconstructionHandler.post(this::reconstruct);
+        calibration = false;
     }
 
     private void stopReconstructionThread() {
+        mQueue.add(new TimeFramePair<Bitmap, Long>(mPoisonPillBitmap, Long.valueOf(0)));
         mReconstructionThread.quitSafely();
         try {
             mReconstructionThread.join();
@@ -72,6 +81,7 @@ public class ReconVM extends ViewModel {
                 InterruptedException e) {
             e.printStackTrace();
         }
+        mQueue.clear();
     }
 
     private void showModelPreview(int finalModel) {
@@ -100,6 +110,57 @@ public class ReconVM extends ViewModel {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public void setCalibration(boolean calib) {
+        calibration = calib;
+        if(calibration && mCalibrationThread == null){
+            startCalibrationThread();
+        }else if(!calibration && mCalibrationThread !=null){
+            stopCalibrationThread();
+        }
+    }
+
+    private void startCalibrationThread() {
+        if(mReconstructionHandler != null){
+            stopReconstructionThread();
+        }
+        mCalibrationThread = new HandlerThread("ReconstructionThread");
+        mCalibrationThread.start();
+        mCalibrationHandler = new Handler(mCalibrationThread.getLooper());
+        mCalibrationHandler.post(this::calibrate);
+    }
+
+    private void stopCalibrationThread() {
+        mQueue.add(new TimeFramePair<>(mPoisonPillBitmap, Long.valueOf(0)));
+        mCalibrationThread.quitSafely();
+        try {
+            mCalibrationThread.join();
+            mCalibrationThread = null;
+            mCalibrationHandler = null;
+        } catch (
+                InterruptedException e) {
+            e.printStackTrace();
+        }
+        mQueue.clear();
+        startReconstructionThread();
+    }
+
+    public boolean getCalibState() {
+        return calibration;
+    }
+
+    private void calibrate() {
+        mCalibWrapper = new CalibWrapper(mQueue, mPoisonPillBitmap);
+        mCalibWrapper.setOnCompleteListener(calib -> {
+            mFrameCountHandler.post(() -> {
+                mProcessedFrames = mRenderedFrames;
+                updateSlamProgress();
+            });
+            mProgressListenerHandler.post(() -> setCalibration(false));
+        });
+        mCalibWrapper.setFrameCountListener(() -> mFrameCountHandler.post(this::frameProcessed));
+        mCalibWrapper.doCalib();
     }
 
     private void reconstruct() {

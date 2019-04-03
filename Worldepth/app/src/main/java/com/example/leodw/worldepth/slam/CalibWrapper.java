@@ -13,65 +13,58 @@ import org.opencv.core.Mat;
 import java.io.ByteArrayOutputStream;
 import java.util.concurrent.BlockingQueue;
 
-public class Slam {
+public class CalibWrapper {
 
     private static final String TAG = "Slam";
 
     private final BlockingQueue<TimeFramePair<Bitmap, Long>> mQueue;
 
-    private SlamCompleteListener mCompleteListener;
+    private CalibCompleteListener mCompleteListener;
 
     private final Bitmap mPoisonPillBitmap;
 
     private FrameCountListener mFrameCountListener;
 
-    public native void passImageToSlam(long img, long timeStamp);
+    public native boolean passImageToCalibrate(long img);
 
-    public native void initSystem(String vocFile, String settingsFile);
+    public native void initSettings();
 
-    Slam(BlockingQueue<TimeFramePair<Bitmap, Long>> q, Bitmap mPoisonPillBitmap) {
+    CalibWrapper(BlockingQueue<TimeFramePair<Bitmap, Long>> q, Bitmap mPoisonPillBitmap) {
         this.mQueue = q;
         this.mPoisonPillBitmap = mPoisonPillBitmap;
-        initSystem("/data/user/0/com.example.leodw.worldepth/files/ORBvoc.bin",
-                "/data/user/0/com.example.leodw.worldepth/files/output.xml");
+        initSettings();
     }
 
     /**
      * Converts the bitmap frame to a byte array and sends it to the C++ code.
      *
      * @param frame
-     * @param timeStamp
      */
-    private void sendFrameToSlam(Bitmap frame, Long timeStamp) {
-        if (frame == mPoisonPillBitmap) {
-            passImageToSlam(0, timeStamp);
-        } else {
+    private void sendFrameToCalib(Bitmap frame) {
             Mat mat = new Mat();
             Utils.bitmapToMat(frame, mat);
-            passImageToSlam(mat.getNativeObjAddr(), timeStamp);
+            if(passImageToCalibrate(mat.getNativeObjAddr())){
+                mCompleteListener.onCalibComplete(0);
         }
     }
 
     /**
      * This will run in the background on the SlamSenderThread.
      */
-    void doSlam() {
+    void doCalib() {
         try {
             TimeFramePair<Bitmap, Long> timeFramePair = mQueue.take();
             Bitmap bmp = timeFramePair.getFrame();
-            Long time = timeFramePair.getTime();
             while (!bmp.equals(mPoisonPillBitmap)) {
                 mFrameCountListener.onNextFrame();
-                sendFrameToSlam(bmp, time);
+                sendFrameToCalib(bmp);
                 timeFramePair = mQueue.take();
                 bmp = timeFramePair.getFrame();
-                time = timeFramePair.getTime();
             }
-            sendFrameToSlam(mPoisonPillBitmap, time);
+            sendFrameToCalib(mPoisonPillBitmap);
         } catch (Exception e) {
             System.out.println(Thread.currentThread().getName() + " " + e.getMessage());
         }
-        mCompleteListener.onSlamComplete(0);
     }
 
     public interface FrameCountListener {
@@ -82,12 +75,13 @@ public class Slam {
         mFrameCountListener = listener;
     }
 
-    public interface SlamCompleteListener {
-        void onSlamComplete(int pointCloud);
+    public interface CalibCompleteListener {
+        void onCalibComplete(int calib);
     }
 
-    void setOnCompleteListener(SlamCompleteListener listener) {
+    void setOnCompleteListener(CalibCompleteListener listener) {
         mCompleteListener = listener;
     }
 
 }
+

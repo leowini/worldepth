@@ -122,6 +122,5 @@ namespace calib {
 
     bool runCalibrationAndSave(Settings &s, Size imageSize, Mat &cameraMatrix, Mat &distCoeffs,
                                vector<vector<Point2f> > imagePoints);
-
-#endif //WORLDEPTH_CAMERA_CALIBRATION_H
 }
+#endif //WORLDEPTH_CAMERA_CALIBRATION_H

@@ -39,7 +39,13 @@ public class ReconstructionFragment extends Fragment {
         mSlamProgress = view.findViewById(R.id.reconSlamProgress);
         mReconVM.getSlamProgress().observe(this, progress -> mSlamProgress.setText(progress + " %"));
         mNextButton = view.findViewById(R.id.reconNextButton);
-        mNextButton.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_reconstructionFragment_to_viewerFragment));
+        mNextButton.setOnClickListener(v -> {
+            if (mReconVM.getCalibState()) {
+                Navigation.findNavController(v).navigate(R.id.action_reconstructionFragment_to_mapFragment);
+            } else {
+                Navigation.findNavController(v).navigate(R.id.action_reconstructionFragment_to_viewerFragment);
+            }
+        });
         mBackButton = view.findViewById(R.id.reconBackButton);
         mBackButton.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_reconstructionFragment_to_cameraFragment));
     }

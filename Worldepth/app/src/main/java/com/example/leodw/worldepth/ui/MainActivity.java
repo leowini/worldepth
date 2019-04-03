@@ -176,7 +176,8 @@ public class MainActivity extends AppCompatActivity {
 
             OutputStream outStream = new FileOutputStream(targetFile);
             outStream.write(buffer);
-
+            initialStream.close();
+            outStream.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -185,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadFiles() {
         checkAndWriteFile("ORBvoc.bin");
-        checkAndWriteFile("TUM1.yaml");
+        //checkAndWriteFile("TUM1.yaml");
         checkAndWriteFile("Pointcloud.txt");
         checkAndWriteFile("calib_data.xml");
         checkAndWriteFile("output.xml");

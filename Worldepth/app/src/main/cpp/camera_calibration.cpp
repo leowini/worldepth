@@ -198,20 +198,26 @@ namespace calib {
         Settings s = *this;
         bool blinkOutput = false;
 
+        if(mode == CALIBRATED)
+            return;
         //view = s.nextImage();
 
         //-----  If no more image, or got enough, then stop calibration and show result -------------
         if (mode == CAPTURING && imagePoints.size() >= (size_t) s.nrFrames) {
-            if (runCalibrationAndSave(s, imageSize, cameraMatrix, distCoeffs, imagePoints))
-                mode = CALIBRATED;
-            else
+            if (runCalibrationAndSave(s, imageSize, cameraMatrix, distCoeffs, imagePoints)) {
+            mode = CALIBRATED;
+            return;
+            }else {
                 mode = DETECTION;
+            }
         }
         if (view.empty())          // If there are no more images stop the loop
         {
             // if calibration threshold was not reached yet, calibrate now
-            if (mode != CALIBRATED && !imagePoints.empty())
+            if (mode != CALIBRATED && !imagePoints.empty()) {
                 runCalibrationAndSave(s, imageSize, cameraMatrix, distCoeffs, imagePoints);
+                mode = CALIBRATED;
+            }
             return;
         }
         //! [get_input]
@@ -432,7 +438,9 @@ void Settings::saveCameraParams(Settings &s, Size &imageSize, Mat &cameraMatrix,
                              const vector<float> &reprojErrs,
                              const vector<vector<Point2f> > &imagePoints,
                              double totalAvgErr) {
-    FileStorage fs(s.outputFileName, FileStorage::WRITE);
+    try {
+        FileStorage fs(s.outputFileName, FileStorage::WRITE /*| FileStorage::FORMAT_YAML*/);
+
 
     time_t tm;
     time(&tm);
@@ -441,7 +449,7 @@ void Settings::saveCameraParams(Settings &s, Size &imageSize, Mat &cameraMatrix,
     strftime(buf, sizeof(buf), "%c", t2);
 
     fs << "calibration_time" << buf;
-
+/*
     if (!rvecs.empty() || !reprojErrs.empty())
         fs << "nr_of_frames" << (int) std::max(rvecs.size(), reprojErrs.size());
     fs << "image_width" << imageSize.width;
@@ -481,12 +489,30 @@ void Settings::saveCameraParams(Settings &s, Size &imageSize, Mat &cameraMatrix,
 
     fs << "flags" << s.flag;
 
-    fs << "fisheye_model" << s.useFisheye;
+    fs << "fisheye_model" << s.useFisheye;*/
 
-    fs << "camera_matrix" << cameraMatrix;
-    fs << "distortion_coefficients" << distCoeffs;
+        //fs << "camera_matrix" << cameraMatrix;
+        fs<<"Camera_fx" << (double)cameraMatrix.at<float>(0, 0);
+        fs.write("Camera_fy", (double)cameraMatrix.at<float>(1, 1));
+        fs.write("Camera_cx", (double)cameraMatrix.at<float>(0, 2));
+        fs.write("Camera_cy", (double)cameraMatrix.at<float>(1, 2));
 
-    fs << "avg_reprojection_error" << totalAvgErr;
+        //fs << "distortion_coefficients" << distCoeffs;
+        fs.write("Camera_k1", (double)distCoeffs.at<float>(0));
+        fs.write("Camera_k2", (double)distCoeffs.at<float>(1));
+        fs.write("Camera_p1", (double)distCoeffs.at<float>(2));
+        fs.write("Camera_p2", (double)distCoeffs.at<float>(3));
+        fs.write("Camera_k3", (double)distCoeffs.at<float>(4));
+
+        fs.write("Camera_fps", 15);
+        fs.write("Camera_RGB", 1);
+        fs.write("ORBextractor_nFeatures", 2000);
+        fs.write("ORBextractor_scaleFactor", 1.2);
+        fs.write("ORBextractor_nLevels", 8);
+        fs.write("ORBextractor_iniThFAST", 20);
+        fs.write("ORBextractor_minThFAST", 7);
+
+/*    fs << "avg_reprojection_error" << totalAvgErr;
     if (s.writeExtrinsics && !reprojErrs.empty())
         fs << "per_view_reprojection_errors" << Mat(reprojErrs);
 
@@ -503,7 +529,7 @@ void Settings::saveCameraParams(Settings &s, Size &imageSize, Mat &cameraMatrix,
             if (needReshapeR)
                 rvecs[i].reshape(1, 1).copyTo(r);
             else {
-                //*.t() is MatExpr (not Mat) so we can use assignment operator
+                //.t() is MatExpr (not Mat) so we can use assignment operator
                 CV_Assert(rvecs[i].rows == 3 && rvecs[i].cols == 1);
                 r = rvecs[i].t();
             }
@@ -527,6 +553,10 @@ void Settings::saveCameraParams(Settings &s, Size &imageSize, Mat &cameraMatrix,
             imgpti.copyTo(r);
         }
         fs << "image_points" << imagePtMat;
+    }*/
+        fs.release();
+    } catch (Exception e){
+        int error = 1;
     }
 }
 

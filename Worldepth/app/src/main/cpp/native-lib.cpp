@@ -3,10 +3,12 @@
 #include <opencv2/core/core.hpp>
 #include <PoissonRecon.h>
 #include "Reconstructor.h"
+#include "camera_calibration.h"
 
 using namespace std;
 
 Reconstructor *reconstructor;
+calib::Settings *sptr;
 
 extern "C" JNIEXPORT jstring JNICALL
 Java_com_example_leodw_worldepth_MainActivity_stringFromJNI(
@@ -43,6 +45,7 @@ JNIEXPORT void JNICALL
 Java_com_example_leodw_worldepth_slam_Slam_passImageToSlam(JNIEnv *env, jobject instance, jlong img, jlong timeStamp) {
     if (img == 0) { //poison pill
         reconstructor->endSlam(/*"/storage/emulated/0/Worldepth/SLAM.npts"*/"/data/user/0/com.example.leodw.worldepth/files/SLAM.txt");
+        delete reconstructor;
     } else {
         cv::Mat &mat = *(cv::Mat *) img;
         double tframe = (double) timeStamp;
@@ -68,3 +71,25 @@ JNIEXPORT void JNICALL
 Java_com_example_leodw_worldepth_slam_TextureMapWrapper_textureMap(JNIEnv *env, jobject instance) {
     reconstructor->textureMap();
 }
+
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_example_leodw_worldepth_slam_CalibWrapper_initSettings(JNIEnv *env, jobject instance) {
+    sptr = new calib::Settings();
+}
+
+extern "C"
+JNIEXPORT jboolean JNICALL
+Java_com_example_leodw_worldepth_slam_CalibWrapper_passImageToCalibrate(JNIEnv *env, jobject instance, jlong img) {
+    cv::Mat &mat = *(cv::Mat *) img;
+    //returns whether or not it finished
+    sptr->processImage(mat);
+    mat.release();
+    if (sptr->mode == calib::CALIBRATED) {  //if calibration is finished and written
+        delete sptr;
+        return static_cast<jboolean>(true);
+    }
+    else return static_cast<jboolean>(false);
+}
+
