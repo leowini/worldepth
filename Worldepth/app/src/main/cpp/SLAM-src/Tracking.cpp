@@ -102,7 +102,7 @@ namespace SLAM
 
         // Load ORB parameters
 
-        int nFeatures = fSettings["ORBextractor.nFeatures"];
+        int nFeatures = fSettings["ORBextractor_nFeatures"];
         if(nFeatures == 0) {
             fSettings.release();
             return;

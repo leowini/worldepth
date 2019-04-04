@@ -195,7 +195,6 @@ namespace calib {
     //! [get_input]
     void Settings::processImage(Mat &view) {
         //Mat view;
-        Settings s = *this;
         bool blinkOutput = false;
 
         if(mode == CALIBRATED)
@@ -203,8 +202,8 @@ namespace calib {
         //view = s.nextImage();
 
         //-----  If no more image, or got enough, then stop calibration and show result -------------
-        if (mode == CAPTURING && imagePoints.size() >= (size_t) s.nrFrames) {
-            if (runCalibrationAndSave(s, imageSize, cameraMatrix, distCoeffs, imagePoints)) {
+        if (mode == CAPTURING && imagePoints.size() >= (size_t) nrFrames) {
+            if (runCalibrationAndSave(imageSize, cameraMatrix, distCoeffs, imagePoints)) {
             mode = CALIBRATED;
             return;
             }else {
@@ -215,7 +214,7 @@ namespace calib {
         {
             // if calibration threshold was not reached yet, calibrate now
             if (mode != CALIBRATED && !imagePoints.empty()) {
-                runCalibrationAndSave(s, imageSize, cameraMatrix, distCoeffs, imagePoints);
+                runCalibrationAndSave(imageSize, cameraMatrix, distCoeffs, imagePoints);
                 mode = CALIBRATED;
             }
             return;
@@ -223,7 +222,7 @@ namespace calib {
         //! [get_input]
 
         imageSize = view.size();  // Format input image.
-        if (s.flipVertical) flip(view, view, 0);
+        if (flipVertical) flip(view, view, 0);
 
         //! [find_pattern]
         vector<Point2f> pointBuf;
@@ -232,21 +231,21 @@ namespace calib {
 
         int chessBoardFlags = CALIB_CB_ADAPTIVE_THRESH | CALIB_CB_NORMALIZE_IMAGE;
 
-        if (!s.useFisheye) {
+        if (!useFisheye) {
             // fast check erroneously fails with high distortions like fisheye
             chessBoardFlags |= CALIB_CB_FAST_CHECK;
         }
 
-        switch (s.calibrationPattern) // Find feature points on the input format
+        switch (calibrationPattern) // Find feature points on the input format
         {
             case Settings::CHESSBOARD:
-                found = findChessboardCorners(view, s.boardSize, pointBuf, chessBoardFlags);
+                found = findChessboardCorners(view, boardSize, pointBuf, chessBoardFlags);
                 break;
             case Settings::CIRCLES_GRID:
-                found = findCirclesGrid(view, s.boardSize, pointBuf);
+                found = findCirclesGrid(view, boardSize, pointBuf);
                 break;
             case Settings::ASYMMETRIC_CIRCLES_GRID:
-                found = findCirclesGrid(view, s.boardSize, pointBuf, CALIB_CB_ASYMMETRIC_GRID);
+                found = findCirclesGrid(view, boardSize, pointBuf, CALIB_CB_ASYMMETRIC_GRID);
                 break;
             default:
                 found = false;
@@ -257,7 +256,7 @@ namespace calib {
         if (found)                // If done with success,
         {
             // improve the found corners' coordinate accuracy for chessboard
-            if (s.calibrationPattern == Settings::CHESSBOARD) {
+            if (calibrationPattern == Settings::CHESSBOARD) {
                 Mat viewGray;
                 cvtColor(view, viewGray, COLOR_BGR2GRAY);
                 cornerSubPix(viewGray, pointBuf, Size(11, 11),
@@ -266,10 +265,10 @@ namespace calib {
             }
 
             if (mode == CAPTURING &&  // For camera only take new samples after delay time
-                (clock() - prevTimestamp > s.delay * 1e-3 * CLOCKS_PER_SEC)) {
+                (clock() - prevTimestamp > delay * 1e-3 * CLOCKS_PER_SEC)) {
                 imagePoints.push_back(pointBuf);
                 prevTimestamp = clock();
-                blinkOutput = s.inputCapture.isOpened();
+                blinkOutput = inputCapture.isOpened();
             }
 
             // Draw the corners.
@@ -285,10 +284,10 @@ namespace calib {
         Point textOrigin(view.cols - 2 * textSize.width - 10, view.rows - 2 * baseLine - 10);
 
         if (mode == CAPTURING) {
-            if (s.showUndistorsed)
-                msg = format("%d/%d Undist", (int) imagePoints.size(), s.nrFrames);
+            if (showUndistorsed)
+                msg = format("%d/%d Undist", (int) imagePoints.size(), nrFrames);
             else
-                msg = format("%d/%d", (int) imagePoints.size(), s.nrFrames);
+                msg = format("%d/%d", (int) imagePoints.size(), nrFrames);
         }
 
         //putText(view, msg, textOrigin, 1, 1, mode == CALIBRATED ? GREEN : RED);
@@ -298,9 +297,9 @@ namespace calib {
         //! [output_text]
         //------------------------- Video capture  output  undistorted ------------------------------
         //! [output_undistorted]
-        if (mode == CALIBRATED && s.showUndistorsed) {
+        if (mode == CALIBRATED && showUndistorsed) {
             Mat temp = view.clone();
-            if (s.useFisheye)
+            if (useFisheye)
                 cv::fisheye::undistortImage(temp, view, cameraMatrix, distCoeffs);
             else
                 undistort(temp, view, cameraMatrix, distCoeffs);
@@ -561,20 +560,20 @@ void Settings::saveCameraParams(Settings &s, Size &imageSize, Mat &cameraMatrix,
 }
 
 //! [run_and_save]
-    bool Settings::runCalibrationAndSave(Settings &s, Size imageSize, Mat &cameraMatrix, Mat &distCoeffs,
+    bool Settings::runCalibrationAndSave(Size imageSize, Mat &cameraMatrix, Mat &distCoeffs,
                                vector<vector<Point2f> > imagePoints) {
         vector<Mat> rvecs, tvecs;
         vector<float> reprojErrs;
         double totalAvgErr = 0;
 
-        bool ok = runCalibration(s, imageSize, cameraMatrix, distCoeffs, imagePoints, rvecs, tvecs,
+        bool ok = runCalibration(*this, imageSize, cameraMatrix, distCoeffs, imagePoints, rvecs, tvecs,
                                  reprojErrs,
                                  totalAvgErr);
         cout << (ok ? "Calibration succeeded" : "Calibration failed")
              << ". avg re projection error = " << totalAvgErr << endl;
 
         if (ok)
-            saveCameraParams(s, imageSize, cameraMatrix, distCoeffs, rvecs, tvecs, reprojErrs,
+            saveCameraParams(*this, imageSize, cameraMatrix, distCoeffs, rvecs, tvecs, reprojErrs,
                              imagePoints,
                              totalAvgErr);
         return ok;

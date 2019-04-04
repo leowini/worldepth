@@ -186,10 +186,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadFiles() {
         checkAndWriteFile("ORBvoc.bin");
-        //checkAndWriteFile("TUM1.yaml");
+        checkAndWriteFile("CalibVals.yaml");
         checkAndWriteFile("Pointcloud.txt");
         checkAndWriteFile("calib_data.xml");
-        checkAndWriteFile("output.xml");
+        //checkAndWriteFile("output.xml");
     }
 
     /*@Override

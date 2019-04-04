@@ -7,8 +7,8 @@
 
 using namespace std;
 
-Reconstructor *reconstructor;
-calib::Settings *sptr;
+Reconstructor *reconstructor = nullptr;
+calib::Settings *sptr = nullptr;
 
 extern "C" JNIEXPORT jstring JNICALL
 Java_com_example_leodw_worldepth_MainActivity_stringFromJNI(
@@ -84,12 +84,23 @@ JNIEXPORT jboolean JNICALL
 Java_com_example_leodw_worldepth_slam_CalibWrapper_passImageToCalibrate(JNIEnv *env, jobject instance, jlong img) {
     cv::Mat &mat = *(cv::Mat *) img;
     //returns whether or not it finished
-    sptr->processImage(mat);
-    mat.release();
-    if (sptr->mode == calib::CALIBRATED) {  //if calibration is finished and written
-        delete sptr;
-        return static_cast<jboolean>(true);
+    if (sptr != nullptr) {
+        sptr->processImage(mat);
+        mat.release();
+        bool done = sptr->mode == calib::CALIBRATED;
+        if (done) {  //if calibration is finished and written
+            delete sptr;
+            sptr = nullptr;
+        }
+        return done;
     }
-    else return static_cast<jboolean>(false);
+    return false;
 }
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_example_leodw_worldepth_slam_Slam_resetSlam(JNIEnv *env, jobject instance) {
+    reconstructor->resetSlam();
+}
+
 

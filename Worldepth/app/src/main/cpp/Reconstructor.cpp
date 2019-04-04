@@ -38,3 +38,7 @@ void Reconstructor::endSlam(std::string filename) {
 void Reconstructor::textureMap() {
     //textureMapper->textureMap();
 }
+
+void Reconstructor::resetSlam() {
+    slam->Reset();
+}

@@ -47,6 +47,7 @@ public class ReconVM extends ViewModel {
 
     public boolean calibration;
 
+
     public enum ReconProgress {
         INIT, READY, SLAM, POISSON, TM, COMPLETE
     }
@@ -58,20 +59,25 @@ public class ReconVM extends ViewModel {
         mProgressListenerHandler = new Handler(Looper.getMainLooper());
         mFrameCountHandler = new Handler(Looper.getMainLooper());
         mQueue = new LinkedBlockingQueue<>();
-        //startReconstructionThread();
-        startCalibrationThread();
+        startReconstructionThread();
+        calibration = false;    //If you want to run calibration first set true and comment
+        // reconstruction, uncomment calibration
+        //startCalibrationThread();
     }
 
     private void startReconstructionThread() {
         mReconstructionThread = new HandlerThread("ReconstructionThread");
         mReconstructionThread.start();
+        calibration = false;
+        mRenderedFrames = 0;
+        mProcessedFrames = 0;
         mReconstructionHandler = new Handler(mReconstructionThread.getLooper());
         mReconstructionHandler.post(this::reconstruct);
-        calibration = false;
     }
 
     private void stopReconstructionThread() {
         mQueue.add(new TimeFramePair<Bitmap, Long>(mPoisonPillBitmap, Long.valueOf(0)));
+        mSlam.resetSlam();
         mReconstructionThread.quitSafely();
         try {
             mReconstructionThread.join();
@@ -132,16 +138,15 @@ public class ReconVM extends ViewModel {
     }
 
     private void stopCalibrationThread() {
-        mQueue.add(new TimeFramePair<>(mPoisonPillBitmap, Long.valueOf(0)));
+        //mQueue.add(new TimeFramePair<>(mPoisonPillBitmap, Long.valueOf(0)));
         mCalibrationThread.quitSafely();
-        try {
-            mCalibrationThread.join();
+        //try {
+            //mCalibrationThread.join();
             mCalibrationThread = null;
             mCalibrationHandler = null;
-        } catch (
-                InterruptedException e) {
-            e.printStackTrace();
-        }
+        //} catch (InterruptedException e) {
+        //    e.printStackTrace();
+        //}
         mQueue.clear();
         startReconstructionThread();
     }
@@ -157,7 +162,7 @@ public class ReconVM extends ViewModel {
                 mProcessedFrames = mRenderedFrames;
                 updateSlamProgress();
             });
-            mProgressListenerHandler.post(() -> setCalibration(false));
+            stopCalibrationThread();
         });
         mCalibWrapper.setFrameCountListener(() -> mFrameCountHandler.post(this::frameProcessed));
         mCalibWrapper.doCalib();

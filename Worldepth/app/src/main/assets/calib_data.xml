@@ -24,7 +24,7 @@
   <Input_Delay>100</Input_Delay>	
   
   <!-- How many frames to use, for calibration. -->
-  <Calibrate_NrOfFrameToUse>25</Calibrate_NrOfFrameToUse>
+  <Calibrate_NrOfFrameToUse>40</Calibrate_NrOfFrameToUse>
   <!-- Consider only fy as a free parameter, the ratio fx/fy stays the same as in the input cameraMatrix. 
 	   Use or not setting. 0 - False Non-Zero - True-->
   <Calibrate_FixAspectRatio> 1 </Calibrate_FixAspectRatio>
@@ -34,7 +34,7 @@
   <Calibrate_FixPrincipalPointAtTheCenter> 1 </Calibrate_FixPrincipalPointAtTheCenter>
   
   <!-- The name of the output log file. -->
-  <Write_outputFileName>"/data/user/0/com.example.leodw.worldepth/files/TUM1.yaml"</Write_outputFileName>
+  <Write_outputFileName>"/data/user/0/com.example.leodw.worldepth/files/CalibVals.yaml"</Write_outputFileName>
   <!-- If true (non-zero) we write to the output file the feature points.-->
   <Write_DetectedFeaturePoints>1</Write_DetectedFeaturePoints>
   <!-- If true (non-zero) we write to the output file the extrinsic camera parameters.-->

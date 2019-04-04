@@ -29,11 +29,13 @@ public class Slam {
 
     public native void initSystem(String vocFile, String settingsFile);
 
+    public native void resetSlam();
+
     Slam(BlockingQueue<TimeFramePair<Bitmap, Long>> q, Bitmap mPoisonPillBitmap) {
         this.mQueue = q;
         this.mPoisonPillBitmap = mPoisonPillBitmap;
         initSystem("/data/user/0/com.example.leodw.worldepth/files/ORBvoc.bin",
-                "/data/user/0/com.example.leodw.worldepth/files/output.xml");
+                "/data/user/0/com.example.leodw.worldepth/files/CalibVals.yaml");
     }
 
     /**

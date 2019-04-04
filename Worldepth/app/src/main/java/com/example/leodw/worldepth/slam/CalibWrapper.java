@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.example.leodw.worldepth.ui.camera.TimeFramePair;
 
@@ -15,7 +17,7 @@ import java.util.concurrent.BlockingQueue;
 
 public class CalibWrapper {
 
-    private static final String TAG = "Slam";
+    private static final String TAG = "Calibration";
 
     private final BlockingQueue<TimeFramePair<Bitmap, Long>> mQueue;
 
@@ -25,6 +27,8 @@ public class CalibWrapper {
 
     private FrameCountListener mFrameCountListener;
 
+    private boolean complete;
+
     public native boolean passImageToCalibrate(long img);
 
     public native void initSettings();
@@ -32,6 +36,7 @@ public class CalibWrapper {
     CalibWrapper(BlockingQueue<TimeFramePair<Bitmap, Long>> q, Bitmap mPoisonPillBitmap) {
         this.mQueue = q;
         this.mPoisonPillBitmap = mPoisonPillBitmap;
+        complete = false;
         initSettings();
     }
 
@@ -41,10 +46,12 @@ public class CalibWrapper {
      * @param frame
      */
     private void sendFrameToCalib(Bitmap frame) {
-            Mat mat = new Mat();
-            Utils.bitmapToMat(frame, mat);
-            if(passImageToCalibrate(mat.getNativeObjAddr())){
-                mCompleteListener.onCalibComplete(0);
+        Mat mat = new Mat();
+        Utils.bitmapToMat(frame, mat);
+        if(!complete) {
+            if (passImageToCalibrate(mat.getNativeObjAddr())) {
+                Log.d(TAG, "calibration complete!");
+            }
         }
     }
 
@@ -65,6 +72,8 @@ public class CalibWrapper {
         } catch (Exception e) {
             System.out.println(Thread.currentThread().getName() + " " + e.getMessage());
         }
+        complete = true;
+        mCompleteListener.onCalibComplete(0);
     }
 
     public interface FrameCountListener {

@@ -59,7 +59,7 @@ namespace calib {
                          const vector<vector<Point2f> > &imagePoints,
                          double totalAvgErr);
 
-        bool runCalibrationAndSave(Settings &s, Size imageSize, Mat &cameraMatrix, Mat &distCoeffs,
+        bool runCalibrationAndSave(Size imageSize, Mat &cameraMatrix, Mat &distCoeffs,
                                    vector<vector<Point2f> > imagePoints);
 
     public:
@@ -120,7 +120,6 @@ namespace calib {
         DETECTION = 0, CAPTURING = 1, CALIBRATED = 2
     };
 
-    bool runCalibrationAndSave(Settings &s, Size imageSize, Mat &cameraMatrix, Mat &distCoeffs,
-                               vector<vector<Point2f> > imagePoints);
+
 }
 #endif //WORLDEPTH_CAMERA_CALIBRATION_H
