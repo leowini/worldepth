@@ -41,17 +41,19 @@ Java_com_example_leodw_worldepth_slam_PoissonWrapper_startPoisson(JNIEnv *env, j
 }
 
 extern "C"
-JNIEXPORT void JNICALL
+JNIEXPORT jboolean JNICALL
 Java_com_example_leodw_worldepth_slam_Slam_passImageToSlam(JNIEnv *env, jobject instance, jlong img, jlong timeStamp) {
     if (img == 0) { //poison pill
-        reconstructor->endSlam(/*"/storage/emulated/0/Worldepth/SLAM.npts"*/"/data/user/0/com.example.leodw.worldepth/files/SLAM.txt");
-        delete reconstructor;
+        bool success = reconstructor->hasKeyFrames();
+        reconstructor->endSlam("/data/user/0/com.example.leodw.worldepth/files/Pointcloud.txt", success);
+        return static_cast<jboolean>(true/*success*/);
     } else {
         cv::Mat &mat = *(cv::Mat *) img;
         double tframe = (double) timeStamp;
         reconstructor->passImageToSlam(mat, tframe);
         mat.release();
     }
+    return static_cast<jboolean>(true);
 }
 
 extern "C"
@@ -70,6 +72,7 @@ extern "C"
 JNIEXPORT void JNICALL
 Java_com_example_leodw_worldepth_slam_TextureMapWrapper_textureMap(JNIEnv *env, jobject instance) {
     reconstructor->textureMap();
+    delete reconstructor;
 }
 
 
