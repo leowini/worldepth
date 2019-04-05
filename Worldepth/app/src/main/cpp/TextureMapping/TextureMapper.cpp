@@ -20,17 +20,16 @@ using namespace tinyply;
 ** Assuming that source is a vector of cv::Mats
 **/
 TextureMapper::TextureMapper(const std::string &plyFilename, std::vector<cv::Mat> &source,
-                             std::vector<cv::Mat> &TcwPoses, int patchSize) : source(source),
-                                                                              TcwPoses(TcwPoses),
-                                                                              patchSize(patchSize) {
+        std::vector<cv::Mat> &TcwPoses, int patchSize) :
+        plyFilename(plyFilename), source(source), TcwPoses(TcwPoses), patchSize(patchSize) {
     read_ply_file(plyFilename); //gets vertices from the file
     init(); //clones source and target
-    projectToSurface();
 }
 
 void TextureMapper::textureMap() {
     //align();
     //reconstruct();
+    projectToSurface();
 }
 
 void TextureMapper::align() {
@@ -517,26 +516,12 @@ void TextureMapper::projectToSurface() {
 //        }
 //        buff_ind++;
 //    }
-
+    write_ply_file(*weights, *acc_red, *acc_grn, *acc_blu);
     delete []weights;
     delete []acc_red;
     delete []acc_grn;
     delete []acc_blu;
 }
-
-class manual_timer {
-    std::chrono::high_resolution_clock::time_point t0;
-    double timestamp{0.f};
-public:
-    void start() { t0 = std::chrono::high_resolution_clock::now(); }
-
-    void stop() {
-        timestamp = std::chrono::duration<float>(
-                std::chrono::high_resolution_clock::now() - t0).count() * 1000;
-    }
-
-    const double &get() { return timestamp; }
-};
 
 void TextureMapper::read_ply_file(const std::string &filepath) {
     try {
@@ -596,9 +581,9 @@ void TextureMapper::read_ply_file(const std::string &filepath) {
     }
 }
 
-void write_ply_file(const std::string & filepath) {
+void TextureMapper::write_ply_file(double &weights, double &acc_red, double &acc_grn, double &acc_blu) {
     std::filebuf fb;
-    fb.open(filepath, std::ios::out);
+    fb.open(plyFilename, std::ios::out);
     std::ostream os(&fb);
     os << "ply\nformat ascii 1.0\ncomment texture mapping output\nelement vertex8\n";
     os << "property float32 x\nproperty float32 y\nproperty float32 z\nelement face 6\nproperty list uint8 int32";

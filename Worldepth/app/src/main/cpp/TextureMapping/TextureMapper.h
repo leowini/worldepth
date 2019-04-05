@@ -10,6 +10,8 @@ public:
     void textureMap();
 
 private:
+    std::string plyFilename;
+
     cv::Size sourceImgSize;
     int sourceWidth;
     int sourceHeight;
@@ -31,7 +33,7 @@ private:
 
     void init();
     void read_ply_file(const std::string & filepath);
-    void write_ply_file(const std::string & filepath);
+    void write_ply_file(double &weights, double &acc_red, double &acc_grn, double &acc_blu);
     void align();
     //void reconstruct();
     //int Mixi();
