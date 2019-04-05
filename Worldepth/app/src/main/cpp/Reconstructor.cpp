@@ -26,7 +26,7 @@ void Reconstructor::passImageToSlam(cv::Mat &im, double tstamp) {
     }
 }
 
-void Reconstructor::endSlam(std::string &filename) {
+void Reconstructor::endSlam(const std::string &filename) {
     //get finished map as reference
     writeMap(filename, slam->GetAllMapPoints());
     slam->Shutdown();

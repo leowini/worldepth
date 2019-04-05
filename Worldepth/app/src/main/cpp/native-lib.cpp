@@ -44,7 +44,7 @@ extern "C"
 JNIEXPORT jboolean JNICALL
 Java_com_example_leodw_worldepth_slam_Slam_passImageToSlam(JNIEnv *env, jobject instance, jlong img, jlong timeStamp) {
     if (img == 0) { //poison pill
-        bool success = reconstructor->hasKeyFrames();
+        bool success = reconstructor->hasKeyframes();
         reconstructor->endSlam("/data/user/0/com.example.leodw.worldepth/files/Pointcloud.txt");
         return static_cast<jboolean>(success);
     } else {

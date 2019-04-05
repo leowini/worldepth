@@ -423,12 +423,12 @@ void TextureMapper::init() {
     sourceChannels = source.at(0).channels();
     targetChannels = target.at(0).channels();
 
-    cv::FileStorage fSettings("/data/user/0/com.example.leodw.worldepth/files/TUM1.yaml",
+    cv::FileStorage fSettings("/data/user/0/com.example.leodw.worldepth/files/CalibVals.yaml",
                               cv::FileStorage::READ);
-    float fx = fSettings["Camera.fx"];
-    float fy = fSettings["Camera.fy"];
-    float cx = fSettings["Camera.cx"];
-    float cy = fSettings["Camera.cy"];
+    float fx = fSettings["Camera_fx"];
+    float fy = fSettings["Camera_fy"];
+    float cx = fSettings["Camera_cx"];
+    float cy = fSettings["Camera_cy"];
     cv::Mat cameraMatrix = cv::Mat::eye(3, 3, CV_32F);
     cameraMatrix.at<float>(0, 0) = fx;
     cameraMatrix.at<float>(1, 1) = fy;
@@ -437,10 +437,10 @@ void TextureMapper::init() {
     cameraMatrix.copyTo(this->cameraMatrix);
 
     cv::Mat DistCoef(4, 1, CV_32F);
-    DistCoef.at<float>(0) = fSettings["Camera.k1"];
-    DistCoef.at<float>(1) = fSettings["Camera.k2"];
-    DistCoef.at<float>(2) = fSettings["Camera.p1"];
-    DistCoef.at<float>(3) = fSettings["Camera.p2"];
+    DistCoef.at<float>(0) = fSettings["Camera_k1"];
+    DistCoef.at<float>(1) = fSettings["Camera_k2"];
+    DistCoef.at<float>(2) = fSettings["Camera_p1"];
+    DistCoef.at<float>(3) = fSettings["Camera_p2"];
     const float k3 = fSettings["Camera.k3"];
     if (k3 != 0) {
         DistCoef.resize(5);
@@ -505,18 +505,18 @@ void TextureMapper::projectToSurface() {
     } //end for each camera
     // Paint model vertices with colors
     buff_ind = 0;
-    for (auto &vertex : vertices) {
-        if (weights[buff_ind] != 0) // if 0, it has not found any valid projection on any camera
-        {
-            vertex.C() = cv::Vec4b((acc_red[buff_ind] / weights[buff_ind]) * 255.0,
-                                   (acc_grn[buff_ind] / weights[buff_ind]) * 255.0,
-                                   (acc_blu[buff_ind] / weights[buff_ind]) * 255.0,
-                                   255);
-        } else {
-            vertex.C() = cv::Vec4b(0, 0, 0, 0);
-        }
-        buff_ind++;
-    }
+//    for (auto &vertex : vertices) {
+//        if (weights[buff_ind] != 0) // if 0, it has not found any valid projection on any camera
+//        {
+//            vertex.C() = cv::Vec4b((acc_red[buff_ind] / weights[buff_ind]) * 255.0,
+//                                   (acc_grn[buff_ind] / weights[buff_ind]) * 255.0,
+//                                   (acc_blu[buff_ind] / weights[buff_ind]) * 255.0,
+//                                   255);
+//        } else {
+//            vertex.C() = cv::Vec4b(0, 0, 0, 0);
+//        }
+//        buff_ind++;
+//    }
 
     delete []weights;
     delete []acc_red;

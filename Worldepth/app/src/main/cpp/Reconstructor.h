@@ -11,10 +11,10 @@ using namespace SLAM;
 class Reconstructor {
 
 public:
-    Reconstructor(std::string & vocFile, std::string & settingsFile);
+    Reconstructor(std::string &vocFile, std::string &settingsFile);
     bool hasKeyframes();
     void passImageToSlam(cv::Mat &im, double tstamp);
-    void endSlam(std::string &filename);
+    void endSlam(const std::string &filename);
     void textureMap();
     void resetSlam();
 
