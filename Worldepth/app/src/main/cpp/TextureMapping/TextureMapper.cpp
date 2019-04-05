@@ -569,10 +569,10 @@ void TextureMapper::read_ply_file() {
 }
 
 void TextureMapper::write_ply_file(double *weights, double *acc_red, double *acc_grn, double *acc_blu) {
-    std::ifstream in(plyFilename);
-    std::ofstream out(tempFilename);
+    std::ifstream in(plyFilename, std::ios_base::binary);
+    std::ofstream out(tempFilename, std::ios_base::binary);
     std::string line;
-    while (std::getline(in, line) /*&& not vertex z property line*/) {
+    while (std::getline(in, line) && line != "property float32 z") {
         out << line;
     }
     out << line; //Copy vertex z property line
