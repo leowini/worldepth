@@ -32,7 +32,7 @@ TextureMapper::TextureMapper(const std::string &plyFilename, std::vector<cv::Mat
 ** i.e., Ti = Si and Mi = Si.
 **/
 void TextureMapper::init() {
-    tempFilename = "/data/user/0/com.example.leodw.worldepth/files/temp.ply";
+    tempFilename = "/storage/self/primary/Worldepth/temp.ply";
     for (auto &t : source) {
         target.push_back(t.clone());
         texture.push_back(t.clone());
@@ -580,21 +580,26 @@ void TextureMapper::write_ply_file(double *weights, double *acc_red, double *acc
     while (std::getline(in, line) && line != "end_header") {
         out << line << std::endl;
     }
-    out << line; //Copy end_header line
+    out << line << std::endl; //Copy end_header line
     // Paint model vertices with colors
     for (int buff_ind = 0; buff_ind < vertices.size(); buff_ind++) {
         std::getline(in, line);
-        std::istringstream iss(line);
-        int x, y, z;
-        if (!(iss >> x >> y >> z)) { break; } // error
-        out << x << y << z;
+        out << line;
         if (weights[buff_ind] != 0) // if 0, it has not found any valid projection on any camera
         {
-            out << (acc_red[buff_ind] / weights[buff_ind]) * 255.0;
-            out << (acc_grn[buff_ind] / weights[buff_ind]) * 255.0;
-            out << (acc_blu[buff_ind] / weights[buff_ind]) * 255.0;
+            double r = (acc_red[buff_ind] / weights[buff_ind]) * 255.0;
+            double g = (acc_grn[buff_ind] / weights[buff_ind]) * 255.0;
+            double b = (acc_blu[buff_ind] / weights[buff_ind]) * 255.0;
+            out.write(reinterpret_cast<const char*>(&r), sizeof(r));
+            out.write(reinterpret_cast<const char*>(&g), sizeof(g));
+            out.write(reinterpret_cast<const char*>(&b), sizeof(b));
         } else {
-            out << 0 << 0 << 0 << 0;
+            double r = 0;
+            double g = 0;
+            double b = 0;
+            out.write(reinterpret_cast<const char*>(&r), sizeof(r));
+            out.write(reinterpret_cast<const char*>(&g), sizeof(g));
+            out.write(reinterpret_cast<const char*>(&b), sizeof(b));
         }
         out << std::endl;
     }
