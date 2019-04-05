@@ -605,5 +605,5 @@ void TextureMapper::write_ply_file(double *weights, double *acc_red, double *acc
     in.close();
     out.close();
     int result = std::remove(plyFilename.c_str());
-    int renameResult = std::rename(tempFilename.c_str(), plyFilename.c_str());
+    result = std::rename(tempFilename.c_str(), plyFilename.c_str());
 }
