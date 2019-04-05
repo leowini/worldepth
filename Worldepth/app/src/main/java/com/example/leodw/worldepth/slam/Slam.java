@@ -51,7 +51,7 @@ public class Slam {
         } else {
             Mat mat = new Mat();
             Utils.bitmapToMat(frame, mat);
-            passImageToSlam(mat.getNativeObjAddr(), timeStamp);
+            success = passImageToSlam(mat.getNativeObjAddr(), timeStamp);
         }
         return success;
     }
