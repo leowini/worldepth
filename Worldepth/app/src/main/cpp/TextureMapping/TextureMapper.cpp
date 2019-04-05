@@ -578,13 +578,10 @@ void TextureMapper::write_ply_file(double *weights, double *acc_red, double *acc
     out << "element vertex 8\n";
     out << "property float32 x\nproperty float32 y\nproperty float32 z\n";
     out << "property uchar red\nproperty uchar green\nproperty uchar blue\n";
-    out << "element face 6\n";
-    out << "property list uint8 int32\n";
-    out << "\nend_header\n";
     // Paint model vertices with colors
-    int buff_ind = 0;
     std::string line;
-    while (std::getline(in, line)) {
+    for (int buff_ind = 0; buff_ind < vertices.size(); buff_ind++) {
+        std::getline(in, line);
         std::istringstream iss(line);
         int x, y, z;
         if (!(iss >> x >> y >> z)) { break; } // error
