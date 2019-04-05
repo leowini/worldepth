@@ -38,6 +38,8 @@ void Reconstructor::endSlam(const std::string &filename) {
 
 
 void Reconstructor::textureMap() {
+    vKFImColor = vecmatread("/data/user/0/com.example.leodw.worldepth/files/vKFImColor.bin");
+    vKFTcw = vecmatread("/data/user/0/com.example.leodw.worldepth/files/vKFTcw.bin");
     textureMapper = new TextureMapper("/data/user/0/com.example.leodw.worldepth/files/SLAM.ply", vKFImColor, vKFTcw);
     textureMapper->textureMap();
     delete textureMapper;
