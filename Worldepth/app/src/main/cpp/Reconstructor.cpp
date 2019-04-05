@@ -50,3 +50,31 @@ void Reconstructor::textureMap() {
 void Reconstructor::resetSlam() {
     slam->Reset();
 }
+
+std::vector<cv::Mat> Reconstructor::vecmatread(const string& filename)
+{
+    vector<cv::Mat> matrices;
+    ifstream fs(filename, fstream::binary);
+
+    // Get length of file
+    fs.seekg(0, fs.end);
+    int length = fs.tellg();
+    fs.seekg(0, fs.beg);
+
+    while (fs.tellg() < length)
+    {
+        // Header
+        int rows, cols, type, channels;
+        fs.read((char*)&rows, sizeof(int));         // rows
+        fs.read((char*)&cols, sizeof(int));         // cols
+        fs.read((char*)&type, sizeof(int));         // type
+        fs.read((char*)&channels, sizeof(int));     // channels
+
+        // Data
+        cv::Mat mat(rows, cols, type);
+        fs.read((char*)mat.data, CV_ELEM_SIZE(type) * rows * cols);
+
+        matrices.push_back(mat);
+    }
+    return matrices;
+}
