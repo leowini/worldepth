@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.leodw.worldepth.ui.camera.TimeFramePair;
@@ -112,6 +113,8 @@ public class ReconVM extends ViewModel {
     public void sendFrameToReconVM(TimeFramePair<Bitmap, Long> timeFramePair) {
         frameRendered();
         try {
+            Log.d(TAG, timeFramePair.getFrame().getHeight()+"");
+            Log.d(TAG, timeFramePair.getFrame().getWidth()+"");
             mQueue.put(timeFramePair);
         } catch (InterruptedException e) {
             e.printStackTrace();
