@@ -93,10 +93,8 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
         Bitmap bmp = Bitmap.createBitmap(mSurfaceWidth, mSurfaceHeight, Bitmap.Config.ARGB_8888);
         mPixelBuf.rewind();
         bmp.copyPixelsFromBuffer(mPixelBuf);
-//
-        //return bmp;
-        Bitmap testBMP = Bitmap.createScaledBitmap(bmp, 640, (640 * mSurfaceHeight / mSurfaceWidth), true);
-        return testBMP;
+
+        return Bitmap.createScaledBitmap(bmp, 640, (640 * mSurfaceHeight / mSurfaceWidth), true);
     }
 
     /**
