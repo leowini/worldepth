@@ -573,12 +573,12 @@ void TextureMapper::write_ply_file(double *weights, double *acc_red, double *acc
     std::ofstream out(tempFilename, std::ios_base::binary);
     std::string line;
     while (std::getline(in, line) && line != "property float z") {
-        out << line;
+        out << line << std::endl;
     }
-    out << line; //Copy vertex z property line
+    out << line << std::endl; //Copy vertex z property line
     out << "property uchar red\nproperty uchar green\nproperty uchar blue\n";
     while (std::getline(in, line) && line != "end_header") {
-        out << line;
+        out << line << std::endl;
     }
     out << line; //Copy end_header line
     // Paint model vertices with colors
@@ -596,14 +596,14 @@ void TextureMapper::write_ply_file(double *weights, double *acc_red, double *acc
         } else {
             out << 0 << 0 << 0 << 0;
         }
-        out << "\n";
+        out << std::endl;
     }
     //Copy the rest
     while (std::getline(in, line)) {
-        out << line;
+        out << line << std::endl;
     }
     in.close();
     out.close();
     int result = std::remove(plyFilename.c_str());
-    int renameResult = std::rename(tempFilename.c_str(), plyFilename.c_str());
+    //int renameResult = std::rename(tempFilename.c_str(), plyFilename.c_str());
 }
