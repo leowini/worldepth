@@ -571,15 +571,17 @@ void TextureMapper::read_ply_file() {
 void TextureMapper::write_ply_file(double *weights, double *acc_red, double *acc_grn, double *acc_blu) {
     std::ifstream in(plyFilename);
     std::ofstream out(tempFilename);
-    //copy the header, altering the line with the vertex properties
-    for (int i = 0; i < 2; i++) {
-
-    }
-    out << "element vertex 8\n";
-    out << "property float32 x\nproperty float32 y\nproperty float32 z\n";
-    out << "property uchar red\nproperty uchar green\nproperty uchar blue\n";
-    // Paint model vertices with colors
     std::string line;
+    while (std::getline(in, line) /*&& not vertex z property line*/) {
+        out << line;
+    }
+    out << line; //Copy vertex z property line
+    out << "property uchar red\nproperty uchar green\nproperty uchar blue\n";
+    while (std::getline(in, line) && (line != "end_header")) {
+        out << line;
+    }
+    out << line; //Copy end_header line
+    // Paint model vertices with colors
     for (int buff_ind = 0; buff_ind < vertices.size(); buff_ind++) {
         std::getline(in, line);
         std::istringstream iss(line);
@@ -594,6 +596,11 @@ void TextureMapper::write_ply_file(double *weights, double *acc_red, double *acc
         } else {
             out << 0 << 0 << 0 << 0;
         }
+        out << "\n";
+    }
+    //Copy the rest
+    while (std::getline(in, line)) {
+        out << line;
     }
     in.close();
     out.close();
