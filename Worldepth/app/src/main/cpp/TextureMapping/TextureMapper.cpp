@@ -26,6 +26,54 @@ TextureMapper::TextureMapper(const std::string &plyFilename, std::vector<cv::Mat
     init(); //clones source and target
 }
 
+/**
+** Initialize
+** the targets and textures with their corresponding source images,
+** i.e., Ti = Si and Mi = Si.
+**/
+void TextureMapper::init() {
+    tempFilename = "temp.ply";
+    for (auto &t : source) {
+        target.push_back(t.clone());
+        texture.push_back(t.clone());
+    }
+    sourceImgSize = source.at(0).size();
+    sourceWidth = sourceImgSize.width;
+    sourceHeight = sourceImgSize.height;
+    targetWidth = source.at(0).size().width;
+    targetHeight = source.at(0).size().height;
+    targetSize = static_cast<int>(target.size());
+    sourceSize = static_cast<int>(source.size());
+
+    sourceChannels = source.at(0).channels();
+    targetChannels = target.at(0).channels();
+
+    cv::FileStorage fSettings("/data/user/0/com.example.leodw.worldepth/files/CalibVals.yaml",
+                              cv::FileStorage::READ);
+    float fx = fSettings["Camera_fx"];
+    float fy = fSettings["Camera_fy"];
+    float cx = fSettings["Camera_cx"];
+    float cy = fSettings["Camera_cy"];
+    cv::Mat cameraMatrix = cv::Mat::eye(3, 3, CV_32F);
+    cameraMatrix.at<float>(0, 0) = fx;
+    cameraMatrix.at<float>(1, 1) = fy;
+    cameraMatrix.at<float>(0, 2) = cx;
+    cameraMatrix.at<float>(1, 2) = cy;
+    cameraMatrix.copyTo(this->cameraMatrix);
+
+    cv::Mat DistCoef(4, 1, CV_32F);
+    DistCoef.at<float>(0) = fSettings["Camera_k1"];
+    DistCoef.at<float>(1) = fSettings["Camera_k2"];
+    DistCoef.at<float>(2) = fSettings["Camera_p1"];
+    DistCoef.at<float>(3) = fSettings["Camera_p2"];
+    const float k3 = fSettings["Camera.k3"];
+    if (k3 != 0) {
+        DistCoef.resize(5);
+        DistCoef.at<float>(4) = k3;
+    }
+    DistCoef.copyTo(this->distCoef);
+}
+
 void TextureMapper::textureMap() {
     //align();
     //reconstruct();
@@ -401,53 +449,6 @@ TextureMapper::findSourcePatches(cv::Mat &completenessPatchMatches, cv::Mat &coh
 //    return numerator / denominator;
 //}
 
-/**
-** Initialize
-** the targets and textures with their corresponding source images,
-** i.e., Ti = Si and Mi = Si.
-**/
-void TextureMapper::init() {
-    for (auto &t : source) {
-        target.push_back(t.clone());
-        texture.push_back(t.clone());
-    }
-    sourceImgSize = source.at(0).size();
-    sourceWidth = sourceImgSize.width;
-    sourceHeight = sourceImgSize.height;
-    targetWidth = source.at(0).size().width;
-    targetHeight = source.at(0).size().height;
-    targetSize = static_cast<int>(target.size());
-    sourceSize = static_cast<int>(source.size());
-
-    sourceChannels = source.at(0).channels();
-    targetChannels = target.at(0).channels();
-
-    cv::FileStorage fSettings("/data/user/0/com.example.leodw.worldepth/files/CalibVals.yaml",
-                              cv::FileStorage::READ);
-    float fx = fSettings["Camera_fx"];
-    float fy = fSettings["Camera_fy"];
-    float cx = fSettings["Camera_cx"];
-    float cy = fSettings["Camera_cy"];
-    cv::Mat cameraMatrix = cv::Mat::eye(3, 3, CV_32F);
-    cameraMatrix.at<float>(0, 0) = fx;
-    cameraMatrix.at<float>(1, 1) = fy;
-    cameraMatrix.at<float>(0, 2) = cx;
-    cameraMatrix.at<float>(1, 2) = cy;
-    cameraMatrix.copyTo(this->cameraMatrix);
-
-    cv::Mat DistCoef(4, 1, CV_32F);
-    DistCoef.at<float>(0) = fSettings["Camera_k1"];
-    DistCoef.at<float>(1) = fSettings["Camera_k2"];
-    DistCoef.at<float>(2) = fSettings["Camera_p1"];
-    DistCoef.at<float>(3) = fSettings["Camera_p2"];
-    const float k3 = fSettings["Camera.k3"];
-    if (k3 != 0) {
-        DistCoef.resize(5);
-        DistCoef.at<float>(4) = k3;
-    }
-    DistCoef.copyTo(this->distCoef);
-}
-
 int TextureMapper::randomInt(int min, int max) {
     return min + (rand() % static_cast<int>(max - min + 1));
 }
@@ -502,20 +503,6 @@ void TextureMapper::projectToSurface() {
             buff_ind++;
         } //end for each vertex
     } //end for each camera
-    // Paint model vertices with colors
-    buff_ind = 0;
-//    for (auto &vertex : vertices) {
-//        if (weights[buff_ind] != 0) // if 0, it has not found any valid projection on any camera
-//        {
-//            vertex.C() = cv::Vec4b((acc_red[buff_ind] / weights[buff_ind]) * 255.0,
-//                                   (acc_grn[buff_ind] / weights[buff_ind]) * 255.0,
-//                                   (acc_blu[buff_ind] / weights[buff_ind]) * 255.0,
-//                                   255);
-//        } else {
-//            vertex.C() = cv::Vec4b(0, 0, 0, 0);
-//        }
-//        buff_ind++;
-//    }
     write_ply_file(*weights, *acc_red, *acc_grn, *acc_blu);
     delete []weights;
     delete []acc_red;
@@ -582,12 +569,28 @@ void TextureMapper::read_ply_file(const std::string &filepath) {
 }
 
 void TextureMapper::write_ply_file(double &weights, double &acc_red, double &acc_grn, double &acc_blu) {
-    std::filebuf fb;
-    fb.open(plyFilename, std::ios::out);
-    std::ostream os(&fb);
-    os << "ply\nformat ascii 1.0\ncomment texture mapping output\nelement vertex8\n";
-    os << "property float32 x\nproperty float32 y\nproperty float32 z\nelement face 6\nproperty list uint8 int32";
-    os << "property uchar red\nproperty uchar green\nproperty uchar blue\n";
-    os << "\nend_header\n";
-    fb.close();
+    std::ifstream in(plyFilename);
+    std::ofstream out(tempFilename);
+    out << "ply\nformat ascii 1.0\ncomment texture mapping output\nelement vertex8\n";
+    out << "property float32 x\nproperty float32 y\nproperty float32 z\nelement face 6\nproperty list uint8 int32";
+    out << "property uchar red\nproperty uchar green\nproperty uchar blue\n";
+    out << "\nend_header\n";
+    // Paint model vertices with colors
+//    buff_ind = 0;
+//    for (auto &vertex : vertices) {
+//        if (weights[buff_ind] != 0) // if 0, it has not found any valid projection on any camera
+//        {
+//            vertex.C() = cv::Vec4b((acc_red[buff_ind] / weights[buff_ind]) * 255.0,
+//                                   (acc_grn[buff_ind] / weights[buff_ind]) * 255.0,
+//                                   (acc_blu[buff_ind] / weights[buff_ind]) * 255.0,
+//                                   255);
+//        } else {
+//            vertex.C() = cv::Vec4b(0, 0, 0, 0);
+//        }
+//        buff_ind++;
+//    }
+    in.close();
+    out.close();
+    int result = std::remove(plyFilename.c_str());
+    result = std::rename(tempFilename.c_str(), plyFilename.c_str());
 }

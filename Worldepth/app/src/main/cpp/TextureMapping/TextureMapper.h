@@ -11,6 +11,7 @@ public:
 
 private:
     std::string plyFilename;
+    std::string tempFilename;
 
     cv::Size sourceImgSize;
     int sourceWidth;
