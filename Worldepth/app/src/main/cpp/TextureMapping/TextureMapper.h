@@ -50,7 +50,6 @@ private:
     int randomInt(int min, int max);
     //std::vector<cv::Mat> getRGBD(std::vector<cv::Mat> &target, std::vector<cv::Mat> &TcwPoses);
     void projectToSurface();
-    std::vector<cv::Mat> vecmatread(const string& filename);
 };
 
 #endif

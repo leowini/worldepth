@@ -51,7 +51,7 @@ void Reconstructor::resetSlam() {
     slam->Reset();
 }
 
-std::vector<cv::Mat> Reconstructor::vecmatread(const string& filename)
+std::vector<cv::Mat> Reconstructor::vecmatread(const std::string &filename)
 {
     vector<cv::Mat> matrices;
     ifstream fs(filename, fstream::binary);

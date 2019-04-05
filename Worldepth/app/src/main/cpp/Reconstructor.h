@@ -26,6 +26,7 @@ private:
 
     //whether calibration is run or SLAM is
     calib::Settings *sptr;
+    std::vector<cv::Mat> vecmatread(const std::string &filename);
 };
 
 #endif
