@@ -33,8 +33,8 @@ private:
     cv::Mat distCoef;
 
     void init();
-    void read_ply_file(const std::string & filepath);
-    void write_ply_file(double &weights, double &acc_red, double &acc_grn, double &acc_blu);
+    void read_ply_file();
+    void write_ply_file(double *weights, double *acc_red, double *acc_grn, double *acc_blu);
     void align();
     //void reconstruct();
     //int Mixi();

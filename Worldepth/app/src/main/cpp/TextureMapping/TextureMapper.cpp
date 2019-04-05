@@ -22,7 +22,7 @@ using namespace tinyply;
 TextureMapper::TextureMapper(const std::string &plyFilename, std::vector<cv::Mat> &source,
         std::vector<cv::Mat> &TcwPoses, int patchSize) :
         plyFilename(plyFilename), source(source), TcwPoses(TcwPoses), patchSize(patchSize) {
-    read_ply_file(plyFilename); //gets vertices from the file
+    read_ply_file(); //gets vertices from the file
     init(); //clones source and target
 }
 
@@ -503,17 +503,17 @@ void TextureMapper::projectToSurface() {
             buff_ind++;
         } //end for each vertex
     } //end for each camera
-    write_ply_file(*weights, *acc_red, *acc_grn, *acc_blu);
+    write_ply_file(weights, acc_red, acc_grn, acc_blu);
     delete []weights;
     delete []acc_red;
     delete []acc_grn;
     delete []acc_blu;
 }
 
-void TextureMapper::read_ply_file(const std::string &filepath) {
+void TextureMapper::read_ply_file() {
     try {
-        std::ifstream ss(filepath, std::ios::binary);
-        if (ss.fail()) throw std::runtime_error("failed to open " + filepath);
+        std::ifstream ss(plyFilename, std::ios::binary);
+        if (ss.fail()) throw std::runtime_error("failed to open " + plyFilename);
 
         PlyFile file;
         file.parse_header(ss);
@@ -568,27 +568,36 @@ void TextureMapper::read_ply_file(const std::string &filepath) {
     }
 }
 
-void TextureMapper::write_ply_file(double &weights, double &acc_red, double &acc_grn, double &acc_blu) {
+void TextureMapper::write_ply_file(double *weights, double *acc_red, double *acc_grn, double *acc_blu) {
     std::ifstream in(plyFilename);
     std::ofstream out(tempFilename);
-    out << "ply\nformat ascii 1.0\ncomment texture mapping output\nelement vertex8\n";
-    out << "property float32 x\nproperty float32 y\nproperty float32 z\nelement face 6\nproperty list uint8 int32";
+    //copy the header, altering the line with the vertex properties
+    for (int i = 0; i < 2; i++) {
+
+    }
+    out << "element vertex 8\n";
+    out << "property float32 x\nproperty float32 y\nproperty float32 z\n";
     out << "property uchar red\nproperty uchar green\nproperty uchar blue\n";
+    out << "element face 6\n";
+    out << "property list uint8 int32\n";
     out << "\nend_header\n";
     // Paint model vertices with colors
-//    buff_ind = 0;
-//    for (auto &vertex : vertices) {
-//        if (weights[buff_ind] != 0) // if 0, it has not found any valid projection on any camera
-//        {
-//            vertex.C() = cv::Vec4b((acc_red[buff_ind] / weights[buff_ind]) * 255.0,
-//                                   (acc_grn[buff_ind] / weights[buff_ind]) * 255.0,
-//                                   (acc_blu[buff_ind] / weights[buff_ind]) * 255.0,
-//                                   255);
-//        } else {
-//            vertex.C() = cv::Vec4b(0, 0, 0, 0);
-//        }
-//        buff_ind++;
-//    }
+    int buff_ind = 0;
+    std::string line;
+    while (std::getline(in, line)) {
+        std::istringstream iss(line);
+        int x, y, z;
+        if (!(iss >> x >> y >> z)) { break; } // error
+        out << x << y << z;
+        if (weights[buff_ind] != 0) // if 0, it has not found any valid projection on any camera
+        {
+            out << (acc_red[buff_ind] / weights[buff_ind]) * 255.0;
+            out << (acc_grn[buff_ind] / weights[buff_ind]) * 255.0;
+            out << (acc_blu[buff_ind] / weights[buff_ind]) * 255.0;
+        } else {
+            out << 0 << 0 << 0 << 0;
+        }
+    }
     in.close();
     out.close();
     int result = std::remove(plyFilename.c_str());
