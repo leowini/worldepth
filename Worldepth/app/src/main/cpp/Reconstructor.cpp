@@ -1,11 +1,12 @@
 #include <RandomMap.h>
 #include "Reconstructor.h"
+using namespace calib;
 
 Reconstructor::Reconstructor(std::string & vocFile, std::string & settingsFile) {
-    slam = new System(vocFile, settingsFile);
-    vKFImColor = new std::vector<cv::Mat>();
-    vKFTcw = new std::vector<cv::Mat>();
-}
+        slam = new System(vocFile, settingsFile);
+        vKFImColor = new std::vector<cv::Mat>();
+        vKFTcw = new std::vector<cv::Mat>();
+    }
 
 void Reconstructor::passImageToSlam(cv::Mat &im, double &tstamp) {
     //call the equivalent of System::TrackMonocular for TrackingInit or Tracking directly
@@ -13,7 +14,7 @@ void Reconstructor::passImageToSlam(cv::Mat &im, double &tstamp) {
         cerr << "could not load image!" << endl;
     } else {
         cv::Mat Tcw = slam->TrackMonocular(im, tstamp);
-        if(!Tcw.empty()){
+        if (!Tcw.empty()) {
             vKFImColor->push_back(im.clone());
             vKFTcw->push_back(Tcw.clone());
         }
@@ -33,6 +34,11 @@ void Reconstructor::endSlam(std::string filename) {
     delete vKFTcw;
 }
 
+
 void Reconstructor::textureMap() {
     //textureMapper->textureMap();
+}
+
+void Reconstructor::resetSlam() {
+    slam->Reset();
 }

@@ -17,6 +17,7 @@ cmake_minimum_required(VERSION 3.4.1)
 
 include_directories(${PROJECT_SOURCE_DIR}/src/main/cpp/opencv-include)
 include_directories(${PROJECT_SOURCE_DIR}/src/main/cpp/SLAM-include)
+include_directories(${PROJECT_SOURCE_DIR}/src/main/cpp/SLAM-src/camera_calibration.cpp)
 include_directories(${DBoW2})
 include_directories(${PROJECT_SOURCE_DIR}/src/main/cpp)
 include_directories(${G2O})
@@ -76,6 +77,8 @@ add_library( # Sets the name of the library.
 
         # Provides a relative path to your source file(s).
         src/main/cpp/native-lib.cpp
+        #calibration
+        src/main/cpp/camera_calibration.cpp
         #Reconstructor
         src/main/cpp/Reconstructor.cpp
         #SLAM
