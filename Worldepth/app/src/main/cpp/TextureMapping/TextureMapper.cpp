@@ -577,7 +577,7 @@ void TextureMapper::write_ply_file(double *weights, double *acc_red, double *acc
     }
     out << line; //Copy vertex z property line
     out << "property uchar red\nproperty uchar green\nproperty uchar blue\n";
-    while (std::getline(in, line) && (line != "end_header")) {
+    while (std::getline(in, line) && line != "end_header") {
         out << line;
     }
     out << line; //Copy end_header line
