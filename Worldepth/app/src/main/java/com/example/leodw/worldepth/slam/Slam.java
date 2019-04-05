@@ -25,7 +25,7 @@ public class Slam {
 
     private FrameCountListener mFrameCountListener;
 
-    public native void passImageToSlam(long img, long timeStamp);
+    public native boolean passImageToSlam(long img, long timeStamp);
 
     public native void initSystem(String vocFile, String settingsFile);
 
@@ -44,36 +44,39 @@ public class Slam {
      * @param frame
      * @param timeStamp
      */
-    private void sendFrameToSlam(Bitmap frame, Long timeStamp) {
-        if (frame == mPoisonPillBitmap) {
-            passImageToSlam(0, timeStamp);
+    private boolean sendFrameToSlam(Bitmap frame, Long timeStamp) {
+        boolean success = true;
+        if (frame.equals(mPoisonPillBitmap)) {
+            success = passImageToSlam(0, timeStamp);
         } else {
             Mat mat = new Mat();
             Utils.bitmapToMat(frame, mat);
             passImageToSlam(mat.getNativeObjAddr(), timeStamp);
         }
+        return success;
     }
 
     /**
      * This will run in the background on the SlamSenderThread.
      */
     void doSlam() {
+        boolean success = true;
         try {
             TimeFramePair<Bitmap, Long> timeFramePair = mQueue.take();
             Bitmap bmp = timeFramePair.getFrame();
             Long time = timeFramePair.getTime();
             while (!bmp.equals(mPoisonPillBitmap)) {
                 mFrameCountListener.onNextFrame();
-                sendFrameToSlam(bmp, time);
+                success = sendFrameToSlam(bmp, time);
                 timeFramePair = mQueue.take();
                 bmp = timeFramePair.getFrame();
                 time = timeFramePair.getTime();
             }
-            sendFrameToSlam(mPoisonPillBitmap, time);
+            success = sendFrameToSlam(bmp, time);
         } catch (Exception e) {
             System.out.println(Thread.currentThread().getName() + " " + e.getMessage());
         }
-        mCompleteListener.onSlamComplete(0);
+        mCompleteListener.onSlamComplete(success);
     }
 
     public interface FrameCountListener {
@@ -85,7 +88,7 @@ public class Slam {
     }
 
     public interface SlamCompleteListener {
-        void onSlamComplete(int pointCloud);
+        void onSlamComplete(boolean success);
     }
 
     void setOnCompleteListener(SlamCompleteListener listener) {

@@ -181,7 +181,7 @@ public class ReconVM extends ViewModel {
             mTextureMapWrapper.runMapping();
         });
         mSlam = new Slam(mQueue, mPoisonPillBitmap);
-        mSlam.setOnCompleteListener(pointCloud -> {
+        mSlam.setOnCompleteListener(success -> {
             mFrameCountHandler.post(() -> {
                 mProcessedFrames = mRenderedFrames;
                 updateSlamProgress();
