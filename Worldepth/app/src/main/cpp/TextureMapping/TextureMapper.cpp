@@ -32,7 +32,7 @@ TextureMapper::TextureMapper(const std::string &plyFilename, std::vector<cv::Mat
 ** i.e., Ti = Si and Mi = Si.
 **/
 void TextureMapper::init() {
-    tempFilename = "temp.ply";
+    tempFilename = "/data/user/0/com.example.leodw.worldepth/files/temp.ply";
     for (auto &t : source) {
         target.push_back(t.clone());
         texture.push_back(t.clone());
