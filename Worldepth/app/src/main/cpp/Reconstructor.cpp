@@ -2,8 +2,6 @@
 #include <camera_calibration.h>
 #include "Reconstructor.h"
 
-using namespace calib;
-
 Reconstructor::Reconstructor(std::string &vocFile, std::string &settingsFile) {
     slam = new System(vocFile, settingsFile);
     vKFImColor = std::vector<cv::Mat>();
@@ -40,7 +38,11 @@ void Reconstructor::endSlam(std::string &filename) {
 
 
 void Reconstructor::textureMap() {
+    textureMapper = new TextureMapper("/data/user/0/com.example.leodw.worldepth/files/SLAM.ply", vKFImColor, vKFTcw);
     textureMapper->textureMap();
+    delete textureMapper;
+    vKFImColor.clear();
+    vKFTcw.clear();
 }
 
 void Reconstructor::resetSlam() {
