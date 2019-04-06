@@ -584,8 +584,11 @@ TextureMapper::write_ply_file(double *weights, double *acc_red, double *acc_grn,
     out << line << std::endl; //Copy end_header line
     // Paint model vertices with colors
     for (int buff_ind = 0; buff_ind < vertices.size(); buff_ind++) {
-        std::getline(in, line);
-        out << line;
+        //float is 4 bytes - need to copy 12 bytes for x, y, z
+        char *s = new char[12];
+        in.read(s, 12);
+        out.write(s, 12);
+        delete []s;
         if (weights[buff_ind] != 0) // if 0, it has not found any valid projection on any camera
         {
             uchar r = (acc_red[buff_ind] / weights[buff_ind]) * 255.0;
@@ -602,7 +605,6 @@ TextureMapper::write_ply_file(double *weights, double *acc_red, double *acc_grn,
             out.write(reinterpret_cast<char*>(&g), 1);
             out.write(reinterpret_cast<char*>(&b), 1);
         }
-        out << std::endl;
     }
     //Copy the rest
     while (std::getline(in, line)) {
