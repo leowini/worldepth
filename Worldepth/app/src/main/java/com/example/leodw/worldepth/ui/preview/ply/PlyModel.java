@@ -26,6 +26,7 @@ import static android.opengl.GLES20.GL_ELEMENT_ARRAY_BUFFER;
 import static com.example.leodw.worldepth.ui.preview.util.Util.readIntLe;
 
 public class PlyModel extends IndexedModel {
+    private static final String TAG = "PlyModel";
 
     private final float[] pointColor = new float[]{1.0f, 1.0f, 1.0f};
     private int faceCount;
