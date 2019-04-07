@@ -32,7 +32,7 @@ TextureMapper::TextureMapper(const std::string &plyFilename, std::vector<cv::Mat
 ** i.e., Ti = Si and Mi = Si.
 **/
 void TextureMapper::init() {
-    tempFilename = "temp.ply";
+    tempFilename = "/data/user/0/com.example.leodw.worldepth/files/temp.ply";
     for (auto &t : source) {
         target.push_back(t.clone());
         texture.push_back(t.clone());
@@ -572,38 +572,45 @@ void TextureMapper::write_ply_file(double *weights, double *acc_red, double *acc
     std::ifstream in(plyFilename, std::ios_base::binary);
     std::ofstream out(tempFilename, std::ios_base::binary);
     std::string line;
-    while (std::getline(in, line) && line != "property float32 z") {
-        out << line;
+    while (std::getline(in, line) && line != "property float z") {
+        out << line << std::endl;
     }
-    out << line; //Copy vertex z property line
+    out << line << std::endl; //Copy vertex z property line
     out << "property uchar red\nproperty uchar green\nproperty uchar blue\n";
     while (std::getline(in, line) && line != "end_header") {
-        out << line;
+        out << line << std::endl;
     }
-    out << line; //Copy end_header line
+    out << line << std::endl; //Copy end_header line
     // Paint model vertices with colors
     for (int buff_ind = 0; buff_ind < vertices.size(); buff_ind++) {
-        std::getline(in, line);
-        std::istringstream iss(line);
-        int x, y, z;
-        if (!(iss >> x >> y >> z)) { break; } // error
-        out << x << y << z;
+        //float is 4 bytes - need to copy 12 bytes for x, y, z
+        char *s = new char[12];
+        in.read(s, 12);
+        out.write(s, 12);
+        delete []s;
         if (weights[buff_ind] != 0) // if 0, it has not found any valid projection on any camera
         {
-            out << (acc_red[buff_ind] / weights[buff_ind]) * 255.0;
-            out << (acc_grn[buff_ind] / weights[buff_ind]) * 255.0;
-            out << (acc_blu[buff_ind] / weights[buff_ind]) * 255.0;
+            uchar r = (acc_red[buff_ind] / weights[buff_ind]) * 255.0;
+            uchar g = (acc_grn[buff_ind] / weights[buff_ind]) * 255.0;
+            uchar b = (acc_blu[buff_ind] / weights[buff_ind]) * 255.0;
+            out.write(reinterpret_cast<char*>(&r), 1);
+            out.write(reinterpret_cast<char*>(&g), 1);
+            out.write(reinterpret_cast<char*>(&b), 1);
         } else {
-            out << 0 << 0 << 0 << 0;
+            uchar r = 0;
+            uchar g = 0;
+            uchar b = 0;
+            out.write(reinterpret_cast<char*>(&r), 1);
+            out.write(reinterpret_cast<char*>(&g), 1);
+            out.write(reinterpret_cast<char*>(&b), 1);
         }
-        out << "\n";
     }
     //Copy the rest
     while (std::getline(in, line)) {
-        out << line;
+        out << line << std::endl;
     }
     in.close();
     out.close();
     int result = std::remove(plyFilename.c_str());
-    result = std::rename(tempFilename.c_str(), plyFilename.c_str());
+    int renameResult = std::rename(tempFilename.c_str(), plyFilename.c_str());
 }
