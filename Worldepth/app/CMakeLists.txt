@@ -22,6 +22,7 @@ include_directories(${DBoW2})
 include_directories(${PROJECT_SOURCE_DIR}/src/main/cpp)
 include_directories(${G2O})
 include_directories(${POISSON})
+include_directories(${PROJECT_SOURCE_DIR}/src/main/cpp/TextureMapping)
 
 add_library(lib_DBoW2
         SHARED
@@ -102,6 +103,9 @@ add_library( # Sets the name of the library.
         ${SLAM-SRC}/Initializer.cpp
         ${SLAM-SRC}/System.cpp
         ${SLAM-SRC}/PnPSolver.cpp
+        #Texture Mapping
+        src/main/cpp/TextureMapping/TextureMapper.cpp
+        src/main/cpp/TextureMapping/tinyply.cpp
         )
 
 add_library( lib_opencv SHARED IMPORTED)

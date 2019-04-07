@@ -91,7 +91,7 @@ public class ReconVM extends ViewModel {
         mQueue.clear();
     }
 
-    private void showModelPreview(int finalModel) {
+    private void showModelPreview() {
         mReconProgress.setValue(ReconProgress.COMPLETE);
     }
 
@@ -173,27 +173,31 @@ public class ReconVM extends ViewModel {
 
     private void reconstruct() {
         mTextureMapWrapper = new TextureMapWrapper();
-        mTextureMapWrapper.setOnCompleteListener(finalModel ->
+        mTextureMapWrapper.setOnCompleteListener(() ->
                 mProgressListenerHandler.post(() -> {
-                    //stopReconstructionThread();
-                    showModelPreview(finalModel);
+                    showModelPreview();
+                    stopReconstructionThread();
                 }));
         mPoissonWrapper = new PoissonWrapper();
         mPoissonWrapper.setOnCompleteListener(() -> {
             mProgressListenerHandler.post(() -> mReconProgress.setValue(ReconProgress.TM));
-            mTextureMapWrapper.runMapping();
+            mTextureMapWrapper.map();
         });
         mSlam = new Slam(mQueue, mPoisonPillBitmap);
-        mSlam.setOnCompleteListener(pointCloud -> {
+        mSlam.setOnCompleteListener(success -> {
             mFrameCountHandler.post(() -> {
                 mProcessedFrames = mRenderedFrames;
                 updateSlamProgress();
             });
-            mProgressListenerHandler.post(() -> mReconProgress.setValue(ReconProgress.POISSON));
-            mPoissonWrapper.runPoisson();
+            if (success) {
+                mProgressListenerHandler.post(() -> mReconProgress.setValue(ReconProgress.POISSON));
+                mPoissonWrapper.runPoisson();
+            } else {
+                mProgressListenerHandler.post(this::stopReconstructionThread);
+            }
         });
         mSlam.setFrameCountListener(() -> mFrameCountHandler.post(this::frameProcessed));
-        mProgressListenerHandler.post(() -> mReconProgress.setValue(ReconProgress.READY));
+        mProgressListenerHandler.post(() -> mReconProgress.setValue(ReconProgress.SLAM));
         mSlam.doSlam();
     }
 

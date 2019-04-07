@@ -15,6 +15,8 @@ import android.widget.Toast;
 import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.slam.ReconVM;
 
+import java.util.Objects;
+
 import androidx.navigation.Navigation;
 
 public class ReconstructionFragment extends Fragment {
@@ -23,6 +25,7 @@ public class ReconstructionFragment extends Fragment {
 
     private ReconVM mReconVM;
     private TextView mSlamProgress;
+    private TextView mReconProgress;
     private static boolean calibrating;
 
     private Button mNextButton;
@@ -37,7 +40,8 @@ public class ReconstructionFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         mReconVM = ViewModelProviders.of(getActivity()).get(ReconVM.class);
-        mReconVM.getReconProgress().observe(this, item -> updateUI());
+        mReconProgress = view.findViewById(R.id.reconReconProgress);
+        mReconVM.getReconProgress().observe(this, this::updateUI);
         calibrating = mReconVM.getCalibState();
         mSlamProgress = view.findViewById(R.id.reconSlamProgress);
         mReconVM.getSlamProgress().observe(this, progress -> mSlamProgress.setText(progress + " %"));
@@ -53,7 +57,20 @@ public class ReconstructionFragment extends Fragment {
         mBackButton.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_reconstructionFragment_to_cameraFragment));
     }
 
-    private void updateUI() {
-
+    private void updateUI(ReconVM.ReconProgress progress) {
+        switch (progress) {
+            case SLAM:
+                mReconProgress.setText("Running SLAM...");
+                break;
+            case POISSON:
+                mReconProgress.setText("Running Poisson...");
+                break;
+            case TM:
+                mReconProgress.setText("Texture Mapping...");
+                break;
+            case COMPLETE:
+                Navigation.findNavController(Objects.requireNonNull(getView())).navigate(R.id.action_reconstructionFragment_to_viewerFragment);
+                break;
+        }
     }
 }
