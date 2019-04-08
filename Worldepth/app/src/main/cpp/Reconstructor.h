@@ -12,6 +12,7 @@ class Reconstructor {
 
 public:
     Reconstructor(std::string &vocFile, std::string &settingsFile);
+    ~Reconstructor();
     bool hasKeyframes();
     void passImageToSlam(cv::Mat &im, double tstamp);
     void endSlam(const std::string &filename);
