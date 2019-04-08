@@ -299,6 +299,7 @@ public class CameraFragment extends Fragment {
                     Log.d(TAG, "Capturing");
                     Log.d(TAG, mRecordingState + "");
                     if (!mRecordingState) {
+                        mReconVM.startReconstructionThread();
                         startRecording();
                         Log.d(TAG, "Start Recording");
                         mRecordingState = true;

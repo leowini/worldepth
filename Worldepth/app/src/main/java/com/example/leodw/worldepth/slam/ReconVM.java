@@ -66,7 +66,7 @@ public class ReconVM extends ViewModel {
         //startCalibrationThread();
     }
 
-    private void startReconstructionThread() {
+    public void startReconstructionThread() {
         mReconstructionThread = new HandlerThread("ReconstructionThread");
         mReconstructionThread.start();
         calibration = false;
