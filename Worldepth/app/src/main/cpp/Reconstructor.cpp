@@ -8,6 +8,11 @@ Reconstructor::Reconstructor(std::string &vocFile, std::string &settingsFile) {
     vKFTcw = std::vector<cv::Mat>();
 }
 
+Reconstructor::~Reconstructor() {
+    delete slam;
+    delete textureMapper;
+}
+
 bool Reconstructor::hasKeyframes() {
     return (!vKFImColor.empty());
 }
