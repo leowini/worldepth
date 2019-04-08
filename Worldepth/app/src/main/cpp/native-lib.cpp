@@ -106,4 +106,8 @@ Java_com_example_leodw_worldepth_slam_Slam_resetSlam(JNIEnv *env, jobject instan
     reconstructor->resetSlam();
 }
 
-
+extern "c"
+JNIEXPORT void JNICALL
+Java_com_example_leodw_worldepth_slam_Slam_endReconstruction(JNIEnv *env, jobject instance) {
+    delete reconstructor;
+}

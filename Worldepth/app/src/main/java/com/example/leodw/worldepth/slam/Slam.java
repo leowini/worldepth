@@ -31,6 +31,8 @@ public class Slam {
 
     public native void resetSlam();
 
+    public native void endReconstruction();
+
     Slam(BlockingQueue<TimeFramePair<Bitmap, Long>> q, Bitmap mPoisonPillBitmap) {
         this.mQueue = q;
         this.mPoisonPillBitmap = mPoisonPillBitmap;
