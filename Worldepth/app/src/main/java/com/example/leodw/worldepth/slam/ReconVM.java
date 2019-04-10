@@ -192,7 +192,6 @@ public class ReconVM extends ViewModel {
             }
         });
         mSlam.setFrameCountListener(() -> mFrameCountHandler.post(this::frameProcessed));
-        mProgressListenerHandler.post(() -> mReconProgress.setValue(ReconProgress.SLAM));
         mSlam.doSlam();
     }
 
