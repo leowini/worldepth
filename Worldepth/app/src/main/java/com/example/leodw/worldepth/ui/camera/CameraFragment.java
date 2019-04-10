@@ -336,7 +336,7 @@ public class CameraFragment extends Fragment {
             mSlamOutputSurface = texture;
             startCameraRecording();
         }, new Handler(Looper.getMainLooper()));
-        mRenderer.setOnFrameRenderedListener((timeFramePair) -> mReconVM.sendFrameToReconVM(timeFramePair), new Handler(Looper.getMainLooper()));
+        mRenderer.setOnFrameRenderedListener((timeFramePair) -> mReconVM.sendFrame(timeFramePair), new Handler(Looper.getMainLooper()));
         mRenderer.start(mTextureView.getWidth(), mTextureView.getHeight());
     }
 

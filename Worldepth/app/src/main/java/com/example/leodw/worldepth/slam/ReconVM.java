@@ -103,7 +103,7 @@ public class ReconVM extends ViewModel {
         mSlamProgress.setValue(Integer.toString(slamProgressPercent));
     }
 
-    public void sendFrameToReconVM(TimeFramePair<Bitmap, Long> timeFramePair) {
+    public void sendFrame(TimeFramePair<Bitmap, Long> timeFramePair) {
         frameRendered();
         try {
             Log.d(TAG, timeFramePair.getFrame().getHeight()+"");
