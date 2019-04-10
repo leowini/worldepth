@@ -194,7 +194,10 @@ public class ReconVM extends ViewModel {
                 mProgressListenerHandler.post(() -> mReconProgress.setValue(ReconProgress.POISSON));
                 mPoissonWrapper.runPoisson();
             } else {
-                mProgressListenerHandler.post(this::stopReconstructionThread);
+                mProgressListenerHandler.post(() -> {
+                    mReconProgress.setValue(ReconProgress.FAILED);
+                    stopReconstructionThread();
+                });
             }
         });
         mSlam.setFrameCountListener(() -> mFrameCountHandler.post(this::frameProcessed));
