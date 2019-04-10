@@ -77,11 +77,10 @@ public class ReconVM extends ViewModel {
     }
 
     private void stopReconstructionThread() {
-        //mQueue.add(new TimeFramePair<Bitmap, Long>(mPoisonPillBitmap, Long.valueOf(0)));
         mSlam.resetSlam();
         mSlam.endReconstruction();
         mQueue.clear();
-        Looper looper = mReconstructionThread.getLooper();
+        Looper looper = Looper.myLooper();
         looper.quitSafely();
     }
 
@@ -137,13 +136,6 @@ public class ReconVM extends ViewModel {
     private void stopCalibrationThread() {
         //mQueue.add(new TimeFramePair<>(mPoisonPillBitmap, Long.valueOf(0)));
         mCalibrationThread.quitSafely();
-        //try {
-            //mCalibrationThread.join();
-            mCalibrationThread = null;
-            mCalibrationHandler = null;
-        //} catch (InterruptedException e) {
-        //    e.printStackTrace();
-        //}
         mQueue.clear();
         startReconstructionThread();
     }
@@ -188,7 +180,7 @@ public class ReconVM extends ViewModel {
                 mPoissonWrapper.runPoisson();
             } else {
                 mProgressListenerHandler.post(() -> mReconProgress.setValue(ReconProgress.FAILED));
-                mProgressListenerHandler.post(this::stopReconstructionThread);
+                stopReconstructionThread();
             }
         });
         mSlam.setFrameCountListener(() -> mFrameCountHandler.post(this::frameProcessed));
