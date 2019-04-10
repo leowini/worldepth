@@ -6,7 +6,6 @@ public class PoissonWrapper {
 
     private OnCompleteListener listener;
 
-
     public native void startPoisson();
 
     void runPoisson() {

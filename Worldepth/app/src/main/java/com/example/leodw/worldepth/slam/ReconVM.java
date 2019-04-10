@@ -10,6 +10,7 @@ import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.ui.camera.TimeFramePair;
 
 import java.util.concurrent.BlockingQueue;
@@ -21,14 +22,11 @@ public class ReconVM extends ViewModel {
 
     private static final String TAG = "ReconVM";
 
-    private HandlerThread mReconstructionThread;
-    private Handler mReconstructionHandler;
+    private Thread mReconstructionThread;
 
     private HandlerThread mCalibrationThread;
-    private Handler mCalibrationHandler;
 
     private Handler mProgressListenerHandler;
-
     private Handler mFrameCountHandler;
 
     private final MutableLiveData<ReconProgress> mReconProgress = new MutableLiveData<>();
@@ -54,6 +52,11 @@ public class ReconVM extends ViewModel {
     }
 
     public ReconVM() {
+        mReconstructionThread = new Thread("ReconstructionThread") {
+            public void run() {
+                reconstruct();
+            }
+        };
         mReconProgress.setValue(ReconProgress.INIT);
         mRenderedFrames = 0;
         mProcessedFrames = 0;
@@ -67,23 +70,25 @@ public class ReconVM extends ViewModel {
     }
 
     private void startReconstructionThread() {
-        mReconstructionThread = new HandlerThread("ReconstructionThread");
         mReconstructionThread.start();
         calibration = false;
         mRenderedFrames = 0;
         mProcessedFrames = 0;
-        mReconstructionHandler = new Handler(mReconstructionThread.getLooper());
-        mReconstructionHandler.post(this::reconstruct);
     }
 
     private void stopReconstructionThread() {
-        mSlam.resetSlam();
-        mSlam.endReconstruction();
+        //Neither of these methods are working:
+        //mSlam.resetSlam();
+        //mSlam.endReconstruction();
         mQueue.clear();
         mProgressListenerHandler.post(() -> {
-            Looper looper = mReconstructionThread.getLooper();
-            looper.quitSafely();
+            try {
+                mReconstructionThread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             startReconstructionThread();
+            mReconProgress.setValue(ReconProgress.READY);
         });
     }
 
@@ -127,13 +132,13 @@ public class ReconVM extends ViewModel {
     }
 
     private void startCalibrationThread() {
-        if(mReconstructionHandler != null){
-            stopReconstructionThread();
-        }
-        mCalibrationThread = new HandlerThread("ReconstructionThread");
+        stopReconstructionThread();
+        mCalibrationThread = new HandlerThread("ReconstructionThread") {
+            public void run() {
+                calibrate();
+            }
+        };
         mCalibrationThread.start();
-        mCalibrationHandler = new Handler(mCalibrationThread.getLooper());
-        mCalibrationHandler.post(this::calibrate);
     }
 
     private void stopCalibrationThread() {

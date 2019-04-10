@@ -59,6 +59,9 @@ public class ReconstructionFragment extends Fragment {
 
     private void updateUI(ReconVM.ReconProgress progress) {
         switch (progress) {
+            case READY:
+                mReconProgress.setText("Ready!");
+                break;
             case SLAM:
                 mReconProgress.setText("Running SLAM...");
                 break;
