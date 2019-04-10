@@ -52,11 +52,6 @@ public class ReconVM extends ViewModel {
     }
 
     public ReconVM() {
-        mReconstructionThread = new Thread("ReconstructionThread") {
-            public void run() {
-                reconstruct();
-            }
-        };
         mReconProgress.setValue(ReconProgress.INIT);
         mRenderedFrames = 0;
         mProcessedFrames = 0;
@@ -70,6 +65,11 @@ public class ReconVM extends ViewModel {
     }
 
     private void startReconstructionThread() {
+        mReconstructionThread = new Thread("ReconstructionThread") {
+            public void run() {
+                reconstruct();
+            }
+        };
         mReconstructionThread.start();
         calibration = false;
         mRenderedFrames = 0;
@@ -88,7 +88,7 @@ public class ReconVM extends ViewModel {
                 e.printStackTrace();
             }
             startReconstructionThread();
-            mReconProgress.setValue(ReconProgress.READY);
+            //mReconProgress.setValue(ReconProgress.READY);
         });
     }
 
