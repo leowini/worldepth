@@ -74,6 +74,7 @@ public class ReconstructionFragment extends Fragment {
             case FAILED:
                 mSlamProgress.setText("100%");
                 mReconProgress.setText("No keyframes found.");
+                break;
         }
     }
 }

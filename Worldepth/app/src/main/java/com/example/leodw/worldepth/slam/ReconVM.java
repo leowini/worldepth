@@ -77,19 +77,12 @@ public class ReconVM extends ViewModel {
     }
 
     private void stopReconstructionThread() {
-        mQueue.add(new TimeFramePair<Bitmap, Long>(mPoisonPillBitmap, Long.valueOf(0)));
+        //mQueue.add(new TimeFramePair<Bitmap, Long>(mPoisonPillBitmap, Long.valueOf(0)));
         mSlam.resetSlam();
         mSlam.endReconstruction();
-        mReconstructionThread.quitSafely();
-        try {
-            mReconstructionThread.join();
-            mReconstructionThread = null;
-            mReconstructionHandler = null;
-        } catch (
-                InterruptedException e) {
-            e.printStackTrace();
-        }
         mQueue.clear();
+        Looper looper = mReconstructionThread.getLooper();
+        looper.quitSafely();
     }
 
     private void showModelPreview() {
@@ -194,10 +187,8 @@ public class ReconVM extends ViewModel {
                 mProgressListenerHandler.post(() -> mReconProgress.setValue(ReconProgress.POISSON));
                 mPoissonWrapper.runPoisson();
             } else {
-                mProgressListenerHandler.post(() -> {
-                    mReconProgress.setValue(ReconProgress.FAILED);
-                    stopReconstructionThread();
-                });
+                mProgressListenerHandler.post(() -> mReconProgress.setValue(ReconProgress.FAILED));
+                mProgressListenerHandler.post(this::stopReconstructionThread);
             }
         });
         mSlam.setFrameCountListener(() -> mFrameCountHandler.post(this::frameProcessed));
