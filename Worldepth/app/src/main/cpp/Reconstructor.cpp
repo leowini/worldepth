@@ -10,7 +10,7 @@ Reconstructor::Reconstructor(std::string &vocFile, std::string &settingsFile) {
 
 Reconstructor::~Reconstructor() {
     delete slam;
-    delete textureMapper;
+    //delete textureMapper; this causes sigsegv
 }
 
 bool Reconstructor::hasKeyframes() {

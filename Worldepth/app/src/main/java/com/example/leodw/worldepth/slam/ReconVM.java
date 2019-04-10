@@ -79,7 +79,7 @@ public class ReconVM extends ViewModel {
     private void stopReconstructionThread() {
         //Neither of these methods are working:
         //mSlam.resetSlam();
-        //mSlam.endReconstruction();
+        mSlam.endReconstruction();
         mQueue.clear();
         mProgressListenerHandler.post(() -> {
             try {
