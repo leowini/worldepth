@@ -50,7 +50,7 @@ public class ReconVM extends ViewModel {
 
 
     public enum ReconProgress {
-        INIT, READY, SLAM, POISSON, TM, COMPLETE
+        INIT, READY, SLAM, POISSON, TM, COMPLETE, FAILED
     }
 
     public ReconVM() {
