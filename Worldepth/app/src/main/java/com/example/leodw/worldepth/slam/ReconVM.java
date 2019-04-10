@@ -80,8 +80,11 @@ public class ReconVM extends ViewModel {
         mSlam.resetSlam();
         mSlam.endReconstruction();
         mQueue.clear();
-        Looper looper = Looper.myLooper();
-        looper.quitSafely();
+        mProgressListenerHandler.post(() -> {
+            Looper looper = mReconstructionThread.getLooper();
+            looper.quitSafely();
+            startReconstructionThread();
+        });
     }
 
     private void showModelPreview() {
