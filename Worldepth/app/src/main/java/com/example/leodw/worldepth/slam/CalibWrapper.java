@@ -73,7 +73,7 @@ public class CalibWrapper {
             System.out.println(Thread.currentThread().getName() + " " + e.getMessage());
         }
         complete = true;
-        mCompleteListener.onCalibComplete(0);
+        mCompleteListener.onCalibComplete();
     }
 
     public interface FrameCountListener {
@@ -85,7 +85,7 @@ public class CalibWrapper {
     }
 
     public interface CalibCompleteListener {
-        void onCalibComplete(int calib);
+        void onCalibComplete();
     }
 
     void setOnCompleteListener(CalibCompleteListener listener) {
