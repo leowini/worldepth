@@ -52,4 +52,5 @@ void Reconstructor::textureMap() {
 
 void Reconstructor::resetSlam() {
     slam->Reset();
+    slam->Shutdown();
 }

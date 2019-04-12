@@ -26,11 +26,7 @@ public class Slam {
     private FrameCountListener mFrameCountListener;
 
     public native boolean passImageToSlam(long img, long timeStamp);
-
     public native void initSystem(String vocFile, String settingsFile);
-
-    public native void resetSlam();
-
     public native void endReconstruction();
 
     Slam(BlockingQueue<TimeFramePair<Bitmap, Long>> q, Bitmap mPoisonPillBitmap) {

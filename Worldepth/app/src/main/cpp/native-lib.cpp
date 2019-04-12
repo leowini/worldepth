@@ -102,12 +102,7 @@ Java_com_example_leodw_worldepth_slam_CalibWrapper_passImageToCalibrate(JNIEnv *
 
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_example_leodw_worldepth_slam_Slam_resetSlam(JNIEnv *env, jobject instance) {
-    reconstructor->resetSlam();
-}
-
-extern "C"
-JNIEXPORT void JNICALL
 Java_com_example_leodw_worldepth_slam_Slam_endReconstruction(JNIEnv *env, jobject instance) {
+    //reconstructor->resetSlam();
     delete reconstructor;
 }
