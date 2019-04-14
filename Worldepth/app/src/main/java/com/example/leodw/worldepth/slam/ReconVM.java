@@ -48,7 +48,7 @@ public class ReconVM extends ViewModel {
 
 
     public enum ReconProgress {
-        INIT, READY, SLAM, POISSON, TM, COMPLETE, FAILED
+        INIT, READY, SLAM, POISSON, TM, COMPLETE, FAILED, ERROR
     }
 
     public ReconVM() {
@@ -77,8 +77,6 @@ public class ReconVM extends ViewModel {
     }
 
     private void stopReconstructionThread() {
-        //Neither of these methods are working:
-        //mSlam.resetSlam(); I don't think this is what we want.
         mSlam.endReconstruction();
         mQueue.clear();
         mProgressListenerHandler.post(() -> {

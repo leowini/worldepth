@@ -10,13 +10,12 @@ Reconstructor::Reconstructor(std::string &vocFile, std::string &settingsFile) {
 
 Reconstructor::~Reconstructor() {
     delete slam;
-    //delete textureMapper; this causes sigsegv
+    //delete textureMapper;//this causes sigsegv
 }
 
 bool Reconstructor::hasKeyframes() {
     return (!vKFImColor.empty());
 }
-
 
 void Reconstructor::passImageToSlam(cv::Mat &im, double tstamp) {
     //call the equivalent of System::TrackMonocular for TrackingInit or Tracking directly
@@ -31,9 +30,9 @@ void Reconstructor::passImageToSlam(cv::Mat &im, double tstamp) {
     }
 }
 
-void Reconstructor::endSlam(const std::string &filename) {
+void Reconstructor::endSlam(const std::string &filename, bool success) {
     //get finished map as reference
-    writeMap(filename, slam->GetAllMapPoints());
+    if (success) writeMap(filename, slam->GetAllMapPoints());
     slam->Shutdown();
     //System actually has a clear func, it's
     slam->Reset();
@@ -51,6 +50,6 @@ void Reconstructor::textureMap() {
 }
 
 void Reconstructor::resetSlam() {
-    slam->Reset();
     slam->Shutdown();
+    slam->Reset();
 }
