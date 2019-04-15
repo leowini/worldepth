@@ -3,7 +3,7 @@
 #include "Reconstructor.h"
 
 Reconstructor::Reconstructor(std::string &vocFile, std::string &settingsFile) {
-    if (slam != nullptr) {
+    if (slam == nullptr) {
         slam = new System(vocFile, settingsFile);
     }
     vKFImColor = std::vector<cv::Mat>();
