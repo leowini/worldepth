@@ -1356,7 +1356,5 @@ namespace SLAM
         mbOnlyTracking = flag;
     }
 
-
-
 }
 
