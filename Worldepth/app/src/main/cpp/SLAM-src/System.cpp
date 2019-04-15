@@ -72,7 +72,7 @@ System::System(const string &strVocFile, const string &strSettingsFile):
     if (has_suffix(strVocFile, ".txt"))
         bVocLoad = mpVocabulary->loadFromTextFile(strVocFile);
     else
-        bVocLoad = mpVocabulary->loadFromBinaryFile(strVocFile);
+        bVocLoad = mpVocabulary->loadFromBinaryFile(strVocFile); //sigsegv here
     if(!bVocLoad)
     {
         cerr << "Wrong path to vocabulary. " << endl;

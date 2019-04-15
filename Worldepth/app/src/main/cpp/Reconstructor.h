@@ -15,12 +15,12 @@ public:
     ~Reconstructor();
     bool hasKeyframes();
     void passImageToSlam(cv::Mat &im, double tstamp);
-    void endSlam(const std::string &filename);
+    void endSlam(const std::string &filename, bool success);
     void textureMap();
     void resetSlam();
 
 private:
-    System *slam;
+    System *slam = nullptr;
     TextureMapper *textureMapper;
     std::vector<cv::Mat> vKFImColor;
     std::vector<cv::Mat> vKFTcw;
