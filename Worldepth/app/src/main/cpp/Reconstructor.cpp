@@ -11,6 +11,7 @@ Reconstructor::Reconstructor(std::string &vocFile, std::string &settingsFile) {
 }
 
 Reconstructor::~Reconstructor() {
+    //slam should be deleted to reinit here
     vKFImColor.clear();
     vKFTcw.clear();
 }
