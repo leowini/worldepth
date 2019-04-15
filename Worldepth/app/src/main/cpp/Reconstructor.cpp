@@ -44,4 +44,6 @@ void Reconstructor::textureMap() {
     textureMapper = new TextureMapper("/data/user/0/com.example.leodw.worldepth/files/SLAM.ply", vKFImColor, vKFTcw);
     textureMapper->textureMap();
     delete textureMapper;
+    vKFImColor.clear();
+    vKFTcw.clear();
 }
