@@ -2,7 +2,8 @@
 #include <camera_calibration.h>
 #include "Reconstructor.h"
 
-Reconstructor::Reconstructor(std::string &vocFile, std::string &settingsFile) {
+Reconstructor::Reconstructor(std::string &vocFile, std::string &settingsFile, std::string &internalPath)
+: internalPath(internalPath) {
     if (slam == nullptr) {
         slam = new System(vocFile, settingsFile);
     }
@@ -42,7 +43,7 @@ void Reconstructor::endSlam(const std::string &filename, bool success) {
 
 
 void Reconstructor::textureMap() {
-    textureMapper = new TextureMapper("/data/user/0/com.example.leodw.worldepth/files/SLAM.ply", vKFImColor, vKFTcw);
+    textureMapper = new TextureMapper(internalPath, vKFImColor, vKFTcw);
     textureMapper->textureMap();
     delete textureMapper;
     vKFImColor.clear();

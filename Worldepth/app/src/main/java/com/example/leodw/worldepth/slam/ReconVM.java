@@ -21,6 +21,7 @@ import static java.security.AccessController.getContext;
 public class ReconVM extends ViewModel {
 
     private static final String TAG = "ReconVM";
+    private String mInternalPath;
 
     private Thread mReconstructionThread;
 
@@ -186,7 +187,7 @@ public class ReconVM extends ViewModel {
             mProgressListenerHandler.post(() -> mReconProgress.setValue(ReconProgress.TM));
             mTextureMapWrapper.map();
         });
-        mSlam = new Slam(mQueue, mPoisonPillBitmap);
+        mSlam = new Slam(mQueue, mPoisonPillBitmap, internalPath);
         mSlam.setOnCompleteListener(success -> {
             mFrameCountHandler.post(() -> {
                 mProcessedFrames = mRenderedFrames;
@@ -222,6 +223,10 @@ public class ReconVM extends ViewModel {
 
     public void setReconProgress(ReconProgress progress) {
         mReconProgress.setValue(progress);
+    }
+
+    public void setInternalPath(String path) {
+        mInternalPath = path;
     }
 
 }

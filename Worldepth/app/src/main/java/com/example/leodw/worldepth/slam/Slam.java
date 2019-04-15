@@ -1,16 +1,10 @@
 package com.example.leodw.worldepth.slam;
 
 import android.graphics.Bitmap;
-import android.os.Environment;
-import android.os.Handler;
-import android.os.HandlerThread;
-
 import com.example.leodw.worldepth.ui.camera.TimeFramePair;
-
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
-
-import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.concurrent.BlockingQueue;
 
 public class Slam {
@@ -26,14 +20,15 @@ public class Slam {
     private FrameCountListener mFrameCountListener;
 
     public native boolean passImageToSlam(long img, long timeStamp);
-    public native void initSystem(String vocFile, String settingsFile);
+    public native void initSystem(String vocFile, String settingsFile, String internalPath);
     public native void endReconstruction();
 
-    Slam(BlockingQueue<TimeFramePair<Bitmap, Long>> q, Bitmap mPoisonPillBitmap) {
+    Slam(BlockingQueue<TimeFramePair<Bitmap, Long>> q, Bitmap mPoisonPillBitmap, String internalPath) {
         this.mQueue = q;
         this.mPoisonPillBitmap = mPoisonPillBitmap;
         initSystem("/data/user/0/com.example.leodw.worldepth/files/ORBvoc.bin",
-                "/data/user/0/com.example.leodw.worldepth/files/CalibVals.yaml");
+                "/data/user/0/com.example.leodw.worldepth/files/CalibVals.yaml",
+                internalPath);
     }
 
     /**

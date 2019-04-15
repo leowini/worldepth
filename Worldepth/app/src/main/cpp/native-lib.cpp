@@ -58,12 +58,12 @@ Java_com_example_leodw_worldepth_slam_Slam_passImageToSlam(JNIEnv *env, jobject 
 
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_example_leodw_worldepth_slam_Slam_initSystem(JNIEnv *env, jobject instance, jstring vocFile, jstring settingsFile) {
+Java_com_example_leodw_worldepth_slam_Slam_initSystem(JNIEnv *env, jobject instance, jstring vocFile, jstring settingsFile, jstring internalPath) {
     const char *_vocFile = env->GetStringUTFChars(vocFile,0);
     const char *_settingsFile = env->GetStringUTFChars(settingsFile,0);
     std::string vocFileString = _vocFile;
     std::string settingsFileString = _settingsFile;
-    reconstructor = new Reconstructor(vocFileString, settingsFileString);
+    reconstructor = new Reconstructor(vocFileString, settingsFileString, internalPath);
     env->ReleaseStringUTFChars(vocFile, _vocFile);
     env->ReleaseStringUTFChars(settingsFile, _settingsFile);
 }

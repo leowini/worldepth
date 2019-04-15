@@ -40,6 +40,8 @@ public class ReconstructionFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         mReconVM = ViewModelProviders.of(getActivity()).get(ReconVM.class);
+        String internalPath = getContext().getFilesDir().getPath();
+        mReconVM.setInternalPath(internalPath);
         mReconProgress = view.findViewById(R.id.reconReconProgress);
         mReconVM.getReconProgress().observe(this, this::updateUI);
         calibrating = mReconVM.getCalibState();

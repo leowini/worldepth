@@ -11,7 +11,7 @@ using namespace SLAM;
 class Reconstructor {
 
 public:
-    Reconstructor(std::string &vocFile, std::string &settingsFile);
+    Reconstructor(std::string &vocFile, std::string &settingsFile, std::string &internalPath);
     ~Reconstructor();
     bool hasKeyframes();
     void passImageToSlam(cv::Mat &im, double tstamp);
@@ -20,6 +20,7 @@ public:
     void resetSlam();
 
 private:
+    std::string internalPath;
     System *slam = nullptr;
     TextureMapper *textureMapper;
     std::vector<cv::Mat> vKFImColor;
