@@ -11,7 +11,7 @@ Reconstructor::Reconstructor(std::string &vocFile, std::string &settingsFile) {
 }
 
 Reconstructor::~Reconstructor() {
-    //slam should be deleted to reinit here
+    //slam should be deleted to reinit here. Need to figure out orbvocload problem first.
     vKFImColor.clear();
     vKFTcw.clear();
 }
