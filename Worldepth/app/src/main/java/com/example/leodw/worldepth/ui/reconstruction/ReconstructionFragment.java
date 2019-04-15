@@ -54,7 +54,10 @@ public class ReconstructionFragment extends Fragment {
             }
         });
         mBackButton = view.findViewById(R.id.reconBackButton);
-        mBackButton.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_reconstructionFragment_to_cameraFragment));
+        mBackButton.setOnClickListener(v -> {
+            mSlamProgress.setText("Running SLAM...");
+            Navigation.findNavController(v).navigate(R.id.action_reconstructionFragment_to_cameraFragment);
+        });
     }
 
     private void updateUI(ReconVM.ReconProgress progress) {

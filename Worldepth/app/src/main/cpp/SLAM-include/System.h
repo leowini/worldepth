@@ -58,6 +58,7 @@ namespace SLAM
         // Initialize the SLAM system. It launches the Local Mapping, Loop Closing and Viewer threads.
         System(const string &strVocFile, const string &strSettingsFile);
 
+        void DeleteORBVocab();
 
         // Proccess the given monocular frame
         // Input images: RGB (CV_8UC3) or grayscale (CV_8U). RGB is converted to grayscale.

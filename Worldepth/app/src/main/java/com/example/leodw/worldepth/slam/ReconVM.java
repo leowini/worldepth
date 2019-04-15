@@ -112,8 +112,8 @@ public class ReconVM extends ViewModel {
     public void sendFrame(TimeFramePair<Bitmap, Long> timeFramePair) {
         frameRendered();
         try {
-            Log.d(TAG, timeFramePair.getFrame().getHeight()+"");
-            Log.d(TAG, timeFramePair.getFrame().getWidth()+"");
+            Log.d(TAG, timeFramePair.getFrame().getHeight() + "");
+            Log.d(TAG, timeFramePair.getFrame().getWidth() + "");
             mQueue.put(timeFramePair);
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -122,9 +122,9 @@ public class ReconVM extends ViewModel {
 
     public void setCalibration(boolean calib) {
         calibration = calib;
-        if(calibration && mCalibrationThread == null){
+        if (calibration && mCalibrationThread == null) {
             startCalibrationThread();
-        }else if(!calibration && mCalibrationThread !=null){
+        } else if (!calibration && mCalibrationThread != null) {
             try {
                 stopCalibrationThread();
             } catch (InterruptedException e) {
@@ -173,11 +173,14 @@ public class ReconVM extends ViewModel {
 
     private void reconstruct() {
         mTextureMapWrapper = new TextureMapWrapper();
-        mTextureMapWrapper.setOnCompleteListener(() ->
-                mProgressListenerHandler.post(() -> {
-                    showModelPreview();
-                    stopReconstructionThread();
-                }));
+        mTextureMapWrapper.setOnCompleteListener(() -> {
+            mProgressListenerHandler.post(() -> {
+                showModelPreview();
+                mRenderedFrames = 0;
+                mProcessedFrames = 0;
+            });
+            mSlam.doSlam();
+        });
         mPoissonWrapper = new PoissonWrapper();
         mPoissonWrapper.setOnCompleteListener(() -> {
             mProgressListenerHandler.post(() -> mReconProgress.setValue(ReconProgress.TM));
@@ -194,7 +197,11 @@ public class ReconVM extends ViewModel {
                 mPoissonWrapper.runPoisson();
             } else {
                 mProgressListenerHandler.post(() -> mReconProgress.setValue(ReconProgress.FAILED));
-                stopReconstructionThread();
+                mProgressListenerHandler.post(() -> {
+                    mRenderedFrames = 0;
+                    mProcessedFrames = 0;
+                });
+                mSlam.doSlam();
             }
         });
         mSlam.setFrameCountListener(() -> mFrameCountHandler.post(this::frameProcessed));
