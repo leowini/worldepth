@@ -220,4 +220,8 @@ public class ReconVM extends ViewModel {
         return mReconProgress;
     }
 
+    public void setReconProgress(ReconProgress progress) {
+        mReconProgress.setValue(progress);
+    }
+
 }
