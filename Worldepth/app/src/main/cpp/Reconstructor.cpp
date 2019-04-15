@@ -35,7 +35,7 @@ void Reconstructor::passImageToSlam(cv::Mat &im, double tstamp) {
 void Reconstructor::endSlam(const std::string &filename, bool success) {
     //get finished map as reference
     if (success) writeMap(filename, slam->GetAllMapPoints());
-    slam->Shutdown();
+    //slam->Shutdown();
     //System actually has a clear func, it's
     slam->Reset();
     //close any other threads (should be done already in System.Reset()
