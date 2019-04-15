@@ -63,7 +63,9 @@ Java_com_example_leodw_worldepth_slam_Slam_initSystem(JNIEnv *env, jobject insta
     const char *_settingsFile = env->GetStringUTFChars(settingsFile,0);
     std::string vocFileString = _vocFile;
     std::string settingsFileString = _settingsFile;
-    reconstructor = new Reconstructor(vocFileString, settingsFileString);
+    if (reconstructor == nullptr) {
+        reconstructor = new Reconstructor(vocFileString, settingsFileString);
+    }
     env->ReleaseStringUTFChars(vocFile, _vocFile);
     env->ReleaseStringUTFChars(settingsFile, _settingsFile);
 }
@@ -103,5 +105,5 @@ Java_com_example_leodw_worldepth_slam_CalibWrapper_passImageToCalibrate(JNIEnv *
 extern "C"
 JNIEXPORT void JNICALL
 Java_com_example_leodw_worldepth_slam_Slam_endReconstruction(JNIEnv *env, jobject instance) {
-    delete reconstructor;
+    //delete reconstructor;
 }
