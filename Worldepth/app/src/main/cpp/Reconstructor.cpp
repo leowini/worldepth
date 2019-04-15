@@ -3,7 +3,7 @@
 #include "Reconstructor.h"
 
 Reconstructor::Reconstructor(std::string &vocFile, std::string &settingsFile) {
-    if (slam != nullptr) {
+    if (slam == nullptr) {
         slam = new System(vocFile, settingsFile);
     }
     vKFImColor = std::vector<cv::Mat>();
@@ -11,7 +11,8 @@ Reconstructor::Reconstructor(std::string &vocFile, std::string &settingsFile) {
 }
 
 Reconstructor::~Reconstructor() {
-    delete slam;
+    vKFImColor.clear();
+    vKFTcw.clear();
     //delete textureMapper;//this causes sigsegv
 }
 
@@ -47,8 +48,6 @@ void Reconstructor::textureMap() {
     textureMapper = new TextureMapper("/data/user/0/com.example.leodw.worldepth/files/SLAM.ply", vKFImColor, vKFTcw);
     textureMapper->textureMap();
     delete textureMapper;
-    vKFImColor.clear();
-    vKFTcw.clear();
 }
 
 void Reconstructor::resetSlam() {
