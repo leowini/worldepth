@@ -20,7 +20,7 @@ public:
     void resetSlam();
 
 private:
-    System *slam;
+    System *slam = nullptr;
     TextureMapper *textureMapper;
     std::vector<cv::Mat> vKFImColor;
     std::vector<cv::Mat> vKFTcw;

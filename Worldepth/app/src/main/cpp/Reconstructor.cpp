@@ -3,7 +3,9 @@
 #include "Reconstructor.h"
 
 Reconstructor::Reconstructor(std::string &vocFile, std::string &settingsFile) {
-    slam = new System(vocFile, settingsFile);
+    if (slam != nullptr) {
+        slam = new System(vocFile, settingsFile);
+    }
     vKFImColor = std::vector<cv::Mat>();
     vKFTcw = std::vector<cv::Mat>();
 }
@@ -50,6 +52,6 @@ void Reconstructor::textureMap() {
 }
 
 void Reconstructor::resetSlam() {
-    slam->Shutdown();
+    //slam->Shutdown();
     slam->Reset();
 }
