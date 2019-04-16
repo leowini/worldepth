@@ -19,9 +19,10 @@ using namespace tinyply;
 /**
 ** Assuming that source is a vector of cv::Mats
 **/
-TextureMapper::TextureMapper(const std::string &plyFilename, std::vector<cv::Mat> &source,
+TextureMapper::TextureMapper(const std::string &internalPath, std::vector<cv::Mat> &source,
         std::vector<cv::Mat> &TcwPoses, int patchSize) :
-        internalPath(plyFilename), source(source), TcwPoses(TcwPoses), patchSize(patchSize) {
+        internalPath(internalPath), source(source), TcwPoses(TcwPoses), patchSize(patchSize) {
+    plyFilename = internalPath + "/SLAM.ply";
     read_ply_file(); //gets vertices from the file
     init(); //clones source and target
 }
@@ -32,7 +33,7 @@ TextureMapper::TextureMapper(const std::string &plyFilename, std::vector<cv::Mat
 ** i.e., Ti = Si and Mi = Si.
 **/
 void TextureMapper::init() {
-    tempFilename = "/data/user/0/com.example.leodw.worldepth/files/temp.ply";
+    tempFilename = internalPath + "/temp.ply";
     for (auto &t : source) {
         target.push_back(t.clone());
         texture.push_back(t.clone());
