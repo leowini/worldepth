@@ -15,9 +15,8 @@ public:
     ~Reconstructor();
     bool hasKeyframes();
     void passImageToSlam(cv::Mat &im, double tstamp);
-    void endSlam(const std::string &filename, bool success);
+    void endSlam(bool success);
     void textureMap();
-    void resetSlam();
 
 private:
     std::string internalPath;

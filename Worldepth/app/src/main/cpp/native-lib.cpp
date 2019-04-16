@@ -45,7 +45,7 @@ JNIEXPORT jboolean JNICALL
 Java_com_example_leodw_worldepth_slam_Slam_passImageToSlam(JNIEnv *env, jobject instance, jlong img, jlong timeStamp) {
     if (img == 0) { //poison pill
         bool success = reconstructor->hasKeyframes();
-        reconstructor->endSlam(internalPath + "/Pointcloud.txt", success);
+        reconstructor->endSlam(success);
         return static_cast<jboolean>(success);
     } else {
         cv::Mat &mat = *(cv::Mat *) img;
@@ -61,9 +61,10 @@ JNIEXPORT void JNICALL
 Java_com_example_leodw_worldepth_slam_Slam_initSystem(JNIEnv *env, jobject instance, jstring vocFile, jstring settingsFile, jstring internalPath) {
     const char *_vocFile = env->GetStringUTFChars(vocFile,0);
     const char *_settingsFile = env->GetStringUTFChars(settingsFile,0);
+    const char *_internalPath = env->GetStringUTFChars(internalPath, 0);
     std::string vocFileString = _vocFile;
     std::string settingsFileString = _settingsFile;
-    reconstructor = new Reconstructor(vocFileString, settingsFileString, internalPath);
+    reconstructor = new Reconstructor(vocFileString, settingsFileString, _internalPath);
     env->ReleaseStringUTFChars(vocFile, _vocFile);
     env->ReleaseStringUTFChars(settingsFile, _settingsFile);
 }

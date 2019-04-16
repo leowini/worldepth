@@ -34,9 +34,9 @@ void Reconstructor::passImageToSlam(cv::Mat &im, double tstamp) {
     }
 }
 
-void Reconstructor::endSlam(const std::string &filename, bool success) {
+void Reconstructor::endSlam(bool success) {
     //get finished map as reference
-    if (success) writeMap(filename, slam->GetAllMapPoints());
+    if (success) writeMap(internalPath + "/Pointcloud.txt", slam->GetAllMapPoints());
     //System actually has a clear func, it's
     slam->Reset();
 }
