@@ -187,7 +187,7 @@ public class ReconVM extends ViewModel {
             mProgressListenerHandler.post(() -> mReconProgress.setValue(ReconProgress.TM));
             mTextureMapWrapper.map();
         });
-        mSlam = new Slam(mQueue, mPoisonPillBitmap, internalPath);
+        mSlam = new Slam(mQueue, mPoisonPillBitmap, mInternalPath);
         mSlam.setOnCompleteListener(success -> {
             mFrameCountHandler.post(() -> {
                 mProcessedFrames = mRenderedFrames;
@@ -195,7 +195,7 @@ public class ReconVM extends ViewModel {
             });
             if (success) {
                 mProgressListenerHandler.post(() -> mReconProgress.setValue(ReconProgress.POISSON));
-                mPoissonWrapper.runPoisson();
+                mPoissonWrapper.runPoisson(mInternalPath);
             } else {
                 mProgressListenerHandler.post(() -> mReconProgress.setValue(ReconProgress.FAILED));
                 mProgressListenerHandler.post(() -> {

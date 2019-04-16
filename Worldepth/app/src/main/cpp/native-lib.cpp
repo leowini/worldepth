@@ -20,21 +20,23 @@ Java_com_example_leodw_worldepth_MainActivity_stringFromJNI(
 
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_example_leodw_worldepth_slam_PoissonWrapper_startPoisson(JNIEnv *env, jobject instance) {
+Java_com_example_leodw_worldepth_slam_PoissonWrapper_startPoisson(JNIEnv *env, jobject instance, jstring internalPath) {
+    const char *_internalPath = env->GetStringUTFChars(internalPath, 0);
+    char *intPath = (char *)_internalPath;
     char* args [] = {
             (char*)"PoissonRecon",
             (char*)"--in",
 //            (char*)"/storage/emulated/0/Worldepth/Pointcloud.txt",
-            (char*) "/data/user/0/com.example.leodw.worldepth/files/SLAM.txt",
+            (char*) strcat(intPath, "/Pointcloud.txt"),
 //            (char*) "/data/user/0/com.example.leodw.worldepth/files/Pointcloud.txt",
             (char*)"--out",
 //            (char*)"/storage/emulated/0/Worldepth/SLAM.ply",
-            (char*) "/data/user/0/com.example.leodw.worldepth/files/SLAM.ply",
+            (char*) strcat(intPath, "/SLAM.ply"),
             (char*)"--depth",
             (char*)"10",
             (char*)"--tempDir",
 //            (char*)"/storage/emulated/0/Worldepth"
-            (char*)"/data/user/0/com.example.leodw.worldepth/files"
+            (char*)intPath
     };
     int numArgs = 9;
     runMain(numArgs, args);
