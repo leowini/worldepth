@@ -11,6 +11,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.leodw.worldepth.R;
+import com.example.leodw.worldepth.ui.MainActivity;
 import com.example.leodw.worldepth.ui.camera.TimeFramePair;
 
 import java.util.concurrent.BlockingQueue;
@@ -21,7 +22,8 @@ import static java.security.AccessController.getContext;
 public class ReconVM extends ViewModel {
 
     private static final String TAG = "ReconVM";
-    private String mInternalPath;
+    private String mInternalPath = "";
+    private final Object lock = new Object();
 
     private Thread mReconstructionThread;
 
@@ -187,6 +189,15 @@ public class ReconVM extends ViewModel {
             mProgressListenerHandler.post(() -> mReconProgress.setValue(ReconProgress.TM));
             mTextureMapWrapper.map();
         });
+        synchronized(lock){
+            while (mInternalPath.equals("")) {
+                try {
+                    lock.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
         mSlam = new Slam(mQueue, mPoisonPillBitmap, mInternalPath);
         mSlam.setOnCompleteListener(success -> {
             mFrameCountHandler.post(() -> {
@@ -226,7 +237,10 @@ public class ReconVM extends ViewModel {
     }
 
     public void setInternalPath(String path) {
-        mInternalPath = path;
+        synchronized (lock) {
+            mInternalPath = path;
+            lock.notify();
+        }
     }
 
 }
