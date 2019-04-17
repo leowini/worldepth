@@ -158,6 +158,15 @@ public class ReconVM extends ViewModel {
     }
 
     private void calibrate() {
+        synchronized (lock) {
+            while (mInternalPath.equals("")) {
+                try {
+                    lock.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
         mCalibWrapper = new CalibWrapper(mQueue, mPoisonPillBitmap, mInternalPath);
         mCalibWrapper.setOnCompleteListener(() -> {
             mFrameCountHandler.post(() -> {

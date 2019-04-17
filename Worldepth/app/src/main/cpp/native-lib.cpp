@@ -81,7 +81,7 @@ JNIEXPORT void JNICALL
 Java_com_example_leodw_worldepth_slam_CalibWrapper_initSettings(JNIEnv *env, jobject instance, jstring internalPath) {
     const char *_internalPath = env->GetStringUTFChars(internalPath, 0);
     std::string internalPathStr= std::string(_internalPath);
-    sptr = new calib::Settings(internalPathStr);
+    sptr = new calib::Settings(/*internalPathStr*/);
 }
 
 extern "C"
