@@ -49,7 +49,7 @@ void TextureMapper::init() {
     sourceChannels = source.at(0).channels();
     targetChannels = target.at(0).channels();
 
-    cv::FileStorage fSettings("/data/user/0/com.example.leodw.worldepth/files/CalibVals.yaml",
+    cv::FileStorage fSettings(internalPath + "/CalibVals.yaml",
                               cv::FileStorage::READ);
     float fx = fSettings["Camera_fx"];
     float fy = fSettings["Camera_fy"];
@@ -122,7 +122,7 @@ cv::Mat TextureMapper::patchSearch(int iterations) {
     auto finish = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> elapsed = finish - start;
     std::ofstream myfile;
-    myfile.open("/data/user/0/com.example.leodw.worldepth/files/initTime.txt");
+    myfile.open(internalPath + "/initTime.txt");
     myfile << std::to_string(elapsed.count()) + "\n";
     myfile.close();
     bool forwardSearch = true;

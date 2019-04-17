@@ -23,8 +23,8 @@ using namespace std;
 namespace calib {
     class Settings {
     public:
-        Settings();
 
+        Settings();
 
         enum Pattern {
             NOT_EXISTING, CHESSBOARD, CIRCLES_GRID, ASYMMETRIC_CIRCLES_GRID

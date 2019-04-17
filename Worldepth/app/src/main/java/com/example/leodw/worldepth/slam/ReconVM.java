@@ -158,7 +158,7 @@ public class ReconVM extends ViewModel {
     }
 
     private void calibrate() {
-        mCalibWrapper = new CalibWrapper(mQueue, mPoisonPillBitmap);
+        mCalibWrapper = new CalibWrapper(mQueue, mPoisonPillBitmap, mInternalPath);
         mCalibWrapper.setOnCompleteListener(() -> {
             mFrameCountHandler.post(() -> {
                 mProcessedFrames = mRenderedFrames;

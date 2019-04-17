@@ -26,8 +26,8 @@ public class Slam {
     Slam(BlockingQueue<TimeFramePair<Bitmap, Long>> q, Bitmap mPoisonPillBitmap, String internalPath) {
         this.mQueue = q;
         this.mPoisonPillBitmap = mPoisonPillBitmap;
-        initSystem("/data/user/0/com.example.leodw.worldepth/files/ORBvoc.bin",
-                "/data/user/0/com.example.leodw.worldepth/files/CalibVals.yaml",
+        initSystem(internalPath + "/ORBvoc.bin",
+                internalPath + "/CalibVals.yaml",
                 internalPath);
     }
 

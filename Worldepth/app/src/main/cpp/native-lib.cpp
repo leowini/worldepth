@@ -26,17 +26,13 @@ Java_com_example_leodw_worldepth_slam_PoissonWrapper_startPoisson(JNIEnv *env, j
     char* args [] = {
             (char*)"PoissonRecon",
             (char*)"--in",
-//            (char*)"/storage/emulated/0/Worldepth/Pointcloud.txt",
             (char*) strcat(intPath, "/Pointcloud.txt"),
-//            (char*) "/data/user/0/com.example.leodw.worldepth/files/Pointcloud.txt",
             (char*)"--out",
-//            (char*)"/storage/emulated/0/Worldepth/SLAM.ply",
             (char*) strcat(intPath, "/SLAM.ply"),
             (char*)"--depth",
             (char*)"10",
             (char*)"--tempDir",
-//            (char*)"/storage/emulated/0/Worldepth"
-            (char*)intPath
+            intPath
     };
     int numArgs = 9;
     runMain(numArgs, args);
@@ -82,8 +78,10 @@ Java_com_example_leodw_worldepth_slam_TextureMapWrapper_textureMap(JNIEnv *env, 
 
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_example_leodw_worldepth_slam_CalibWrapper_initSettings(JNIEnv *env, jobject instance) {
-    sptr = new calib::Settings();
+Java_com_example_leodw_worldepth_slam_CalibWrapper_initSettings(JNIEnv *env, jobject instance, jstring internalPath) {
+    const char *_internalPath = env->GetStringUTFChars(internalPath, 0);
+    std::string internalPathStr= std::string(_internalPath);
+    sptr = new calib::Settings(internalPathStr);
 }
 
 extern "C"
