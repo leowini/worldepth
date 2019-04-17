@@ -21,6 +21,7 @@ Java_com_example_leodw_worldepth_MainActivity_stringFromJNI(
 extern "C"
 JNIEXPORT void JNICALL
 Java_com_example_leodw_worldepth_slam_PoissonWrapper_startPoisson(JNIEnv *env, jobject instance, jstring internalPath) {
+    //Poisson is crashing with the internalPath.
     const char *_internalPath = env->GetStringUTFChars(internalPath, 0);
     char *intPath = (char *)_internalPath;
     char* args [] = {
