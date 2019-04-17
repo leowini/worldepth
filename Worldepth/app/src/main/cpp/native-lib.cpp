@@ -64,9 +64,10 @@ Java_com_example_leodw_worldepth_slam_Slam_initSystem(JNIEnv *env, jobject insta
     const char *_vocFile = env->GetStringUTFChars(vocFile,0);
     const char *_settingsFile = env->GetStringUTFChars(settingsFile,0);
     const char *_internalPath = env->GetStringUTFChars(internalPath, 0);
+    std::string strPath = std::string(_internalPath);
     std::string vocFileString = _vocFile;
     std::string settingsFileString = _settingsFile;
-    reconstructor = new Reconstructor(vocFileString, settingsFileString, _internalPath);
+    reconstructor = new Reconstructor(vocFileString, settingsFileString, strPath);
     env->ReleaseStringUTFChars(vocFile, _vocFile);
     env->ReleaseStringUTFChars(settingsFile, _settingsFile);
 }
