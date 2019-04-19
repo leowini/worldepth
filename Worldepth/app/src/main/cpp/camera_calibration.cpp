@@ -17,7 +17,7 @@ namespace calib {
 
         //! [file_read]
         //const string inputSettingsFile = argc > 1 ? argv[1] : "default.xml";
-        const string inputSettingsFile = "/data/user/0/com.example.leodw.worldepth/files/calib_data.xml";
+        string inputSettingsFile = "data/user/0/com.example.leodw.worldepth/files/calib_data.xml";
         FileStorage fs(inputSettingsFile, FileStorage::READ); // Read the settings
         if (!fs.isOpened()) {
             cout << "Could not open the configuration file: \"" << inputSettingsFile << "\""

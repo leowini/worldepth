@@ -19,9 +19,10 @@ using namespace tinyply;
 /**
 ** Assuming that source is a vector of cv::Mats
 **/
-TextureMapper::TextureMapper(const std::string &plyFilename, std::vector<cv::Mat> &source,
+TextureMapper::TextureMapper(const std::string &internalPath, std::vector<cv::Mat> &source,
         std::vector<cv::Mat> &TcwPoses, int patchSize) :
-        plyFilename(plyFilename), source(source), TcwPoses(TcwPoses), patchSize(patchSize) {
+        internalPath(internalPath), source(source), TcwPoses(TcwPoses), patchSize(patchSize) {
+    plyFilename = internalPath + "/SLAM.ply";
     read_ply_file(); //gets vertices from the file
     init(); //clones source and target
 }
@@ -32,7 +33,7 @@ TextureMapper::TextureMapper(const std::string &plyFilename, std::vector<cv::Mat
 ** i.e., Ti = Si and Mi = Si.
 **/
 void TextureMapper::init() {
-    tempFilename = "/data/user/0/com.example.leodw.worldepth/files/temp.ply";
+    tempFilename = internalPath + "/temp.ply";
     for (auto &t : source) {
         target.push_back(t.clone());
         texture.push_back(t.clone());
@@ -48,7 +49,7 @@ void TextureMapper::init() {
     sourceChannels = source.at(0).channels();
     targetChannels = target.at(0).channels();
 
-    cv::FileStorage fSettings("/data/user/0/com.example.leodw.worldepth/files/CalibVals.yaml",
+    cv::FileStorage fSettings(internalPath + "/CalibVals.yaml",
                               cv::FileStorage::READ);
     float fx = fSettings["Camera_fx"];
     float fy = fSettings["Camera_fy"];
@@ -121,7 +122,7 @@ cv::Mat TextureMapper::patchSearch(int iterations) {
     auto finish = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> elapsed = finish - start;
     std::ofstream myfile;
-    myfile.open("/data/user/0/com.example.leodw.worldepth/files/initTime.txt");
+    myfile.open(internalPath + "/initTime.txt");
     myfile << std::to_string(elapsed.count()) + "\n";
     myfile.close();
     bool forwardSearch = true;
