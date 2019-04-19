@@ -23,17 +23,17 @@ JNIEXPORT void JNICALL
 Java_com_example_leodw_worldepth_slam_PoissonWrapper_startPoisson(JNIEnv *env, jobject instance, jstring internalPath) {
     //Poisson is crashing with the internalPath.
     const char *_internalPath = env->GetStringUTFChars(internalPath, 0);
-    char *intPath = (char *)_internalPath;
+    std::string intPath = std::string(_internalPath);
     char* args [] = {
             (char*)"PoissonRecon",
             (char*)"--in",
-            (char*) strcat(intPath, "/Pointcloud.txt"),
+            (char*) (intPath + "/Pointcloud.txt").c_str(),
             (char*)"--out",
-            (char*) strcat(intPath, "/SLAM.ply"),
+            (char*) (intPath + "/SLAM.ply").c_str(),
             (char*)"--depth",
             (char*)"10",
             (char*)"--tempDir",
-            intPath
+            (char*) intPath.c_str()
     };
     int numArgs = 9;
     runMain(numArgs, args);
