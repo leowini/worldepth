@@ -73,7 +73,7 @@ extern "C"
 JNIEXPORT void JNICALL
 Java_com_example_leodw_worldepth_slam_TextureMapWrapper_textureMap(JNIEnv *env, jobject instance) {
     reconstructor->textureMap();
-    delete reconstructor;
+    //delete reconstructor;
 }
 
 

@@ -79,7 +79,10 @@ public class ReconstructionFragment extends Fragment {
             case FAILED:
                 mSlamProgress.setText("100%");
                 mReconProgress.setText("No keyframes found.");
+                mNextButton.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_reconstructionFragment_to_cameraFragment));
                 break;
+            case CALIBRATED:
+                Navigation.findNavController(getView()).navigate(R.id.action_reconstructionFragment_to_mapFragment);
         }
     }
 }

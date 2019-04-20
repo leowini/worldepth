@@ -15,6 +15,9 @@ Reconstructor::~Reconstructor() {
     //slam should be deleted to reinit here. Need to figure out orbvocload problem first.
     vKFImColor.clear();
     vKFTcw.clear();
+    slam->Reset();
+    delete slam;
+    slam = nullptr;
 }
 
 bool Reconstructor::hasKeyframes() {

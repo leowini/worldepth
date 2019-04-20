@@ -35,6 +35,7 @@ public class CalibWrapper {
 
     CalibWrapper(BlockingQueue<TimeFramePair<Bitmap, Long>> q, Bitmap mPoisonPillBitmap, String internalPath) {
         this.mQueue = q;
+        mQueue.clear();
         this.mPoisonPillBitmap = mPoisonPillBitmap;
         complete = false;
         initSettings(internalPath);
