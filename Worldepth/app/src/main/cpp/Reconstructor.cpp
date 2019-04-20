@@ -14,6 +14,9 @@ Reconstructor::~Reconstructor() {
     //slam should be deleted to reinit here. Need to figure out orbvocload problem first.
     vKFImColor.clear();
     vKFTcw.clear();
+    slam->Reset();
+    delete slam;
+    slam = nullptr;
 }
 
 bool Reconstructor::hasKeyframes() {
@@ -34,10 +37,12 @@ void Reconstructor::passImageToSlam(cv::Mat &im, double tstamp) {
 }
 
 void Reconstructor::endSlam(const std::string &filename, bool success) {
-    //get finished map as reference
-    if (success) writeMap(filename, slam->GetAllMapPoints());
-    //System actually has a clear func, it's
-    slam->Reset();
+    if(slam) {  //if we already deleted slam, this shouldn't run
+        //get finished map as reference
+        if (success) writeMap(filename, slam->GetAllMapPoints());
+        //System actually has a clear func, it's
+        slam->Reset();
+    }
 }
 
 

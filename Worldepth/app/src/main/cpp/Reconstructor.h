@@ -25,8 +25,6 @@ private:
     std::vector<cv::Mat> vKFImColor;
     std::vector<cv::Mat> vKFTcw;
 
-    //whether calibration is run or SLAM is
-    calib::Settings *sptr;
 };
 
 #endif
