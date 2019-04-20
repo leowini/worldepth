@@ -12,6 +12,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.leodw.worldepth.R;
+import com.example.leodw.worldepth.ui.MainActivity;
 import com.example.leodw.worldepth.ui.camera.TimeFramePair;
 
 import java.util.concurrent.BlockingQueue;
@@ -22,6 +23,8 @@ import static java.security.AccessController.getContext;
 public class ReconVM extends ViewModel {
 
     private static final String TAG = "ReconVM";
+    private String mInternalPath = "";
+    private final Object lock = new Object();
 
     private Thread mReconstructionThread;
 
@@ -165,10 +168,16 @@ public class ReconVM extends ViewModel {
     }
 
     private void calibrate() {
-        while(!mQueue.isEmpty()){
-            //this is a hacky way to wait for the slam queue to finish, because calibwrapper clears the queue
+        synchronized (lock) {
+            while (mInternalPath.equals("") || !mQueue.isEmpty()) {
+                try {
+                    lock.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
         }
-        mCalibWrapper = new CalibWrapper(mQueue, mPoisonPillBitmap);
+        mCalibWrapper = new CalibWrapper(mQueue, mPoisonPillBitmap, mInternalPath);
         mCalibWrapper.setOnCompleteListener(() -> {
             mFrameCountHandler.post(() -> {
                 mProcessedFrames = mRenderedFrames;
@@ -196,7 +205,16 @@ public class ReconVM extends ViewModel {
             mProgressListenerHandler.post(() -> mReconProgress.setValue(ReconProgress.TM));
             mTextureMapWrapper.map();
         });
-        mSlam = new Slam(mQueue, mPoisonPillBitmap);
+        synchronized(lock){
+            while (mInternalPath.equals("")) {
+                try {
+                    lock.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        mSlam = new Slam(mQueue, mPoisonPillBitmap, mInternalPath);
         mSlam.setOnCompleteListener(success -> {
             mFrameCountHandler.post(() -> {
                 mProcessedFrames = mRenderedFrames;
@@ -204,7 +222,7 @@ public class ReconVM extends ViewModel {
             });
             if (success) {
                 mProgressListenerHandler.post(() -> mReconProgress.setValue(ReconProgress.POISSON));
-                mPoissonWrapper.runPoisson();
+                mPoissonWrapper.runPoisson(mInternalPath);
             } else {
                 mProgressListenerHandler.post(() -> mReconProgress.setValue(ReconProgress.FAILED));
                 mProgressListenerHandler.post(() -> {
@@ -234,6 +252,13 @@ public class ReconVM extends ViewModel {
 
     public void setReconProgress(ReconProgress progress) {
         mReconProgress.setValue(progress);
+    }
+
+    public void setInternalPath(String path) {
+        synchronized (lock) {
+            mInternalPath = path;
+            lock.notify();
+        }
     }
 
 }

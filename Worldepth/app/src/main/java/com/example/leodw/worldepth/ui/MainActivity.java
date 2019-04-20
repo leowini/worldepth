@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.arch.lifecycle.ViewModel;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -24,6 +26,7 @@ import android.widget.Toast;
 import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.data.DataTransfer;
 import com.example.leodw.worldepth.data.FirebaseWrapper;
+import com.example.leodw.worldepth.slam.ReconVM;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
@@ -46,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
     static private FirebaseWrapper fb;
     static private DataTransfer dt;
 
+    private ViewModel mReconVM;
+
     private boolean mLoginState;
 
     private NotificationChannel mChannel;
@@ -66,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
         //Lock the orientation to portrait mode
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
-
         mPreferences = getSharedPreferences(sharedPrefFile, MODE_PRIVATE);
         mLoginState = mPreferences.getBoolean("loginState", false);
         NavHostFragment hostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
@@ -76,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
         dt = new DataTransfer();
         createNotificationChannel();
         loadFiles();
+        mReconVM = ViewModelProviders.of(this).get(ReconVM.class);
+        ((ReconVM) mReconVM).setInternalPath(getFilesDir().getPath());
         /*if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{
                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
