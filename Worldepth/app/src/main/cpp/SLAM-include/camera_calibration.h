@@ -24,7 +24,7 @@ namespace calib {
     class Settings {
     public:
 
-        Settings();
+        explicit Settings(std::string intPath);
 
         enum Pattern {
             NOT_EXISTING, CHESSBOARD, CIRCLES_GRID, ASYMMETRIC_CIRCLES_GRID
@@ -63,7 +63,6 @@ namespace calib {
                                    vector<vector<Point2f> > imagePoints);
 
     public:
-
         Size boardSize;              // The size of the board -> Number of items by width and height
         Pattern calibrationPattern;  // One of the Chessboard, circles, or asymmetric circle pattern
         float squareSize;            // The size of a square in your defined unit (point, millimeter,etc).
@@ -100,7 +99,7 @@ namespace calib {
         int flag;
 
         static inline void
-        read(const FileNode &node, Settings &x, const Settings &default_value = Settings()) {
+        read(const FileNode &node, Settings &x, const Settings &default_value = Settings(internalPath)) {
             if (node.empty())
                 x = default_value;
             else
@@ -110,11 +109,10 @@ namespace calib {
 
     private:
         string patternToUse;
+        static string internalPath;
 
 
     };
-
-
 
     enum {
         DETECTION = 0, CAPTURING = 1, CALIBRATED = 2
