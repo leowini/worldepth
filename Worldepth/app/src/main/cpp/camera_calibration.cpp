@@ -4,6 +4,8 @@ using namespace cv;
 using namespace std;
 namespace calib {
 
+    string calib::Settings::internalPath = "";
+
     static void help() {
         cout << "This is a camera calibration sample." << endl
              << "Usage: camera_calibration [configuration_file -- default ./default.xml]" << endl
@@ -12,12 +14,12 @@ namespace calib {
     }
 
 
-    Settings::Settings() {
+    Settings::Settings(std::string intPath) {
         help();
-
+        calib::Settings::internalPath = intPath;
         //! [file_read]
         //const string inputSettingsFile = argc > 1 ? argv[1] : "default.xml";
-        string inputSettingsFile = "data/user/0/com.example.leodw.worldepth/files/calib_data.xml";
+        string inputSettingsFile = internalPath + "/calib_data.xml";
         FileStorage fs(inputSettingsFile, FileStorage::READ); // Read the settings
         if (!fs.isOpened()) {
             cout << "Could not open the configuration file: \"" << inputSettingsFile << "\""
@@ -438,7 +440,7 @@ void Settings::saveCameraParams(Settings &s, Size &imageSize, Mat &cameraMatrix,
                              const vector<vector<Point2f> > &imagePoints,
                              double totalAvgErr) {
     try {
-        FileStorage fs(s.outputFileName, FileStorage::WRITE /*| FileStorage::FORMAT_YAML*/);
+        FileStorage fs(internalPath + s.outputFileName, FileStorage::WRITE /*| FileStorage::FORMAT_YAML*/);
 
 
     time_t tm;
@@ -578,5 +580,6 @@ void Settings::saveCameraParams(Settings &s, Size &imageSize, Mat &cameraMatrix,
                              totalAvgErr);
         return ok;
     }
+
 //! [run_and_save]
 }
