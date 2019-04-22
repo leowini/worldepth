@@ -49,7 +49,7 @@ private:
                     int tx, int ty, int tt,
                     int patchSize, float threshold);
     int randomInt(int min, int max);
-    std::vector<cv::Mat> getRGBD(std::vector<cv::Mat> &target, std::vector<cv::Mat> &TcwPoses);
+    std::vector<cv::Mat> getRGBD();
     void projectToSurface();
 };
 

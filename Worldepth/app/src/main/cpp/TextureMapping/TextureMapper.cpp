@@ -20,7 +20,7 @@ using namespace tinyply;
 ** Assuming that source is a vector of cv::Mats
 **/
 TextureMapper::TextureMapper(const std::string &internalPath, std::vector<cv::Mat> &source,
-        std::vector<cv::Mat> &TcwPoses, int patchSize) :
+                             std::vector<cv::Mat> &TcwPoses, int patchSize) :
         internalPath(internalPath), source(source), TcwPoses(TcwPoses), patchSize(patchSize) {
     plyFilename = internalPath + "/SLAM.ply";
     read_ply_file(); //gets vertices from the file
@@ -454,8 +454,36 @@ int TextureMapper::randomInt(int min, int max) {
     return min + (rand() % static_cast<int>(max - min + 1));
 }
 
-std::vector<cv::Mat> TextureMapper::getRGBD(std::vector<cv::Mat> &target, std::vector<cv::Mat> &TcwPoses) {
+std::vector<cv::Mat> TextureMapper::getRGBD() {
     //Get depth for all of the pixels. This will either require rasterization or ray-tracing (I need to do more research to determine which one).
+    cv::Mat sourceImage;
+    cv::Mat depth = cv::Mat(sourceWidth, sourceHeight, CV_64F, cvScalar(0.));
+    for (unsigned int cam = 0; cam < TcwPoses.size(); cam++) {
+        sourceImage = source.at(cam);
+        cv::Rect rect(cv::Point(), sourceImgSize);
+        cv::Mat pose = TcwPoses.at(cam);
+        cv::Mat rvec;
+        cv::Rodrigues(pose(cv::Rect(0, 0, 3, 3)), rvec);
+        std::vector<cv::Point2f> imagePoints;
+        cv::projectPoints(vertices, rvec, pose(cv::Rect(3, 0, 1, 3)), cameraMatrix, distCoef,
+                          imagePoints);
+// rasterization algorithm
+        for (auto &triangle : triangles) {
+            // STEP 1: project vertices of the triangle using perspective projection
+            cv::Vec2f v0 = perspectiveProject(triangle[i].v0);
+            cv::Vec2f v1 = perspectiveProject(triangle[i].v1);
+            cv::Vec2f v2 = perspectiveProject(triangle[i].v2);
+            for (each pixel in image) {
+                // STEP 2: is this pixel contained in the projected image of the triangle?
+                if (pixelContainedIn2DTriangle(v0, v1, v2, x, y)) {
+                    image(x,y) = triangle[i].color;
+                    float oneOverZ = v0Raster.z * w0 + v1Raster.z * w1 + v2Raster.z * w2;
+                    float z = 1 / oneOverZ;
+                }
+            }
+        }
+    }
+}
 
 }
 
@@ -505,10 +533,10 @@ void TextureMapper::projectToSurface() {
         } //end for each vertex
     } //end for each camera
     write_ply_file(weights, acc_red, acc_grn, acc_blu);
-    delete []weights;
-    delete []acc_red;
-    delete []acc_grn;
-    delete []acc_blu;
+    delete[]weights;
+    delete[]acc_red;
+    delete[]acc_grn;
+    delete[]acc_blu;
 }
 
 void TextureMapper::read_ply_file() {
@@ -569,7 +597,8 @@ void TextureMapper::read_ply_file() {
     }
 }
 
-void TextureMapper::write_ply_file(double *weights, double *acc_red, double *acc_grn, double *acc_blu) {
+void
+TextureMapper::write_ply_file(double *weights, double *acc_red, double *acc_grn, double *acc_blu) {
     std::ifstream in(plyFilename, std::ios_base::binary);
     std::ofstream out(tempFilename, std::ios_base::binary);
     std::string line;
@@ -588,22 +617,22 @@ void TextureMapper::write_ply_file(double *weights, double *acc_red, double *acc
         char *s = new char[12];
         in.read(s, 12);
         out.write(s, 12);
-        delete []s;
+        delete[]s;
         if (weights[buff_ind] != 0) // if 0, it has not found any valid projection on any camera
         {
             uchar r = (acc_red[buff_ind] / weights[buff_ind]) * 255.0;
             uchar g = (acc_grn[buff_ind] / weights[buff_ind]) * 255.0;
             uchar b = (acc_blu[buff_ind] / weights[buff_ind]) * 255.0;
-            out.write(reinterpret_cast<char*>(&r), 1);
-            out.write(reinterpret_cast<char*>(&g), 1);
-            out.write(reinterpret_cast<char*>(&b), 1);
+            out.write(reinterpret_cast<char *>(&r), 1);
+            out.write(reinterpret_cast<char *>(&g), 1);
+            out.write(reinterpret_cast<char *>(&b), 1);
         } else {
             uchar r = 0;
             uchar g = 0;
             uchar b = 0;
-            out.write(reinterpret_cast<char*>(&r), 1);
-            out.write(reinterpret_cast<char*>(&g), 1);
-            out.write(reinterpret_cast<char*>(&b), 1);
+            out.write(reinterpret_cast<char *>(&r), 1);
+            out.write(reinterpret_cast<char *>(&g), 1);
+            out.write(reinterpret_cast<char *>(&b), 1);
         }
     }
     //Copy the rest
