@@ -2,7 +2,8 @@
 #include <camera_calibration.h>
 #include "Reconstructor.h"
 
-Reconstructor::Reconstructor(std::string &vocFile, std::string &settingsFile) {
+Reconstructor::Reconstructor(std::string &vocFile, std::string &settingsFile, std::string &internalPath)
+: internalPath(internalPath) {
     if (slam == nullptr) {
         slam = new System(vocFile, settingsFile);
     }
@@ -14,6 +15,9 @@ Reconstructor::~Reconstructor() {
     //slam should be deleted to reinit here. Need to figure out orbvocload problem first.
     vKFImColor.clear();
     vKFTcw.clear();
+    slam->Reset();
+    delete slam;
+    slam = nullptr;
 }
 
 bool Reconstructor::hasKeyframes() {
@@ -33,16 +37,16 @@ void Reconstructor::passImageToSlam(cv::Mat &im, double tstamp) {
     }
 }
 
-void Reconstructor::endSlam(const std::string &filename, bool success) {
+void Reconstructor::endSlam(bool success) {
     //get finished map as reference
-    if (success) writeMap(filename, slam->GetAllMapPoints());
+    if (success) writeMap(internalPath + "/Pointcloud.txt", slam->GetAllMapPoints());
     //System actually has a clear func, it's
     slam->Reset();
 }
 
 
 void Reconstructor::textureMap() {
-    textureMapper = new TextureMapper("/data/user/0/com.example.leodw.worldepth/files/SLAM.ply", vKFImColor, vKFTcw);
+    textureMapper = new TextureMapper(internalPath, vKFImColor, vKFTcw);
     textureMapper->textureMap();
     delete textureMapper;
     vKFImColor.clear();

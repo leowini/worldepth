@@ -55,7 +55,7 @@ namespace SLAM
         fSettings.open(fname, cv::FileStorage::READ | cv::FileStorage::FORMAT_XML);
         if (!fSettings.isOpened())
             return;
-        float fx = fSettings["Camera_fx"];
+        /*float fx = fSettings["Camera_fx"];
         float fy = fSettings["Camera_fy"];
         float cx = fSettings["Camera_cx"];
         float cy = fSettings["Camera_cy"];
@@ -64,10 +64,13 @@ namespace SLAM
         K.at<float>(0,0) = fx;
         K.at<float>(1,1) = fy;
         K.at<float>(0,2) = cx;
-        K.at<float>(1,2) = cy;
+        K.at<float>(1,2) = cy;*/
+        cv::Mat K;
+        fSettings["camera_matrix"] >> K;
+        K.convertTo(K, CV_32F);
         K.copyTo(mK);
 
-        cv::Mat DistCoef(4,1,CV_32F);
+        /*cv::Mat DistCoef(4,1,CV_32F);
         DistCoef.at<float>(0) = fSettings["Camera_k1"];
         DistCoef.at<float>(1) = fSettings["Camera_k2"];
         DistCoef.at<float>(2) = fSettings["Camera_p1"];
@@ -77,7 +80,10 @@ namespace SLAM
         {
             DistCoef.resize(5);
             DistCoef.at<float>(4) = k3;
-        }
+        }*/
+        cv::Mat DistCoef;
+        fSettings["distortion_coefficients"] >> DistCoef;
+        DistCoef.convertTo(DistCoef, CV_32F);
         DistCoef.copyTo(mDistCoef);
 
         mbf = fSettings["Camera.bf"];

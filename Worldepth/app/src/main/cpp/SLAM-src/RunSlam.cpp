@@ -72,7 +72,7 @@ namespace SLAM
             //send an empty frame to calib to complete calibration
             cv::Mat mat = cv::Mat();
             sptr->calib::Settings::processImage(mat);
-            end(/*"/storage/emulated/0/Worldepth/SLAM.npts"*/"/data/user/0/com.example.leodw.worldepth/files/SLAM.txt");
+            end(internalPath + "/SLAM.txt");
         } else {
             cv::Mat &mat = *(cv::Mat *) img;
             double tframe = (double) timeStamp;

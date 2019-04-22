@@ -6,10 +6,10 @@ public class PoissonWrapper {
 
     private OnCompleteListener listener;
 
-    public native void startPoisson();
+    public native void startPoisson(String internalPath);
 
-    void runPoisson() {
-        startPoisson();
+    void runPoisson(String internalPath) {
+        startPoisson(internalPath);
         listener.onComplete();
     }
 

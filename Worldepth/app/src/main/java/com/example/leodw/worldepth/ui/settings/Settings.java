@@ -45,9 +45,9 @@ public class Settings extends Fragment {
             ((MainActivity) getActivity()).setLoginState(false);
             Navigation.findNavController(v).navigate(R.id.action_settings_to_startScreenFragment);
         });
-        mCalibrateButton.setOnClickListener(v -> {
+        mCalibrateButton.setOnClickListener(view1 -> {
             mReconVM.setCalibration(true);
-            Navigation.findNavController(v).navigate(R.id.action_settings_to_cameraFragment);
+            Navigation.findNavController(view1).navigate(R.id.action_settings_to_cameraFragment);
         });
     }
 

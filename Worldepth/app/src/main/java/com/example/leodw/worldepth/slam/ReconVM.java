@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.graphics.Bitmap;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.leodw.worldepth.R;
+import com.example.leodw.worldepth.ui.MainActivity;
 import com.example.leodw.worldepth.ui.camera.TimeFramePair;
 
 import java.util.concurrent.BlockingQueue;
@@ -21,6 +23,8 @@ import static java.security.AccessController.getContext;
 public class ReconVM extends ViewModel {
 
     private static final String TAG = "ReconVM";
+    private String mInternalPath = "";
+    private final Object lock = new Object();
 
     private Thread mReconstructionThread;
 
@@ -48,7 +52,7 @@ public class ReconVM extends ViewModel {
 
 
     public enum ReconProgress {
-        INIT, READY, SLAM, POISSON, TM, COMPLETE, FAILED, ERROR
+        INIT, READY, SLAM, POISSON, TM, COMPLETE, FAILED, ERROR, CALIBRATED
     }
 
     public ReconVM() {
@@ -71,23 +75,27 @@ public class ReconVM extends ViewModel {
             }
         };
         mReconstructionThread.start();
-        calibration = false;
         mRenderedFrames = 0;
         mProcessedFrames = 0;
     }
 
     private void stopReconstructionThread() {
+        mQueue.add(new TimeFramePair<Bitmap, Long>(mPoisonPillBitmap, new Long (0)));
         mSlam.endReconstruction();
-        mQueue.clear();
         mProgressListenerHandler.post(() -> {
             try {
                 mReconstructionThread.join();
+                mReconstructionThread = null;
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            startReconstructionThread();
+            //startReconstructionThread();
             //mReconProgress.setValue(ReconProgress.READY);
+            mSlam = null;
+            mPoissonWrapper = null;
+            mTextureMapWrapper = null;
         });
+        //System.gc();
     }
 
     private void showModelPreview() {
@@ -135,18 +143,23 @@ public class ReconVM extends ViewModel {
 
     private void startCalibrationThread() {
         stopReconstructionThread();
-        mCalibrationThread = new Thread("ReconstructionThread") {
+        mCalibrationThread = new Thread("CalibrationThread") {
             public void run() {
                 calibrate();
             }
         };
+        mRenderedFrames = 0;
+        mProcessedFrames = 0;
         mCalibrationThread.start();
+
     }
 
     private void stopCalibrationThread() throws InterruptedException {
-        //mQueue.add(new TimeFramePair<>(mPoisonPillBitmap, Long.valueOf(0)));
-        mCalibrationThread.join();
+        //mCalibrationThread.join();
+        mCalibrationThread = null;
         mQueue.clear();
+        mCalibWrapper = null;
+        //System.gc();
         startReconstructionThread();
     }
 
@@ -155,17 +168,23 @@ public class ReconVM extends ViewModel {
     }
 
     private void calibrate() {
-        mCalibWrapper = new CalibWrapper(mQueue, mPoisonPillBitmap);
+        synchronized (lock) {
+            while (mInternalPath.equals("") || !mQueue.isEmpty()) {
+                try {
+                    lock.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        mCalibWrapper = new CalibWrapper(mQueue, mPoisonPillBitmap, mInternalPath);
         mCalibWrapper.setOnCompleteListener(() -> {
             mFrameCountHandler.post(() -> {
                 mProcessedFrames = mRenderedFrames;
                 updateSlamProgress();
             });
-            try {
-                stopCalibrationThread();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            mProgressListenerHandler.post(() -> mReconProgress.setValue(ReconProgress.CALIBRATED));
+            setCalibration(false);
         });
         mCalibWrapper.setFrameCountListener(() -> mFrameCountHandler.post(this::frameProcessed));
         mCalibWrapper.doCalib();
@@ -186,7 +205,16 @@ public class ReconVM extends ViewModel {
             mProgressListenerHandler.post(() -> mReconProgress.setValue(ReconProgress.TM));
             mTextureMapWrapper.map();
         });
-        mSlam = new Slam(mQueue, mPoisonPillBitmap);
+        synchronized(lock){
+            while (mInternalPath.equals("")) {
+                try {
+                    lock.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        mSlam = new Slam(mQueue, mPoisonPillBitmap, mInternalPath);
         mSlam.setOnCompleteListener(success -> {
             mFrameCountHandler.post(() -> {
                 mProcessedFrames = mRenderedFrames;
@@ -194,14 +222,16 @@ public class ReconVM extends ViewModel {
             });
             if (success) {
                 mProgressListenerHandler.post(() -> mReconProgress.setValue(ReconProgress.POISSON));
-                mPoissonWrapper.runPoisson();
+                mPoissonWrapper.runPoisson(mInternalPath);
             } else {
                 mProgressListenerHandler.post(() -> mReconProgress.setValue(ReconProgress.FAILED));
                 mProgressListenerHandler.post(() -> {
                     mRenderedFrames = 0;
                     mProcessedFrames = 0;
                 });
-                mSlam.doSlam();
+                if(!calibration) {
+                    mSlam.doSlam();
+                }
             }
         });
         mSlam.setFrameCountListener(() -> mFrameCountHandler.post(this::frameProcessed));
@@ -222,6 +252,13 @@ public class ReconVM extends ViewModel {
 
     public void setReconProgress(ReconProgress progress) {
         mReconProgress.setValue(progress);
+    }
+
+    public void setInternalPath(String path) {
+        synchronized (lock) {
+            mInternalPath = path;
+            lock.notify();
+        }
     }
 
 }

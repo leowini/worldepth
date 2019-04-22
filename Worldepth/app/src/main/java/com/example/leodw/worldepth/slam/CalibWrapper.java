@@ -31,13 +31,14 @@ public class CalibWrapper {
 
     public native boolean passImageToCalibrate(long img);
 
-    public native void initSettings();
+    public native void initSettings(String internalPath);
 
-    CalibWrapper(BlockingQueue<TimeFramePair<Bitmap, Long>> q, Bitmap mPoisonPillBitmap) {
+    CalibWrapper(BlockingQueue<TimeFramePair<Bitmap, Long>> q, Bitmap mPoisonPillBitmap, String internalPath) {
         this.mQueue = q;
+        mQueue.clear();
         this.mPoisonPillBitmap = mPoisonPillBitmap;
         complete = false;
-        initSettings();
+        initSettings(internalPath);
     }
 
     /**

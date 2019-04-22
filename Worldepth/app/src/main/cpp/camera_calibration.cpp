@@ -4,6 +4,8 @@ using namespace cv;
 using namespace std;
 namespace calib {
 
+    string calib::Settings::internalPath = "";
+
     static void help() {
         cout << "This is a camera calibration sample." << endl
              << "Usage: camera_calibration [configuration_file -- default ./default.xml]" << endl
@@ -12,12 +14,12 @@ namespace calib {
     }
 
 
-    Settings::Settings() {
+    Settings::Settings(std::string intPath) {
         help();
-
+        calib::Settings::internalPath = intPath;
         //! [file_read]
         //const string inputSettingsFile = argc > 1 ? argv[1] : "default.xml";
-        const string inputSettingsFile = "/data/user/0/com.example.leodw.worldepth/files/calib_data.xml";
+        string inputSettingsFile = internalPath + "/calib_data.xml";
         FileStorage fs(inputSettingsFile, FileStorage::READ); // Read the settings
         if (!fs.isOpened()) {
             cout << "Could not open the configuration file: \"" << inputSettingsFile << "\""
@@ -386,15 +388,15 @@ namespace calib {
         imagePoints, vector<Mat> &rvecs, vector<Mat> & tvecs, vector<float> &reprojErrs,
         double &totalAvgErr) {
         //! [fixed_aspect]
-        cameraMatrix = Mat::eye(3, 3, CV_64F);
+        cameraMatrix = Mat::eye(3, 3, CV_32F);
         if( s.flag &CALIB_FIX_ASPECT_RATIO)
         cameraMatrix.at<double>(0,0) = s.aspectRatio;
         //! [fixed_aspect]
         if (s.useFisheye) {
-            distCoeffs = Mat::zeros(4, 1, CV_64F);
+            distCoeffs = Mat::zeros(4, 1, CV_32F);
         }
         else {
-        distCoeffs = Mat::zeros(8, 1, CV_64F);
+        distCoeffs = Mat::zeros(8, 1, CV_32F);
         }
         vector<vector<Point3f> > objectPoints(1);
         calcBoardCornerPositions(s.boardSize, s.squareSize, objectPoints[0], s.calibrationPattern);
@@ -438,7 +440,7 @@ void Settings::saveCameraParams(Settings &s, Size &imageSize, Mat &cameraMatrix,
                              const vector<vector<Point2f> > &imagePoints,
                              double totalAvgErr) {
     try {
-        FileStorage fs(s.outputFileName, FileStorage::WRITE /*| FileStorage::FORMAT_YAML*/);
+        FileStorage fs(internalPath + s.outputFileName, FileStorage::WRITE /*| FileStorage::FORMAT_YAML*/);
 
 
     time_t tm;
@@ -490,13 +492,13 @@ void Settings::saveCameraParams(Settings &s, Size &imageSize, Mat &cameraMatrix,
 
     fs << "fisheye_model" << s.useFisheye;*/
 
-        //fs << "camera_matrix" << cameraMatrix;
+        fs << "camera_matrix" << cameraMatrix;
         fs<<"Camera_fx" << (double)cameraMatrix.at<float>(0, 0);
         fs.write("Camera_fy", (double)cameraMatrix.at<float>(1, 1));
         fs.write("Camera_cx", (double)cameraMatrix.at<float>(0, 2));
         fs.write("Camera_cy", (double)cameraMatrix.at<float>(1, 2));
 
-        //fs << "distortion_coefficients" << distCoeffs;
+        fs << "distortion_coefficients" << distCoeffs;
         fs.write("Camera_k1", (double)distCoeffs.at<float>(0));
         fs.write("Camera_k2", (double)distCoeffs.at<float>(1));
         fs.write("Camera_p1", (double)distCoeffs.at<float>(2));
@@ -578,5 +580,6 @@ void Settings::saveCameraParams(Settings &s, Size &imageSize, Mat &cameraMatrix,
                              totalAvgErr);
         return ok;
     }
+
 //! [run_and_save]
 }
