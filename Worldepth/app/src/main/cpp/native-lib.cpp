@@ -43,9 +43,12 @@ extern "C"
 JNIEXPORT jboolean JNICALL
 Java_com_example_leodw_worldepth_slam_Slam_passImageToSlam(JNIEnv *env, jobject instance, jlong img, jlong timeStamp) {
     if (img == 0) { //poison pill
-        bool success = reconstructor->hasKeyframes();
-        reconstructor->endSlam(success);
-        return static_cast<jboolean>(success);
+        if(reconstructor != nullptr) {
+            bool success = reconstructor->hasKeyframes();
+            reconstructor->endSlam(success);
+            return static_cast<jboolean>(success);
+        }
+        else return static_cast<jboolean>(false);
     } else {
         cv::Mat &mat = *(cv::Mat *) img;
         double tframe = (double) timeStamp;
@@ -107,4 +110,5 @@ extern "C"
 JNIEXPORT void JNICALL
 Java_com_example_leodw_worldepth_slam_Slam_endReconstruction(JNIEnv *env, jobject instance) {
     delete reconstructor;
+    reconstructor = nullptr;
 }

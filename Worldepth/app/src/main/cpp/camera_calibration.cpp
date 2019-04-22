@@ -386,15 +386,19 @@ namespace calib {
         imagePoints, vector<Mat> &rvecs, vector<Mat> & tvecs, vector<float> &reprojErrs,
         double &totalAvgErr) {
         //! [fixed_aspect]
-        cameraMatrix = Mat::eye(3, 3, CV_32F);
-        if( s.flag &CALIB_FIX_ASPECT_RATIO)
-        cameraMatrix.at<double>(0,0) = s.aspectRatio;
+        cameraMatrix = Mat::eye(3, 3, CV_64F);
+        if( s.flag &CALIB_FIX_ASPECT_RATIO) {
+            s.aspectRatio = (float)imageSize.width / imageSize.height;
+            cameraMatrix.at<double>(0, 0) = s.aspectRatio;
+            cameraMatrix.at<double>(1,1) = 1.;
+            cameraMatrix.at<double>(2, 2) = 1.;
+        }
         //! [fixed_aspect]
         if (s.useFisheye) {
-            distCoeffs = Mat::zeros(4, 1, CV_32F);
+            distCoeffs = Mat::zeros(4, 1, CV_64F);
         }
         else {
-        distCoeffs = Mat::zeros(8, 1, CV_32F);
+        distCoeffs = Mat::zeros(8, 1, CV_64F);
         }
         vector<vector<Point3f> > objectPoints(1);
         calcBoardCornerPositions(s.boardSize, s.squareSize, objectPoints[0], s.calibrationPattern);
@@ -415,7 +419,9 @@ namespace calib {
                 tvecs.push_back(_tvecs.row(i));
             }
         } else {
-        rms = calibrateCamera(objectPoints, imagePoints, imageSize, cameraMatrix, distCoeffs, rvecs, tvecs,
+            double temp1 = cameraMatrix.at<double>(0,0);
+            double temp2 = cameraMatrix.at<double>(1,1);
+            rms = calibrateCamera(objectPoints, imagePoints, imageSize, cameraMatrix, distCoeffs, rvecs, tvecs,
                               s.flag);
         }
 
