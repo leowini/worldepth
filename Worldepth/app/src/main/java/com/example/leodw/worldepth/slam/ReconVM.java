@@ -82,6 +82,7 @@ public class ReconVM extends ViewModel {
     private void stopReconstructionThread() {
         mQueue.add(new TimeFramePair<Bitmap, Long>(mPoisonPillBitmap, new Long (0)));
         mSlam.endReconstruction();
+        mSlam = null;
         mProgressListenerHandler.post(() -> {
             try {
                 mReconstructionThread.join();
@@ -91,7 +92,7 @@ public class ReconVM extends ViewModel {
             }
             //startReconstructionThread();
             //mReconProgress.setValue(ReconProgress.READY);
-            mSlam = null;
+
             mPoissonWrapper = null;
             mTextureMapWrapper = null;
         });
