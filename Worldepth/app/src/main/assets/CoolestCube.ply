@@ -1,0 +1,40 @@
+ply
+format ascii 1.0
+comment author: Greg Turk
+comment object: another cube
+element vertex 8
+property float x
+property float y
+property float z
+property uchar red
+property uchar green
+property uchar blue
+element face 12
+property list uchar int vertex_index
+element edge 5
+property int vertex1
+property int vertex2
+property uchar red
+property uchar green
+property uchar blue
+end_header
+0 0 0 255 0 0
+0 0 1 255 0 0
+0 1 1 255 0 0
+0 1 0 255 0 0
+1 0 0 255 0 0
+1 0 1 255 0 0
+1 1 1 255 0 0
+1 1 0 255 0 0
+3 0 1 2
+3 0 3 2
+3 0 3 7
+3 0 4 7
+3 0 1 5
+3 0 4 5
+3 1 2 6
+3 1 5 6
+3 4 5 6
+3 4 7 6
+3 2 3 6
+3 3 7 6
