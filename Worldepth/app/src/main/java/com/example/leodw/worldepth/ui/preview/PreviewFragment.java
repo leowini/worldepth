@@ -246,7 +246,7 @@ public class PreviewFragment extends Fragment {
 
     private void loadSampleModel() {
         try {
-            File file = new File(getContext().getFilesDir().getAbsolutePath() + "/", "temp19.ply");
+            File file = new File(getContext().getFilesDir().getAbsolutePath() + "/", "SLAM.ply");
             Log.d(TAG, file.getName());
             InputStream stream = new FileInputStream(file);
             setCurrentModel(new PlyModel(stream));

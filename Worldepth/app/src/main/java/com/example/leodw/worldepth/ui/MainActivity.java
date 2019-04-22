@@ -175,7 +175,6 @@ public class MainActivity extends AppCompatActivity {
         checkAndWriteFile("CalibVals.yaml");
         checkAndWriteFile("Pointcloud.txt");
         checkAndWriteFile("calib_data.xml");
-        checkAndWriteFile("temp19.ply");
         //checkAndWriteFile("output.xml");
     }
 
