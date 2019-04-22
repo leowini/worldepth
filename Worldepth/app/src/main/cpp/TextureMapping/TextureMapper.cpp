@@ -454,10 +454,10 @@ int TextureMapper::randomInt(int min, int max) {
     return min + (rand() % static_cast<int>(max - min + 1));
 }
 
-//std::vector<cv::Mat> TextureMapper::getRGBD(std::vector<cv::Mat> &target, std::vector<cv::Mat> &TcwPoses) {
-//    //Get depth for all of the pixels. This will either require rasterization or ray-tracing (I need to do more research to determine which one).
-//
-//}
+std::vector<cv::Mat> TextureMapper::getRGBD(std::vector<cv::Mat> &target, std::vector<cv::Mat> &TcwPoses) {
+    //Get depth for all of the pixels. This will either require rasterization or ray-tracing (I need to do more research to determine which one).
+
+}
 
 void TextureMapper::projectToSurface() {
     // accumulation buffers for colors and weights
