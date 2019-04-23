@@ -49,7 +49,7 @@ public class CalibWrapper {
     private void sendFrameToCalib(Bitmap frame) {
         Mat mat = new Mat();
         Utils.bitmapToMat(frame, mat);
-        if(!complete) {
+        if (!complete) {
             if (passImageToCalibrate(mat.getNativeObjAddr())) {
                 Log.d(TAG, "calibration complete!");
             }
@@ -87,6 +87,7 @@ public class CalibWrapper {
 
     public interface CalibCompleteListener {
         void onCalibComplete();
+
     }
 
     void setOnCompleteListener(CalibCompleteListener listener) {

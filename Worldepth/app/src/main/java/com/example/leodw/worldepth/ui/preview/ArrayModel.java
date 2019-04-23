@@ -20,6 +20,7 @@ public class ArrayModel extends Model {
     @Nullable protected FloatBuffer vertexBuffer;
     @Nullable protected FloatBuffer normalBuffer;
     @Nullable protected IntBuffer faceIndexBuffer;
+    @Nullable protected FloatBuffer rgbBuffer;
 
     @Override
     public void init(float boundSize) {
@@ -28,7 +29,7 @@ public class ArrayModel extends Model {
             glProgram = -1;
         }
         glProgram = Util.compileProgram(R.raw.model_vertex, R.raw.single_light_fragment,
-                new String[] {"a_Position", "a_Normal"});
+                new String[] {"a_Position", "a_Normal", "a_Color"});
         super.init(boundSize);
     }
 
