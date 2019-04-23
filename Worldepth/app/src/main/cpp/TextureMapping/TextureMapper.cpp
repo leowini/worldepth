@@ -308,23 +308,23 @@ float TextureMapper::distance(int sx, int sy, int st,
     return dist;
 }
 
-//void TextureMapper::vote(cv::Mat &completenessPatchMatches, cv::Mat &coherencePatchMatches) {
-//    //For each pixel in the target
-//    for (int t = 0; t < target.size(); t++) {
-//        for (int y = 0; y < targetHeight; y++) {
-//            for (int x = 0; x < targetWidth; x++) {
-//                std::vector<std::vector<std::vector<int>>> patches = findSourcePatches(completenessPatchMatches, coherencePatchMatches, x, y, t);
-//                std::vector<std::vector<int>> completenessPatches = patches[0];
-//                std::vector<std::vector<int>> coherencePatches = patches[1];
-//
-//                for (int c = 0; c < sourceChannels; c++) {
-//                    Tixi(completenessPatches, coherencePatches, c);
-//                }
-//
-//            }
-//        }
-//    }
-//}
+void TextureMapper::vote(cv::Mat &completenessPatchMatches, cv::Mat &coherencePatchMatches) {
+    //For each pixel in the target
+    for (int t = 0; t < target.size(); t++) {
+        for (int y = 0; y < targetHeight; y++) {
+            for (int x = 0; x < targetWidth; x++) {
+                std::vector<std::vector<std::vector<int>>> patches = findSourcePatches(completenessPatchMatches, coherencePatchMatches, x, y, t);
+                std::vector<std::vector<int>> completenessPatches = patches[0];
+                std::vector<std::vector<int>> coherencePatches = patches[1];
+
+                for (int c = 0; c < sourceChannels; c++) {
+                    Tixi(completenessPatches, coherencePatches, c);
+                }
+
+            }
+        }
+    }
+}
 
 std::vector<std::vector<std::vector<int>>>
 TextureMapper::findSourcePatches(cv::Mat &completenessPatchMatches, cv::Mat &coherencePatchMatches,
@@ -391,40 +391,42 @@ TextureMapper::findSourcePatches(cv::Mat &completenessPatchMatches, cv::Mat &coh
     return sourcePatches;
 }
 
-//int TextureMapper::Tixi(std::vector<std::vector<int>> &completenessPatches, std::vector<std::vector<int>> &coherencePatches, int c /*color channel*/) {
-//    //su and sv are the source patches overlapping with pixel xi of the target for the completeness and coherence terms, respectively.
-//    //yu and yv refer to a single pixel in su and sv , respectively, corresponding to the Xith pixel of the target image.
-//    //U and V refer to the number of patches for the completeness and coherence terms, respectively.
-//    //wj = (cos(θ)**2) / (d**2), where θ is the angle between the surface
-//    //normal and the viewing direction at image j and d denotes the distance between the camera and the surface.
-//    int U = completenessPatches.size();
-//    int V = coherencePatches.size();
-//    int L = 49; //L is the number of pixels in a patch (7 x 7 = 49)
-//    int alpha = 2;
-//    double lambda = 0.1;
-//    int sum1 = 0;
-//    int N = texture.size(); //N is the number of texture images.
-//    for (int u = 0; u < U; u++) {
-//        int upatch = completenessPatches[u][c];
-//        sum1 += upatch;
-//    }
-//    int term1 = (1/L)*sum1;
-//    int sum2 = 0;
-//    for (int v; v < V; v++) {
-//        int vpatch = coherencePatches[v][c];
-//        sum2 += vpatch;
-//    }
-//    int term2 = (alpha / L) * sum2;
-//    int sum3 = 0;
-//    for (int k = 0; k < N; k++) {
-//        //Mk(Xi->k) RGB color of the kth texture at pixel Xi->k, i.e., the result of projecting texture k to camera i
-//        // (Xi->k is pixel position projected from image i to k)
-//        sum3 += Mk(Xi->k);
-//    }
-//    int term3 = (lambda / N) * wi(xi) * sum3;
-//    int denominator = (U / L) + ((alpha * V) / L) + (lambda * wi(xi));
-//    return ((term1 + term2 + term3) / denominator);
-//}
+int TextureMapper::Tixi(std::vector<std::vector<int>> &completenessPatches, std::vector<std::vector<int>> &coherencePatches, int c /*color channel*/) {
+    //su and sv are the source patches overlapping with pixel xi of the target for the completeness and coherence terms, respectively.
+    //yu and yv refer to a single pixel in su and sv , respectively, corresponding to the Xith pixel of the target image.
+    //U and V refer to the number of patches for the completeness and coherence terms, respectively.
+    //wj = (cos(θ)**2) / (d**2), where θ is the angle between the surface
+    //normal and the viewing direction at image j and d denotes the distance between the camera and the surface.
+    int U = completenessPatches.size();
+    int V = coherencePatches.size();
+    int L = 49; //L is the number of pixels in a patch (7 x 7 = 49)
+    int alpha = 2;
+    double lambda = 0.1;
+    int sum1 = 0;
+    int N = (int) texture.size(); //N is the number of texture images.
+    for (int u = 0; u < U; u++) {
+        int upatch = completenessPatches[u][c];
+        sum1 += upatch;
+    }
+    int term1 = (1/L)*sum1;
+    int sum2 = 0;
+    for (int v; v < V; v++) {
+        int vpatch = coherencePatches[v][c];
+        sum2 += vpatch;
+    }
+    int term2 = (alpha / L) * sum2;
+    int sum3 = 0;
+    for (int k = 0; k < N; k++) {
+        //Mk(Xi->k) RGB color of the kth texture at pixel Xi->k, i.e., the result of projecting texture k to camera i
+        // (Xi->k is pixel position projected from image i to k)
+        int Xik = 0;
+        sum3 += texture.at(k).at<int>(Xik)/*project texture k to image i*/;
+    }
+    cv::Vec3f wixi = 0;
+    int term3 = (lambda / N) * wixi * sum3;
+    int denominator = (U / L) + ((alpha * V) / L) + (lambda * wixi);
+    return ((term1 + term2 + term3) / denominator);
+}
 
 //void TextureMapper::reconstruct() {
 //    for (int t = 0; t < texture.size(); t++) {
@@ -576,7 +578,7 @@ std::vector<cv::Mat> TextureMapper::getRGBD() {
         ofs.open("./output.ppm");
         ofs << "P6\n" << sourceWidth << " " << sourceHeight << "\n255\n";
         ofs.close();
-
+        depthMap = depthBuffer;
         delete [] depthBuffer;
     }
 }

@@ -26,6 +26,8 @@ private:
 
     const float nearClippingPLane = 1;
     const float farClippingPLane = 1000;
+    float *depthMap;
+    cv::Mat depthMapMat;
 
     int patchSize;
     int ntris;
@@ -44,11 +46,11 @@ private:
     //void reconstruct();
     //int Mixi();
     cv::Mat patchSearch(int iterations);
-    //void vote(cv::Mat &completenessPatchMatches, cv::Mat &coherencePatchMatches);
+    void vote(cv::Mat &completenessPatchMatches, cv::Mat &coherencePatchMatches);
     std::vector<std::vector<std::vector<int>>> findSourcePatches(cv::Mat &completenessPatchMatches, cv::Mat &coherencePatchMatches,
                                                                     int x, int y, int t);
     //bool isInTargetPatch(cv::Vec<float, 4> targetMatch, int x, int y, int t);
-    //int Tixi(std::vector<std::vector<int>> &completenessPatches, std::vector<std::vector<int>> &coherencePatches, int c);
+    int Tixi(std::vector<std::vector<int>> &completenessPatches, std::vector<std::vector<int>> &coherencePatches, int c);
     float distance(int sx, int sy, int st,
                     int tx, int ty, int tt,
                     int patchSize, float threshold);
