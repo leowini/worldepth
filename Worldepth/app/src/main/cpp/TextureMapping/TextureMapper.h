@@ -43,11 +43,11 @@ private:
     void read_ply_file();
     void write_ply_file(double *weights, double *acc_red, double *acc_grn, double *acc_blu);
     void align();
-    //void reconstruct();
-    //int Mixi();
+    void reconstruct();
+    int Mixi();
     cv::Mat patchSearch(int iterations);
-    void vote(cv::Mat &completenessPatchMatches, cv::Mat &coherencePatchMatches);
-    std::vector<std::vector<std::vector<int>>> findSourcePatches(cv::Mat &completenessPatchMatches, cv::Mat &coherencePatchMatches,
+    void vote(std::vector<cv::Mat> &completenessPatchMatches, std::vector<cv::Mat> &coherencePatchMatches);
+    std::vector<std::vector<std::vector<int>>> findSourcePatches(std::vector<cv::Mat> &completenessPatchMatches, std::vector<cv::Mat> &coherencePatchMatches,
                                                                     int x, int y, int t);
     //bool isInTargetPatch(cv::Vec<float, 4> targetMatch, int x, int y, int t);
     int Tixi(std::vector<std::vector<int>> &completenessPatches, std::vector<std::vector<int>> &coherencePatches, int c);

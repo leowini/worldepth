@@ -76,8 +76,8 @@ void TextureMapper::init() {
 }
 
 void TextureMapper::textureMap() {
-    //align();
-    //reconstruct();
+    align();
+    reconstruct();
     projectToSurface();
 }
 
@@ -85,7 +85,7 @@ void TextureMapper::align() {
     int iterations = 1;
     std::vector<cv::Mat> completenessPatchMatches = patchSearch(iterations);
     std::vector<cv::Mat> coherencePatchMatches = patchSearch(iterations);
-    //vote(completenessPatchMatches, coherencePatchMatches);
+    vote(completenessPatchMatches, coherencePatchMatches);
 }
 
 cv::Mat TextureMapper::patchSearch(int iterations) {
@@ -308,7 +308,7 @@ float TextureMapper::distance(int sx, int sy, int st,
     return dist;
 }
 
-void TextureMapper::vote(cv::Mat &completenessPatchMatches, cv::Mat &coherencePatchMatches) {
+void TextureMapper::vote(std::vector<cv::Mat> &completenessPatchMatches, std::vector<cv::Mat> &coherencePatchMatches) {
     //For each pixel in the target
     for (int t = 0; t < target.size(); t++) {
         for (int y = 0; y < targetHeight; y++) {
@@ -320,14 +320,13 @@ void TextureMapper::vote(cv::Mat &completenessPatchMatches, cv::Mat &coherencePa
                 for (int c = 0; c < sourceChannels; c++) {
                     Tixi(completenessPatches, coherencePatches, c);
                 }
-
             }
         }
     }
 }
 
 std::vector<std::vector<std::vector<int>>>
-TextureMapper::findSourcePatches(cv::Mat &completenessPatchMatches, cv::Mat &coherencePatchMatches,
+TextureMapper::findSourcePatches(std::vector<cv::Mat> &completenessPatchMatches, std::vector<cv::Mat> &coherencePatchMatches,
                                  int x, int y, int t) {
     std::vector<std::vector<std::vector<int>>> sourcePatches;
     std::vector<std::vector<int>> completenessPatches;
@@ -347,9 +346,7 @@ TextureMapper::findSourcePatches(cv::Mat &completenessPatchMatches, cv::Mat &coh
     for (int st = 0; st < source.size(); st++) {
         for (int sy = 0; sy < sourceHeight; sy++) {
             for (int sx = 0; sx < sourceWidth; sx++) {
-                cv::Vec<float, 4> patchMatch = completenessPatchMatches.at<cv::Vec<float, 4>>(st,
-                                                                                              sy,
-                                                                                              st);
+                cv::Vec<float, 4> patchMatch = completenessPatchMatches.at(st).at<cv::Vec<float,4>>(sx, sy);
                 int stx = static_cast<int>(patchMatch[0]), sty = static_cast<int>(patchMatch[1]), stt = static_cast<int>(patchMatch[2]);
                 if ( /* is in x range */(stx >= x1 && stx <= x2) &&
                                         /** is in y range */ (sty >= y1 && sty <= y2) && stt == t) {
@@ -370,9 +367,7 @@ TextureMapper::findSourcePatches(cv::Mat &completenessPatchMatches, cv::Mat &coh
     //Coherence: Find the Source patches most similar to the target patches
     for (int patchy = y1; patchy <= y2; patchy++) {
         for (int patchx = x1; patchx <= x2; patchx++) {
-            cv::Vec<float, 4> sourcePatchVec = coherencePatchMatches.at<cv::Vec<float, 4>>(patchx,
-                                                                                           patchy,
-                                                                                           t);
+            cv::Vec<float, 4> sourcePatchVec = coherencePatchMatches.at(t).at<cv::Vec<float, 4>>(patchx, patchy);
             //return value of the target pixel within the source patch
             std::vector<int> targetPixel;
             //Find target pixel in source patch
@@ -428,29 +423,32 @@ int TextureMapper::Tixi(std::vector<std::vector<int>> &completenessPatches, std:
     return ((term1 + term2 + term3) / denominator);
 }
 
-//void TextureMapper::reconstruct() {
-//    for (int t = 0; t < texture.size(); t++) {
-//        for (int y = 0; y < texture.at(0).size().height; y++) {
-//            for (int x = 0; x < texture.at(0).size().width; x++) {
-//                texture.at(t).ptr(x,y) = Mixi();
-//            }
-//        }
-//    }
-//}
-//
-//int TextureMapper::Mixi() {
-//    int N = texture.size();
-//    int numerator = 0;
-//    for (int j = 0; j < N; j++) {
-//        //Tj(Xi->j) is the result of projecting target j to camera i
-//        numerator += wj(Xi->j) * Tj(Xi->j);
-//    }
-//    int denominator = 0;
-//    for (int j = 0; j < N; j++) {
-//        denominator += wj(Xi->j);
-//    }
-//    return numerator / denominator;
-//}
+void TextureMapper::reconstruct() {
+    for (int t = 0; t < texture.size(); t++) {
+        for (int y = 0; y < texture.at(0).size().height; y++) {
+            for (int x = 0; x < texture.at(0).size().width; x++) {
+                texture.at(t).at<int>(x,y) = Mixi();
+            }
+        }
+    }
+}
+
+int TextureMapper::Mixi() {
+    int N = texture.size();
+    int numerator = 0;
+    for (int j = 0; j < N; j++) {
+        //Tj(Xi->j) is the result of projecting target j to camera i
+        int Xij = 0;
+        int wjxij = (cos(theta)^2) / (depthMapMat.at<int>(Xij)^2);
+        int tjxij = target.at(j).at<int>(Xij);
+        numerator += wj(Xi->j) * Tj(Xi->j);
+    }
+    int denominator = 0;
+    for (int j = 0; j < N; j++) {
+        denominator += wj(Xi->j);
+    }
+    return numerator / denominator;
+}
 
 int TextureMapper::randomInt(int min, int max) {
     return min + (rand() % static_cast<int>(max - min + 1));
