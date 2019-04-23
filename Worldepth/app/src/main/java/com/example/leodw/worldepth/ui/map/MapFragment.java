@@ -37,10 +37,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
+        /*SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.map);
         assert mapFragment != null;
-        mapFragment.getMapAsync(this);
+        mapFragment.getMapAsync(this);*/
         Button mProfileButton = view.findViewById(R.id.mapToProfileBtn);
         Button mMessageButton = view.findViewById(R.id.mapToMessageBtn);
         Button mCameraButton = view.findViewById(R.id.mapToCameraBtn);
