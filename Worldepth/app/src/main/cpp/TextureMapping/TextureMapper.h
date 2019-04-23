@@ -24,7 +24,11 @@ private:
     int sourceChannels;
     int targetChannels;
 
+    const float nearClippingPLane = 1;
+    const float farClippingPLane = 1000;
+
     int patchSize;
+    int ntris;
     std::vector<cv::Point3f> vertices;
     std::vector<cv::Mat> TcwPoses;
     std::vector<cv::Mat> source;
@@ -49,6 +53,21 @@ private:
                     int tx, int ty, int tt,
                     int patchSize, float threshold);
     int randomInt(int min, int max);
+    float TextureMapper::min3(const float &a, const float &b, const float &c);
+    float TextureMapper::max3(const float &a, const float &b, const float &c);
+    float edgeFunction(const cv::Vec3f &a, const cv::Vec3f &b, const cv::Vec3f &c);
+    void convertToRaster(
+            const cv::Vec3f &vertexWorld,
+            const cv::Mat &worldToCamera,
+            const float &l,
+            const float &r,
+            const float &t,
+            const float &b,
+            const float &near,
+            const uint32_t &imageWidth,
+            const uint32_t &imageHeight,
+            cv::Vec3f &vertexRaster
+    );
     std::vector<cv::Mat> getRGBD();
     void projectToSurface();
 };

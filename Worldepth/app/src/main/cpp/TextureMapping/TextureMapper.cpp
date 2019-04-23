@@ -454,6 +454,40 @@ int TextureMapper::randomInt(int min, int max) {
     return min + (rand() % static_cast<int>(max - min + 1));
 }
 
+float TextureMapper::edgeFunction(const cv::Vec3f &a, const cv::Vec3f &b, const cv::Vec3f &c)
+{ return (c[0] - a[0]) * (b[1] - a[1]) - (c[1] - a[1]) * (b[0] - a[0]); }
+
+void convertToRaster(
+        const cv::Vec3f &vertexWorld,
+        const cv::Mat &worldToCamera,
+        const cv::Rect &rect,
+        const float &near,
+        const uint32_t &imageWidth,
+        const uint32_t &imageHeight,
+        cv::Vec3f &vertexRaster
+)
+{
+    cv::Vec3f vertexCamera;
+
+    worldToCamera.multVecMatrix(vertexWorld, vertexCamera);
+
+    // convert to screen space
+    cv::Vec2f vertexScreen;
+    vertexScreen[0] = near * vertexCamera[0] / -vertexCamera[2];
+    vertexScreen[1] = near * vertexCamera[1] / -vertexCamera[2];
+
+    // now convert point from screen space to NDC space (in range [-1,1])
+    cv::Vec2f vertexNDC;
+    vertexNDC[0] = 2 * vertexScreen[0] / (rect.width - rect.x) - (rect.x + rect.width + rect.x) / (rect.width);
+    vertexNDC[1] = 2 * vertexScreen[1] / (rect.height) - (rect.y + ) / (rect.height);
+
+    // convert to raster space
+    vertexRaster[0] = (vertexNDC[0] + 1) / 2 * imageWidth;
+    // in raster space y is down so invert direction
+    vertexRaster[1] = (1 - vertexNDC[1]) / 2 * imageHeight;
+    vertexRaster[2] = -vertexCamera[2];
+}
+
 std::vector<cv::Mat> TextureMapper::getRGBD() {
     //Get depth for all of the pixels. This will either require rasterization or ray-tracing (I need to do more research to determine which one).
     cv::Mat sourceImage;
@@ -467,24 +501,84 @@ std::vector<cv::Mat> TextureMapper::getRGBD() {
         std::vector<cv::Point2f> imagePoints;
         cv::projectPoints(vertices, rvec, pose(cv::Rect(3, 0, 1, 3)), cameraMatrix, distCoef,
                           imagePoints);
-// rasterization algorithm
-        for (auto &triangle : triangles) {
-            // STEP 1: project vertices of the triangle using perspective projection
-            cv::Vec2f v0 = perspectiveProject(triangle[i].v0);
-            cv::Vec2f v1 = perspectiveProject(triangle[i].v1);
-            cv::Vec2f v2 = perspectiveProject(triangle[i].v2);
-            for (each pixel in image) {
-                // STEP 2: is this pixel contained in the projected image of the triangle?
-                if (pixelContainedIn2DTriangle(v0, v1, v2, x, y)) {
-                    image(x,y) = triangle[i].color;
-                    float oneOverZ = v0Raster.z * w0 + v1Raster.z * w1 + v2Raster.z * w2;
-                    float z = 1 / oneOverZ;
+        // rasterization algorithm
+        // define the frame-buffer and the depth-buffer. Initialize depth buffer
+        // to far clipping plane.
+        float *depthBuffer = new float[sourceWidth * sourceHeight];
+        for (uint32_t i = 0; i < sourceWidth * sourceHeight; ++i) depthBuffer[i] = farClippingPLane;
+
+        auto t_start = std::chrono::high_resolution_clock::now();
+
+
+        for (uint32_t i = 0; i < ntris; i++) {
+            const cv::Vec3f &v0 = vertices[nvertices[i * 3]];
+            const cv::Vec3f &v1 = vertices[nvertices[i * 3 + 1]];
+            const cv::Vec3f &v2 = vertices/*array of vec3fs*/[nvertices/*array of ints*/[i * 3 + 2]];
+
+            cv::Vec3f v0Raster, v1Raster, v2Raster;
+
+            convertToRaster(v0, cameraMatrix, l, r, t, b, nearClippingPLane, sourceWidth,
+                            sourceHeight, v0Raster);
+            convertToRaster(v1, cameraMatrix, l, r, t, b, nearClippingPLane, sourceWidth,
+                            sourceHeight, v1Raster);
+            convertToRaster(v2, cameraMatrix, l, r, t, b, nearClippingPLane, sourceWidth,
+                            sourceHeight, v2Raster);
+
+            v0Raster[2] = 1 / v0Raster[2],
+            v1Raster[2] = 1 / v1Raster[2],
+            v2Raster[2] = 1 / v2Raster[2];
+
+            cv::Vec2f st0 = st[stindices[i * 3]];
+            cv::Vec2f st1 = st[stindices[i * 3 + 1]];
+            cv::Vec2f st2 = st[stindices[i * 3 + 2]];
+
+            st0 *= v0Raster[2], st1 *= v1Raster[2], st2 *= v2Raster[2];
+
+            float xmin = min3(v0Raster[0], v1Raster[0], v2Raster[0]);
+            float ymin = min3(v0Raster[1], v1Raster[1], v2Raster[1]);
+            float xmax = max3(v0Raster[0], v1Raster[0], v2Raster[0]);
+            float ymax = max3(v0Raster[1], v1Raster[1], v2Raster[1]);
+
+            // the triangle is out of screen
+            if (xmin > sourceWidth - 1 || xmax < 0 || ymin > sourceHeight - 1 || ymax < 0) continue;
+
+            // be careful xmin/xmax/ymin/ymax can be negative. Don't cast to uint32_t
+            uint32_t x0 = std::max(int32_t(0), (int32_t) (std::floor(xmin)));
+            uint32_t x1 = std::min(int32_t(sourceWidth) - 1, (int32_t) (std::floor(xmax)));
+            uint32_t y0 = std::max(int32_t(0), (int32_t) (std::floor(ymin)));
+            uint32_t y1 = std::min(int32_t(sourceHeight) - 1, (int32_t) (std::floor(ymax)));
+
+            float area = edgeFunction(v0Raster, v1Raster, v2Raster);
+
+            for (uint32_t y = y0; y <= y1; ++y) {
+                for (uint32_t x = x0; x <= x1; ++x) {
+                    cv::Vec3f pixelSample(x + 0.5, y + 0.5, 0);
+                    float w0 = edgeFunction(v1Raster, v2Raster, pixelSample);
+                    float w1 = edgeFunction(v2Raster, v0Raster, pixelSample);
+                    float w2 = edgeFunction(v0Raster, v1Raster, pixelSample);
+                    if (w0 >= 0 && w1 >= 0 && w2 >= 0) {
+                        w0 /= area;
+                        w1 /= area;
+                        w2 /= area;
+                        float oneOverZ = v0Raster[2] * w0 + v1Raster[2] * w1 + v2Raster[2] * w2;
+                        float z = 1 / oneOverZ;
+                        if (z < depthBuffer[y * sourceWidth + x]) {
+                            depthBuffer[y * sourceWidth + x] = z;
+                        }
+                    }
                 }
             }
         }
-    }
-}
+        auto t_end = std::chrono::high_resolution_clock::now();
+        auto passedTime = std::chrono::duration<double, std::milli>(t_end - t_start).count();
+        std::cerr << "Wall passed time:  " << passedTime << " ms" << std::endl;
+        std::ofstream ofs;
+        ofs.open("./output.ppm");
+        ofs << "P6\n" << sourceWidth << " " << sourceHeight << "\n255\n";
+        ofs.close();
 
+        delete [] depthBuffer;
+    }
 }
 
 void TextureMapper::projectToSurface() {
@@ -591,14 +685,14 @@ void TextureMapper::read_ply_file() {
         std::vector<cv::Point3f> verts(vertices->count);
         std::memcpy(verts.data(), vertices->buffer.get(), numVerticesBytes);
         TextureMapper::vertices = verts;
+        TextureMapper::ntris = faces->count;
     }
     catch (const std::exception &e) {
         std::cerr << "Caught tinyply exception: " << e.what() << std::endl;
     }
 }
 
-void
-TextureMapper::write_ply_file(double *weights, double *acc_red, double *acc_grn, double *acc_blu) {
+void TextureMapper::write_ply_file(double *weights, double *acc_red, double *acc_grn, double *acc_blu) {
     std::ifstream in(plyFilename, std::ios_base::binary);
     std::ofstream out(tempFilename, std::ios_base::binary);
     std::string line;
@@ -644,3 +738,9 @@ TextureMapper::write_ply_file(double *weights, double *acc_red, double *acc_grn,
     int result = std::remove(plyFilename.c_str());
     int renameResult = std::rename(tempFilename.c_str(), plyFilename.c_str());
 }
+
+float TextureMapper::min3(const float &a, const float &b, const float &c)
+{ return std::min(a, std::min(b, c)); }
+
+float TextureMapper::max3(const float &a, const float &b, const float &c)
+{ return std::max(a, std::max(b, c)); }
