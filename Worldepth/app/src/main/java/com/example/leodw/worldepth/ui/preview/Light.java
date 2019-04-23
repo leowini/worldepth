@@ -7,9 +7,9 @@ public class Light {
 
     @NonNull private float[] lightPosInWorldSpace;
     private final float[] lightPosInEyeSpace = new float[4];
-    private float[] ambientColor = new float[] {0.1f, 0.1f, 0.4f};
-    private float[] diffuseColor = new float[] {1.0f, 1.0f, 1.0f};
-    private float[] specularColor = new float[] {1.0f, 1.0f, 1.0f};
+    private float[] ambientColor = new float[] {0.0f, 0.0f, 0.0f};
+    private float[] diffuseColor = new float[] {0.0f, 0.0f, 0.0f};
+    private float[] specularColor = new float[] {0.0f, 0.0f, 0.0f};
 
     public Light(@NonNull float[] position) {
         this.lightPosInWorldSpace = position;
