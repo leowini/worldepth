@@ -318,7 +318,7 @@ void TextureMapper::vote(std::vector<cv::Mat> &completenessPatchMatches, std::ve
                 std::vector<std::vector<int>> coherencePatches = patches[1];
 
                 for (int c = 0; c < sourceChannels; c++) {
-                    Tixi(completenessPatches, coherencePatches, c);
+                    Tixi(x, y, t, completenessPatches, coherencePatches, c);
                 }
             }
         }
@@ -386,14 +386,14 @@ TextureMapper::findSourcePatches(std::vector<cv::Mat> &completenessPatchMatches,
     return sourcePatches;
 }
 
-int TextureMapper::Tixi(std::vector<std::vector<int>> &completenessPatches, std::vector<std::vector<int>> &coherencePatches, int c /*color channel*/) {
+int TextureMapper::Tixi(int &x, int &y, int &t, std::vector<std::vector<int>> &completenessPatches, std::vector<std::vector<int>> &coherencePatches, int c /*color channel*/) {
     //su and sv are the source patches overlapping with pixel xi of the target for the completeness and coherence terms, respectively.
     //yu and yv refer to a single pixel in su and sv , respectively, corresponding to the Xith pixel of the target image.
     //U and V refer to the number of patches for the completeness and coherence terms, respectively.
     //wj = (cos(θ)**2) / (d**2), where θ is the angle between the surface
     //normal and the viewing direction at image j and d denotes the distance between the camera and the surface.
-    int U = completenessPatches.size();
-    int V = coherencePatches.size();
+    int U = (int) completenessPatches.size();
+    int V = (int) coherencePatches.size();
     int L = 49; //L is the number of pixels in a patch (7 x 7 = 49)
     int alpha = 2;
     double lambda = 0.1;
@@ -411,15 +411,21 @@ int TextureMapper::Tixi(std::vector<std::vector<int>> &completenessPatches, std:
     }
     int term2 = (alpha / L) * sum2;
     int sum3 = 0;
-    for (int k = 0; k < N; k++) {
+    std::vector<cv::Point2f> Xi;
+    Xi.emplace_back(cv::Point2f(x, y));
+    for (unsigned long k = 0; k < N; k++) {
         //Mk(Xi->k) RGB color of the kth texture at pixel Xi->k, i.e., the result of projecting texture k to camera i
         // (Xi->k is pixel position projected from image i to k)
-        int Xik = 0;
-        sum3 += texture.at(k).at<int>(Xik)/*project texture k to image i*/;
+        cv::Mat pose = TcwPoses.at(k);
+        cv::Mat rvec;
+        cv::Rodrigues(pose(cv::Rect(0, 0, 3, 3)), rvec);
+        std::vector<cv::Point2f> Xik;
+        cv::projectPoints(Xi, rvec, pose(cv::Rect(3, 0, 1, 3)), cameraMatrix, distCoef, Xik);
+        sum3 += texture.at(k).at<int>(Xik.at(0))/*project texture k to image i*/;
     }
-    cv::Vec3f wixi = 0;
-    int term3 = (lambda / N) * wixi * sum3;
-    int denominator = (U / L) + ((alpha * V) / L) + (lambda * wixi);
+    int WiXi = (cos(theta)^2) / (depthMapMat.at<int>(Xi.at(0))^2);
+    int term3 = (int) (lambda / N) * WiXi * sum3;
+    int denominator = (int) ((U / L) + ((alpha * V) / L) + (lambda * WiXi));
     return ((term1 + term2 + term3) / denominator);
 }
 
@@ -427,25 +433,28 @@ void TextureMapper::reconstruct() {
     for (int t = 0; t < texture.size(); t++) {
         for (int y = 0; y < texture.at(0).size().height; y++) {
             for (int x = 0; x < texture.at(0).size().width; x++) {
-                texture.at(t).at<int>(x,y) = Mixi();
+                texture.at(t).at<int>(x,y) = Mixi(x, y, t);
             }
         }
     }
 }
 
-int TextureMapper::Mixi() {
-    int N = texture.size();
+int TextureMapper::Mixi(int &x, int &y, int &t) {
+    int N = (int) texture.size();
     int numerator = 0;
-    for (int j = 0; j < N; j++) {
-        //Tj(Xi->j) is the result of projecting target j to camera i
-        int Xij = 0;
-        int wjxij = (cos(theta)^2) / (depthMapMat.at<int>(Xij)^2);
-        int tjxij = target.at(j).at<int>(Xij);
-        numerator += wj(Xi->j) * Tj(Xi->j);
-    }
     int denominator = 0;
     for (int j = 0; j < N; j++) {
-        denominator += wj(Xi->j);
+        //Tj(Xi->j) is the result of projecting target j to camera i
+        cv::Mat pose = TcwPoses.at((unsigned long) t);
+        cv::Mat rvec;
+        cv::Rodrigues(pose(cv::Rect(0, 0, 3, 3)), rvec);
+        std::vector<cv::Point2f> Xij;
+        std::vector<cv::Point2f> Xi;
+        Xi.emplace_back(cv::Point2f(x, y));
+        cv::projectPoints(Xi, rvec, pose(cv::Rect(3, 0, 1, 3)), cameraMatrix, distCoef, Xij);
+        int WjXij = (cos(theta)^2) / (depthMapMat.at<int>(Xij.at(0))^2);
+        numerator += WjXij * target.at((unsigned long) j).at<int>(Xij.at(0));
+        denominator += WjXij;
     }
     return numerator / denominator;
 }
