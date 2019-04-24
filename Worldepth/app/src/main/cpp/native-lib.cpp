@@ -101,8 +101,10 @@ Java_com_example_leodw_worldepth_slam_CalibWrapper_passImageToCalibrate(JNIEnv *
             settings = nullptr;
         }
         return done;
+    }else {
+        mat.release();
+        return false;
     }
-    return false;
 }
 
 extern "C"
