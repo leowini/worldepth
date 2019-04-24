@@ -27,7 +27,7 @@ private:
     const float nearClippingPLane = 1;
     const float farClippingPLane = 1000;
     float *depthMap;
-    cv::Mat depthMapMat;
+    std::vector<cv::Mat> depthMaps;
 
     int patchSize;
     int ntris;

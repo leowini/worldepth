@@ -423,7 +423,7 @@ int TextureMapper::Tixi(int &x, int &y, int &t, std::vector<std::vector<int>> &c
         cv::projectPoints(Xi, rvec, pose(cv::Rect(3, 0, 1, 3)), cameraMatrix, distCoef, Xik);
         sum3 += texture.at(k).at<int>(Xik.at(0))/*project texture k to image i*/;
     }
-    int WiXi = (cos(theta)^2) / (depthMapMat.at<int>(Xi.at(0))^2);
+    int WiXi = (cos(theta)^2) / (depthMaps.at((unsigned long) t).at<int>(Xi.at(0))^2);
     int term3 = (int) (lambda / N) * WiXi * sum3;
     int denominator = (int) ((U / L) + ((alpha * V) / L) + (lambda * WiXi));
     return ((term1 + term2 + term3) / denominator);
@@ -452,7 +452,7 @@ int TextureMapper::Mixi(int &x, int &y, int &t) {
         std::vector<cv::Point2f> Xi;
         Xi.emplace_back(cv::Point2f(x, y));
         cv::projectPoints(Xi, rvec, pose(cv::Rect(3, 0, 1, 3)), cameraMatrix, distCoef, Xij);
-        int WjXij = (cos(theta)^2) / (depthMapMat.at<int>(Xij.at(0))^2);
+        int WjXij = (cos(theta)^2) / (depthMaps.at((unsigned long) j).at<int>(Xij.at(0))^2);
         numerator += WjXij * target.at((unsigned long) j).at<int>(Xij.at(0));
         denominator += WjXij;
     }
