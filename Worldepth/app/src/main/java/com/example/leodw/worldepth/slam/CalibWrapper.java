@@ -69,7 +69,7 @@ public class CalibWrapper {
                 timeFramePair = mQueue.take();
                 bmp = timeFramePair.getFrame();
             }
-            sendFrameToCalib(mPoisonPillBitmap);
+
         } catch (Exception e) {
             System.out.println(Thread.currentThread().getName() + " " + e.getMessage());
         }

@@ -42,7 +42,8 @@ namespace calib {
     }
 
 
-    void Settings::write(FileStorage &fs) const                        //Write serialization for this class
+    void Settings::write(
+            FileStorage &fs) const                        //Write serialization for this class
     {
         fs << "{"
            << "BoardSize_Width" << boardSize.width
@@ -66,7 +67,8 @@ namespace calib {
            << "}";
     }
 
-    void Settings::read(const FileNode &node)                          //Read serialization for this class
+    void Settings::read(
+            const FileNode &node)                          //Read serialization for this class
     {
         node["BoardSize_Width"] >> boardSize.width;
         node["BoardSize_Height"] >> boardSize.height;
@@ -125,8 +127,8 @@ namespace calib {
             }
             if (inputType == CAMERA)
                 //inputCapture.open(cameraID);
-            if (inputType == VIDEO_FILE)
-                inputCapture.open(input);
+                if (inputType == VIDEO_FILE)
+                    inputCapture.open(input);
         }
         if (inputType == INVALID) {
             cerr << " Input does not exist: " << input;
@@ -197,16 +199,16 @@ namespace calib {
         //Mat view;
         bool blinkOutput = false;
 
-        if(mode == CALIBRATED)
+        if (mode == CALIBRATED)
             return;
         //view = s.nextImage();
 
         //-----  If no more image, or got enough, then stop calibration and show result -------------
         if (mode == CAPTURING && imagePoints.size() >= (size_t) nrFrames) {
             if (runCalibrationAndSave(imageSize, cameraMatrix, distCoeffs, imagePoints)) {
-            mode = CALIBRATED;
-            return;
-            }else {
+                mode = CALIBRATED;
+                return;
+            } else {
                 mode = DETECTION;
             }
         }
@@ -381,24 +383,24 @@ namespace calib {
     }
 
     //! [board_corners]
-    static bool runCalibration(Settings & s, Size & imageSize, Mat & cameraMatrix, Mat & distCoeffs,
-                                   vector<vector<Point2f> >
-        imagePoints, vector<Mat> &rvecs, vector<Mat> & tvecs, vector<float> &reprojErrs,
-        double &totalAvgErr) {
+    static bool runCalibration(Settings &s, Size &imageSize, Mat &cameraMatrix, Mat &distCoeffs,
+                               vector<vector<Point2f> >
+                               imagePoints, vector<Mat> &rvecs, vector<Mat> &tvecs,
+                               vector<float> &reprojErrs,
+                               double &totalAvgErr) {
         //! [fixed_aspect]
         cameraMatrix = Mat::eye(3, 3, CV_64F);
-        if( s.flag &CALIB_FIX_ASPECT_RATIO) {
-            s.aspectRatio = (float)imageSize.width / imageSize.height;
+        if (s.flag & CALIB_FIX_ASPECT_RATIO) {
+            s.aspectRatio = (float) imageSize.width / imageSize.height;
             cameraMatrix.at<double>(0, 0) = s.aspectRatio;
-            cameraMatrix.at<double>(1,1) = 1.;
+            cameraMatrix.at<double>(1, 1) = 1.;
             cameraMatrix.at<double>(2, 2) = 1.;
         }
         //! [fixed_aspect]
         if (s.useFisheye) {
             distCoeffs = Mat::zeros(4, 1, CV_64F);
-        }
-        else {
-        distCoeffs = Mat::zeros(8, 1, CV_64F);
+        } else {
+            distCoeffs = Mat::zeros(8, 1, CV_64F);
         }
         vector<vector<Point3f> > objectPoints(1);
         calcBoardCornerPositions(s.boardSize, s.squareSize, objectPoints[0], s.calibrationPattern);
@@ -409,33 +411,36 @@ namespace calib {
 
         if (s.useFisheye) {
             Mat _rvecs, _tvecs;
-            rms = fisheye::calibrate(objectPoints, imagePoints, imageSize, cameraMatrix, distCoeffs, _rvecs,
-                                 _tvecs, s.flag);
+            rms = fisheye::calibrate(objectPoints, imagePoints, imageSize, cameraMatrix, distCoeffs,
+                                     _rvecs,
+                                     _tvecs, s.flag);
 
             rvecs.reserve(_rvecs.rows);
             tvecs.reserve(_tvecs.rows);
-            for(int i = 0;i < int(objectPoints.size()); i++){
+            for (int i = 0; i < int(objectPoints.size()); i++) {
                 rvecs.push_back(_rvecs.row(i));
                 tvecs.push_back(_tvecs.row(i));
             }
         } else {
-            double temp1 = cameraMatrix.at<double>(0,0);
-            double temp2 = cameraMatrix.at<double>(1,1);
-            rms = calibrateCamera(objectPoints, imagePoints, imageSize, cameraMatrix, distCoeffs, rvecs, tvecs,
-                              s.flag);
+            double temp1 = cameraMatrix.at<double>(0, 0);
+            double temp2 = cameraMatrix.at<double>(1, 1);
+            rms = calibrateCamera(objectPoints, imagePoints, imageSize, cameraMatrix, distCoeffs,
+                                  rvecs, tvecs,
+                                  s.flag);
         }
 
-        cout << "Re-projection error reported by calibrateCamera: "<< rms <<
-        endl;
+        cout << "Re-projection error reported by calibrateCamera: " << rms <<
+             endl;
 
         bool ok = checkRange(cameraMatrix) && checkRange(distCoeffs);
 
-        totalAvgErr = computeReprojectionErrors(objectPoints, imagePoints, rvecs, tvecs, cameraMatrix,
+        totalAvgErr = computeReprojectionErrors(objectPoints, imagePoints, rvecs, tvecs,
+                                                cameraMatrix,
                                                 distCoeffs, reprojErrs, s.useFisheye);
 
         return
-        ok;
-}
+                ok;
+    }
 
 // Print camera parameters to the output file
 void Settings::saveCameraParams(Settings &s, Size &imageSize, Mat &cameraMatrix, Mat &distCoeffs,
@@ -496,26 +501,26 @@ void Settings::saveCameraParams(Settings &s, Size &imageSize, Mat &cameraMatrix,
 
     fs << "fisheye_model" << s.useFisheye;*/
 
-        fs << "camera_matrix" << cameraMatrix;
-        fs<<"Camera_fx" << (double)cameraMatrix.at<float>(0, 0);
-        fs.write("Camera_fy", (double)cameraMatrix.at<float>(1, 1));
-        fs.write("Camera_cx", (double)cameraMatrix.at<float>(0, 2));
-        fs.write("Camera_cy", (double)cameraMatrix.at<float>(1, 2));
+            fs << "camera_matrix" << cameraMatrix;
+            fs << "Camera_fx" << (double) cameraMatrix.at<float>(0, 0);
+            fs.write("Camera_fy", (double) cameraMatrix.at<float>(1, 1));
+            fs.write("Camera_cx", (double) cameraMatrix.at<float>(0, 2));
+            fs.write("Camera_cy", (double) cameraMatrix.at<float>(1, 2));
 
-        fs << "distortion_coefficients" << distCoeffs;
-        fs.write("Camera_k1", (double)distCoeffs.at<float>(0));
-        fs.write("Camera_k2", (double)distCoeffs.at<float>(1));
-        fs.write("Camera_p1", (double)distCoeffs.at<float>(2));
-        fs.write("Camera_p2", (double)distCoeffs.at<float>(3));
-        fs.write("Camera_k3", (double)distCoeffs.at<float>(4));
+            fs << "distortion_coefficients" << distCoeffs;
+            fs.write("Camera_k1", (double) distCoeffs.at<float>(0));
+            fs.write("Camera_k2", (double) distCoeffs.at<float>(1));
+            fs.write("Camera_p1", (double) distCoeffs.at<float>(2));
+            fs.write("Camera_p2", (double) distCoeffs.at<float>(3));
+            fs.write("Camera_k3", (double) distCoeffs.at<float>(4));
 
-        fs.write("Camera_fps", 15);
-        fs.write("Camera_RGB", 1);
-        fs.write("ORBextractor_nFeatures", 2000);
-        fs.write("ORBextractor_scaleFactor", 1.2);
-        fs.write("ORBextractor_nLevels", 8);
-        fs.write("ORBextractor_iniThFAST", 20);
-        fs.write("ORBextractor_minThFAST", 7);
+            fs.write("Camera_fps", 15);
+            fs.write("Camera_RGB", 1);
+            fs.write("ORBextractor_nFeatures", 2000);
+            fs.write("ORBextractor_scaleFactor", 1.2);
+            fs.write("ORBextractor_nLevels", 8);
+            fs.write("ORBextractor_iniThFAST", 20);
+            fs.write("ORBextractor_minThFAST", 7);
 
 /*    fs << "avg_reprojection_error" << totalAvgErr;
     if (s.writeExtrinsics && !reprojErrs.empty())
@@ -559,20 +564,21 @@ void Settings::saveCameraParams(Settings &s, Size &imageSize, Mat &cameraMatrix,
         }
         fs << "image_points" << imagePtMat;
     }*/
-        fs.release();
-    } catch (Exception e){
-        int error = 1;
+            fs.release();
+        } catch (Exception e) {
+            int error = 1;
+        }
     }
-}
 
 //! [run_and_save]
     bool Settings::runCalibrationAndSave(Size imageSize, Mat &cameraMatrix, Mat &distCoeffs,
-                               vector<vector<Point2f> > imagePoints) {
+                                         vector<vector<Point2f> > imagePoints) {
         vector<Mat> rvecs, tvecs;
         vector<float> reprojErrs;
         double totalAvgErr = 0;
 
-        bool ok = runCalibration(*this, imageSize, cameraMatrix, distCoeffs, imagePoints, rvecs, tvecs,
+        bool ok = runCalibration(*this, imageSize, cameraMatrix, distCoeffs, imagePoints, rvecs,
+                                 tvecs,
                                  reprojErrs,
                                  totalAvgErr);
         cout << (ok ? "Calibration succeeded" : "Calibration failed")
