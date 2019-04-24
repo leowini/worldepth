@@ -423,7 +423,6 @@ int TextureMapper::Tixi(int &x, int &y, int &t, std::vector<std::vector<int>> &c
         cv::projectPoints(Xi, rvec, pose(cv::Rect(3, 0, 1, 3)), cameraMatrix, distCoef, Xik);
         sum3 += texture.at(k).at<int>(Xik.at(0))/*project texture k to image i*/;
     }
-    float theta = ;
     int WiXi = (cos(theta)^2) / (depthMaps.at((unsigned long) t).at<int>(Xi.at(0))^2);
     int term3 = (int) (lambda / N) * WiXi * sum3;
     int denominator = (int) ((U / L) + ((alpha * V) / L) + (lambda * WiXi));
@@ -491,8 +490,8 @@ void TextureMapper::convertToRaster(
 
     // now convert point from screen space to NDC space (in range [-1,1])
     cv::Vec2f vertexNDC;
-    vertexNDC[0] = 2 * vertexScreen[0] / (rect.width - rect.x) - (rect.x + rect.width + rect.x) / (rect.width);
-    vertexNDC[1] = 2 * vertexScreen[1] / (rect.height) - (rect.y + ) / (rect.height);
+    vertexNDC[0] = 2 * vertexScreen[0] / (r - l) - (r + l) / (r - l);
+    vertexNDC[1] = 2 * vertexScreen[1] / (t - b) - (t + b) / (t - b);
 
     // convert to raster space
     vertexRaster[0] = (vertexNDC[0] + 1) / 2 * imageWidth;
@@ -540,12 +539,6 @@ std::vector<cv::Mat> TextureMapper::getRGBD() {
             v0Raster[2] = 1 / v0Raster[2],
             v1Raster[2] = 1 / v1Raster[2],
             v2Raster[2] = 1 / v2Raster[2];
-
-            cv::Vec2f st0 = st[stindices[i * 3]];
-            cv::Vec2f st1 = st[stindices[i * 3 + 1]];
-            cv::Vec2f st2 = st[stindices[i * 3 + 2]];
-
-            st0 *= v0Raster[2], st1 *= v1Raster[2], st2 *= v2Raster[2];
 
             float xmin = min3(v0Raster[0], v1Raster[0], v2Raster[0]);
             float ymin = min3(v0Raster[1], v1Raster[1], v2Raster[1]);
