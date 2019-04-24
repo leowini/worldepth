@@ -24,6 +24,7 @@ TextureMapper::TextureMapper(const std::string &internalPath, std::vector<cv::Ma
     plyFilename = internalPath + "/SLAM.ply";
     read_ply_file(); //gets vertices from the file
     init(); //clones source and target
+    getRGBD(); //computes depth maps and thetas between surface normals and camera views
 }
 
 /**
@@ -423,7 +424,7 @@ int TextureMapper::Tixi(int &x, int &y, int &t, std::vector<std::vector<int>> &c
         cv::projectPoints(Xi, rvec, pose(cv::Rect(3, 0, 1, 3)), cameraMatrix, distCoef, Xik);
         sum3 += texture.at(k).at<int>(Xik.at(0))/*project texture k to image i*/;
     }
-    int WiXi = (cos(theta)^2) / (depthMaps.at((unsigned long) t).at<int>(Xi.at(0))^2);
+    int WiXi = ((int) cos(thetas.at((unsigned long) t).at<double>(x, y))^2) / (depthMaps.at((unsigned long) t).at<int>(Xi.at(0))^2);
     int term3 = (int) (lambda / N) * WiXi * sum3;
     int denominator = (int) ((U / L) + ((alpha * V) / L) + (lambda * WiXi));
     return ((term1 + term2 + term3) / denominator);
@@ -452,7 +453,7 @@ int TextureMapper::Mixi(int &x, int &y, int &t) {
         std::vector<cv::Point2f> Xi;
         Xi.emplace_back(cv::Point2f(x, y));
         cv::projectPoints(Xi, rvec, pose(cv::Rect(3, 0, 1, 3)), cameraMatrix, distCoef, Xij);
-        int WjXij = (cos(theta)^2) / (depthMaps.at((unsigned long) j).at<int>(Xij.at(0))^2);
+        int WjXij = ((int) cos(thetas.at((unsigned long) j).at<double>(Xij.at(0)))^2) / (depthMaps.at((unsigned long) j).at<int>(Xij.at(0))^2);
         numerator += WjXij * target.at((unsigned long) j).at<int>(Xij.at(0));
         denominator += WjXij;
     }
@@ -502,8 +503,9 @@ void TextureMapper::convertToRaster(
 
 std::vector<cv::Mat> TextureMapper::getRGBD() {
     //Get depth for all of the pixels. This will either require rasterization or ray-tracing (I need to do more research to determine which one).
+    std::vector<cv::Mat> depthBuffers;
+    std::vector<cv::Mat> thetas;
     cv::Mat sourceImage;
-    cv::Mat depth = cv::Mat(sourceWidth, sourceHeight, CV_64F, cvScalar(0.));
     for (unsigned int cam = 0; cam < TcwPoses.size(); cam++) {
         sourceImage = source.at(cam);
         cv::Rect rect(cv::Point(), sourceImgSize);
@@ -516,8 +518,12 @@ std::vector<cv::Mat> TextureMapper::getRGBD() {
         // rasterization algorithm
         // define the frame-buffer and the depth-buffer. Initialize depth buffer
         // to far clipping plane.
-        float *depthBuffer = new float[sourceWidth * sourceHeight];
-        for (uint32_t i = 0; i < sourceWidth * sourceHeight; ++i) depthBuffer[i] = farClippingPLane;
+        cv::Mat depthBuffer(sourceWidth, sourceHeight, CV_32F);
+        for (uint32_t i = 0; i < sourceWidth; ++i) {
+            for (uint32_t j = 0; j < sourceHeight; ++j) {
+                depthBuffer.at<float>(i, j) = farClippingPLane;
+            }
+        }
 
         auto t_start = std::chrono::high_resolution_clock::now();
 
@@ -568,12 +574,14 @@ std::vector<cv::Mat> TextureMapper::getRGBD() {
                         w2 /= area;
                         float oneOverZ = v0Raster[2] * w0 + v1Raster[2] * w1 + v2Raster[2] * w2;
                         float z = 1 / oneOverZ;
-                        if (z < depthBuffer[y * sourceWidth + x]) {
-                            depthBuffer[y * sourceWidth + x] = z;
+                        if (z < depthBuffer.at<cv::Mat>(cam).at<float>(x, y)) {
+                            depthBuffer.at<cv::Mat>(cam).at<float>(x, y) = z;
+                            thetas.at(cam).at<float>(x, y);
                         }
                     }
                 }
             }
+            depthBuffers.push_back(depthBuffer);
         }
         auto t_end = std::chrono::high_resolution_clock::now();
         auto passedTime = std::chrono::duration<double, std::milli>(t_end - t_start).count();
@@ -582,8 +590,8 @@ std::vector<cv::Mat> TextureMapper::getRGBD() {
         ofs.open("./output.ppm");
         ofs << "P6\n" << sourceWidth << " " << sourceHeight << "\n255\n";
         ofs.close();
-        depthMap = depthBuffer;
-        delete [] depthBuffer;
+        TextureMapper::depthMaps = depthBuffers;
+        TextureMapper::thetas = thetas;
     }
 }
 
