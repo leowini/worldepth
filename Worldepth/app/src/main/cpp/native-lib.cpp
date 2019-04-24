@@ -8,7 +8,7 @@
 using namespace std;
 
 Reconstructor *reconstructor = nullptr;
-calib::Settings *sptr = nullptr;
+calib::Settings *settings = nullptr;
 
 extern "C" JNIEXPORT jstring JNICALL
 Java_com_example_leodw_worldepth_MainActivity_stringFromJNI(
@@ -83,9 +83,8 @@ Java_com_example_leodw_worldepth_slam_TextureMapWrapper_textureMap(JNIEnv *env, 
 extern "C"
 JNIEXPORT void JNICALL
 Java_com_example_leodw_worldepth_slam_CalibWrapper_initSettings(JNIEnv *env, jobject instance, jstring internalPath) {
-    const char *_internalPath = env->GetStringUTFChars(internalPath, 0);
-    std::string internalPathStr= std::string(_internalPath);
-    sptr = new calib::Settings(/*internalPathStr*/);
+    std::string _internalPath = std::string(env->GetStringUTFChars(internalPath, 0));
+    settings = new calib::Settings(_internalPath);
 }
 
 extern "C"
@@ -93,13 +92,13 @@ JNIEXPORT jboolean JNICALL
 Java_com_example_leodw_worldepth_slam_CalibWrapper_passImageToCalibrate(JNIEnv *env, jobject instance, jlong img) {
     cv::Mat &mat = *(cv::Mat *) img;
     //returns whether or not it finished
-    if (sptr != nullptr) {
-        sptr->processImage(mat);
+    if (settings != nullptr) {
+        settings->processImage(mat);
         mat.release();
-        bool done = sptr->mode == calib::CALIBRATED;
+        bool done = settings->mode == calib::CALIBRATED;
         if (done) {  //if calibration is finished and written
-            delete sptr;
-            sptr = nullptr;
+            delete settings;
+            settings = nullptr;
         }
         return done;
     }else {
