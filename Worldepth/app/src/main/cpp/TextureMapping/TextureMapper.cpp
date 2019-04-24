@@ -423,6 +423,7 @@ int TextureMapper::Tixi(int &x, int &y, int &t, std::vector<std::vector<int>> &c
         cv::projectPoints(Xi, rvec, pose(cv::Rect(3, 0, 1, 3)), cameraMatrix, distCoef, Xik);
         sum3 += texture.at(k).at<int>(Xik.at(0))/*project texture k to image i*/;
     }
+    float theta = ;
     int WiXi = (cos(theta)^2) / (depthMaps.at((unsigned long) t).at<int>(Xi.at(0))^2);
     int term3 = (int) (lambda / N) * WiXi * sum3;
     int denominator = (int) ((U / L) + ((alpha * V) / L) + (lambda * WiXi));
