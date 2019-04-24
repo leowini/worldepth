@@ -524,9 +524,9 @@ std::vector<cv::Mat> TextureMapper::getRGBD() {
 
 
         for (uint32_t i = 0; i < ntris; i++) {
-            const cv::Vec3f &v0 = vertices[nvertices[i * 3]];
-            const cv::Vec3f &v1 = vertices[nvertices[i * 3 + 1]];
-            const cv::Vec3f &v2 = vertices/*array of vec3fs*/[nvertices/*array of ints*/[i * 3 + 2]];
+            const cv::Vec3f &v0 = vertices.at(faces.at(i)[0]);
+            const cv::Vec3f &v1 = vertices.at(faces.at(i)[1]);
+            const cv::Vec3f &v2 = vertices.at(faces.at(i)[2]);
 
             cv::Vec3f v0Raster, v1Raster, v2Raster;
 
@@ -698,6 +698,10 @@ void TextureMapper::read_ply_file() {
         std::vector<cv::Point3f> verts(vertices->count);
         std::memcpy(verts.data(), vertices->buffer.get(), numVerticesBytes);
         TextureMapper::vertices = verts;
+        const size_t numFacesBytes = faces->buffer.size_bytes();
+        std::vector<cv::Vec3b> faceVecs(faces->count);
+        std::memcpy(faceVecs.data(), faces->buffer.get(), numFacesBytes);
+        TextureMapper::faces = faceVecs;
         TextureMapper::ntris = faces->count;
     }
     catch (const std::exception &e) {

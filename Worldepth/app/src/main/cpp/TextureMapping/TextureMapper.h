@@ -28,6 +28,7 @@ private:
     const float farClippingPLane = 1000;
     float *depthMap;
     std::vector<cv::Mat> depthMaps;
+    std::vector<cv::Vec3b> faces;
 
     int patchSize;
     int ntris;
@@ -55,8 +56,8 @@ private:
                     int tx, int ty, int tt,
                     int patchSize, float threshold);
     int randomInt(int min, int max);
-    float TextureMapper::min3(const float &a, const float &b, const float &c);
-    float TextureMapper::max3(const float &a, const float &b, const float &c);
+    float min3(const float &a, const float &b, const float &c);
+    float max3(const float &a, const float &b, const float &c);
     float edgeFunction(const cv::Vec3f &a, const cv::Vec3f &b, const cv::Vec3f &c);
     void convertToRaster(
             const cv::Vec3f &vertexWorld,
