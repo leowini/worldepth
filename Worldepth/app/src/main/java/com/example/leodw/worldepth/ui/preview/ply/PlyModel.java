@@ -134,15 +134,17 @@ public class PlyModel extends IndexedModel {
         faceIndexBuffer.put(intArray);
         faceIndexBuffer.position(0);
 
-        float[] rgbArray = new float[rgb.size()];
-        for (int i = 0; i < rgb.size(); i++) {
-            rgbArray[i] = rgb.get(i);
+        if (color) {
+            float[] rgbArray = new float[rgb.size()];
+            for (int i = 0; i < rgb.size(); i++) {
+                rgbArray[i] = rgb.get(i);
+            }
+            ByteBuffer rgbb = ByteBuffer.allocateDirect(rgbArray.length * BYTES_PER_FLOAT);
+            rgbb.order(ByteOrder.nativeOrder());
+            rgbBuffer = rgbb.asFloatBuffer();
+            rgbBuffer.put(rgbArray);
+            rgbBuffer.position(0);
         }
-        ByteBuffer rgbb = ByteBuffer.allocateDirect(rgbArray.length * BYTES_PER_FLOAT);
-        rgbb.order(ByteOrder.nativeOrder());
-        rgbBuffer = rgbb.asFloatBuffer();
-        rgbBuffer.put(rgbArray);
-        rgbBuffer.position(0);
     }
 
     private void readASCII(List<Float> vertices, List<Integer> faces, List<Float> rgb, BufferedReader reader) throws IOException {
