@@ -72,6 +72,7 @@ private:
     );
     std::vector<cv::Mat> getRGBD();
     void projectToSurface();
+    void multVecMatrix(const cv::Mat &matrix, const cv::Vec3f &src, cv::Vec3f &dst);
 };
 
 #endif

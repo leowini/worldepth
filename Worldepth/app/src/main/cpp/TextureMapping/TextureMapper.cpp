@@ -1,7 +1,6 @@
 #include <vector>
 #include <thread>
 #include <chrono>
-#include <vector>
 #include <sstream>
 #include <fstream>
 #include <iostream>
@@ -386,7 +385,8 @@ TextureMapper::findSourcePatches(std::vector<cv::Mat> &completenessPatchMatches,
     return sourcePatches;
 }
 
-int TextureMapper::Tixi(int &x, int &y, int &t, std::vector<std::vector<int>> &completenessPatches, std::vector<std::vector<int>> &coherencePatches, int c /*color channel*/) {
+int TextureMapper::Tixi(int &x, int &y, int &t, std::vector<std::vector<int>> &completenessPatches,
+        std::vector<std::vector<int>> &coherencePatches, int c /*color channel*/) {
     //su and sv are the source patches overlapping with pixel xi of the target for the completeness and coherence terms, respectively.
     //yu and yv refer to a single pixel in su and sv , respectively, corresponding to the Xith pixel of the target image.
     //U and V refer to the number of patches for the completeness and coherence terms, respectively.
@@ -466,10 +466,13 @@ int TextureMapper::randomInt(int min, int max) {
 float TextureMapper::edgeFunction(const cv::Vec3f &a, const cv::Vec3f &b, const cv::Vec3f &c)
 { return (c[0] - a[0]) * (b[1] - a[1]) - (c[1] - a[1]) * (b[0] - a[0]); }
 
-void convertToRaster(
+void TextureMapper::convertToRaster(
         const cv::Vec3f &vertexWorld,
         const cv::Mat &worldToCamera,
-        const cv::Rect &rect,
+        const float &l,
+        const float &r,
+        const float &t,
+        const float &b,
         const float &near,
         const uint32_t &imageWidth,
         const uint32_t &imageHeight,
@@ -478,7 +481,7 @@ void convertToRaster(
 {
     cv::Vec3f vertexCamera;
 
-    worldToCamera.multVecMatrix(vertexWorld, vertexCamera);
+    multVecMatrix(worldToCamera, vertexWorld, vertexCamera);
 
     // convert to screen space
     cv::Vec2f vertexScreen;
@@ -753,3 +756,17 @@ float TextureMapper::min3(const float &a, const float &b, const float &c)
 
 float TextureMapper::max3(const float &a, const float &b, const float &c)
 { return std::max(a, std::max(b, c)); }
+
+void TextureMapper::multVecMatrix(const cv::Mat &matrix, const cv::Vec3f &src, cv::Vec3f &dst)
+{
+    float a, b, c, w;
+
+    a = src[0] * matrix.at<float>(0,0) + src[1] * matrix.at<float>(1,0) + src[2] * matrix.at<float>(2,0) + matrix.at<float>(3,0);
+    b = src[0] * matrix.at<float>(0,1) + src[1] * matrix.at<float>(1,1) + src[2] * matrix.at<float>(2,1) + matrix.at<float>(3,1);
+    c = src[0] * matrix.at<float>(0,2) + src[1] * matrix.at<float>(1,2) + src[2] * matrix.at<float>(2,2) + matrix.at<float>(3,2);
+    w = src[0] * matrix.at<float>(0,3) + src[1] * matrix.at<float>(1,3) + src[2] * matrix.at<float>(2,3) + matrix.at<float>(3,3);
+
+    dst[0] = a / w;
+    dst[1] = b / w;
+    dst[2] = c / w;
+}
