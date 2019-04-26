@@ -91,7 +91,7 @@
 
 
     <ImageView
-        android:id="@+id/settingsBackButton"
+        android:id="@+id/postBackButton"
         android:layout_width="41dp"
         android:layout_height="54dp"
         android:src="@drawable/back2"
