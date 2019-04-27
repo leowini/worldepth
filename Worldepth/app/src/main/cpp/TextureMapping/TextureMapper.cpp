@@ -576,7 +576,8 @@ std::vector<cv::Mat> TextureMapper::getRGBD() {
                         float z = 1 / oneOverZ;
                         if (z < depthBuffer.at<cv::Mat>(cam).at<float>(x, y)) {
                             depthBuffer.at<cv::Mat>(cam).at<float>(x, y) = z;
-                            thetas.at(cam).at<float>(x, y);
+                            cv::Mat normalOfTriangle = normals.at(i);
+                            thetas.at(cam).at<float>(x, y) = calcThetaAngle(normalOfTriangle, pose);
                         }
                     }
                 }
@@ -704,6 +705,8 @@ void TextureMapper::read_ply_file() {
         std::memcpy(faceVecs.data(), faces->buffer.get(), numFacesBytes);
         TextureMapper::faces = faceVecs;
         TextureMapper::ntris = faces->count;
+        cv::Mat normalVec;
+        TextureMapper::normals = normalVec;
     }
     catch (const std::exception &e) {
         std::cerr << "Caught tinyply exception: " << e.what() << std::endl;
@@ -775,4 +778,8 @@ void TextureMapper::multVecMatrix(const cv::Mat &matrix, const cv::Vec3f &src, c
     dst[0] = a / w;
     dst[1] = b / w;
     dst[2] = c / w;
+}
+
+float TextureMapper::calcThetaAngle(cv::Mat &triangleNormal, cv::Mat &cameraPose) {
+
 }
