@@ -705,7 +705,11 @@ void TextureMapper::read_ply_file() {
         std::memcpy(faceVecs.data(), faces->buffer.get(), numFacesBytes);
         TextureMapper::faces = faceVecs;
         TextureMapper::ntris = faces->count;
-        cv::Mat normalVec;
+        std::vector<cv::Mat> normalVec;
+        for (int i; i < ntris; i++) {
+             
+            normalVec.push_back(normal);
+        }
         TextureMapper::normals = normalVec;
     }
     catch (const std::exception &e) {
