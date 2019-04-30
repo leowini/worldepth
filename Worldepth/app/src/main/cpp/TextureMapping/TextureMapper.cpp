@@ -569,7 +569,7 @@ void TextureMapper::getRGBD() {
 
             for (uint32_t y = y0; y <= y1; ++y) {
                 for (uint32_t x = x0; x <= x1; ++x) {
-                    cv::Vec3f pixelSample(x + 0.5, y + 0.5, 0);
+                    cv::Vec3d pixelSample(x + 0.5, y + 0.5, 0);
                     float w0 = edgeFunction(v1Raster, v2Raster, pixelSample);
                     float w1 = edgeFunction(v2Raster, v0Raster, pixelSample);
                     float w2 = edgeFunction(v0Raster, v1Raster, pixelSample);
