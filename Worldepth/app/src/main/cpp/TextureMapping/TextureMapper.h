@@ -29,7 +29,7 @@ private:
     std::vector<cv::Mat> depthMaps;
     std::vector<cv::Mat> thetas;
     std::vector<cv::Vec3b> faces;
-    std::vector<cv::Mat> normals;
+    std::vector<cv::Vec3f> normals;
 
     int patchSize;
     int ntris;
@@ -75,8 +75,8 @@ private:
     std::vector<cv::Mat> getRGBD();
     void projectToSurface();
     void multVecMatrix(const cv::Mat &matrix, const cv::Vec3f &src, cv::Vec3f &dst);
-    cv::Mat getNormalFromTri(cv::Vec3b tri);
-    float calcThetaAngle(cv::Mat &triangleNormal, cv::Mat &cameraPose);
+    cv::Vec3f getNormalFromTri(cv::Vec3b tri);
+    double calcThetaAngle(cv::Vec3f &triangleNormal, cv::Vec3f &cameraPose);
 };
 
 #endif

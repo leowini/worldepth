@@ -577,8 +577,8 @@ std::vector<cv::Mat> TextureMapper::getRGBD() {
                         float z = 1 / oneOverZ;
                         if (z < depthBuffer.at<cv::Mat>(cam).at<float>(x, y)) {
                             depthBuffer.at<cv::Mat>(cam).at<float>(x, y) = z;
-                            cv::Mat normalOfTriangle = normals.at(i);
-                            thetas.at(cam).at<float>(x, y) = calcThetaAngle(normalOfTriangle, pose);
+                            cv::Vec3f normalOfTriangle = normals.at(i);
+                            thetas.at(cam).at<float>(x, y) = calcThetaAngle(normalOfTriangle, cv::Vec3f(rvec));
                         }
                     }
                 }
@@ -706,10 +706,10 @@ void TextureMapper::read_ply_file() {
         std::memcpy(faceVecs.data(), faces->buffer.get(), numFacesBytes);
         TextureMapper::faces = faceVecs;
         TextureMapper::ntris = faces->count;
-        std::vector<cv::Mat> normalVec;
+        std::vector<cv::Vec3f> normalVec;
         for (int i; i < ntris; i++) {
             cv::Vec3b tri = faceVecs.at(i);
-            cv::Mat normal = getNormalFromTri(tri);
+            cv::Vec3f normal = getNormalFromTri(tri);
             normalVec.push_back(normal);
         }
         TextureMapper::normals = normalVec;
@@ -786,14 +786,21 @@ void TextureMapper::multVecMatrix(const cv::Mat &matrix, const cv::Vec3f &src, c
     dst[2] = c / w;
 }
 
-cv::Mat TextureMapper::getNormalFromTri(cv::Vec3b tri) {
+cv::Vec3f TextureMapper::getNormalFromTri(cv::Vec3b tri) {
     cv::Point3f p1 = vertices.at(tri[0]);
     cv::Point3f p2 = vertices.at(tri[1]);
     cv::Point3f p3 = vertices.at(tri[2]);
-    cv::Mat normal;
+    cv::Vec3f v1 = { p2.x-p1.x, p2.y-p1.y, p2.z-p1.z };
+    cv::Vec3f v2 = { p3.x-p1.x, p3.y-p1.y, p3.z-p1.z };
+    cv::Vec3f normal = v1.cross(v2);
     return normal;
 }
 
-float TextureMapper::calcThetaAngle(cv::Mat &triangleNormal, cv::Mat &cameraPose) {
-
+double TextureMapper::calcThetaAngle(cv::Vec3f &triangleNormal, cv::Vec3f &cameraPose) {
+    float dotProd = triangleNormal.dot(cameraPose);
+    double hi = pow(triangleNormal[0], 2);
+    double lenTriangle = sqrt(pow(triangleNormal[0], 2) + pow(triangleNormal[1], 2) + pow(triangleNormal[2], 2));
+    double lenCamera = sqrt(pow(cameraPose[0], 2) + pow(cameraPose[1], 2) + pow(cameraPose[2], 2));
+    double lenProd = lenTriangle * lenCamera;
+    return dotProd / lenProd;
 }
