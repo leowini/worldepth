@@ -75,6 +75,7 @@ private:
     std::vector<cv::Mat> getRGBD();
     void projectToSurface();
     void multVecMatrix(const cv::Mat &matrix, const cv::Vec3f &src, cv::Vec3f &dst);
+    cv::Mat getNormalFromTri(cv::Vec3b tri);
     float calcThetaAngle(cv::Mat &triangleNormal, cv::Mat &cameraPose);
 };
 

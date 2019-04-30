@@ -9,6 +9,7 @@
 #include <opencv2/core/mat.hpp>
 #include <opencv2/core.hpp>
 #include <opencv/cv.hpp>
+#include <PoissonReconstruction/Src/Array.inl>
 
 #include "tinyply.h"
 #include "TextureMapper.h"
@@ -703,11 +704,10 @@ void TextureMapper::read_ply_file() {
         const size_t numFacesBytes = faces->buffer.size_bytes();
         std::vector<cv::Vec3b> faceVecs(faces->count);
         std::memcpy(faceVecs.data(), faces->buffer.get(), numFacesBytes);
-        TextureMapper::faces = faceVecs;z
+        TextureMapper::faces = faceVecs;
         TextureMapper::ntris = faces->count;
         std::vector<cv::Mat> normalVec;
         for (int i; i < ntris; i++) {
-            ax + by + cz = 0;
             cv::Vec3b tri = faceVecs.at(i);
             cv::Mat normal = getNormalFromTri(tri);
             normalVec.push_back(normal);
@@ -784,6 +784,14 @@ void TextureMapper::multVecMatrix(const cv::Mat &matrix, const cv::Vec3f &src, c
     dst[0] = a / w;
     dst[1] = b / w;
     dst[2] = c / w;
+}
+
+cv::Mat TextureMapper::getNormalFromTri(cv::Vec3b tri) {
+    cv::Point3f p1 = vertices.at(tri[0]);
+    cv::Point3f p2 = vertices.at(tri[1]);
+    cv::Point3f p3 = vertices.at(tri[2]);
+    cv::Mat normal;
+    return normal;
 }
 
 float TextureMapper::calcThetaAngle(cv::Mat &triangleNormal, cv::Mat &cameraPose) {
