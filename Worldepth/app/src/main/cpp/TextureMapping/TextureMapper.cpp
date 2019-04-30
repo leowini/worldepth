@@ -74,6 +74,17 @@ void TextureMapper::init() {
         DistCoef.at<float>(4) = k3;
     }
     DistCoef.copyTo(this->distCoef);
+    computeScreenCoordinates(filmApertureWidth,
+            filmApertureHeight,
+            sourceWidth,
+            sourceHeight,
+            kOverscan,
+            nearClippingPLane,
+            focalLength,
+            top,
+            bottom,
+            left,
+            right);
 }
 
 void TextureMapper::textureMap() {
@@ -309,12 +320,14 @@ float TextureMapper::distance(int sx, int sy, int st,
     return dist;
 }
 
-void TextureMapper::vote(std::vector<cv::Mat> &completenessPatchMatches, std::vector<cv::Mat> &coherencePatchMatches) {
+void TextureMapper::vote(std::vector<cv::Mat> &completenessPatchMatches,
+                         std::vector<cv::Mat> &coherencePatchMatches) {
     //For each pixel in the target
     for (int t = 0; t < target.size(); t++) {
         for (int y = 0; y < targetHeight; y++) {
             for (int x = 0; x < targetWidth; x++) {
-                std::vector<std::vector<std::vector<int>>> patches = findSourcePatches(completenessPatchMatches, coherencePatchMatches, x, y, t);
+                std::vector<std::vector<std::vector<int>>> patches = findSourcePatches(
+                        completenessPatchMatches, coherencePatchMatches, x, y, t);
                 std::vector<std::vector<int>> completenessPatches = patches[0];
                 std::vector<std::vector<int>> coherencePatches = patches[1];
 
@@ -327,7 +340,8 @@ void TextureMapper::vote(std::vector<cv::Mat> &completenessPatchMatches, std::ve
 }
 
 std::vector<std::vector<std::vector<int>>>
-TextureMapper::findSourcePatches(std::vector<cv::Mat> &completenessPatchMatches, std::vector<cv::Mat> &coherencePatchMatches,
+TextureMapper::findSourcePatches(std::vector<cv::Mat> &completenessPatchMatches,
+                                 std::vector<cv::Mat> &coherencePatchMatches,
                                  int x, int y, int t) {
     std::vector<std::vector<std::vector<int>>> sourcePatches;
     std::vector<std::vector<int>> completenessPatches;
@@ -347,7 +361,8 @@ TextureMapper::findSourcePatches(std::vector<cv::Mat> &completenessPatchMatches,
     for (int st = 0; st < source.size(); st++) {
         for (int sy = 0; sy < sourceHeight; sy++) {
             for (int sx = 0; sx < sourceWidth; sx++) {
-                cv::Vec<float, 4> patchMatch = completenessPatchMatches.at(st).at<cv::Vec<float,4>>(sx, sy);
+                cv::Vec<float, 4> patchMatch = completenessPatchMatches.at(
+                        st).at<cv::Vec<float, 4>>(sx, sy);
                 int stx = static_cast<int>(patchMatch[0]), sty = static_cast<int>(patchMatch[1]), stt = static_cast<int>(patchMatch[2]);
                 if ( /* is in x range */(stx >= x1 && stx <= x2) &&
                                         /** is in y range */ (sty >= y1 && sty <= y2) && stt == t) {
@@ -368,7 +383,8 @@ TextureMapper::findSourcePatches(std::vector<cv::Mat> &completenessPatchMatches,
     //Coherence: Find the Source patches most similar to the target patches
     for (int patchy = y1; patchy <= y2; patchy++) {
         for (int patchx = x1; patchx <= x2; patchx++) {
-            cv::Vec<float, 4> sourcePatchVec = coherencePatchMatches.at(t).at<cv::Vec<float, 4>>(patchx, patchy);
+            cv::Vec<float, 4> sourcePatchVec = coherencePatchMatches.at(t).at<cv::Vec<float, 4>>(
+                    patchx, patchy);
             //return value of the target pixel within the source patch
             std::vector<int> targetPixel;
             //Find target pixel in source patch
@@ -388,7 +404,7 @@ TextureMapper::findSourcePatches(std::vector<cv::Mat> &completenessPatchMatches,
 }
 
 int TextureMapper::Tixi(int &x, int &y, int &t, std::vector<std::vector<int>> &completenessPatches,
-        std::vector<std::vector<int>> &coherencePatches, int c /*color channel*/) {
+                        std::vector<std::vector<int>> &coherencePatches, int c /*color channel*/) {
     //su and sv are the source patches overlapping with pixel xi of the target for the completeness and coherence terms, respectively.
     //yu and yv refer to a single pixel in su and sv , respectively, corresponding to the Xith pixel of the target image.
     //U and V refer to the number of patches for the completeness and coherence terms, respectively.
@@ -405,7 +421,7 @@ int TextureMapper::Tixi(int &x, int &y, int &t, std::vector<std::vector<int>> &c
         int upatch = completenessPatches[u][c];
         sum1 += upatch;
     }
-    int term1 = (1/L)*sum1;
+    int term1 = (1 / L) * sum1;
     int sum2 = 0;
     for (int v; v < V; v++) {
         int vpatch = coherencePatches[v][c];
@@ -425,7 +441,8 @@ int TextureMapper::Tixi(int &x, int &y, int &t, std::vector<std::vector<int>> &c
         cv::projectPoints(Xi, rvec, pose(cv::Rect(3, 0, 1, 3)), cameraMatrix, distCoef, Xik);
         sum3 += texture.at(k).at<int>(Xik.at(0))/*project texture k to image i*/;
     }
-    int WiXi = ((int) cos(thetas.at((unsigned long) t).at<double>(x, y))^2) / (depthMaps.at((unsigned long) t).at<int>(Xi.at(0))^2);
+    int WiXi = ((int) cos(thetas.at((unsigned long) t).at<double>(x, y)) ^ 2) /
+               (depthMaps.at((unsigned long) t).at<int>(Xi.at(0)) ^ 2);
     int term3 = (int) (lambda / N) * WiXi * sum3;
     int denominator = (int) ((U / L) + ((alpha * V) / L) + (lambda * WiXi));
     return ((term1 + term2 + term3) / denominator);
@@ -435,7 +452,7 @@ void TextureMapper::reconstruct() {
     for (int t = 0; t < texture.size(); t++) {
         for (int y = 0; y < texture.at(0).size().height; y++) {
             for (int x = 0; x < texture.at(0).size().width; x++) {
-                texture.at(t).at<int>(x,y) = Mixi(x, y, t);
+                texture.at(t).at<int>(x, y) = Mixi(x, y, t);
             }
         }
     }
@@ -454,7 +471,8 @@ int TextureMapper::Mixi(int &x, int &y, int &t) {
         std::vector<cv::Point2f> Xi;
         Xi.emplace_back(cv::Point2f(x, y));
         cv::projectPoints(Xi, rvec, pose(cv::Rect(3, 0, 1, 3)), cameraMatrix, distCoef, Xij);
-        int WjXij = ((int) cos(thetas.at((unsigned long) j).at<double>(Xij.at(0)))^2) / (depthMaps.at((unsigned long) j).at<int>(Xij.at(0))^2);
+        int WjXij = ((int) cos(thetas.at((unsigned long) j).at<double>(Xij.at(0))) ^ 2) /
+                    (depthMaps.at((unsigned long) j).at<int>(Xij.at(0)) ^ 2);
         numerator += WjXij * target.at((unsigned long) j).at<int>(Xij.at(0));
         denominator += WjXij;
     }
@@ -465,8 +483,9 @@ int TextureMapper::randomInt(int min, int max) {
     return min + (rand() % static_cast<int>(max - min + 1));
 }
 
-float TextureMapper::edgeFunction(const cv::Vec3f &a, const cv::Vec3f &b, const cv::Vec3f &c)
-{ return (c[0] - a[0]) * (b[1] - a[1]) - (c[1] - a[1]) * (b[0] - a[0]); }
+float TextureMapper::edgeFunction(const cv::Vec3f &a, const cv::Vec3f &b, const cv::Vec3f &c) {
+    return (c[0] - a[0]) * (b[1] - a[1]) - (c[1] - a[1]) * (b[0] - a[0]);
+}
 
 void TextureMapper::convertToRaster(
         const cv::Vec3f &vertexWorld,
@@ -479,8 +498,7 @@ void TextureMapper::convertToRaster(
         const uint32_t &imageWidth,
         const uint32_t &imageHeight,
         cv::Vec3f &vertexRaster
-)
-{
+) {
     cv::Vec3f vertexCamera;
 
     multVecMatrix(worldToCamera, vertexWorld, vertexCamera);
@@ -578,7 +596,8 @@ std::vector<cv::Mat> TextureMapper::getRGBD() {
                         if (z < depthBuffer.at<cv::Mat>(cam).at<float>(x, y)) {
                             depthBuffer.at<cv::Mat>(cam).at<float>(x, y) = z;
                             cv::Vec3f normalOfTriangle = normals.at(i);
-                            thetas.at(cam).at<double>(x, y) = calcThetaAngle(normalOfTriangle, rvec);
+                            thetas.at(cam).at<double>(x, y) = calcThetaAngle(normalOfTriangle,
+                                                                             rvec);
                         }
                     }
                 }
@@ -719,7 +738,8 @@ void TextureMapper::read_ply_file() {
     }
 }
 
-void TextureMapper::write_ply_file(double *weights, double *acc_red, double *acc_grn, double *acc_blu) {
+void
+TextureMapper::write_ply_file(double *weights, double *acc_red, double *acc_grn, double *acc_blu) {
     std::ifstream in(plyFilename, std::ios_base::binary);
     std::ofstream out(tempFilename, std::ios_base::binary);
     std::string line;
@@ -766,20 +786,25 @@ void TextureMapper::write_ply_file(double *weights, double *acc_red, double *acc
     int renameResult = std::rename(tempFilename.c_str(), plyFilename.c_str());
 }
 
-float TextureMapper::min3(const float &a, const float &b, const float &c)
-{ return std::min(a, std::min(b, c)); }
+float TextureMapper::min3(const float &a, const float &b, const float &c) {
+    return std::min(a, std::min(b, c));
+}
 
-float TextureMapper::max3(const float &a, const float &b, const float &c)
-{ return std::max(a, std::max(b, c)); }
+float TextureMapper::max3(const float &a, const float &b, const float &c) {
+    return std::max(a, std::max(b, c));
+}
 
-void TextureMapper::multVecMatrix(const cv::Mat &matrix, const cv::Vec3f &src, cv::Vec3f &dst)
-{
+void TextureMapper::multVecMatrix(const cv::Mat &matrix, const cv::Vec3f &src, cv::Vec3f &dst) {
     float a, b, c, w;
 
-    a = src[0] * matrix.at<float>(0,0) + src[1] * matrix.at<float>(1,0) + src[2] * matrix.at<float>(2,0) + matrix.at<float>(3,0);
-    b = src[0] * matrix.at<float>(0,1) + src[1] * matrix.at<float>(1,1) + src[2] * matrix.at<float>(2,1) + matrix.at<float>(3,1);
-    c = src[0] * matrix.at<float>(0,2) + src[1] * matrix.at<float>(1,2) + src[2] * matrix.at<float>(2,2) + matrix.at<float>(3,2);
-    w = src[0] * matrix.at<float>(0,3) + src[1] * matrix.at<float>(1,3) + src[2] * matrix.at<float>(2,3) + matrix.at<float>(3,3);
+    a = src[0] * matrix.at<float>(0, 0) + src[1] * matrix.at<float>(1, 0) +
+        src[2] * matrix.at<float>(2, 0) + matrix.at<float>(3, 0);
+    b = src[0] * matrix.at<float>(0, 1) + src[1] * matrix.at<float>(1, 1) +
+        src[2] * matrix.at<float>(2, 1) + matrix.at<float>(3, 1);
+    c = src[0] * matrix.at<float>(0, 2) + src[1] * matrix.at<float>(1, 2) +
+        src[2] * matrix.at<float>(2, 2) + matrix.at<float>(3, 2);
+    w = src[0] * matrix.at<float>(0, 3) + src[1] * matrix.at<float>(1, 3) +
+        src[2] * matrix.at<float>(2, 3) + matrix.at<float>(3, 3);
 
     dst[0] = a / w;
     dst[1] = b / w;
@@ -790,8 +815,8 @@ cv::Vec3f TextureMapper::getNormalFromTri(cv::Vec3b tri) {
     cv::Point3f p1 = vertices.at(tri[0]);
     cv::Point3f p2 = vertices.at(tri[1]);
     cv::Point3f p3 = vertices.at(tri[2]);
-    cv::Vec3f v1 = { p2.x-p1.x, p2.y-p1.y, p2.z-p1.z };
-    cv::Vec3f v2 = { p3.x-p1.x, p3.y-p1.y, p3.z-p1.z };
+    cv::Vec3f v1 = {p2.x - p1.x, p2.y - p1.y, p2.z - p1.z};
+    cv::Vec3f v2 = {p3.x - p1.x, p3.y - p1.y, p3.z - p1.z};
     cv::Vec3f normal = v1.cross(v2);
     return normal;
 }
@@ -799,8 +824,57 @@ cv::Vec3f TextureMapper::getNormalFromTri(cv::Vec3b tri) {
 double TextureMapper::calcThetaAngle(cv::Vec3f &triangleNormal, cv::Vec3f &cameraPose) {
     float dotProd = triangleNormal.dot(cameraPose);
     double hi = pow(triangleNormal[0], 2);
-    double lenTriangle = sqrt(pow(triangleNormal[0], 2) + pow(triangleNormal[1], 2) + pow(triangleNormal[2], 2));
+    double lenTriangle = sqrt(
+            pow(triangleNormal[0], 2) + pow(triangleNormal[1], 2) + pow(triangleNormal[2], 2));
     double lenCamera = sqrt(pow(cameraPose[0], 2) + pow(cameraPose[1], 2) + pow(cameraPose[2], 2));
     double lenProd = lenTriangle * lenCamera;
     return dotProd / lenProd;
+}
+
+void TextureMapper::computeScreenCoordinates(
+        const float &filmApertureWidth,
+        const float &filmApertureHeight,
+        const uint32_t &imageWidth,
+        const uint32_t &imageHeight,
+        const FitResolutionGate &fitFilm,
+        const float &nearClippingPLane,
+        const float &focalLength,
+        float &top, float &bottom, float &left, float &right
+) {
+    float filmAspectRatio = filmApertureWidth / filmApertureHeight;
+    float deviceAspectRatio = imageWidth / (float) imageHeight;
+
+    top = ((filmApertureHeight * inchToMm / 2) / focalLength) * nearClippingPLane;
+    right = ((filmApertureWidth * inchToMm / 2) / focalLength) * nearClippingPLane;
+
+    // field of view (horizontal)
+    float fov = 2 * 180 / M_PI * atan((filmApertureWidth * inchToMm / 2) / focalLength);
+    std::cerr << "Field of view " << fov << std::endl;
+
+    float xscale = 1;
+    float yscale = 1;
+
+    switch (fitFilm) {
+        default:
+        case kFill:
+            if (filmAspectRatio > deviceAspectRatio) {
+                xscale = deviceAspectRatio / filmAspectRatio;
+            } else {
+                yscale = filmAspectRatio / deviceAspectRatio;
+            }
+            break;
+        case kOverscan:
+            if (filmAspectRatio > deviceAspectRatio) {
+                yscale = filmAspectRatio / deviceAspectRatio;
+            } else {
+                xscale = deviceAspectRatio / filmAspectRatio;
+            }
+            break;
+    }
+
+    right *= xscale;
+    top *= yscale;
+
+    bottom = -top;
+    left = -right;
 }

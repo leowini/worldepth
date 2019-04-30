@@ -10,6 +10,10 @@ public:
     void textureMap();
 
 private:
+    static const float inchToMm = 25.4;
+    enum FitResolutionGate { kFill = 0, kOverscan };
+    float top, bottom, left, right;
+
     std::string plyFilename;
     std::string internalPath;
     std::string tempFilename;
@@ -77,6 +81,16 @@ private:
     void multVecMatrix(const cv::Mat &matrix, const cv::Vec3f &src, cv::Vec3f &dst);
     cv::Vec3f getNormalFromTri(cv::Vec3b tri);
     double calcThetaAngle(cv::Vec3f &triangleNormal, cv::Vec3f &cameraPose);
+    void computeScreenCoordinates(
+            const float &filmApertureWidth,
+            const float &filmApertureHeight,
+            const uint32_t &imageWidth,
+            const uint32_t &imageHeight,
+            const FitResolutionGate &fitFilm,
+            const float &nearClippingPLane,
+            const float &focalLength,
+            float &top, float &bottom, float &left, float &right
+    );
 };
 
 #endif
