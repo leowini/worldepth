@@ -9,7 +9,6 @@
 #include <opencv2/core/mat.hpp>
 #include <opencv2/core.hpp>
 #include <opencv/cv.hpp>
-#include <PoissonReconstruction/Src/Array.inl>
 
 #include "tinyply.h"
 #include "TextureMapper.h"
