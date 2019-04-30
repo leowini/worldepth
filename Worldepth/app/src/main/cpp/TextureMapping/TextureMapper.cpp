@@ -511,7 +511,7 @@ std::vector<cv::Mat> TextureMapper::getRGBD() {
         sourceImage = source.at(cam);
         cv::Rect rect(cv::Point(), sourceImgSize);
         cv::Mat pose = TcwPoses.at(cam);
-        cv::Mat rvec;
+        cv::Vec3f rvec;
         cv::Rodrigues(pose(cv::Rect(0, 0, 3, 3)), rvec);
         std::vector<cv::Point2f> imagePoints;
         cv::projectPoints(vertices, rvec, pose(cv::Rect(3, 0, 1, 3)), cameraMatrix, distCoef,
@@ -578,7 +578,7 @@ std::vector<cv::Mat> TextureMapper::getRGBD() {
                         if (z < depthBuffer.at<cv::Mat>(cam).at<float>(x, y)) {
                             depthBuffer.at<cv::Mat>(cam).at<float>(x, y) = z;
                             cv::Vec3f normalOfTriangle = normals.at(i);
-                            thetas.at(cam).at<float>(x, y) = calcThetaAngle(normalOfTriangle, cv::Vec3f(rvec));
+                            thetas.at(cam).at<double>(x, y) = calcThetaAngle(normalOfTriangle, rvec);
                         }
                     }
                 }
