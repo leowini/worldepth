@@ -131,6 +131,20 @@
                             <option name="y" value="-12" />
                           </Point>
                         </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_locationFragment_to_mapFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_locationFragment_to_viewerFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
                       </LayoutPositions>
                     </value>
                   </entry>
@@ -421,6 +435,11 @@
                               </value>
                             </entry>
                             <entry key="action_viewerFragment_to_cameraFragment2">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_viewerFragment_to_locationFragment">
                               <value>
                                 <LayoutPositions />
                               </value>

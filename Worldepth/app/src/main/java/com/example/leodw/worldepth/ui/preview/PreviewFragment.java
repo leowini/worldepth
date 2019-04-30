@@ -85,6 +85,8 @@ public class PreviewFragment extends Fragment {
         });
         Button backToCamera = view.findViewById(R.id.viewerBackToCamera);
         backToCamera.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_viewerFragment_to_cameraFragment));
+        Button nextButton = view.findViewById(R.id.postButton);
+        nextButton.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_viewerFragment_to_locationFragment));
     }
 
     @Override
