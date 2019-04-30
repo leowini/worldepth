@@ -24,7 +24,7 @@ TextureMapper::TextureMapper(const std::string &internalPath, std::vector<cv::Ma
     plyFilename = internalPath + "/SLAM.ply";
     read_ply_file(); //gets vertices from the file
     init(); //clones source and target
-    getRGBD(); //computes depth maps and thetas between surface normals and camera views
+    getRGBD(); //get depth maps and thetas
 }
 
 /**
