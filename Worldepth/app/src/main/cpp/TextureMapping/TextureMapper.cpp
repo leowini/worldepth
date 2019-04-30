@@ -52,27 +52,14 @@ void TextureMapper::init() {
 
     cv::FileStorage fSettings(internalPath + "/CalibVals.yaml",
                               cv::FileStorage::READ);
-    float fx = fSettings["Camera_fx"];
-    float fy = fSettings["Camera_fy"];
-    float cx = fSettings["Camera_cx"];
-    float cy = fSettings["Camera_cy"];
-    cv::Mat cameraMatrix = cv::Mat::eye(3, 3, CV_32F);
-    cameraMatrix.at<float>(0, 0) = fx;
-    cameraMatrix.at<float>(1, 1) = fy;
-    cameraMatrix.at<float>(0, 2) = cx;
-    cameraMatrix.at<float>(1, 2) = cy;
-    cameraMatrix.copyTo(this->cameraMatrix);
+    cv::Mat K;
+    fSettings["camera_matrix"] >> K;
+    K.convertTo(K, CV_32F);
+    K.copyTo(this->cameraMatrix);
 
-    cv::Mat DistCoef(4, 1, CV_32F);
-    DistCoef.at<float>(0) = fSettings["Camera_k1"];
-    DistCoef.at<float>(1) = fSettings["Camera_k2"];
-    DistCoef.at<float>(2) = fSettings["Camera_p1"];
-    DistCoef.at<float>(3) = fSettings["Camera_p2"];
-    const float k3 = fSettings["Camera.k3"];
-    if (k3 != 0) {
-        DistCoef.resize(5);
-        DistCoef.at<float>(4) = k3;
-    }
+    cv::Mat DistCoef;
+    fSettings["distortion_coefficients"] >> DistCoef;
+    DistCoef.convertTo(DistCoef, CV_32F);
     DistCoef.copyTo(this->distCoef);
     computeScreenCoordinates(filmApertureWidth,
             filmApertureHeight,
