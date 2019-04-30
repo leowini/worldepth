@@ -54,13 +54,13 @@ private:
     void write_ply_file(double *weights, double *acc_red, double *acc_grn, double *acc_blu);
     void align();
     void reconstruct();
-    int Mixi(int &x, int &y, int &t);
+    double Mixi(int &x, int &y, int &t);
     cv::Mat patchSearch(int iterations);
     void vote(std::vector<cv::Mat> &completenessPatchMatches, std::vector<cv::Mat> &coherencePatchMatches);
     std::vector<std::vector<std::vector<int>>> findSourcePatches(std::vector<cv::Mat> &completenessPatchMatches, std::vector<cv::Mat> &coherencePatchMatches,
                                                                     int x, int y, int t);
     //bool isInTargetPatch(cv::Vec<float, 4> targetMatch, int x, int y, int t);
-    int Tixi(int &x, int &y, int &t, std::vector<std::vector<int>> &completenessPatches, std::vector<std::vector<int>> &coherencePatches, int c);
+    double Tixi(int &x, int &y, int &t, std::vector<std::vector<int>> &completenessPatches, std::vector<std::vector<int>> &coherencePatches, int c);
     float distance(int sx, int sy, int st,
                     int tx, int ty, int tt,
                     int patchSize, float threshold);
