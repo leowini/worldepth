@@ -10,7 +10,7 @@ public:
     void textureMap();
 
 private:
-    static const float inchToMm = 25.4;
+    static constexpr float inchToMm = 25.4;
     enum FitResolutionGate { kFill = 0, kOverscan };
     float top, bottom, left, right;
     float focalLength = 20; // in mm
