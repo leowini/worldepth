@@ -506,7 +506,7 @@ void TextureMapper::convertToRaster(
     vertexRaster[2] = -vertexCamera[2];
 }
 
-std::vector<cv::Mat> TextureMapper::getRGBD() {
+void TextureMapper::getRGBD() {
     //Get depth for all of the pixels. This will either require rasterization or ray-tracing (I need to do more research to determine which one).
     std::vector<cv::Mat> depthBuffers;
     std::vector<cv::Mat> thetas;
