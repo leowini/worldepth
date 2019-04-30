@@ -344,7 +344,7 @@ TextureMapper::findSourcePatches(std::vector<cv::Mat> &completenessPatchMatches,
 
     //Completeness: Find Source patches that have target patches as their most similar patch
     //For each pixel in completenessPatchMatches
-    for (int st = 0; st < source.size(); st++) {
+    for (unsigned int st = 0; st < source.size(); st++) {
         for (int sy = 0; sy < sourceHeight; sy++) {
             for (int sx = 0; sx < sourceWidth; sx++) {
                 cv::Vec<float, 4> patchMatch = completenessPatchMatches.at(
