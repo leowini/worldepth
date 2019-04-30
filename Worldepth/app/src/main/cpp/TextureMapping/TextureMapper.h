@@ -13,6 +13,10 @@ private:
     static const float inchToMm = 25.4;
     enum FitResolutionGate { kFill = 0, kOverscan };
     float top, bottom, left, right;
+    float focalLength = 20; // in mm
+// 35mm Full Aperture in inches
+    float filmApertureWidth = 0.980;
+    float filmApertureHeight = 0.735;
 
     std::string plyFilename;
     std::string internalPath;

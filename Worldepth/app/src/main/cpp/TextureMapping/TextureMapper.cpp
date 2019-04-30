@@ -554,11 +554,11 @@ std::vector<cv::Mat> TextureMapper::getRGBD() {
 
             cv::Vec3f v0Raster, v1Raster, v2Raster;
 
-            convertToRaster(v0, cameraMatrix, l, r, t, b, nearClippingPLane, sourceWidth,
+            convertToRaster(v0, cameraMatrix, left, right, top, bottom, nearClippingPLane, sourceWidth,
                             sourceHeight, v0Raster);
-            convertToRaster(v1, cameraMatrix, l, r, t, b, nearClippingPLane, sourceWidth,
+            convertToRaster(v1, cameraMatrix, left, right, top, bottom, nearClippingPLane, sourceWidth,
                             sourceHeight, v1Raster);
-            convertToRaster(v2, cameraMatrix, l, r, t, b, nearClippingPLane, sourceWidth,
+            convertToRaster(v2, cameraMatrix, left, right, top, bottom, nearClippingPLane, sourceWidth,
                             sourceHeight, v2Raster);
 
             v0Raster[2] = 1 / v0Raster[2],
