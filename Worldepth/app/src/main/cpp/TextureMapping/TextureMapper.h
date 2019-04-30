@@ -57,10 +57,10 @@ private:
     double Mixi(int &x, int &y, int &t);
     cv::Mat patchSearch(int iterations);
     void vote(std::vector<cv::Mat> &completenessPatchMatches, std::vector<cv::Mat> &coherencePatchMatches);
-    std::vector<std::vector<std::vector<int>>> findSourcePatches(std::vector<cv::Mat> &completenessPatchMatches, std::vector<cv::Mat> &coherencePatchMatches,
+    std::vector<std::vector<std::vector<float>>> findSourcePatches(std::vector<cv::Mat> &completenessPatchMatches, std::vector<cv::Mat> &coherencePatchMatches,
                                                                     int x, int y, int t);
     //bool isInTargetPatch(cv::Vec<float, 4> targetMatch, int x, int y, int t);
-    double Tixi(int &x, int &y, int &t, std::vector<std::vector<int>> &completenessPatches, std::vector<std::vector<int>> &coherencePatches, int c);
+    double Tixi(int &x, int &y, int &t, std::vector<std::vector<float>> &completenessPatches, std::vector<std::vector<float>> &coherencePatches, int c);
     float distance(int sx, int sy, int st,
                     int tx, int ty, int tt,
                     int patchSize, float threshold);
