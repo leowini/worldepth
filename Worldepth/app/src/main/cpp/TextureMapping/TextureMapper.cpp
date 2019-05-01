@@ -569,7 +569,7 @@ void TextureMapper::getRGBD() {
 
             for (uint32_t y = y0; y <= y1; ++y) {
                 for (uint32_t x = x0; x <= x1; ++x) {
-                    cv::Vec3d pixelSample(x + 0.5, y + 0.5, 0);
+                    cv::Vec3f pixelSample(x + 0.5, y + 0.5, 0);
                     float w0 = edgeFunction(v1Raster, v2Raster, pixelSample);
                     float w1 = edgeFunction(v2Raster, v0Raster, pixelSample);
                     float w2 = edgeFunction(v0Raster, v1Raster, pixelSample);
@@ -582,7 +582,7 @@ void TextureMapper::getRGBD() {
                         if (z < depthBuffer.at<cv::Mat>(cam).at<float>(x, y)) {
                             depthBuffer.at<cv::Mat>(cam).at<float>(x, y) = z;
                             cv::Vec3f normalOfTriangle = normals.at(i);
-                            thetas.at(cam).at<double>(x, y) = calcThetaAngle(normalOfTriangle,
+                            thetas.at(cam).at<float>(x, y) = calcThetaAngle(normalOfTriangle,
                                                                              rvec);
                         }
                     }
@@ -807,13 +807,12 @@ cv::Vec3f TextureMapper::getNormalFromTri(cv::Vec3b tri) {
     return normal;
 }
 
-double TextureMapper::calcThetaAngle(cv::Vec3f &triangleNormal, cv::Vec3f &cameraPose) {
+float TextureMapper::calcThetaAngle(cv::Vec3f &triangleNormal, cv::Vec3f &cameraPose) {
     float dotProd = triangleNormal.dot(cameraPose);
-    double hi = pow(triangleNormal[0], 2);
-    double lenTriangle = sqrt(
+    float lenTriangle = sqrt(
             pow(triangleNormal[0], 2) + pow(triangleNormal[1], 2) + pow(triangleNormal[2], 2));
-    double lenCamera = sqrt(pow(cameraPose[0], 2) + pow(cameraPose[1], 2) + pow(cameraPose[2], 2));
-    double lenProd = lenTriangle * lenCamera;
+    float lenCamera = sqrt(pow(cameraPose[0], 2) + pow(cameraPose[1], 2) + pow(cameraPose[2], 2));
+    float lenProd = lenTriangle * lenCamera;
     return dotProd / lenProd;
 }
 

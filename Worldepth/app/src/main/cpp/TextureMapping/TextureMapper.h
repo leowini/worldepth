@@ -84,7 +84,7 @@ private:
     void projectToSurface();
     void multVecMatrix(const cv::Mat &matrix, const cv::Vec3f &src, cv::Vec3f &dst);
     cv::Vec3f getNormalFromTri(cv::Vec3b tri);
-    double calcThetaAngle(cv::Vec3f &triangleNormal, cv::Vec3f &cameraPose);
+    float calcThetaAngle(cv::Vec3f &triangleNormal, cv::Vec3f &cameraPose);
     void computeScreenCoordinates(
             const float &filmApertureWidth,
             const float &filmApertureHeight,
