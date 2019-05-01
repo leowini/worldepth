@@ -606,17 +606,17 @@ void TextureMapper::projectToSurface() {
     // accumulation buffers for colors and weights
     int buff_ind;
     cv::Mat sourceImage;
-    double pweight = 1.0;
-    double *weights;
-    double *acc_red;
-    double *acc_grn;
-    double *acc_blu;
+    float pweight = 1.0;
+    float *weights;
+    float *acc_red;
+    float *acc_grn;
+    float *acc_blu;
 
     // init accumulation buffers for colors and weights
-    weights = new double[vertices.size()];
-    acc_red = new double[vertices.size()];
-    acc_grn = new double[vertices.size()];
-    acc_blu = new double[vertices.size()];
+    weights = new float[vertices.size()];
+    acc_red = new float[vertices.size()];
+    acc_grn = new float[vertices.size()];
+    acc_blu = new float[vertices.size()];
     for (int buff_ind = 0; buff_ind < vertices.size(); buff_ind++) {
         weights[buff_ind] = 0.0;
         acc_red[buff_ind] = 0.0;
@@ -725,7 +725,7 @@ void TextureMapper::read_ply_file() {
 }
 
 void
-TextureMapper::write_ply_file(double *weights, double *acc_red, double *acc_grn, double *acc_blu) {
+TextureMapper::write_ply_file(float *weights, float *acc_red, float *acc_grn, float *acc_blu) {
     std::ifstream in(plyFilename, std::ios_base::binary);
     std::ofstream out(tempFilename, std::ios_base::binary);
     std::string line;

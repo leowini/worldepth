@@ -51,7 +51,7 @@ private:
 
     void init();
     void read_ply_file();
-    void write_ply_file(double *weights, double *acc_red, double *acc_grn, double *acc_blu);
+    void write_ply_file(float *weights, float *acc_red, float *acc_grn, float *acc_blu);
     void align();
     void reconstruct();
     double Mixi(int &x, int &y, int &t);
