@@ -481,6 +481,8 @@ void TextureMapper::convertToRaster(
         const float &t,
         const float &b,
         const float &near,
+        const uint32_t &imageWidth,
+        const uint32_t &imageHeight,
         cv::Vec3f &vertexRaster
 ) {
     cv::Vec3f vertexCamera;
@@ -498,9 +500,9 @@ void TextureMapper::convertToRaster(
     vertexNDC[1] = 2 * vertexScreen[1] / (t - b) - (t + b) / (t - b);
 
     // convert to raster space
-    vertexRaster[0] = (vertexNDC[0] + 1) / 2 * sourceWidth;
+    vertexRaster[0] = (vertexNDC[0] + 1) / 2 * imageWidth;
     // in raster space y is down so invert direction
-    vertexRaster[1] = (1 - vertexNDC[1]) / 2 * sourceHeight;
+    vertexRaster[1] = (1 - vertexNDC[1]) / 2 * imageHeight;
     vertexRaster[2] = -vertexCamera[2];
 }
 
@@ -538,9 +540,12 @@ void TextureMapper::getRGBD() {
 
             cv::Vec3f v0Raster, v1Raster, v2Raster;
 
-            convertToRaster(v0, cameraMatrix, left, right, top, bottom, nearClippingPLane, v0Raster);
-            convertToRaster(v1, cameraMatrix, left, right, top, bottom, nearClippingPLane, v1Raster);
-            convertToRaster(v2, cameraMatrix, left, right, top, bottom, nearClippingPLane, v2Raster);
+            convertToRaster(v0, cameraMatrix, left, right, top, bottom, nearClippingPLane, sourceWidth,
+                            sourceHeight, v0Raster);
+            convertToRaster(v1, cameraMatrix, left, right, top, bottom, nearClippingPLane, sourceWidth,
+                            sourceHeight, v1Raster);
+            convertToRaster(v2, cameraMatrix, left, right, top, bottom, nearClippingPLane, sourceWidth,
+                            sourceHeight, v2Raster);
 
             v0Raster[2] = 1 / v0Raster[2],
             v1Raster[2] = 1 / v1Raster[2],
@@ -564,7 +569,7 @@ void TextureMapper::getRGBD() {
 
             for (uint32_t y = y0; y <= y1; ++y) {
                 for (uint32_t x = x0; x <= x1; ++x) {
-                    cv::Vec3f pixelSample(static_cast<float>(x + 0.5), static_cast<float>(y + 0.5), 0);
+                    cv::Vec3f pixelSample(x + 0.5, y + 0.5, 0);
                     float w0 = edgeFunction(v1Raster, v2Raster, pixelSample);
                     float w1 = edgeFunction(v2Raster, v0Raster, pixelSample);
                     float w2 = edgeFunction(v0Raster, v1Raster, pixelSample);

@@ -76,14 +76,12 @@ private:
             const float &t,
             const float &b,
             const float &near,
-            const uint32_t &imageWidth,
-            const uint32_t &imageHeight,
             cv::Vec3f &vertexRaster
     );
     void getRGBD();
     void projectToSurface();
     void multVecMatrix(const cv::Mat &matrix, const cv::Vec3f &src, cv::Vec3f &dst);
-    cv::Vec3f getNormalFromTri(cv::Vec3b tri);
+    cv::Vec3f getNormalFromTri(cv::Vec3b &tri);
     float calcThetaAngle(cv::Vec3f &triangleNormal, cv::Vec3f &cameraPose);
     void computeScreenCoordinates(
             const float &filmApertureWidth,
