@@ -579,7 +579,7 @@ void TextureMapper::getRGBD() {
                         w2 /= area;
                         float oneOverZ = v0Raster[2] * w0 + v1Raster[2] * w1 + v2Raster[2] * w2;
                         float z = 1 / oneOverZ;
-                        if (z < depthBuffer.at<cv::Mat>(cam).at<float>(x, y)) {
+                        if (z < depthBuffer.at<float>(x, y)) {
                             depthBuffer.at<cv::Mat>(cam).at<float>(x, y) = z;
                             cv::Vec3f normalOfTriangle = normals.at(i);
                             thetas.at(cam).at<float>(x, y) = calcThetaAngle(normalOfTriangle,
