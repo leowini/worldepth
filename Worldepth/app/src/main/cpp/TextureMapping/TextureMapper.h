@@ -69,8 +69,8 @@ private:
     float max3(const float &a, const float &b, const float &c);
     float edgeFunction(const cv::Vec3f &a, const cv::Vec3f &b, const cv::Vec3f &c);
     void convertToRaster(
-            const cv::Vec3f &vertexWorld,
-            cv::Vec3f &vertexRaster
+            const cv::Point3f &vertexWorld,
+            cv::Point3f &vertexRaster
     );
     void getRGBD();
     void projectToSurface();

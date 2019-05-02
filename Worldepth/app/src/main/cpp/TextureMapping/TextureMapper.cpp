@@ -473,8 +473,8 @@ float TextureMapper::edgeFunction(const cv::Vec3f &a, const cv::Vec3f &b, const 
     return (c[0] - a[0]) * (b[1] - a[1]) - (c[1] - a[1]) * (b[0] - a[0]);
 }
 
-void TextureMapper::convertToRaster(const cv::Vec3f &vertexWorld,
-        cv::Vec3f &vertexRaster
+void TextureMapper::convertToRaster(const cv::Point3f &vertexWorld,
+        cv::Point3f &vertexRaster
 ) {
     cv::Vec3f vertexCamera;
 
@@ -491,10 +491,10 @@ void TextureMapper::convertToRaster(const cv::Vec3f &vertexWorld,
     vertexNDC.y = 2 * vertexScreen.y / (top - bottom) - (top + bottom) / (top - bottom);
 
     // convert to raster space
-    vertexRaster[0] = (vertexNDC.x + 1) / 2 * sourceWidth;
+    vertexRaster.x = (vertexNDC.x + 1) / 2 * sourceWidth;
     // in raster space y is down so invert direction
-    vertexRaster[1] = (1 - vertexNDC.y) / 2 * sourceHeight;
-    vertexRaster[2] = -vertexCamera[2];
+    vertexRaster.y = (1 - vertexNDC.y) / 2 * sourceHeight;
+    vertexRaster.z = -vertexCamera[2];
 }
 
 void TextureMapper::getRGBD() {
@@ -503,14 +503,6 @@ void TextureMapper::getRGBD() {
     std::vector<cv::Mat> thetas;
     cv::Mat sourceImage;
     for (unsigned int cam = 0; cam < TcwPoses.size(); cam++) {
-        sourceImage = source.at(cam);
-        cv::Rect rect(cv::Point(), sourceImgSize);
-        cv::Mat pose = TcwPoses.at(cam);
-        cv::Vec3f rvec;
-        cv::Rodrigues(pose(cv::Rect(0, 0, 3, 3)), rvec);
-        std::vector<cv::Point2f> imagePoints;
-        cv::projectPoints(vertices, rvec, pose(cv::Rect(3, 0, 1, 3)), cameraMatrix, distCoef,
-                          imagePoints);
         // rasterization algorithm
         // define the frame-buffer and the depth-buffer. Initialize depth buffer
         // to far clipping plane.
@@ -525,24 +517,24 @@ void TextureMapper::getRGBD() {
 
 
         for (uint32_t i = 0; i < ntris; i++) {
-            const cv::Vec3f &v0 = vertices.at(faces.at(i)[0]);
-            const cv::Vec3f &v1 = vertices.at(faces.at(i)[1]);
-            const cv::Vec3f &v2 = vertices.at(faces.at(i)[2]);
+            const cv::Point3f &v0 = vertices.at(faces.at(i)[0]);
+            const cv::Point3f &v1 = vertices.at(faces.at(i)[1]);
+            const cv::Point3f &v2 = vertices.at(faces.at(i)[2]);
 
-            cv::Vec3f v0Raster, v1Raster, v2Raster;
+            cv::Point3f v0Raster, v1Raster, v2Raster;
 
             convertToRaster(v0, v0Raster);
             convertToRaster(v1, v1Raster);
             convertToRaster(v2, v2Raster);
 
-            v0Raster[2] = 1 / v0Raster[2],
-            v1Raster[2] = 1 / v1Raster[2],
-            v2Raster[2] = 1 / v2Raster[2];
+            v0Raster.z = 1 / v0Raster.z,
+            v1Raster.z = 1 / v1Raster.z,
+            v2Raster.z = 1 / v2Raster.z;
 
-            float xmin = min3(v0Raster[0], v1Raster[0], v2Raster[0]);
-            float ymin = min3(v0Raster[1], v1Raster[1], v2Raster[1]);
-            float xmax = max3(v0Raster[0], v1Raster[0], v2Raster[0]);
-            float ymax = max3(v0Raster[1], v1Raster[1], v2Raster[1]);
+            float xmin = min3(v0Raster.x, v1Raster.x, v2Raster.x);
+            float ymin = min3(v0Raster.y, v1Raster.y, v2Raster.y);
+            float xmax = max3(v0Raster.x, v1Raster.x, v2Raster.x);
+            float ymax = max3(v0Raster.y, v1Raster.y, v2Raster.y);
 
             // the triangle is out of screen
             if (xmin > sourceWidth - 1 || xmax < 0 || ymin > sourceHeight - 1 || ymax < 0) continue;
@@ -565,9 +557,12 @@ void TextureMapper::getRGBD() {
                         w0 /= area;
                         w1 /= area;
                         w2 /= area;
-                        float z = 1 / (v0Raster[2] * w0 + v1Raster[2] * w1 + v2Raster[2] * w2);
+                        float z = 1 / (v0Raster.z * w0 + v1Raster.z * w1 + v2Raster.z * w2);
                         if (z < depthBuffer.at<float>(x, y)) {
                             depthBuffer.at<float>(x, y) = z;
+                            cv::Mat pose = TcwPoses.at(cam);
+                            cv::Vec3f rvec;
+                            cv::Rodrigues(pose(cv::Rect(0, 0, 3, 3)), rvec);
                             thetas.at(cam).at<float>(x, y) = calcThetaAngle(normals.at(i),
                                                                              rvec);
                         }
