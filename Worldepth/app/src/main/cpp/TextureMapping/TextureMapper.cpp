@@ -349,7 +349,7 @@ TextureMapper::findSourcePatches(std::vector<cv::Mat> &completenessPatchMatches,
             for (int sx = 0; sx < sourceWidth; sx++) {
                 cv::Vec<float, 4> patchMatch = completenessPatchMatches.at(
                         st).at<cv::Vec<float, 4>>(sx, sy);
-                double stx = static_cast<int>(patchMatch[0]), sty = static_cast<int>(patchMatch[1]), stt = static_cast<int>(patchMatch[2]);
+                int stx = static_cast<int>(patchMatch[0]), sty = static_cast<int>(patchMatch[1]), stt = static_cast<int>(patchMatch[2]);
                 if ( /* is in x range */(stx >= x1 && stx <= x2) &&
                                         /** is in y range */ (sty >= y1 && sty <= y2) && stt == t) {
                     //return value of the target pixel within the source patch
@@ -396,21 +396,21 @@ double TextureMapper::Tixi(int &x, int &y, int &t, std::vector<std::vector<float
     //U and V refer to the number of patches for the completeness and coherence terms, respectively.
     //wj = (cos(θ)**2) / (d**2), where θ is the angle between the surface
     //normal and the viewing direction at image j and d denotes the distance between the camera and the surface.
-    double U = (double) completenessPatches.size();
-    double V = (double) coherencePatches.size();
-    double L = 49; //L is the number of pixels in a patch (7 x 7 = 49)
-    double alpha = 2;
-    double lambda = 0.1;
-    int sum1 = 0;
-    double N = (int) texture.size(); //N is the number of texture images.
+    auto U = (float) completenessPatches.size();
+    auto V = (float) coherencePatches.size();
+    float L = 49; //L is the number of pixels in a patch (7 x 7 = 49)
+    float alpha = 2;
+    float lambda = 0.1;
+    float sum1 = 0;
+    float N = (int) texture.size(); //N is the number of texture images.
     for (int u = 0; u < U; u++) {
-        int upatch = completenessPatches[u][c];
+        float upatch = completenessPatches[u][c];
         sum1 += upatch;
     }
-    double term1 = (1 / L) * sum1;
-    double sum2 = 0;
-    for (int v; v < V; v++) {
-        int vpatch = coherencePatches[v][c];
+    float term1 = (1 / L) * sum1;
+    float sum2 = 0;
+    for (int v = 0; v < V; v++) {
+        float vpatch = coherencePatches[v][c];
         sum2 += vpatch;
     }
     double term2 = (alpha / L) * sum2;
@@ -429,7 +429,7 @@ double TextureMapper::Tixi(int &x, int &y, int &t, std::vector<std::vector<float
     }
     double WiXi = ( pow(cos(thetas.at((unsigned long) t).at<double>(x, y)), 2)) /
                (depthMaps.at((unsigned long) t).at<int>(Xi.at(0)) ^ 2);
-    double term3 = (int) (lambda / N) * WiXi * sum3;
+    double term3 = (lambda / N) * WiXi * sum3;
     double denominator = (int) ((U / L) + ((alpha * V) / L) + (lambda * WiXi));
     return ((term1 + term2 + term3) / denominator);
 }
@@ -438,7 +438,7 @@ void TextureMapper::reconstruct() {
     for (int t = 0; t < texture.size(); t++) {
         for (int y = 0; y < texture.at(0).size().height; y++) {
             for (int x = 0; x < texture.at(0).size().width; x++) {
-                texture.at(t).at<double>(x, y) = Mixi(x, y, t);
+                texture.at(static_cast<unsigned long>(t)).at<double>(x, y) = Mixi(x, y, t);
             }
         }
     }
@@ -473,34 +473,27 @@ float TextureMapper::edgeFunction(const cv::Vec3f &a, const cv::Vec3f &b, const 
     return (c[0] - a[0]) * (b[1] - a[1]) - (c[1] - a[1]) * (b[0] - a[0]);
 }
 
-void TextureMapper::convertToRaster(
-        const cv::Vec3f &vertexWorld,
-        const cv::Mat &worldToCamera,
-        const float &l,
-        const float &r,
-        const float &t,
-        const float &b,
-        const float &near,
+void TextureMapper::convertToRaster(const cv::Vec3f &vertexWorld,
         cv::Vec3f &vertexRaster
 ) {
     cv::Vec3f vertexCamera;
 
-    multVecMatrix(worldToCamera, vertexWorld, vertexCamera);
+    multVecMatrix(cameraMatrix, vertexWorld, vertexCamera);
 
     // convert to screen space
-    cv::Vec2f vertexScreen;
-    vertexScreen[0] = near * vertexCamera[0] / -vertexCamera[2];
-    vertexScreen[1] = near * vertexCamera[1] / -vertexCamera[2];
+    cv::Point2f vertexScreen;
+    vertexScreen.x = nearClippingPLane * vertexCamera[0] / -vertexCamera[2];
+    vertexScreen.y = nearClippingPLane * vertexCamera[1] / -vertexCamera[2];
 
     // now convert point from screen space to NDC space (in range [-1,1])
-    cv::Vec2f vertexNDC;
-    vertexNDC[0] = 2 * vertexScreen[0] / (r - l) - (r + l) / (r - l);
-    vertexNDC[1] = 2 * vertexScreen[1] / (t - b) - (t + b) / (t - b);
+    cv::Point2f vertexNDC;
+    vertexNDC.x = 2 * vertexScreen.x / (right - left) - (right + left) / (right - left);
+    vertexNDC.y = 2 * vertexScreen.y / (top - bottom) - (top + bottom) / (top - bottom);
 
     // convert to raster space
-    vertexRaster[0] = (vertexNDC[0] + 1) / 2 * sourceWidth;
+    vertexRaster[0] = (vertexNDC.x + 1) / 2 * sourceWidth;
     // in raster space y is down so invert direction
-    vertexRaster[1] = (1 - vertexNDC[1]) / 2 * sourceHeight;
+    vertexRaster[1] = (1 - vertexNDC.y) / 2 * sourceHeight;
     vertexRaster[2] = -vertexCamera[2];
 }
 
@@ -538,9 +531,9 @@ void TextureMapper::getRGBD() {
 
             cv::Vec3f v0Raster, v1Raster, v2Raster;
 
-            convertToRaster(v0, cameraMatrix, left, right, top, bottom, nearClippingPLane, v0Raster);
-            convertToRaster(v1, cameraMatrix, left, right, top, bottom, nearClippingPLane, v1Raster);
-            convertToRaster(v2, cameraMatrix, left, right, top, bottom, nearClippingPLane, v2Raster);
+            convertToRaster(v0, v0Raster);
+            convertToRaster(v1, v1Raster);
+            convertToRaster(v2, v2Raster);
 
             v0Raster[2] = 1 / v0Raster[2],
             v1Raster[2] = 1 / v1Raster[2],
@@ -564,7 +557,7 @@ void TextureMapper::getRGBD() {
 
             for (uint32_t y = y0; y <= y1; ++y) {
                 for (uint32_t x = x0; x <= x1; ++x) {
-                    cv::Vec3f pixelSample(static_cast<float>(x + 0.5), static_cast<float>(y + 0.5), 0);
+                    cv::Vec3f pixelSample(static_cast<float>((float) x + 0.5), static_cast<float>((float) y + 0.5), 0);
                     float w0 = edgeFunction(v1Raster, v2Raster, pixelSample);
                     float w1 = edgeFunction(v2Raster, v0Raster, pixelSample);
                     float w2 = edgeFunction(v0Raster, v1Raster, pixelSample);
@@ -572,12 +565,10 @@ void TextureMapper::getRGBD() {
                         w0 /= area;
                         w1 /= area;
                         w2 /= area;
-                        float oneOverZ = v0Raster[2] * w0 + v1Raster[2] * w1 + v2Raster[2] * w2;
-                        float z = 1 / oneOverZ;
+                        float z = 1 / (v0Raster[2] * w0 + v1Raster[2] * w1 + v2Raster[2] * w2);
                         if (z < depthBuffer.at<float>(x, y)) {
                             depthBuffer.at<float>(x, y) = z;
-                            cv::Vec3f normalOfTriangle = normals.at(i);
-                            thetas.at(cam).at<float>(x, y) = calcThetaAngle(normalOfTriangle,
+                            thetas.at(cam).at<float>(x, y) = calcThetaAngle(normals.at(i),
                                                                              rvec);
                         }
                     }

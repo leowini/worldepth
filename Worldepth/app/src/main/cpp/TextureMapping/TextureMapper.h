@@ -70,12 +70,6 @@ private:
     float edgeFunction(const cv::Vec3f &a, const cv::Vec3f &b, const cv::Vec3f &c);
     void convertToRaster(
             const cv::Vec3f &vertexWorld,
-            const cv::Mat &worldToCamera,
-            const float &l,
-            const float &r,
-            const float &t,
-            const float &b,
-            const float &near,
             cv::Vec3f &vertexRaster
     );
     void getRGBD();
