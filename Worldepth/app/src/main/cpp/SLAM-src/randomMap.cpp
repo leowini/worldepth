@@ -21,7 +21,8 @@ namespace SLAM {
             cv::Mat norm = pMP->GetNormal();
             for(int i = 0; i < norm.rows; i++) {
                 for(int j = 0; j < norm.cols; j++) {
-                    fputs(to_string(norm.at<float>(i, j)).c_str(), file);
+                    float normal = -1 * norm.at<float>(i,j);
+                    fputs(to_string(normal).c_str(), file);
                     fputs(string (" ").c_str(), file);
                 }
             }
