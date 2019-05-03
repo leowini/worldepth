@@ -288,13 +288,8 @@ float TextureMapper::distance(int sx, int sy, int st,
     for (int c = 0; c < targetChannels; c++) {
         for (int y = y1; y <= y2; y++) {
             for (int x = x1; x <= x2; x++) {
-
-                uint8_t const *sourceValue_ptr(
-                        source.at(static_cast<unsigned long>(st)).ptr(sx + x, sy + y, c));
-                uint8_t const *targetValue_ptr(
-                        target.at(static_cast<unsigned long>(tt)).ptr(tx + x, ty + y, c));
-
-                float delta = *sourceValue_ptr - *targetValue_ptr;
+                float delta = source.at(static_cast<unsigned long>(st)).at<uint8_t>(sx + x, sy + y, c)
+                        - target.at(static_cast<unsigned long>(tt)).at<uint8_t>(tx + x, ty + y, c);
                 dist += delta * delta;
 
                 // Early termination
@@ -477,7 +472,7 @@ void TextureMapper::convertToRaster(const cv::Point3f &vertexWorld,
         cv::Point3f &vertexRaster
 ) {
     cv::Vec3f vertexCamera;
-
+    //Using the cameraMatrix might be wrong here. Use pose instead?
     multVecMatrix(cameraMatrix, vertexWorld, vertexCamera);
 
     // convert to screen space
@@ -503,7 +498,6 @@ void TextureMapper::getRGBD() {
     std::vector<cv::Mat> thetas;
     cv::Mat sourceImage;
     for (unsigned int cam = 0; cam < TcwPoses.size(); cam++) {
-        // rasterization algorithm
         // define the frame-buffer and the depth-buffer. Initialize depth buffer
         // to far clipping plane.
         cv::Mat depthBuffer(sourceWidth, sourceHeight, CV_32F);
@@ -527,8 +521,8 @@ void TextureMapper::getRGBD() {
             convertToRaster(v1, v1Raster);
             convertToRaster(v2, v2Raster);
 
-            v0Raster.z = 1 / v0Raster.z,
-            v1Raster.z = 1 / v1Raster.z,
+            v0Raster.z = 1 / v0Raster.z;
+            v1Raster.z = 1 / v1Raster.z;
             v2Raster.z = 1 / v2Raster.z;
 
             float xmin = min3(v0Raster.x, v1Raster.x, v2Raster.x);
