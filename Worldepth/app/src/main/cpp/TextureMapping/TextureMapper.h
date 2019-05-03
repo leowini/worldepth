@@ -46,7 +46,7 @@ private:
     std::vector<cv::Mat> source;
     std::vector<cv::Mat> target;
     std::vector<cv::Mat> texture;
-    cv::Mat cameraMatrix;
+    cv::Mat intrinsicMatrix;
     cv::Mat distCoef;
 
     void init();
@@ -68,8 +68,7 @@ private:
     float min3(const float &a, const float &b, const float &c);
     float max3(const float &a, const float &b, const float &c);
     float edgeFunction(const cv::Vec3f &a, const cv::Vec3f &b, const cv::Vec3f &c);
-    void convertToRaster(
-            const cv::Point3f &vertexWorld,
+    void convertToRaster(const cv::Point3f &vertexWorld, cv::Mat &cameraMatrix,
             cv::Point3f &vertexRaster
     );
     void getRGBD();
@@ -87,6 +86,7 @@ private:
             const float &focalLength,
             float &top, float &bottom, float &left, float &right
     );
+    cv::Mat computeCameraMatrix(cv::Mat &extrinsicMatrix);
 };
 
 #endif
