@@ -517,7 +517,7 @@ void TextureMapper::getRGBD() {
             cv::Point3f v0Raster, v1Raster, v2Raster;
 
             cv::Mat pose = TcwPoses.at(cam);
-            cv::Mat cameraMatrix = intrinsicMatrix.dot(pose);
+            cv::Mat cameraMatrix = intrinsicMatrix * pose(cv::Rect(0, 0, 3, 3));
             convertToRaster(v0, cameraMatrix, v0Raster);
             convertToRaster(v1, cameraMatrix, v1Raster);
             convertToRaster(v2, cameraMatrix, v2Raster);
