@@ -381,7 +381,7 @@ namespace SLAM
                 if(mpMap->KeyFramesInMap()<=5)
                 {
                     cout << "Track lost soon after initialisation, resetting..." << endl;
-                    //mpSystem->Reset();
+                    mpSystem->Reset();
                     return;
                 }
             }
