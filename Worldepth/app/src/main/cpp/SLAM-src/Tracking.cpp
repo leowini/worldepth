@@ -90,7 +90,7 @@ namespace SLAM
 
         float fps = fSettings["Camera.fps"];
         if(fps==0)
-            fps=30;
+            fps=15;
 
         // Max/Min Frames to insert keyframes and to check relocalisation
         mMinFrames = 0;
