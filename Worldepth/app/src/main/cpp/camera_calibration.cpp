@@ -504,17 +504,17 @@ void Settings::saveCameraParams(Settings &s, Size &imageSize, Mat &cameraMatrix,
     fs << "fisheye_model" << s.useFisheye;*/
 
             fs << "camera_matrix" << cameraMatrix;
-            fs << "Camera_fx" << (double) cameraMatrix.at<float>(0, 0);
+            /*fs << "Camera_fx" << (double) cameraMatrix.at<float>(0, 0);
             fs.write("Camera_fy", (double) cameraMatrix.at<float>(1, 1));
             fs.write("Camera_cx", (double) cameraMatrix.at<float>(0, 2));
-            fs.write("Camera_cy", (double) cameraMatrix.at<float>(1, 2));
+            fs.write("Camera_cy", (double) cameraMatrix.at<float>(1, 2));*/
 
             fs << "distortion_coefficients" << distCoeffs;
-            fs.write("Camera_k1", (double) distCoeffs.at<float>(0));
+            /*fs.write("Camera_k1", (double) distCoeffs.at<float>(0));
             fs.write("Camera_k2", (double) distCoeffs.at<float>(1));
             fs.write("Camera_p1", (double) distCoeffs.at<float>(2));
             fs.write("Camera_p2", (double) distCoeffs.at<float>(3));
-            fs.write("Camera_k3", (double) distCoeffs.at<float>(4));
+            fs.write("Camera_k3", (double) distCoeffs.at<float>(4));*/
 
             fs.write("Camera_fps", 15);
             fs.write("Camera_RGB", 1);
