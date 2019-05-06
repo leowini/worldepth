@@ -3,10 +3,12 @@
 #include <opencv2/core/core.hpp>
 #include <PoissonRecon.h>
 #include "Reconstructor.h"
+#include "camera_calibration.h"
 
 using namespace std;
 
-Reconstructor *reconstructor;
+Reconstructor *reconstructor = nullptr;
+calib::Settings *settings = nullptr;
 
 extern "C" JNIEXPORT jstring JNICALL
 Java_com_example_leodw_worldepth_MainActivity_stringFromJNI(
@@ -18,47 +20,58 @@ Java_com_example_leodw_worldepth_MainActivity_stringFromJNI(
 
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_example_leodw_worldepth_slam_PoissonWrapper_startPoisson(JNIEnv *env, jobject instance) {
+Java_com_example_leodw_worldepth_slam_PoissonWrapper_startPoisson(JNIEnv *env, jobject instance, jstring internalPath) {
+    //Poisson is crashing with the internalPath.
+    const char *_internalPath = env->GetStringUTFChars(internalPath, 0);
+    std::string intPath = std::string(_internalPath);
     char* args [] = {
             (char*)"PoissonRecon",
             (char*)"--in",
-//            (char*)"/storage/emulated/0/Worldepth/Pointcloud.txt",
-            (char*) "/data/user/0/com.example.leodw.worldepth/files/SLAM.txt",
-//            (char*) "/data/user/0/com.example.leodw.worldepth/files/Pointcloud.txt",
+            (char*) (intPath + "/Pointcloud.txt").c_str(),
             (char*)"--out",
-//            (char*)"/storage/emulated/0/Worldepth/SLAM.ply",
-            (char*) "/data/user/0/com.example.leodw.worldepth/files/SLAM.ply",
+            (char*) (intPath + "/SLAM.ply").c_str(),
             (char*)"--depth",
             (char*)"10",
             (char*)"--tempDir",
-//            (char*)"/storage/emulated/0/Worldepth"
-            (char*)"/data/user/0/com.example.leodw.worldepth/files"
+            (char*) intPath.c_str()
     };
     int numArgs = 9;
     runMain(numArgs, args);
 }
 
 extern "C"
-JNIEXPORT void JNICALL
+JNIEXPORT jboolean JNICALL
 Java_com_example_leodw_worldepth_slam_Slam_passImageToSlam(JNIEnv *env, jobject instance, jlong img, jlong timeStamp) {
     if (img == 0) { //poison pill
+<<<<<<< HEAD
         reconstructor->endSlam("/data/user/0/com.example.leodw.worldepth/files/SLAM.txt");
+=======
+        if(reconstructor != nullptr) {
+            bool success = reconstructor->hasKeyframes();
+            reconstructor->endSlam(success);
+            return static_cast<jboolean>(success);
+        }
+        else return static_cast<jboolean>(false);
+>>>>>>> aaf8e03adbddd8ec947c5167606d4914c0ad7af5
     } else {
         cv::Mat &mat = *(cv::Mat *) img;
         double tframe = (double) timeStamp;
         reconstructor->passImageToSlam(mat, tframe);
         mat.release();
     }
+    return static_cast<jboolean>(true);
 }
 
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_example_leodw_worldepth_slam_Slam_initSystem(JNIEnv *env, jobject instance, jstring vocFile, jstring settingsFile) {
+Java_com_example_leodw_worldepth_slam_Slam_initSystem(JNIEnv *env, jobject instance, jstring vocFile, jstring settingsFile, jstring internalPath) {
     const char *_vocFile = env->GetStringUTFChars(vocFile,0);
     const char *_settingsFile = env->GetStringUTFChars(settingsFile,0);
+    const char *_internalPath = env->GetStringUTFChars(internalPath, 0);
+    std::string strPath = std::string(_internalPath);
     std::string vocFileString = _vocFile;
     std::string settingsFileString = _settingsFile;
-    reconstructor = new Reconstructor(vocFileString, settingsFileString);
+    reconstructor = new Reconstructor(vocFileString, settingsFileString, strPath);
     env->ReleaseStringUTFChars(vocFile, _vocFile);
     env->ReleaseStringUTFChars(settingsFile, _settingsFile);
 }
@@ -67,4 +80,40 @@ extern "C"
 JNIEXPORT void JNICALL
 Java_com_example_leodw_worldepth_slam_TextureMapWrapper_textureMap(JNIEnv *env, jobject instance) {
     reconstructor->textureMap();
+    //delete reconstructor;
+}
+
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_example_leodw_worldepth_slam_CalibWrapper_initSettings(JNIEnv *env, jobject instance, jstring internalPath) {
+    std::string _internalPath = std::string(env->GetStringUTFChars(internalPath, 0));
+    settings = new calib::Settings(_internalPath);
+}
+
+extern "C"
+JNIEXPORT jboolean JNICALL
+Java_com_example_leodw_worldepth_slam_CalibWrapper_passImageToCalibrate(JNIEnv *env, jobject instance, jlong img) {
+    cv::Mat &mat = *(cv::Mat *) img;
+    //returns whether or not it finished
+    if (settings != nullptr) {
+        settings->processImage(mat);
+        mat.release();
+        bool done = settings->mode == calib::CALIBRATED;
+        if (done) {  //if calibration is finished and written
+            delete settings;
+            settings = nullptr;
+        }
+        return done;
+    }else {
+        mat.release();
+        return false;
+    }
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_example_leodw_worldepth_slam_Slam_endReconstruction(JNIEnv *env, jobject instance) {
+    delete reconstructor;
+    reconstructor = nullptr;
 }

@@ -1,16 +1,10 @@
 package com.example.leodw.worldepth.slam;
 
 import android.graphics.Bitmap;
-import android.os.Environment;
-import android.os.Handler;
-import android.os.HandlerThread;
-
 import com.example.leodw.worldepth.ui.camera.TimeFramePair;
-
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
-
-import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.concurrent.BlockingQueue;
 
 public class Slam {
@@ -25,15 +19,16 @@ public class Slam {
 
     private FrameCountListener mFrameCountListener;
 
-    public native void passImageToSlam(long img, long timeStamp);
+    public native boolean passImageToSlam(long img, long timeStamp);
+    public native void initSystem(String vocFile, String settingsFile, String internalPath);
+    public native void endReconstruction();
 
-    public native void initSystem(String vocFile, String settingsFile);
-
-    Slam(BlockingQueue<TimeFramePair<Bitmap, Long>> q, Bitmap mPoisonPillBitmap) {
+    Slam(BlockingQueue<TimeFramePair<Bitmap, Long>> q, Bitmap mPoisonPillBitmap, String internalPath) {
         this.mQueue = q;
         this.mPoisonPillBitmap = mPoisonPillBitmap;
-        initSystem("/data/user/0/com.example.leodw.worldepth/files/ORBvoc.bin",
-                "/data/user/0/com.example.leodw.worldepth/files/TUM1.yaml");
+        initSystem(internalPath + "/ORBvoc.bin",
+                internalPath + "/CalibVals.yaml",
+                internalPath);
     }
 
     /**
@@ -42,36 +37,39 @@ public class Slam {
      * @param frame
      * @param timeStamp
      */
-    private void sendFrameToSlam(Bitmap frame, Long timeStamp) {
-        if (frame == mPoisonPillBitmap) {
-            passImageToSlam(0, timeStamp);
+    private boolean sendFrameToSlam(Bitmap frame, Long timeStamp) {
+        boolean success = true;
+        if (frame.equals(mPoisonPillBitmap)) {
+            success = passImageToSlam(0, timeStamp);
         } else {
             Mat mat = new Mat();
             Utils.bitmapToMat(frame, mat);
-            passImageToSlam(mat.getNativeObjAddr(), timeStamp);
+            success = passImageToSlam(mat.getNativeObjAddr(), timeStamp);
         }
+        return success;
     }
 
     /**
      * This will run in the background on the SlamSenderThread.
      */
     void doSlam() {
+        boolean success = true;
         try {
             TimeFramePair<Bitmap, Long> timeFramePair = mQueue.take();
             Bitmap bmp = timeFramePair.getFrame();
             Long time = timeFramePair.getTime();
             while (!bmp.equals(mPoisonPillBitmap)) {
                 mFrameCountListener.onNextFrame();
-                sendFrameToSlam(bmp, time);
+                success = sendFrameToSlam(bmp, time);
                 timeFramePair = mQueue.take();
                 bmp = timeFramePair.getFrame();
                 time = timeFramePair.getTime();
             }
-            sendFrameToSlam(mPoisonPillBitmap, time);
+            success = sendFrameToSlam(bmp, time);
         } catch (Exception e) {
             System.out.println(Thread.currentThread().getName() + " " + e.getMessage());
         }
-        mCompleteListener.onSlamComplete(0);
+        mCompleteListener.onSlamComplete(success);
     }
 
     public interface FrameCountListener {
@@ -83,7 +81,7 @@ public class Slam {
     }
 
     public interface SlamCompleteListener {
-        void onSlamComplete(int pointCloud);
+        void onSlamComplete(boolean success);
     }
 
     void setOnCompleteListener(SlamCompleteListener listener) {

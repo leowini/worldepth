@@ -1,37 +1,29 @@
 package com.example.leodw.worldepth.ui;
 
-import android.Manifest;
-import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.arch.lifecycle.ViewModel;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
-import android.content.res.AssetManager;
 import android.os.Build;
-import android.os.Environment;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.data.DataTransfer;
 import com.example.leodw.worldepth.data.FirebaseWrapper;
+import com.example.leodw.worldepth.slam.ReconVM;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -45,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     static private FirebaseWrapper fb;
     static private DataTransfer dt;
+
+    private ViewModel mReconVM;
 
     private boolean mLoginState;
 
@@ -66,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
         //Lock the orientation to portrait mode
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
-
         mPreferences = getSharedPreferences(sharedPrefFile, MODE_PRIVATE);
         mLoginState = mPreferences.getBoolean("loginState", false);
         NavHostFragment hostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
@@ -76,6 +69,8 @@ public class MainActivity extends AppCompatActivity {
         dt = new DataTransfer();
         createNotificationChannel();
         loadFiles();
+        mReconVM = ViewModelProviders.of(this).get(ReconVM.class);
+        ((ReconVM) mReconVM).setInternalPath(getFilesDir().getPath());
         /*if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{
                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -147,9 +142,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private File checkAndWriteFile(String filename) {
+    private void checkAndWriteFile(String filename) {
         //String externDir = Environment.getExternalStorageDirectory().getAbsolutePath();
-        File wdDir = getFilesDir();
+        /*File wdDir = getFilesDir();
         String dirName = wdDir.getAbsolutePath();
         if (!wdDir.exists()) {
             Log.i(TAG, "Worldepth folder not found, making it...");
@@ -162,31 +157,33 @@ public class MainActivity extends AppCompatActivity {
         if (targetFile.exists()) {
             Log.i(TAG, targetFile.getAbsolutePath() + " already exists");
             return null;
-        }
+        }*/
 
         try {
-            targetFile.createNewFile();
+            /*targetFile.createNewFile();
             if (!targetFile.exists()) {
                 Log.e(TAG, "Could not make file!");
-            }
+            }*/
             String[] assetsRoot = getAssets().list("");
             InputStream initialStream = getAssets().open(filename);
             byte[] buffer = new byte[initialStream.available()];
             initialStream.read(buffer);
 
-            OutputStream outStream = new FileOutputStream(targetFile);
+            OutputStream outStream = openFileOutput(filename, 0);
             outStream.write(buffer);
-
+            initialStream.close();
+            outStream.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return targetFile;
     }
 
     private void loadFiles() {
         checkAndWriteFile("ORBvoc.bin");
-        checkAndWriteFile("TUM1.yaml");
+        checkAndWriteFile("CalibVals.yaml");
         checkAndWriteFile("Pointcloud.txt");
+        checkAndWriteFile("calib_data.xml");
+        //checkAndWriteFile("output.xml");
     }
 
     /*@Override

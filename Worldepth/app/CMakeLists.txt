@@ -17,10 +17,12 @@ cmake_minimum_required(VERSION 3.4.1)
 
 include_directories(${PROJECT_SOURCE_DIR}/src/main/cpp/opencv-include)
 include_directories(${PROJECT_SOURCE_DIR}/src/main/cpp/SLAM-include)
+include_directories(${PROJECT_SOURCE_DIR}/src/main/cpp/SLAM-src/camera_calibration.cpp)
 include_directories(${DBoW2})
 include_directories(${PROJECT_SOURCE_DIR}/src/main/cpp)
 include_directories(${G2O})
 include_directories(${POISSON})
+include_directories(${PROJECT_SOURCE_DIR}/src/main/cpp/TextureMapping)
 
 add_library(lib_DBoW2
         SHARED
@@ -76,6 +78,8 @@ add_library( # Sets the name of the library.
 
         # Provides a relative path to your source file(s).
         src/main/cpp/native-lib.cpp
+        #calibration
+        src/main/cpp/camera_calibration.cpp
         #Reconstructor
         src/main/cpp/Reconstructor.cpp
         #SLAM
@@ -99,6 +103,9 @@ add_library( # Sets the name of the library.
         ${SLAM-SRC}/Initializer.cpp
         ${SLAM-SRC}/System.cpp
         ${SLAM-SRC}/PnPSolver.cpp
+        #Texture Mapping
+        src/main/cpp/TextureMapping/TextureMapper.cpp
+        src/main/cpp/TextureMapping/tinyply.cpp
         )
 
 add_library( lib_opencv SHARED IMPORTED)

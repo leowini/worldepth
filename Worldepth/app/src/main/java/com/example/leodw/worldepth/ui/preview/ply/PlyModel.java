@@ -26,9 +26,11 @@ import static android.opengl.GLES20.GL_ELEMENT_ARRAY_BUFFER;
 import static com.example.leodw.worldepth.ui.preview.util.Util.readIntLe;
 
 public class PlyModel extends IndexedModel {
+    private static final String TAG = "PlyModel";
 
-    private final float[] pointColor = new float[]{1.0f, 1.0f, 1.0f};
+    private final float[] pointColor = new float[]{50.0f, 50.0f, 50.0f};
     private int faceCount;
+    private boolean color = false;
 
     public PlyModel(@NonNull InputStream inputStream) throws IOException {
         super();
@@ -46,7 +48,7 @@ public class PlyModel extends IndexedModel {
             glProgram = -1;
         }
         glProgram = Util.compileProgram(R.raw.point_cloud_vertex, R.raw.single_color_fragment,
-                new String[]{"a_Position"});
+                new String[]{"a_Position", "a_Color"});
         initModelMatrix(boundSize);
     }
 
@@ -64,6 +66,7 @@ public class PlyModel extends IndexedModel {
     private void readText(@NonNull BufferedInputStream stream) throws IOException {
         List<Float> vertices = new ArrayList<>();
         List<Integer> faces = new ArrayList<>();
+        List<Float> rgb = new ArrayList<>();
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(stream), INPUT_BUFFER_SIZE);
         String line;
@@ -91,6 +94,8 @@ public class PlyModel extends IndexedModel {
                 lineArr = line.split(" ");
                 faceCount = Integer.parseInt(lineArr[2]);
                 System.out.println(faceCount);
+            } else if (line.startsWith("property uchar")) {
+                color = true;
             } else if (line.startsWith("end_header")) {
                 break;
             }
@@ -103,11 +108,10 @@ public class PlyModel extends IndexedModel {
         if (isBinary) {
             stream.reset();
             System.out.println("binary");
-            readVerticesBinary(vertices, faces, stream);
+            readBinary(vertices, faces, rgb, stream);
         } else {
             System.out.println("text");
-            readVerticesText(vertices, reader);
-            readFacesText(faces, reader);
+            readASCII(vertices, faces, rgb, reader);
         }
 
         float[] floatArray = new float[vertices.size()];
@@ -129,9 +133,21 @@ public class PlyModel extends IndexedModel {
         faceIndexBuffer = fbb.asIntBuffer();
         faceIndexBuffer.put(intArray);
         faceIndexBuffer.position(0);
+
+        if (color) {
+            float[] rgbArray = new float[rgb.size()];
+            for (int i = 0; i < rgb.size(); i++) {
+                rgbArray[i] = rgb.get(i);
+            }
+            ByteBuffer rgbb = ByteBuffer.allocateDirect(rgbArray.length * BYTES_PER_FLOAT);
+            rgbb.order(ByteOrder.nativeOrder());
+            rgbBuffer = rgbb.asFloatBuffer();
+            rgbBuffer.put(rgbArray);
+            rgbBuffer.position(0);
+        }
     }
 
-    private void readVerticesText(List<Float> vertices, BufferedReader reader) throws IOException {
+    private void readASCII(List<Float> vertices, List<Integer> faces, List<Float> rgb, BufferedReader reader) throws IOException {
         String[] lineArr;
         float x, y, z;
 
@@ -148,6 +164,13 @@ public class PlyModel extends IndexedModel {
             vertices.add(y);
             vertices.add(z);
 
+            if (color) {
+                rgb.add(new Float(lineArr[3]));
+                rgb.add(new Float(lineArr[4]));
+                rgb.add(new Float(lineArr[5]));
+                rgb.add(new Float(1));
+            }
+
             adjustMaxMin(x, y, z);
             centerMassX += x;
             centerMassY += y;
@@ -157,9 +180,16 @@ public class PlyModel extends IndexedModel {
         this.centerMassX = (float) (centerMassX / vertexCount);
         this.centerMassY = (float) (centerMassY / vertexCount);
         this.centerMassZ = (float) (centerMassZ / vertexCount);
+
+        for (int i = 0; i < faceCount; i++) {
+            lineArr = reader.readLine().trim().split(" ");
+            for (int j = 1; j <= Integer.parseInt(lineArr[0]); j++) {
+                faces.add(Integer.parseInt(lineArr[j]));
+            }
+        }
     }
 
-    private void readVerticesBinary(List<Float> vertices, List<Integer> faces, @NonNull BufferedInputStream stream) throws IOException {
+    private void readBinary(List<Float> vertices, List<Integer> faces, List<Float> rgb, @NonNull BufferedInputStream stream) throws IOException {
         byte[] tempBytes = new byte[0x1000];
         stream.mark(1);
         stream.read(tempBytes);
@@ -187,6 +217,21 @@ public class PlyModel extends IndexedModel {
             centerMassX += x;
             centerMassY += y;
             centerMassZ += z;
+
+
+            if (color) {
+                stream.read(tempBytes, 0, 3);
+                Float a = new Float((tempBytes[0] & 0xff)/255.0F);
+                Log.d(TAG, ""+a);
+                rgb.add(a);
+                Float b = new Float((tempBytes[1] & 0xff)/255.0F);
+                Log.d(TAG, ""+b);
+                rgb.add(b);
+                Float c = new Float((tempBytes[2] & 0xff)/255.0F);
+                Log.d(TAG, ""+c);
+                rgb.add(c);
+                rgb.add(Float.valueOf(1));
+            }
         }
 
         this.centerMassX = (float) (centerMassX / vertexCount);
@@ -195,22 +240,10 @@ public class PlyModel extends IndexedModel {
 
         for (int i = 0; i < faceCount; i++) {
             stream.read(tempBytes, 0, 1);
-            byte[] temp = tempBytes;
             int length = (tempBytes[0] & 0xff);
             stream.read(tempBytes, 0, BYTES_PER_INT * length);
             for (int j = 0; j < length; j++) {
                 faces.add(readIntLe(tempBytes, BYTES_PER_INT * j));
-            }
-        }
-    }
-
-    private void readFacesText(List<Integer> faces, BufferedReader reader) throws IOException {
-        String[] lineArr;
-
-        for (int i = 0; i < faceCount; i++) {
-            lineArr = reader.readLine().trim().split(" ");
-            for (int j = 1; j < lineArr.length; j++) {
-                faces.add(Integer.parseInt(lineArr[j]));
             }
         }
     }
@@ -226,20 +259,25 @@ public class PlyModel extends IndexedModel {
         int positionHandle = GLES20.glGetAttribLocation(glProgram, "a_Position");
         int pointThicknessHandle = GLES20.glGetUniformLocation(glProgram, "u_PointThickness");
         int ambientColorHandle = GLES20.glGetUniformLocation(glProgram, "u_ambientColor");
+        int colorHandle = GLES20.glGetAttribLocation(glProgram, "a_Color");
 
         GLES20.glEnableVertexAttribArray(positionHandle);
         GLES20.glVertexAttribPointer(positionHandle, COORDS_PER_VERTEX, GLES20.GL_FLOAT, false,
                 VERTEX_STRIDE, vertexBuffer);
+
+        GLES20.glEnableVertexAttribArray(colorHandle);
+        GLES20.glVertexAttribPointer(colorHandle, 4, GLES20.GL_FLOAT, false, 16, rgbBuffer);
 
         Matrix.multiplyMM(mvMatrix, 0, viewMatrix, 0, modelMatrix, 0);
         Matrix.multiplyMM(mvpMatrix, 0, projectionMatrix, 0, mvMatrix, 0);
         GLES20.glUniformMatrix4fv(mvpMatrixHandle, 1, false, mvpMatrix, 0);
 
         GLES20.glUniform1f(pointThicknessHandle, 3.0f);
-        GLES20.glUniform3fv(ambientColorHandle, 1, pointColor, 0);
+        GLES20.glUniform3fv(ambientColorHandle, 1, light.getAmbientColor(), 0);
 
         GLES20.glDrawElements(GLES20.GL_TRIANGLES, faceCount * 3, GLES20.GL_UNSIGNED_INT, faceIndexBuffer);
 
         GLES20.glDisableVertexAttribArray(positionHandle);
+        GLES20.glDisableVertexAttribArray(colorHandle);
     }
 }

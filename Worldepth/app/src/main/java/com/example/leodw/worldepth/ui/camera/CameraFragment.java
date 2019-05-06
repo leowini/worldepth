@@ -103,12 +103,12 @@ public class CameraFragment extends Fragment {
     /**
      * Max preview width that is guaranteed by Camera2 API
      */
-    private static final int MAX_PREVIEW_WIDTH = 1920;
+    private static final int MAX_PREVIEW_WIDTH = 640;
 
     /**
      * Max preview height that is guaranteed by Camera2 API
      */
-    private static final int MAX_PREVIEW_HEIGHT = 1080;
+    private static final int MAX_PREVIEW_HEIGHT = 480;
 
     private static final int REQUEST_CAMERA_PERMISSION = 200;
     private Handler mBackgroundHandler;
@@ -336,8 +336,9 @@ public class CameraFragment extends Fragment {
             mSlamOutputSurface = texture;
             startCameraRecording();
         }, new Handler(Looper.getMainLooper()));
-        mRenderer.setOnFrameRenderedListener((timeFramePair) -> mReconVM.sendFrameToReconVM(timeFramePair), new Handler(Looper.getMainLooper()));
+        mRenderer.setOnFrameRenderedListener((timeFramePair) -> mReconVM.sendFrame(timeFramePair), new Handler(Looper.getMainLooper()));
         mRenderer.start(mTextureView.getWidth(), mTextureView.getHeight());
+        mReconVM.setReconProgress(ReconVM.ReconProgress.SLAM);
     }
 
     private void startCameraRecording() {

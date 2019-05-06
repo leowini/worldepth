@@ -8,13 +8,13 @@ public class TextureMapWrapper {
 
     public native void textureMap();
 
-    void runMapping() {
+    void map() {
         textureMap();
-        listener.onComplete(0);
+        listener.onComplete();
     }
 
     public interface OnCompleteListener {
-        void onComplete(int finalModel);
+        void onComplete();
     }
 
     void setOnCompleteListener(OnCompleteListener listener) {

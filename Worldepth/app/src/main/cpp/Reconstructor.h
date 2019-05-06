@@ -3,23 +3,27 @@
 
 #include <opencv2/core/mat.hpp>
 #include "System.h"
-//#include "TextureMapper.h"
+#include <camera_calibration.h>
+#include "TextureMapping/TextureMapper.h"
 
 using namespace SLAM;
 
 class Reconstructor {
 
 public:
-    Reconstructor(std::string & vocFile, std::string & settingsFile);
-    void passImageToSlam(cv::Mat &im, double &tstamp);
-    void endSlam(std::string filename);
+    Reconstructor(std::string &vocFile, std::string &settingsFile, std::string &internalPath);
+    ~Reconstructor();
+    bool hasKeyframes();
+    void passImageToSlam(cv::Mat &im, double tstamp);
+    void endSlam(bool success);
     void textureMap();
 
 private:
-    System *slam;
-    //TextureMapper *textureMapper;
-    std::vector<cv::Mat> *vKFImColor;
-    std::vector<cv::Mat> *vKFTcw;
+    std::string internalPath;
+    System *slam = nullptr;
+    TextureMapper *textureMapper;
+    std::vector<cv::Mat> vKFImColor;
+    std::vector<cv::Mat> vKFTcw;
 
 };
 
