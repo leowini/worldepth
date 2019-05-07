@@ -13,6 +13,7 @@ import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.ui.MainActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -28,6 +29,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
 
+    private MapView mMapView;
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -36,11 +40,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        /*SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
-                .findFragmentById(R.id.map);
-        assert mapFragment != null;
-        mapFragment.getMapAsync(this);*/
+        mMapView = view.findViewById(R.id.map);
+        if(mMapView != null){
+            mMapView.onCreate(null);
+            mMapView.onResume();
+            mMapView.getMapAsync(this);
+        }
         Button mProfileButton = view.findViewById(R.id.mapToProfileBtn);
         Button mMessageButton = view.findViewById(R.id.mapToMessageBtn);
         Button mCameraButton = view.findViewById(R.id.mapToCameraBtn);

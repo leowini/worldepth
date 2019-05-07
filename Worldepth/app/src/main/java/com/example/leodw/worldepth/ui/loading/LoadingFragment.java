@@ -34,9 +34,7 @@ public class LoadingFragment extends Fragment {
         mLoadingImage = view.findViewById(R.id.loadingAnimation);
         startLoadingAnimation();
         Button loadingNextButton = view.findViewById(R.id.loadingNextButton);
-        loadingNextButton.setOnClickListener((view1) -> {
-            Navigation.findNavController(view1).navigate(R.id.action_loadingFragment_to_cameraFragment);
-        });
+        loadingNextButton.setOnClickListener((view1) -> Navigation.findNavController(view1).navigate(R.id.action_loadingFragment_to_cameraFragment));
     }
 
     private void startLoadingAnimation() {
