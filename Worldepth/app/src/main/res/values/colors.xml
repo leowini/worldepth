@@ -8,4 +8,7 @@
     <color name="inputColor">#99b7e8</color>
     <color name="backgroundColor">#274060</color>
     <color name="black">#000000</color>
+    <color name="purple">#8A56AC</color>
+    <color name="pink">#D47FA6</color>
+    <color name="white">#ffffff</color>
 </resources>

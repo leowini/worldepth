@@ -8,44 +8,6 @@
     android:background="@color/black"
     tools:context=".ui.StartScreen.StartScreenFragment">
 
-    <EditText
-        android:id="@+id/enterEmail"
-        style="@style/WorldepthEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:textSize="30sp"
-        android:textCursorDrawable="@null"
-        android:inputType="textEmailAddress"
-        android:textColor="@color/inputColor"
-        android:textAppearance="@android:style/TextAppearance.DeviceDefault.SearchResult.Title"
-        android:hint="@string/email"
-        android:textColorHint="@color/inputColor"
-        android:gravity="center|center_horizontal|center_vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.58"
-        tools:ignore="MissingConstraints" />
-
-    <EditText
-        android:id="@+id/enterPassword"
-        style="@style/WorldepthEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:ems="10"
-        android:textSize="30sp"
-        android:textCursorDrawable="@null"
-        android:inputType="textPassword"
-        android:textColor="@color/inputColor"
-        android:textAppearance="@android:style/TextAppearance.DeviceDefault.SearchResult.Title"
-        android:hint="@string/password"
-        android:textColorHint="@color/inputColor"
-        android:gravity="center|center_horizontal|center_vertical"
-        app:layout_constraintStart_toStartOf="@id/enterEmail"
-        app:layout_constraintTop_toBottomOf="@+id/enterEmail" />
-  
     <ImageView
         android:id="@+id/start_logo"
         android:layout_width="300dp"
@@ -58,15 +20,16 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.05" />
+        app:layout_constraintVertical_bias="0.35" />
 
     <Button
         android:id="@+id/goToSignUp"
-        style="@style/Widget.AppCompat.Button"
-        android:layout_width="wrap_content"
+        android:background="@drawable/purpleRoundedButton"
+        android:layout_width="400dp"
         android:layout_height="wrap_content"
         android:ems="10"
         android:text="@string/signUp"
+        android:textColor="@color/white"
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -76,15 +39,16 @@
 
     <Button
         android:id="@+id/loginBtn"
-        style="@style/Widget.AppCompat.Button"
-        android:layout_width="129dp"
+        android:background="@drawable/pinkRoundedButton"
+        android:layout_width="400dp"
         android:layout_height="wrap_content"
         android:ems="10"
         android:text="@string/login"
+        android:textColor="@color/white"
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.86"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.875" />
@@ -99,9 +63,9 @@
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.16"
+        app:layout_constraintHorizontal_bias="0.8"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.875" />
+        app:layout_constraintVertical_bias="0.05" />
 
 </android.support.constraint.ConstraintLayout>
