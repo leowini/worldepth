@@ -64,9 +64,9 @@ public class MainActivity extends AppCompatActivity {
         mLoginState = mPreferences.getBoolean("loginState", false);
         NavHostFragment hostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         NavController navController = hostFragment.getNavController();
-        //if (mLoginState) navController.navigate(R.id.cameraFragment);
+        if (mLoginState) navController.navigate(R.id.cameraFragment);
         //debug
-        if (mLoginState) navController.navigate(R.id.locationFragment);
+        //if (mLoginState) navController.navigate(R.id.locationFragment);
         fb = new FirebaseWrapper();
         dt = new DataTransfer();
         createNotificationChannel();
