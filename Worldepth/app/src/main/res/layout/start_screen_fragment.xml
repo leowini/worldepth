@@ -5,7 +5,7 @@
     android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backgroundColor"
+    android:background="@color/black"
     tools:context=".ui.StartScreen.StartScreenFragment">
 
     <EditText
@@ -48,10 +48,10 @@
   
     <ImageView
         android:id="@+id/start_logo"
-        android:layout_width="260dp"
-        android:layout_height="260dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         android:adjustViewBounds="true"
-        android:src="@drawable/logo"
+        android:src="@drawable/globe1"
         android:transitionName="small_logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

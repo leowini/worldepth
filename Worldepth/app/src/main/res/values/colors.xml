@@ -7,4 +7,5 @@
     <color name="colorWindowBackground">#333</color>
     <color name="inputColor">#99b7e8</color>
     <color name="backgroundColor">#274060</color>
+    <color name="black">#000000</color>
 </resources>
