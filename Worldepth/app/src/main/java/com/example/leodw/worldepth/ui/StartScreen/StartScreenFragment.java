@@ -65,9 +65,9 @@ public class StartScreenFragment extends Fragment {
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
-        createSignupTransitions();
-        mEmailInput = view.findViewById(R.id.enterEmail);
-        mPasswordInput = view.findViewById(R.id.enterPassword);
+        //createSignupTransitions();
+        //mEmailInput = view.findViewById(R.id.enterEmail);
+        //mPasswordInput = view.findViewById(R.id.enterPassword);
         mTestUserLogin = view.findViewById(R.id.testUserLogin);
         mTestUserLogin.setOnClickListener(v -> {
             login("JohnDoe@gmail.com", "Qwerty123!");
@@ -92,7 +92,7 @@ public class StartScreenFragment extends Fragment {
         });
     }
 
-    private void createSignupTransitions() {
+    /*private void createSignupTransitions() {
         ImageView logo = getView().findViewById(R.id.start_logo);
         mAnimExtras = new FragmentNavigator.Extras.Builder()
                 .addSharedElement(logo, "bigLogo")
@@ -100,7 +100,7 @@ public class StartScreenFragment extends Fragment {
         mNavOptions = new NavOptions.Builder()
                 .setEnterAnim(R.animator.signup_anim)
                 .build();
-    }
+    }*/
 
     private void login(String email, String password) {
         mFb.getFirebaseAuth().signInWithEmailAndPassword(email, password).
