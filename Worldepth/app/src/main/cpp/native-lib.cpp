@@ -31,7 +31,7 @@ Java_com_example_leodw_worldepth_slam_PoissonWrapper_startPoisson(JNIEnv *env, j
             (char*)"--out",
             (char*) (intPath + "/SLAM.ply").c_str(),
             (char*)"--depth",
-            (char*)"10",
+            (char*)"14",
             (char*)"--tempDir",
             (char*) intPath.c_str()
     };

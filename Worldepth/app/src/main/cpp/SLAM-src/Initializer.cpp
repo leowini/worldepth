@@ -313,7 +313,7 @@ namespace SLAM {
 
         float score = 0;
 
-        const float th = 5.991;
+        const float th = 4.605;
 
         const float invSigmaSquare = 1.0 / (sigma * sigma);
 
@@ -387,8 +387,8 @@ namespace SLAM {
 
         float score = 0;
 
-        const float th = 3.841;
-        const float thScore = 5.991;
+        const float th = 2.706;
+        const float thScore = 4.605;
 
         const float invSigmaSquare = 1.0 / (sigma * sigma);
 
