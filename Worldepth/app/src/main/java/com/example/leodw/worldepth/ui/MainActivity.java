@@ -49,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 2909;
 
+    private boolean localModel = true;
+
     // Used to load the 'native-lib' library on application startup.
     static {
         System.loadLibrary("native-lib");
@@ -65,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
         NavHostFragment hostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         NavController navController = hostFragment.getNavController();
         if (mLoginState) navController.navigate(R.id.cameraFragment);
+        //debug
+        //if (mLoginState) navController.navigate(R.id.locationFragment);
         fb = new FirebaseWrapper();
         dt = new DataTransfer();
         createNotificationChannel();
@@ -85,6 +89,14 @@ public class MainActivity extends AppCompatActivity {
 
     public DataTransfer getDataTransfer() {
         return this.dt;
+    }
+
+    public void setLocal (boolean local) {
+        this.localModel = local;
+    }
+
+    public boolean getLocalModelStatus(){
+        return localModel;
     }
 
     @Override

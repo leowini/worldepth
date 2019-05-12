@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.INTERNET" />
 
+
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -79,8 +80,11 @@
             android:name="com.sec.android.support.multiwindow"
             android:value="true" />
         <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCT35q5TMdJHGp9jgo0P7uiniUcSxt2LBM" />
+            android:value="AIzaSyBikLhcwWynd-fZKWUXqv44fnf2WJblPek" />
 
     </application>
 

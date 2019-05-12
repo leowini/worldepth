@@ -138,6 +138,9 @@
         <action
             android:id="@+id/action_viewerFragment_to_cameraFragment2"
             app:destination="@id/cameraFragment" />
+        <action
+            android:id="@+id/action_viewerFragment_to_locationFragment"
+            app:destination="@id/locationFragment" />
     </fragment>
     <fragment
         android:id="@+id/loadingFragment"
@@ -164,6 +167,9 @@
         <action
             android:id="@+id/action_mapFragment_to_messageFragment"
             app:destination="@id/messageFragment" />
+        <action
+            android:id="@+id/action_mapFragment_to_viewerFragment"
+            app:destination="@id/viewerFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -199,6 +205,18 @@
             app:destination="@id/cameraFragment" />
         <action
             android:id="@+id/action_reconstructionFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/locationFragment"
+        android:name="com.example.leodw.worldepth.ui.post.LocationFragment"
+        android:label="fragment_location"
+        tools:layout="@layout/fragment_location" >
+        <action
+            android:id="@+id/action_locationFragment_to_viewerFragment"
+            app:destination="@id/viewerFragment" />
+        <action
+            android:id="@+id/action_locationFragment_to_mapFragment"
             app:destination="@id/mapFragment" />
     </fragment>
 </navigation>

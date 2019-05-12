@@ -22,6 +22,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.example.leodw.worldepth.ui.MainActivity;
+import com.example.leodw.worldepth.ui.map.MapFragment;
 import com.example.leodw.worldepth.ui.preview.obj.ObjModel;
 import com.example.leodw.worldepth.ui.preview.ply.PlyModel;
 import com.example.leodw.worldepth.ui.preview.stl.StlModel;
@@ -56,6 +59,8 @@ public class PreviewFragment extends Fragment {
 
     private Button mLoadSample;
 
+    private MainActivity mainActivity;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +90,14 @@ public class PreviewFragment extends Fragment {
         });
         Button backToCamera = view.findViewById(R.id.viewerBackToCamera);
         backToCamera.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_viewerFragment_to_cameraFragment));
+        mainActivity = (MainActivity)getActivity();
+        if(mainActivity.getLocalModelStatus()) {
+            Button nextButton = view.findViewById(R.id.postButton);
+            nextButton.setOnClickListener(v -> {
+                modelView.onPause();
+                Navigation.findNavController(v).navigate(R.id.action_viewerFragment_to_locationFragment);
+            });
+        }
     }
 
     @Override
@@ -246,11 +259,17 @@ public class PreviewFragment extends Fragment {
 
     private void loadSampleModel() {
         try {
-            File file = new File(getContext().getFilesDir().getAbsolutePath() + "/", "SLAM.ply");
+            File file;
+            if(mainActivity.getLocalModelStatus()) {    //using created model
+                file = new File(getContext().getFilesDir().getAbsolutePath() + "/", "SLAM.ply");
+            } else {    //using downloaded model
+                file = new File(getContext().getFilesDir().getAbsolutePath() + "/", "download.ply");
+            }
             Log.d(TAG, file.getName());
             InputStream stream = new FileInputStream(file);
             setCurrentModel(new PlyModel(stream));
             stream.close();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
