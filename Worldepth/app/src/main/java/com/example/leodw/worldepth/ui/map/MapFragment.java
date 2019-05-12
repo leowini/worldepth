@@ -1,6 +1,8 @@
 package com.example.leodw.worldepth.ui.map;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -59,7 +61,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     private FirebaseAuth mAuth; //Instance of Authentication checker
     private FirebaseUser currentUser;
 
-    private Map<String, HashMap<String, Object>> postList;
+    private Map<String, Map<String, Object>> postList;
 
 
     @Nullable
@@ -105,8 +107,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 DataSnapshot postsSnap = dataSnapshot.child("posts");
-                postList = (Map<String, HashMap<String, Object>>) postsSnap.getValue();
-                for (HashMap<String, Object> post : postList.values()) {
+                postList = (Map<String, Map<String, Object>>) postsSnap.getValue();
+                for (Map<String, Object> post : postList.values()) {
                     LatLng loc = new LatLng((Double)post.get("lat"), (Double)post.get("lng"));
                     mMap.addMarker(new MarkerOptions().position(loc).title((String)post.get("key")));
                 }
@@ -125,26 +127,22 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     public boolean onMarkerClick(Marker marker) {
         String key = marker.getTitle();
         StorageReference modelRef = mStorageRef.child("Models/" + key);
-        try {
-            File localFile = File.createTempFile("download", "ply");
-            modelRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                    // Local temp file has been created
-                    MainActivity mainActivity = (MainActivity)getActivity();
-                    mainActivity.setLocal(false);
-                    Navigation.findNavController(getView()).navigate(R.id.action_mapFragment_to_viewerFragment);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    // Handle any errors
-                    exception.printStackTrace();
-                }
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        File localFile = new File(getContext().getFilesDir().getAbsolutePath() + "/download.ply");
+        modelRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                // Local temp file has been created
+                MainActivity mainActivity = (MainActivity)getActivity();
+                mainActivity.setLocal(false);
+                Navigation.findNavController(getView()).navigate(R.id.action_mapFragment_to_viewerFragment);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+                exception.printStackTrace();
+            }
+        });
         return true;
     }
 
