@@ -12,6 +12,7 @@ public class Post {
     public Double lat;
     public Double lng;
     public String time;
+    public String key;
 
     //empty constructor for firebase
     public Post() {
@@ -19,11 +20,12 @@ public class Post {
     }
 
     //data-filled constructor
-    public Post(String uid, Double lat, Double lng){
+    public Post(String uid, Double lat, Double lng, String key){
         this.uid = uid;
         this.lat = lat;
         this.lng = lng;
         this.time = Calendar.getInstance().getTime().toString();
+        this.key = key;
     }
 
     public Map<String, Object> toMap(){
@@ -32,6 +34,7 @@ public class Post {
         result.put("lat", lat);
         result.put("lng", lng);
         result.put("time", time);
+        result.put("key", key);
 
         return result;
     }

@@ -49,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 2909;
 
+    private boolean localModel = true;
+
     // Used to load the 'native-lib' library on application startup.
     static {
         System.loadLibrary("native-lib");
@@ -87,6 +89,14 @@ public class MainActivity extends AppCompatActivity {
 
     public DataTransfer getDataTransfer() {
         return this.dt;
+    }
+
+    public void setLocal (boolean local) {
+        this.localModel = local;
+    }
+
+    public boolean getLocalModelStatus(){
+        return localModel;
     }
 
     @Override

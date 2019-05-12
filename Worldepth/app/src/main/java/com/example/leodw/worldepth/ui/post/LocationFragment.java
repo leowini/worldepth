@@ -134,7 +134,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Go
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Post post = new Post(currentUser.getUid(), currentLoc.latitude, currentLoc.longitude);
+                Post post = new Post(currentUser.getUid(), currentLoc.latitude, currentLoc.longitude, key);
                 Map<String, Object> postValues = post.toMap();
                 Map<String, Object> childUpdates = new HashMap<>();
                 childUpdates.put("/posts/" + key, postValues);

@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.slam.ReconVM;
+import com.example.leodw.worldepth.ui.MainActivity;
+import com.example.leodw.worldepth.ui.preview.PreviewFragment;
 
 import java.util.Objects;
 
@@ -74,6 +76,8 @@ public class ReconstructionFragment extends Fragment {
                 mReconProgress.setText("Texture Mapping...");
                 break;
             case COMPLETE:
+                MainActivity mainActivity = (MainActivity)getActivity();
+                mainActivity.setLocal(true);
                 Navigation.findNavController(Objects.requireNonNull(getView())).navigate(R.id.action_reconstructionFragment_to_viewerFragment);
                 break;
             case FAILED:
