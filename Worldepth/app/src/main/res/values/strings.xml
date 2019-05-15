@@ -6,6 +6,8 @@
     <string name="open_model">Open model…</string>
     <string name="open_model_success">Model loaded successfully.</string>
     <string name="open_model_error">Failed to load model.</string>
+    <string name="no_location">Please select a location</string>
+    <string name="model_upload_failure">Model failed to upload</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="PWReq1">-Password must be at least 8 characters long</string>
     <string name="PWReq2">-Password cannot be over 20 characters long</string>
@@ -19,6 +21,7 @@
     <string name="phoneSignup">Sign up with phone</string>
     <string name="signIn">Sign in</string>
     <string name="signUp">Sign up</string>
+    <string name="post">Post</string>
     <string name="viewer">Viewer</string>
     <string name="camera">Camera</string>
     <string name="nextButton">Next</string>

@@ -37,7 +37,7 @@ public class Settings extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mReconVM = ViewModelProviders.of(getActivity()).get(ReconVM.class);
-        mBackToProfile = view.findViewById(R.id.settingsBackButton);
+        mBackToProfile = view.findViewById(R.id.postBackButton);
         mSignOutButton = view.findViewById(R.id.signOutButton);
         mCalibrateButton = view.findViewById(R.id.CalibButton);
         mBackToProfile.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_settings_to_profileFragment));
