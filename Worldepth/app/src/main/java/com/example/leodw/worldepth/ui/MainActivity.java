@@ -49,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 2909;
 
+    private boolean localModel = true;
+
     // Used to load the 'native-lib' library on application startup.
     static {
         System.loadLibrary("native-lib");
@@ -65,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
         NavHostFragment hostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         NavController navController = hostFragment.getNavController();
         if (mLoginState) navController.navigate(R.id.cameraFragment);
+        //debug
+        //if (mLoginState) navController.navigate(R.id.locationFragment);
         fb = new FirebaseWrapper();
         dt = new DataTransfer();
         createNotificationChannel();
@@ -85,6 +89,14 @@ public class MainActivity extends AppCompatActivity {
 
     public DataTransfer getDataTransfer() {
         return this.dt;
+    }
+
+    public void setLocal (boolean local) {
+        this.localModel = local;
+    }
+
+    public boolean getLocalModelStatus(){
+        return localModel;
     }
 
     @Override
@@ -142,9 +154,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private File checkAndWriteFile(String filename) {
+    private void checkAndWriteFile(String filename) {
         //String externDir = Environment.getExternalStorageDirectory().getAbsolutePath();
-        File wdDir = getFilesDir();
+        /*File wdDir = getFilesDir();
         String dirName = wdDir.getAbsolutePath();
         if (!wdDir.exists()) {
             Log.i(TAG, "Worldepth folder not found, making it...");
@@ -157,26 +169,25 @@ public class MainActivity extends AppCompatActivity {
         if (targetFile.exists()) {
             Log.i(TAG, targetFile.getAbsolutePath() + " already exists");
             return null;
-        }
+        }*/
 
         try {
-            targetFile.createNewFile();
+            /*targetFile.createNewFile();
             if (!targetFile.exists()) {
                 Log.e(TAG, "Could not make file!");
-            }
+            }*/
             String[] assetsRoot = getAssets().list("");
             InputStream initialStream = getAssets().open(filename);
             byte[] buffer = new byte[initialStream.available()];
             initialStream.read(buffer);
 
-            OutputStream outStream = new FileOutputStream(targetFile);
+            OutputStream outStream = openFileOutput(filename, 0);
             outStream.write(buffer);
             initialStream.close();
             outStream.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return targetFile;
     }
 
     private void loadFiles() {
