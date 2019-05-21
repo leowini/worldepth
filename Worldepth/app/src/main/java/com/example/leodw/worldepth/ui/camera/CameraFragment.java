@@ -403,10 +403,6 @@ public class CameraFragment extends Fragment {
             Size largest = Collections.max(
                     Arrays.asList(map.getOutputSizes(ImageFormat.JPEG)),
                     new CompareSizesByArea());
-            // Find out if we need to swap dimension to get the preview size relative to sensor
-            // coordinate.
-            sensorOrientation = characteristics.get(CameraCharacteristics.SENSOR_ORIENTATION);
-            boolean swappedDimensions = false;
             Point displaySize = new Point();
             getActivity().getWindowManager().getDefaultDisplay().getSize(displaySize);
             int displayWidth = displaySize.x;
@@ -424,7 +420,6 @@ public class CameraFragment extends Fragment {
 
             mTextureView.setAspectRatio(mPreviewSize.getHeight(), mPreviewSize.getWidth());
 
-            configureTransform(tvWidth, tvHeight);
             //check real-time permissions, this should be false on the first time the camera is ever opened
             if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 Log.i(TAG, "request permissions failed");
@@ -509,29 +504,6 @@ public class CameraFragment extends Fragment {
             mPreviewSession.close();
             mPreviewSession = null;
         }
-    }
-
-    private void configureTransform(int viewWidth, int viewHeight) {
-        if (null == mTextureView || null == mPreviewSize) {
-            return;
-        }
-        int rotation = getActivity().getWindowManager().getDefaultDisplay().getRotation();
-        Matrix matrix = new Matrix();
-        RectF viewRect = new RectF(0, 0, viewWidth, viewHeight);
-        RectF bufferRect = new RectF(0, 0, mPreviewSize.getHeight(), mPreviewSize.getWidth());
-        float centerX = viewRect.centerX();
-        float centerY = viewRect.centerY();
-
-        if (Surface.ROTATION_90 == rotation || Surface.ROTATION_270 == rotation) {
-            bufferRect.offset(centerX - bufferRect.centerX(), centerY - bufferRect.centerY());
-            matrix.setRectToRect(viewRect, bufferRect, Matrix.ScaleToFit.FILL);
-            float scale = Math.max(
-                    (float) viewHeight / mPreviewSize.getHeight(),
-                    (float) viewWidth / mPreviewSize.getWidth());
-            matrix.postScale(scale, scale, centerX, centerY);
-            matrix.postRotate(90 * (rotation - 2), centerX, centerY);
-        }
-        mTextureView.setTransform(matrix);
     }
 
     static class CompareSizesByArea implements Comparator<Size> {
