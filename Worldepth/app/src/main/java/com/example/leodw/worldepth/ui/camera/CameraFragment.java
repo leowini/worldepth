@@ -389,7 +389,7 @@ public class CameraFragment extends Fragment {
         startPreview();
     }
 
-    private void openCamera(int width, int height) {
+    private void openCamera(int tvWidth, int tvHeight) {
         CameraManager manager = (CameraManager) getActivity().getSystemService(Context.CAMERA_SERVICE);
         try {
             if (!mCameraOpenCloseLock.tryAcquire(2500, TimeUnit.MILLISECONDS)) {
@@ -405,58 +405,26 @@ public class CameraFragment extends Fragment {
                     new CompareSizesByArea());
             // Find out if we need to swap dimension to get the preview size relative to sensor
             // coordinate.
-            int displayRotation = getActivity().getWindowManager().getDefaultDisplay().getRotation();
             sensorOrientation = characteristics.get(CameraCharacteristics.SENSOR_ORIENTATION);
             boolean swappedDimensions = false;
-            switch (displayRotation) {
-                case Surface.ROTATION_0:
-                case Surface.ROTATION_180:
-                    if (sensorOrientation == 90 || sensorOrientation == 270) {
-                        swappedDimensions = true;
-                    }
-                    break;
-                case Surface.ROTATION_90:
-                case Surface.ROTATION_270:
-                    if (sensorOrientation == 0 || sensorOrientation == 180) {
-                        swappedDimensions = true;
-                    }
-                    break;
-                default:
-                    Log.e(TAG, "Display rotation is invalid: " + displayRotation);
-            }
             Point displaySize = new Point();
             getActivity().getWindowManager().getDefaultDisplay().getSize(displaySize);
-            int rotatedPreviewWidth = width;
-            int rotatedPreviewHeight = height;
-            int maxPreviewWidth = displaySize.x;
-            int maxPreviewHeight = displaySize.y;
+            int displayWidth = displaySize.x;
+            int displayHeight = displaySize.y;
 
-            if (swappedDimensions) {
-                rotatedPreviewWidth = height;
-                rotatedPreviewHeight = width;
-                maxPreviewWidth = displaySize.y;
-                maxPreviewHeight = displaySize.x;
+            if (displayWidth > MAX_PREVIEW_WIDTH) {
+                displayWidth = MAX_PREVIEW_WIDTH;
             }
 
-            if (maxPreviewWidth > MAX_PREVIEW_WIDTH) {
-                maxPreviewWidth = MAX_PREVIEW_WIDTH;
+            if (displayHeight > MAX_PREVIEW_HEIGHT) {
+                displayHeight = MAX_PREVIEW_HEIGHT;
             }
 
-            if (maxPreviewHeight > MAX_PREVIEW_HEIGHT) {
-                maxPreviewHeight = MAX_PREVIEW_HEIGHT;
-            }
+            mPreviewSize = chooseOptimalSize(map.getOutputSizes(SurfaceTexture.class), tvWidth, tvHeight, displayWidth, displayHeight, largest);
 
-            mPreviewSize = chooseOptimalSize(map.getOutputSizes(SurfaceTexture.class), rotatedPreviewWidth, rotatedPreviewHeight, maxPreviewWidth, maxPreviewHeight, largest);
+            mTextureView.setAspectRatio(mPreviewSize.getHeight(), mPreviewSize.getWidth());
 
-
-            int orientation = getResources().getConfiguration().orientation;
-            if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                mTextureView.setAspectRatio(mPreviewSize.getWidth(), mPreviewSize.getHeight());
-            } else {
-                mTextureView.setAspectRatio(mPreviewSize.getHeight(), mPreviewSize.getWidth());
-            }
-
-            configureTransform(width, height);
+            configureTransform(tvWidth, tvHeight);
             //check real-time permissions, this should be false on the first time the camera is ever opened
             if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 Log.i(TAG, "request permissions failed");
