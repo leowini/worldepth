@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linearLayout"
+    android:name="com.google.android.gms.maps.SupportMapFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.map.MapFragment">
@@ -12,43 +13,44 @@
         android:id="@+id/mapToProfileBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="148dp"
-        android:layout_marginTop="228dp"
-        android:layout_marginEnd="148dp"
-        android:text="@string/profile"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.934"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.008"
+        android:text="@string/profile" />
 
     <Button
         android:elevation="1dp"
         android:id="@+id/mapToCameraBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="148dp"
-        android:layout_marginTop="94dp"
-        android:layout_marginEnd="148dp"
-        android:layout_marginBottom="149dp"
         android:text="@string/camera"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mapToProfileBtn" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.90" />
 
     <Button
         android:elevation="1dp"
         android:id="@+id/mapToMessageBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="147dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="141dp"
-        android:layout_marginBottom="26dp"
-        android:text="@string/messages"
-        app:layout_constraintBottom_toTopOf="@+id/mapToCameraBtn"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.046"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mapToProfileBtn" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.008"
+        android:text="@string/messages"/>
+
+    <com.google.android.gms.maps.MapView
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:id="@+id/map"   />
 
     <!--<fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:map="http://schemas.android.com/apk/res-auto"
