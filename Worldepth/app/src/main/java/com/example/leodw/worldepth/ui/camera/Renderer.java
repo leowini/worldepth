@@ -19,8 +19,10 @@ import android.util.Log;
 import com.example.leodw.worldepth.slam.Slam;
 
 import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -70,7 +72,7 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
         Bitmap bmp = getBitmap();
         Log.d(TAG, ""+bmp.getHeight());
         Log.d(TAG, ""+bmp.getWidth());
-        //writeToFile(frameTimeStamp);
+        writeToFile(bmp, frameTimeStamp);
         try {
             if (frameCount % 2 == 0) {
                 mFrameRenderedListenerHandler.post(() -> mFrameRenderedListener.onFrameRendered(new TimeFramePair<Bitmap, Long>(bmp, frameTimeStamp)));
@@ -81,15 +83,30 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
 
     }
 
-    private void writeToFile(long timeStamp){
-        String filename = "" + timeStamp + ".png";
+    private void writeToFile(Bitmap bmp, long timeStamp){
+        String filename = "" + ((float)timeStamp / 100) + ".png";
+        boolean intro = true; //already has intro text
         File dir = new File("data/user/0/com.example.leodw.worldepth/files/rgb");
         if(!dir.exists()){
             dir.mkdir();
+            intro = false;
         }
         try {
-            String written = "" + timeStamp + " " + filename;
-            saveFrame(dir.getAbsolutePath() + filename);
+            String written = "" + timeStamp + " rgb/" + filename;
+            saveFrame(bmp, dir.getAbsolutePath() + "/" + filename);
+            BufferedWriter writer = new BufferedWriter(new FileWriter(
+                    dir.getAbsolutePath() + ".txt", true));
+            if(!intro){
+                writer.newLine();
+                writer.write("# color images");
+                writer.newLine();
+                writer.write("# file: 'sample'");
+                writer.newLine();
+                writer.write("# timestamp filename");
+            }
+            writer.newLine();
+            writer.write(written);
+            writer.close();
         }catch (IOException e){
             e.printStackTrace();
         }
@@ -124,17 +141,17 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
      * @param filename
      * @throws IOException
      */
-    private void saveFrame(String filename) throws IOException {
-        mPixelBuf.rewind();
+    private void saveFrame(Bitmap bmp, String filename) throws IOException {
+        /*mPixelBuf.rewind();
         GLES20.glReadPixels(0, 0, mSurfaceWidth, mSurfaceHeight, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE,
-                mPixelBuf);
+                mPixelBuf);*/
 
         BufferedOutputStream bos = null;
         try {
-            bos = new BufferedOutputStream(new FileOutputStream(filename));
+            /*bos = new BufferedOutputStream(new FileOutputStream(filename));
             Bitmap bmp = Bitmap.createBitmap(mSurfaceWidth, mSurfaceHeight, Bitmap.Config.ARGB_8888);
             mPixelBuf.rewind();
-            bmp.copyPixelsFromBuffer(mPixelBuf);
+            bmp.copyPixelsFromBuffer(mPixelBuf);*/
             bmp.compress(Bitmap.CompressFormat.PNG, 100, bos);
             bmp.recycle();
         } finally {

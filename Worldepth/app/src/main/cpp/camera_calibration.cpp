@@ -201,6 +201,8 @@ namespace calib {
         //Mat view;
         bool blinkOutput = false;
 
+        aspectRatio = (float) view.cols / view.rows;
+
         if (mode == CALIBRATED)
             return;
         //view = s.nextImage();
