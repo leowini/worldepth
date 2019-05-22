@@ -30,6 +30,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Size;
 import android.util.SparseIntArray;
@@ -41,6 +42,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.leodw.worldepth.R;
@@ -71,7 +73,7 @@ public class CameraFragment extends Fragment {
 
     private Button captureBtn;
     private ImageView mMapButton;
-    private AutoFitTextureView mTextureView;
+    private TextureView mTextureView;
 
     private boolean mRecordingState;
 
@@ -418,8 +420,40 @@ public class CameraFragment extends Fragment {
 
             mPreviewSize = chooseOptimalSize(map.getOutputSizes(SurfaceTexture.class), tvWidth, tvHeight, displayWidth, displayHeight, largest);
 
-            mTextureView.setAspectRatio(mPreviewSize.getHeight(), mPreviewSize.getWidth());
+            //mTextureView.setAspectRatio(mPreviewSize.getHeight(), mPreviewSize.getWidth());
 
+            //Suppose this value is obtained from Step 2.
+            //I simply test here by hardcoding a 3:4 aspect ratio, where my phone has a thinner aspect ratio.
+            float cameraAspectRatio = (float) largest.getHeight() / largest.getWidth();
+
+            //Preparation
+            DisplayMetrics metrics = new DisplayMetrics();
+            getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+            int screenWidth = metrics.widthPixels;
+            int screenHeight = metrics.heightPixels;
+            int finalWidth = screenWidth;
+            int finalHeight = screenHeight;
+            int widthDifference = 0;
+            int heightDifference = 0;
+            float screenAspectRatio = (float) screenWidth / screenHeight;
+
+            //Determines whether we crop width or crop height
+            if (screenAspectRatio > cameraAspectRatio) { //Keep width crop height
+                finalHeight = (int) (screenWidth / cameraAspectRatio);
+                heightDifference = finalHeight - screenHeight;
+            } else { //Keep height crop width
+                finalWidth = (int) (screenHeight * cameraAspectRatio);
+                widthDifference = finalWidth - screenWidth;
+            }
+
+            //Apply the result to the Preview
+            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mTextureView.getLayoutParams();
+            lp.width = finalWidth;
+            lp.height = finalHeight;
+            //Below 2 lines are to center the preview, since cropping default occurs at the right and bottom
+            lp.leftMargin = - (widthDifference / 2);
+            lp.topMargin = - (heightDifference / 2);
+            mTextureView.setLayoutParams(lp);
             //check real-time permissions, this should be false on the first time the camera is ever opened
             if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 Log.i(TAG, "request permissions failed");
