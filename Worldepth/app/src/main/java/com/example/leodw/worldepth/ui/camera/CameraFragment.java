@@ -397,6 +397,7 @@ public class CameraFragment extends Fragment {
             if (!mCameraOpenCloseLock.tryAcquire(2500, TimeUnit.MILLISECONDS)) {
                 throw new RuntimeException("Time out waiting to lock camera opening.");
             }
+            assert manager != null;
             cameraId = manager.getCameraIdList()[0];
             CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraId);
             StreamConfigurationMap map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
@@ -454,6 +455,7 @@ public class CameraFragment extends Fragment {
             lp.leftMargin = - (widthDifference / 2);
             lp.topMargin = - (heightDifference / 2);
             mTextureView.setLayoutParams(lp);
+
             //check real-time permissions, this should be false on the first time the camera is ever opened
             if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 Log.i(TAG, "request permissions failed");
