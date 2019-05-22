@@ -290,7 +290,7 @@ public class CameraFragment extends Fragment {
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         mReconVM = ViewModelProviders.of(getActivity()).get(ReconVM.class);
-        mTextureView = (AutoFitTextureView) view.findViewById(R.id.textureView);
+        mTextureView = view.findViewById(R.id.textureView);
         assert mTextureView != null;
         captureBtn = (Button) view.findViewById(R.id.captureButton);
         mMapButton = (ImageView) view.findViewById(R.id.cameraToMapButton);
@@ -411,16 +411,8 @@ public class CameraFragment extends Fragment {
             int displayWidth = displaySize.x;
             int displayHeight = displaySize.y;
 
-            if (displayWidth > MAX_PREVIEW_WIDTH) {
-                displayWidth = MAX_PREVIEW_WIDTH;
-            }
-
-            if (displayHeight > MAX_PREVIEW_HEIGHT) {
-                displayHeight = MAX_PREVIEW_HEIGHT;
-            }
-
-            mPreviewSize = chooseOptimalSize(map.getOutputSizes(SurfaceTexture.class), tvWidth, tvHeight, displayWidth, displayHeight, largest);
-
+            //mPreviewSize = chooseOptimalSize(map.getOutputSizes(SurfaceTexture.class), tvWidth, tvHeight, displayWidth, displayHeight, largest);
+            mPreviewSize = largest;
             //mTextureView.setAspectRatio(mPreviewSize.getHeight(), mPreviewSize.getWidth());
 
             //Suppose this value is obtained from Step 2.
@@ -430,21 +422,19 @@ public class CameraFragment extends Fragment {
             //Preparation
             DisplayMetrics metrics = new DisplayMetrics();
             getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
-            int screenWidth = metrics.widthPixels;
-            int screenHeight = metrics.heightPixels;
-            int finalWidth = screenWidth;
-            int finalHeight = screenHeight;
+            int finalWidth = displayWidth;
+            int finalHeight = displayHeight;
             int widthDifference = 0;
             int heightDifference = 0;
-            float screenAspectRatio = (float) screenWidth / screenHeight;
+            float screenAspectRatio = (float) displayWidth / displayHeight;
 
             //Determines whether we crop width or crop height
             if (screenAspectRatio > cameraAspectRatio) { //Keep width crop height
-                finalHeight = (int) (screenWidth / cameraAspectRatio);
-                heightDifference = finalHeight - screenHeight;
+                finalHeight = (int) (displayWidth / cameraAspectRatio);
+                heightDifference = finalHeight - displayHeight;
             } else { //Keep height crop width
-                finalWidth = (int) (screenHeight * cameraAspectRatio);
-                widthDifference = finalWidth - screenWidth;
+                finalWidth = (int) (displayHeight * cameraAspectRatio);
+                widthDifference = finalWidth - displayWidth;
             }
 
             //Apply the result to the Preview

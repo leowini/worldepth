@@ -6,15 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.example.leodw.worldepth.ui.camera.AutoFitTextureView
+    <TextureView
         android:id="@+id/textureView"
-        android:layout_width="385dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/captureButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_width="0dp" />
 
     <Button
         android:id="@+id/captureButton"
