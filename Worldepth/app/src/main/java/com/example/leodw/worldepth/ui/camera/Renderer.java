@@ -72,7 +72,7 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
         Bitmap bmp = getBitmap();
         Log.d(TAG, ""+bmp.getHeight());
         Log.d(TAG, ""+bmp.getWidth());
-        writeToFile(bmp, frameTimeStamp);
+        //writeToFile(bmp, frameTimeStamp);
         try {
             if (frameCount % 2 == 0) {
                 mFrameRenderedListenerHandler.post(() -> mFrameRenderedListener.onFrameRendered(new TimeFramePair<Bitmap, Long>(bmp, frameTimeStamp)));
@@ -84,7 +84,7 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
     }
 
     private void writeToFile(Bitmap bmp, long timeStamp){
-        String filename = "" + ((float)timeStamp / 100) + ".png";
+        String filename = "" + ((float)timeStamp / 1000000000) + ".png";
         boolean intro = true; //already has intro text
         File dir = new File("data/user/0/com.example.leodw.worldepth/files/rgb");
         if(!dir.exists()){
@@ -148,12 +148,12 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
 
         BufferedOutputStream bos = null;
         try {
-            /*bos = new BufferedOutputStream(new FileOutputStream(filename));
-            Bitmap bmp = Bitmap.createBitmap(mSurfaceWidth, mSurfaceHeight, Bitmap.Config.ARGB_8888);
+            bos = new BufferedOutputStream(new FileOutputStream(filename));
+            /*Bitmap bmp = Bitmap.createBitmap(mSurfaceWidth, mSurfaceHeight, Bitmap.Config.ARGB_8888);
             mPixelBuf.rewind();
             bmp.copyPixelsFromBuffer(mPixelBuf);*/
             bmp.compress(Bitmap.CompressFormat.PNG, 100, bos);
-            bmp.recycle();
+            //bmp.recycle();
         } finally {
             if (bos != null) bos.close();
         }
