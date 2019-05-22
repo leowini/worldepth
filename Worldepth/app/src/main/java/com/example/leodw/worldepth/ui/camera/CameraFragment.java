@@ -73,7 +73,7 @@ public class CameraFragment extends Fragment {
 
     private Button captureBtn;
     private ImageView mMapButton;
-    private TextureView mTextureView;
+    private AutoFitTextureView mTextureView;
 
     private boolean mRecordingState;
 
@@ -420,8 +420,6 @@ public class CameraFragment extends Fragment {
             float cameraAspectRatio = (float) largest.getHeight() / largest.getWidth();
 
             //Preparation
-            DisplayMetrics metrics = new DisplayMetrics();
-            getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
             int finalWidth = displayWidth;
             int finalHeight = displayHeight;
             int widthDifference = 0;
@@ -445,6 +443,7 @@ public class CameraFragment extends Fragment {
             lp.leftMargin = - (widthDifference / 2);
             lp.topMargin = - (heightDifference / 2);
             mTextureView.setLayoutParams(lp);
+            mTextureView.setAspectRatio(finalWidth, finalHeight);
 
             //check real-time permissions, this should be false on the first time the camera is ever opened
             if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
