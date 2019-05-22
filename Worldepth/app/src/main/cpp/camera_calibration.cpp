@@ -520,9 +520,9 @@ void Settings::saveCameraParams(Settings &s, Size &imageSize, Mat &cameraMatrix,
             fs.write("Camera_RGB", 1);
             fs.write("ORBextractor_nFeatures", 3000);
             fs.write("ORBextractor_scaleFactor", 1.2);
-            fs.write("ORBextractor_nLevels", 12);
-            fs.write("ORBextractor_iniThFAST", 30);
-            fs.write("ORBextractor_minThFAST", 15);
+            fs.write("ORBextractor_nLevels", 14);
+            fs.write("ORBextractor_iniThFAST", 45);
+            fs.write("ORBextractor_minThFAST", 20);
 
 /*    fs << "avg_reprojection_error" << totalAvgErr;
     if (s.writeExtrinsics && !reprojErrs.empty())

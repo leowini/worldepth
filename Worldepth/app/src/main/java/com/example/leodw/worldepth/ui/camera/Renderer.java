@@ -1,5 +1,6 @@
 package com.example.leodw.worldepth.ui.camera;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.SurfaceTexture;
 import android.opengl.EGL14;
@@ -69,6 +70,7 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
         Bitmap bmp = getBitmap();
         Log.d(TAG, ""+bmp.getHeight());
         Log.d(TAG, ""+bmp.getWidth());
+        //writeToFile(frameTimeStamp);
         try {
             if (frameCount % 2 == 0) {
                 mFrameRenderedListenerHandler.post(() -> mFrameRenderedListener.onFrameRendered(new TimeFramePair<Bitmap, Long>(bmp, frameTimeStamp)));
@@ -77,6 +79,20 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
             e.printStackTrace();
         }
 
+    }
+
+    private void writeToFile(long timeStamp){
+        String filename = "" + timeStamp + ".png";
+        File dir = new File("data/user/0/com.example.leodw.worldepth/files/rgb");
+        if(!dir.exists()){
+            dir.mkdir();
+        }
+        try {
+            String written = "" + timeStamp + " " + filename;
+            saveFrame(dir.getAbsolutePath() + filename);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -94,8 +110,12 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
         mPixelBuf.rewind();
         bmp.copyPixelsFromBuffer(mPixelBuf);
 
-        //return Bitmap.createScaledBitmap(bmp, 640, (640 * mSurfaceHeight / mSurfaceWidth), true);
-        return bmp;
+        android.graphics.Matrix matrix = new android.graphics.Matrix();
+        matrix.setRotate(-90, bmp.getWidth(), bmp.getHeight());
+        Bitmap answer = Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), matrix, true);
+        //return answer;
+        return Bitmap.createScaledBitmap(answer, 640 * answer.getWidth()/answer.getHeight(), 640, true);
+
     }
 
     /**

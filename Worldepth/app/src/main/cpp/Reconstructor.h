@@ -25,6 +25,9 @@ private:
     std::vector<cv::Mat> vKFImColor;
     std::vector<cv::Mat> vKFTcw;
 
+    //debug
+    int mFrameCount = 0;
+
 };
 
 #endif

@@ -209,6 +209,8 @@ namespace SLAM
                     if(mVelocity.empty() || mCurrentFrame.mnId<mnLastRelocFrameId+2)
                     {
                         bOK = TrackReferenceKeyFrame();
+                        if(!bOK)
+                            std::cout << "dsjfhs";
                     }
                     else
                     {
@@ -220,6 +222,8 @@ namespace SLAM
                 else
                 {
                     bOK = Relocalization();
+                    if(!bOK)
+                        std::cout << "dsjfhs";
                 }
             }
             else
@@ -229,6 +233,8 @@ namespace SLAM
                 if(mState==LOST)
                 {
                     bOK = Relocalization();
+                    if(!bOK)
+                        std::cout << "dsjfhs";
                 }
                 else
                 {
@@ -239,10 +245,14 @@ namespace SLAM
                         if(!mVelocity.empty())
                         {
                             bOK = TrackWithMotionModel();
+                            if(!bOK)
+                                std::cout << "dsjfhs";
                         }
                         else
                         {
                             bOK = TrackReferenceKeyFrame();
+                            if(!bOK)
+                                std::cout << "dsjfhs";
                         }
                     }
                     else
@@ -290,6 +300,8 @@ namespace SLAM
                         }
 
                         bOK = bOKReloc || bOKMM;
+                        if(!bOK)
+                            std::cout << "dsjfhs";
                     }
                 }
             }
@@ -301,6 +313,8 @@ namespace SLAM
             {
                 if(bOK)
                     bOK = TrackLocalMap();
+                if(!bOK)
+                    std::cout << "dsjfhs";
             }
             else
             {
@@ -309,6 +323,8 @@ namespace SLAM
                 // the camera we will use the local map again.
                 if(bOK && !mbVO)
                     bOK = TrackLocalMap();
+                if(!bOK)
+                    std::cout << "dsjfhs";
             }
 
             if(bOK)
@@ -540,7 +556,7 @@ namespace SLAM
         float medianDepth = pKFini->ComputeSceneMedianDepth(2);
         float invMedianDepth = 1.0f/medianDepth;
 
-        if(medianDepth<0 || pKFcur->TrackedMapPoints(1)<80) //this is true
+        if(medianDepth<0 || pKFcur->TrackedMapPoints(1)<100) //this is true
         {
             cout << "Wrong initialization, reseting..." << endl;
             Reset();
@@ -731,9 +747,7 @@ namespace SLAM
         fill(mCurrentFrame.mvpMapPoints.begin(),mCurrentFrame.mvpMapPoints.end(),static_cast<MapPoint*>(NULL));
 
         // Project points seen in previous frame
-        int th;
-
-            th=7;
+        int th = 15;
         int nmatches = matcher.SearchByProjection(mCurrentFrame,mLastFrame,th,true);
 
         // If few matches, uses a wider window search
@@ -869,7 +883,7 @@ namespace SLAM
         // Condition 1a: More than "MaxFrames" have passed from last keyframe insertion
         const bool c1a = mCurrentFrame.mnId>=mnLastKeyFrameId+mMaxFrames;
         // Condition 1b: More than "MinFrames" have passed and Local Mapping is idle
-        const bool c1b = (mCurrentFrame.mnId>=mnLastKeyFrameId+mMinFrames /*&& bLocalMappingIdle*/);
+        const bool c1b = (mCurrentFrame.mnId>=mnLastKeyFrameId+mMinFrames && bLocalMappingIdle);
         //Condition 1c: tracking is weak
         const bool c1c =  false/*mSensor!=System::MONOCULAR && (mnMatchesInliers<nRefMatches*0.25 || bNeedToInsertClose) */; //this is always false
         // Condition 2: Few tracked points compared to reference keyframe. Lots of visual odometry compared to map matches.
@@ -891,7 +905,6 @@ namespace SLAM
                     return false;
             }
 
-            return false;
         }
         else
             return false;
