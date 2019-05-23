@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
 import android.graphics.Matrix;
 import android.graphics.Point;
@@ -21,6 +22,8 @@ import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CameraMetadata;
 import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.params.StreamConfigurationMap;
+import android.media.Image;
+import android.media.ImageReader;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -49,8 +52,16 @@ import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.slam.ReconVM;
 import com.example.leodw.worldepth.slam.Slam;
 
+import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -67,9 +78,8 @@ public class CameraFragment extends Fragment {
 
     private ReconVM mReconVM;
 
-    private Renderer mRenderer;
     private Slam mSlam;
-    private SurfaceTexture mSlamOutputSurface;
+    //private SurfaceTexture mSlamOutputSurface;
 
     private Button captureBtn;
     private ImageView mMapButton;
@@ -81,6 +91,14 @@ public class CameraFragment extends Fragment {
 
     private static final SparseIntArray DEFAULT_ORIENTATIONS = new SparseIntArray();
     private static final SparseIntArray INVERSE_ORIENTATIONS = new SparseIntArray();
+
+    private ByteBuffer mPixelBuf; // used by saveFrame()
+    private ImageReader mImageReader;
+
+    private OnFrameRenderedListener mFrameRenderedListener;
+    private Handler mFrameRenderedListenerHandler;
+
+    private static int frameCount = 0;
 
     static {
         DEFAULT_ORIENTATIONS.append(Surface.ROTATION_0, 90);
@@ -315,7 +333,8 @@ public class CameraFragment extends Fragment {
                         stopRecording();
                         mRecordingState = false;
                         Navigation.findNavController(getView()).navigate(R.id.action_cameraFragment_to_reconstructionFragment);
-                        mRenderer.stopRenderThread();
+                        mFrameRenderedListenerHandler.post(() -> mFrameRenderedListener.onFrameRendered(
+                                new TimeFramePair<Bitmap, Double>(mReconVM.getPoisonPill(), (double) 0)));
                         return true;
                     }
                     return false;
@@ -335,14 +354,97 @@ public class CameraFragment extends Fragment {
         //Queue for images and timestamps to send to Slam.
         BlockingQueue<TimeFramePair<Bitmap, Long>> q = new LinkedBlockingQueue<>();
         //Poison pill to signal end of queue.
-        mRenderer = new Renderer(mReconVM.getPoisonPill());
-        mRenderer.setOnSurfaceTextureReadyListener(texture -> {
-            mSlamOutputSurface = texture;
-            startCameraRecording();
-        }, new Handler(Looper.getMainLooper()));
-        mRenderer.setOnFrameRenderedListener((timeFramePair) -> mReconVM.sendFrame(timeFramePair), new Handler(Looper.getMainLooper()));
-        mRenderer.start(mTextureView.getWidth(), mTextureView.getHeight());
+        mImageReader = ImageReader.newInstance(mPreviewSize.getWidth(), mPreviewSize.getHeight(),
+                ImageFormat.JPEG, 25);
+        mImageReader.setOnImageAvailableListener(new ImageReader.OnImageAvailableListener() {
+            @Override
+            public void onImageAvailable(ImageReader reader) {
+                Image image = mImageReader.acquireLatestImage();
+                mPixelBuf = image.getPlanes()[0].getBuffer();
+                double frameTimeStamp = (double) Calendar.getInstance().getTimeInMillis() /1000;
+                Bitmap bmp = getBitmap();
+                frameCount++;
+                Log.d(TAG, ""+bmp.getHeight());
+                Log.d(TAG, ""+bmp.getWidth());
+                Log.d(TAG, ""+frameCount);
+                //writeToFile(bmp, frameTimeStamp);
+                try {
+                    mFrameRenderedListenerHandler.post(() -> mFrameRenderedListener
+                            .onFrameRendered(new TimeFramePair<Bitmap, Double>(bmp, frameTimeStamp)));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                image.close();
+            }
+        }, mBackgroundHandler);
+
+        startCameraRecording();
+        setOnFrameRenderedListener((timeFramePair) -> mReconVM.sendFrame(timeFramePair), new Handler(Looper.getMainLooper()));
         mReconVM.setReconProgress(ReconVM.ReconProgress.SLAM);
+    }
+
+    private void writeToFile(Bitmap bmp, Double timeStamp){
+        String filename = "" + timeStamp + ".png";
+        boolean intro = true; //already has intro text
+        File dir = new File("data/user/0/com.example.leodw.worldepth/files/rgb");
+        if(!dir.exists()){
+            dir.mkdir();
+            intro = false;
+        }
+        try {
+            String written = "" + timeStamp + " rgb/" + filename;
+            saveFrame(bmp, dir.getAbsolutePath() + "/" + filename);
+            BufferedWriter writer = new BufferedWriter(new FileWriter(
+                    dir.getAbsolutePath() + ".txt", true));
+            if(!intro){
+                writer.newLine();
+                writer.write("# color images");
+                writer.newLine();
+                writer.write("# file: 'sample'");
+                writer.newLine();
+                writer.write("# timestamp filename");
+            }
+            writer.newLine();
+            writer.write(written);
+            writer.close();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    private void saveFrame(Bitmap bmp, String filename) throws IOException {
+        /*mPixelBuf.rewind();
+        GLES20.glReadPixels(0, 0, mSurfaceWidth, mSurfaceHeight, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE,
+                mPixelBuf);*/
+
+        BufferedOutputStream bos = null;
+        try {
+            bos = new BufferedOutputStream(new FileOutputStream(filename));
+            /*Bitmap bmp = Bitmap.createBitmap(mSurfaceWidth, mSurfaceHeight, Bitmap.Config.ARGB_8888);
+            mPixelBuf.rewind();
+            bmp.copyPixelsFromBuffer(mPixelBuf);*/
+            bmp.compress(Bitmap.CompressFormat.PNG, 100, bos);
+            //bmp.recycle();
+        } finally {
+            if (bos != null) bos.close();
+        }
+    }
+
+
+    public Bitmap getBitmap() {
+        //mPixelBuf.rewind();
+        //GLES20.glReadPixels(0, 0, mSurfaceWidth, mSurfaceHeight, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE,
+        //        mPixelBuf);
+
+        //BufferedOutputStream bos = null;
+        mPixelBuf.rewind();
+        byte[] bytes = new byte[mPixelBuf.capacity()];
+        mPixelBuf.get(bytes);
+        Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+
+        //return answer;
+        return Bitmap.createScaledBitmap(bmp, 640 * bmp.getWidth()/bmp.getHeight(), 640, true);
+
     }
 
     private void startCameraRecording() {
@@ -367,8 +469,7 @@ public class CameraFragment extends Fragment {
             mPreviewBuilder.addTarget(previewSurface);
 
             //Set up Surface for SLAM
-            mSlamOutputSurface.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
-            Surface slamOutputSurface = new Surface(mSlamOutputSurface);
+            Surface slamOutputSurface = mImageReader.getSurface();
             surfaces.add(slamOutputSurface);
             mPreviewBuilder.addTarget(slamOutputSurface);
 
@@ -415,8 +516,8 @@ public class CameraFragment extends Fragment {
             int displayWidth = displaySize.x;
             int displayHeight = displaySize.y;
 
-            mPreviewSize = chooseOptimalSize(map.getOutputSizes(SurfaceTexture.class), tvWidth, tvHeight, displayWidth, displayHeight, largest);
-            //mPreviewSize = largest;
+            //mPreviewSize = chooseOptimalSize(map.getOutputSizes(SurfaceTexture.class), tvWidth, tvHeight, displayWidth, displayHeight, largest);
+            mPreviewSize = largest;
             //mTextureView.setAspectRatio(mPreviewSize.getHeight(), mPreviewSize.getWidth());
 
             //Suppose this value is obtained from Step 2.
@@ -543,6 +644,15 @@ public class CameraFragment extends Fragment {
             return Long.signum((long) lhs.getWidth() * lhs.getHeight() -
                     (long) rhs.getWidth() * rhs.getHeight());
         }
+    }
+
+    public interface OnFrameRenderedListener {
+        void onFrameRendered(TimeFramePair<Bitmap, Double> timeFramePair);
+    }
+
+    public void setOnFrameRenderedListener(OnFrameRenderedListener listener, Handler handler) {
+        this.mFrameRenderedListener = listener;
+        this.mFrameRenderedListenerHandler = handler;
     }
 
 }
