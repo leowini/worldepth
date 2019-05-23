@@ -263,11 +263,13 @@ public class CameraFragment extends Fragment {
         HandlerThread thread = new HandlerThread("CameraPreview");
         thread.start();
         try {
-            mPreviewSession.setRepeatingRequest(mPreviewBuilder.build(), null, mBackgroundHandler);
+            mPreviewSession.setRepeatingRequest(mPreviewBuilder.build(), null,
+                    mBackgroundHandler);
         } catch (CameraAccessException e1) {
             e1.printStackTrace();
         }
     }
+
 
     private void setUpCaptureRequestBuilder(CaptureRequest.Builder builder) {
         builder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO);
@@ -331,7 +333,7 @@ public class CameraFragment extends Fragment {
      */
     private void startRecording() {
         //Queue for images and timestamps to send to Slam.
-        BlockingQueue<TimeFramePair<Bitmap, Long>> q = new LinkedBlockingQueue<TimeFramePair<Bitmap, Long>>();
+        BlockingQueue<TimeFramePair<Bitmap, Long>> q = new LinkedBlockingQueue<>();
         //Poison pill to signal end of queue.
         mRenderer = new Renderer(mReconVM.getPoisonPill());
         mRenderer.setOnSurfaceTextureReadyListener(texture -> {
@@ -346,7 +348,7 @@ public class CameraFragment extends Fragment {
     private void startCameraRecording() {
         if (cameraDevice == null) return;
         CameraManager manager = (CameraManager) getActivity().getSystemService(Context.CAMERA_SERVICE);
-        closePreviewSession();
+        //closePreviewSession();
         if (null == cameraDevice || !mTextureView.isAvailable() || null == mPreviewSize) {
             return;
         }
@@ -357,6 +359,7 @@ public class CameraFragment extends Fragment {
             texture.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
             mPreviewBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_RECORD);
             List<Surface> surfaces = new ArrayList<>();
+
 
             // Set up Surface for the camera preview
             Surface previewSurface = new Surface(texture);
@@ -369,6 +372,7 @@ public class CameraFragment extends Fragment {
             surfaces.add(slamOutputSurface);
             mPreviewBuilder.addTarget(slamOutputSurface);
 
+
             cameraDevice.createCaptureSession(surfaces, new CameraCaptureSession.StateCallback() {
                 @Override
                 public void onConfigured(@NonNull CameraCaptureSession cameraCaptureSession) {
@@ -380,7 +384,7 @@ public class CameraFragment extends Fragment {
                 public void onConfigureFailed(@NonNull CameraCaptureSession session) {
 
                 }
-            }, mBackgroundHandler);
+            }, new Handler(Looper.getMainLooper()));
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
@@ -388,7 +392,7 @@ public class CameraFragment extends Fragment {
 
     private void stopRecording() {
         nextVideoAbsolutePath = null;
-        startPreview();
+        //startPreview();
     }
 
     private void openCamera(int tvWidth, int tvHeight) {
@@ -411,8 +415,8 @@ public class CameraFragment extends Fragment {
             int displayWidth = displaySize.x;
             int displayHeight = displaySize.y;
 
-            //mPreviewSize = chooseOptimalSize(map.getOutputSizes(SurfaceTexture.class), tvWidth, tvHeight, displayWidth, displayHeight, largest);
-            mPreviewSize = largest;
+            mPreviewSize = chooseOptimalSize(map.getOutputSizes(SurfaceTexture.class), tvWidth, tvHeight, displayWidth, displayHeight, largest);
+            //mPreviewSize = largest;
             //mTextureView.setAspectRatio(mPreviewSize.getHeight(), mPreviewSize.getWidth());
 
             //Suppose this value is obtained from Step 2.

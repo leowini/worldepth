@@ -62,7 +62,7 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
     @Override
     public void onFrameAvailable(SurfaceTexture surfaceTexture) {
         frameCount++;
-        long frameTimeStamp = surfaceTexture.getTimestamp();
+        double frameTimeStamp = (double)surfaceTexture.getTimestamp() / 1000000000;
         // Latch the data.
         renderer.checkGlError("before updateTexImage");
         mEglSurfaceTexture.updateTexImage();
@@ -72,10 +72,12 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
         Bitmap bmp = getBitmap();
         Log.d(TAG, ""+bmp.getHeight());
         Log.d(TAG, ""+bmp.getWidth());
+        Log.d(TAG, ""+frameCount);
         //writeToFile(bmp, frameTimeStamp);
         try {
             if (frameCount % 2 == 0) {
-                mFrameRenderedListenerHandler.post(() -> mFrameRenderedListener.onFrameRendered(new TimeFramePair<Bitmap, Long>(bmp, frameTimeStamp)));
+                //mFrameRenderedListenerHandler.post(() -> mFrameRenderedListener
+                //        .onFrameRendered(new TimeFramePair<Bitmap, Double>(bmp, frameTimeStamp)));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -83,8 +85,8 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
 
     }
 
-    private void writeToFile(Bitmap bmp, long timeStamp){
-        String filename = "" + ((float)timeStamp / 1000000000) + ".png";
+    private void writeToFile(Bitmap bmp, Double timeStamp){
+        String filename = "" + timeStamp + ".png";
         boolean intro = true; //already has intro text
         File dir = new File("data/user/0/com.example.leodw.worldepth/files/rgb");
         if(!dir.exists()){
@@ -129,9 +131,9 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
 
         android.graphics.Matrix matrix = new android.graphics.Matrix();
         matrix.setRotate(-90, bmp.getWidth(), bmp.getHeight());
-        Bitmap answer = Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), matrix, true);
+        bmp = Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), matrix, true);
         //return answer;
-        return Bitmap.createScaledBitmap(answer, 640 * answer.getWidth()/answer.getHeight(), 640, true);
+        return Bitmap.createScaledBitmap(bmp, 640 * bmp.getWidth()/bmp.getHeight(), 640, true);
 
     }
 
@@ -177,7 +179,7 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
 
     public void stopRenderThread() {
         if (mRenderThread == null) return;
-        mRenderThread.handler.post(() -> mFrameRenderedListenerHandler.post(() -> mFrameRenderedListener.onFrameRendered(new TimeFramePair<Bitmap, Long>(mPoisonPillBitmap, (long) 0))));
+        mRenderThread.handler.post(() -> mFrameRenderedListenerHandler.post(() -> mFrameRenderedListener.onFrameRendered(new TimeFramePair<Bitmap, Double>(mPoisonPillBitmap, (double) 0))));
         mRenderThread.handler.post(() -> {
             Looper looper = Looper.myLooper();
             if (looper != null) {
@@ -575,7 +577,7 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
     }
 
     public interface OnFrameRenderedListener {
-        void onFrameRendered(TimeFramePair<Bitmap, Long> timeFramePair);
+        void onFrameRendered(TimeFramePair<Bitmap, Double> timeFramePair);
     }
 
     public void setOnFrameRenderedListener(OnFrameRenderedListener listener, Handler handler) {
