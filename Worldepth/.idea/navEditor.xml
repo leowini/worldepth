@@ -75,32 +75,6 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="emailFragment">
-                    <value>
-                      <LayoutPositions>
-                        <option name="myPosition">
-                          <Point>
-                            <option name="x" value="256" />
-                            <option name="y" value="1138" />
-                          </Point>
-                        </option>
-                        <option name="myPositions">
-                          <map>
-                            <entry key="action_emailFragment_to_nameFragment">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                            <entry key="action_emailFragment_to_startSignupFragment">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                          </map>
-                        </option>
-                      </LayoutPositions>
-                    </value>
-                  </entry>
                   <entry key="loadingFragment">
                     <value>
                       <LayoutPositions>
@@ -366,6 +340,27 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="signInFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="12" />
+                            <option name="y" value="12" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_signInFragment_to_cameraFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="startScreenFragment">
                     <value>
                       <LayoutPositions>
@@ -377,6 +372,11 @@
                         </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="action_startScreenFragment_to_SignInFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_startScreenFragment_to_cameraFragment">
                               <value>
                                 <LayoutPositions />

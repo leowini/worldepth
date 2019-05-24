@@ -22,50 +22,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.58" />
 
-    <EditText
-        android:id="@+id/enterEmail"
-        style="@style/BlankEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:background="@drawable/bubble1"
-        android:ems="10"
-        android:textSize="25sp"
-        android:hint="@string/email"
-        android:textColorHint="@color/inputColor"
-        android:textColor="@color/inputColor"
-        android:inputType="textEmailAddress"
-        android:textAppearance="@android:style/TextAppearance.DeviceDefault.SearchResult.Title"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.13" />
-
-    <EditText
-        android:id="@+id/enterPassword"
-        style="@style/BlankEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:background="@drawable/bubble1"
-        android:ems="10"
-        android:textSize="25sp"
-        android:hint="@string/password"
-        android:textColorHint="@color/inputColor"
-        android:textColor="@color/inputColor"
-        android:inputType="textPassword"
-        android:textAppearance="@android:style/TextAppearance.DeviceDefault.SearchResult.Title"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.25" />
-
-
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -128,7 +84,7 @@
         app:layout_constraintVertical_bias="0.89" />
 
     <Button
-        android:id="@+id/loginBtn"
+        android:id="@+id/toSignIn"
         android:background="@drawable/pinkroundedbutton"
         android:layout_width="400dp"
         android:layout_height="wrap_content"
