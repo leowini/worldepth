@@ -12,8 +12,10 @@ import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
 import android.graphics.Matrix;
 import android.graphics.Point;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.SurfaceTexture;
+import android.graphics.YuvImage;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraCharacteristics;
@@ -54,6 +56,7 @@ import com.example.leodw.worldepth.slam.Slam;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
@@ -278,8 +281,6 @@ public class CameraFragment extends Fragment {
         if (cameraDevice == null)
             return;
         setUpCaptureRequestBuilder(mPreviewBuilder);
-        HandlerThread thread = new HandlerThread("CameraPreview");
-        thread.start();
         try {
             mPreviewSession.setRepeatingRequest(mPreviewBuilder.build(), null,
                     mBackgroundHandler);
@@ -355,18 +356,30 @@ public class CameraFragment extends Fragment {
         BlockingQueue<TimeFramePair<Bitmap, Long>> q = new LinkedBlockingQueue<>();
         //Poison pill to signal end of queue.
         mImageReader = ImageReader.newInstance(mPreviewSize.getWidth(), mPreviewSize.getHeight(),
-                ImageFormat.JPEG, 25);
+                ImageFormat.YUV_420_888, 1);
         mImageReader.setOnImageAvailableListener(new ImageReader.OnImageAvailableListener() {
             @Override
             public void onImageAvailable(ImageReader reader) {
-                Image image = mImageReader.acquireLatestImage();
-                mPixelBuf = image.getPlanes()[0].getBuffer();
-                double frameTimeStamp = (double) Calendar.getInstance().getTimeInMillis() /1000;
-                Bitmap bmp = getBitmap();
                 frameCount++;
-                Log.d(TAG, ""+bmp.getHeight());
-                Log.d(TAG, ""+bmp.getWidth());
                 Log.d(TAG, ""+frameCount);
+                Image image = reader.acquireNextImage();
+                if (image == null) return;
+                Image.Plane Y = image.getPlanes()[0];
+                Image.Plane U = image.getPlanes()[1];
+                Image.Plane V = image.getPlanes()[2];
+
+                int Yb = Y.getBuffer().remaining();
+                int Ub = U.getBuffer().remaining();
+                int Vb = V.getBuffer().remaining();
+
+                byte[] data = new byte[Yb + Ub + Vb];
+
+
+                Y.getBuffer().get(data, 0, Yb);
+                U.getBuffer().get(data, Yb, Ub);
+                V.getBuffer().get(data, Yb + Ub, Vb);
+                double frameTimeStamp = (double) Calendar.getInstance().getTimeInMillis() /1000;
+                Bitmap bmp = getBitmap(NV21toJPEG(data, image.getWidth(), image.getHeight()));
                 //writeToFile(bmp, frameTimeStamp);
                 try {
                     mFrameRenderedListenerHandler.post(() -> mFrameRenderedListener
@@ -431,20 +444,27 @@ public class CameraFragment extends Fragment {
     }
 
 
-    public Bitmap getBitmap() {
+    public Bitmap getBitmap(byte[] bytes) {
         //mPixelBuf.rewind();
         //GLES20.glReadPixels(0, 0, mSurfaceWidth, mSurfaceHeight, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE,
         //        mPixelBuf);
 
         //BufferedOutputStream bos = null;
-        mPixelBuf.rewind();
-        byte[] bytes = new byte[mPixelBuf.capacity()];
-        mPixelBuf.get(bytes);
+        //mPixelBuf.rewind();
+        //byte[] bytes = new byte[mPixelBuf.capacity()];
+        //mPixelBuf.get(bytes);
         Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 
         //return answer;
         return Bitmap.createScaledBitmap(bmp, 640 * bmp.getWidth()/bmp.getHeight(), 640, true);
 
+    }
+
+    private static byte[] NV21toJPEG(byte[] nv21, int width, int height) {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        YuvImage yuv = new YuvImage(nv21, ImageFormat.NV21, width, height, null);
+        yuv.compressToJpeg(new Rect(0, 0, width, height), 100, out);
+        return out.toByteArray();
     }
 
     private void startCameraRecording() {
