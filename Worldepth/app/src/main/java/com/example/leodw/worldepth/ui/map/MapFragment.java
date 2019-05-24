@@ -63,6 +63,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
     private Map<String, Map<String, Object>> postList;
 
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
