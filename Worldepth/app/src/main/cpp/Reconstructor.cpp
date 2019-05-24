@@ -29,6 +29,9 @@ void Reconstructor::passImageToSlam(cv::Mat &im, double tstamp) {
     if (im.empty() || tstamp == 0) {
         cerr << "could not load image!" << endl;
     } else {
+        mFrameCount++;
+        if(mFrameCount == 100)
+            std::cout<<"lakjsdh";
         cv::Mat Tcw = slam->TrackMonocular(im, tstamp);
         if (!Tcw.empty()) {
             vKFImColor.push_back(im.clone());
