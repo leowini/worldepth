@@ -41,7 +41,7 @@ public class ReconVM extends ViewModel {
 
     private static final Bitmap mPoisonPillBitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
 
-    private final BlockingQueue<TimeFramePair<Bitmap, Long>> mQueue;
+    private final BlockingQueue<TimeFramePair<Bitmap, Double>> mQueue;
 
     private Slam mSlam;
     private PoissonWrapper mPoissonWrapper;
@@ -80,7 +80,7 @@ public class ReconVM extends ViewModel {
     }
 
     private void stopReconstructionThread() {
-        mQueue.add(new TimeFramePair<Bitmap, Long>(mPoisonPillBitmap, new Long (0)));
+        mQueue.add(new TimeFramePair<Bitmap, Double>(mPoisonPillBitmap, new Double (0)));
         mSlam.endReconstruction();
         mSlam = null;
         mProgressListenerHandler.post(() -> {
@@ -118,7 +118,7 @@ public class ReconVM extends ViewModel {
         mSlamProgress.setValue(Integer.toString(slamProgressPercent));
     }
 
-    public void sendFrame(TimeFramePair<Bitmap, Long> timeFramePair) {
+    public void sendFrame(TimeFramePair<Bitmap, Double> timeFramePair) {
         frameRendered();
         try {
             Log.d(TAG, timeFramePair.getFrame().getHeight() + "");

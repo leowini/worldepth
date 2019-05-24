@@ -19,7 +19,7 @@ public class CalibWrapper {
 
     private static final String TAG = "Calibration";
 
-    private final BlockingQueue<TimeFramePair<Bitmap, Long>> mQueue;
+    private final BlockingQueue<TimeFramePair<Bitmap, Double>> mQueue;
 
     private CalibCompleteListener mCompleteListener;
 
@@ -33,7 +33,7 @@ public class CalibWrapper {
 
     public native void initSettings(String internalPath);
 
-    CalibWrapper(BlockingQueue<TimeFramePair<Bitmap, Long>> q, Bitmap mPoisonPillBitmap, String internalPath) {
+    CalibWrapper(BlockingQueue<TimeFramePair<Bitmap, Double>> q, Bitmap mPoisonPillBitmap, String internalPath) {
         this.mQueue = q;
         mQueue.clear();
         this.mPoisonPillBitmap = mPoisonPillBitmap;
@@ -54,6 +54,7 @@ public class CalibWrapper {
                 Log.d(TAG, "calibration complete!");
             }
         }
+        frame.recycle();
     }
 
     /**
@@ -61,7 +62,7 @@ public class CalibWrapper {
      */
     void doCalib() {
         try {
-            TimeFramePair<Bitmap, Long> timeFramePair = mQueue.take();
+            TimeFramePair<Bitmap, Double> timeFramePair = mQueue.take();
             Bitmap bmp = timeFramePair.getFrame();
             while (!bmp.equals(mPoisonPillBitmap)) {
                 mFrameCountListener.onNextFrame();
