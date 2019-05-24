@@ -82,7 +82,7 @@ namespace SLAM
                 {
                     // Local BA
                     if(mpMap->KeyFramesInMap()>2)
-                        Optimizer::LocalBundleAdjustment(mpCurrentKeyFrame,&mbAbortBA, mpMap);
+                        //Optimizer::LocalBundleAdjustment(mpCurrentKeyFrame,&mbAbortBA, mpMap);
 
                     // Check redundant local Keyframes
                     KeyFrameCulling();
@@ -191,7 +191,7 @@ namespace SLAM
             {
                 lit = mlpRecentAddedMapPoints.erase(lit);
             }
-            else if(pMP->GetFoundRatio()<0.35f )
+            else if(pMP->GetFoundRatio()<0.25f )
             {
                 pMP->SetBadFlag();
                 lit = mlpRecentAddedMapPoints.erase(lit);

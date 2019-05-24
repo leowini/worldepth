@@ -41,7 +41,7 @@ Java_com_example_leodw_worldepth_slam_PoissonWrapper_startPoisson(JNIEnv *env, j
 
 extern "C"
 JNIEXPORT jboolean JNICALL
-Java_com_example_leodw_worldepth_slam_Slam_passImageToSlam(JNIEnv *env, jobject instance, jlong img, jdouble timeStamp) {
+Java_com_example_leodw_worldepth_slam_Slam_passImageToSlam(JNIEnv *env, jobject instance, jlong img, jlong timeStamp) {
     if (img == 0) { //poison pill
         if(reconstructor != nullptr) {
             bool success = reconstructor->hasKeyframes();
@@ -51,7 +51,7 @@ Java_com_example_leodw_worldepth_slam_Slam_passImageToSlam(JNIEnv *env, jobject 
         else return static_cast<jboolean>(false);
     } else {
         cv::Mat &mat = *(cv::Mat *) img;
-        double tframe = timeStamp;
+        double tframe = (double) timeStamp;
         reconstructor->passImageToSlam(mat, tframe);
         mat.release();
     }

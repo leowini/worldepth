@@ -397,8 +397,4 @@ vector<MapPoint*> System::GetAllMapPoints()
     return mpMap->GetAllMapPoints();
 }
 
-vector<MapPoint*> System::GetReferenceMapPoints(){
-    return mpMap->GetReferenceMapPoints();
-}
-
 } //namespace ORB_SLAM
