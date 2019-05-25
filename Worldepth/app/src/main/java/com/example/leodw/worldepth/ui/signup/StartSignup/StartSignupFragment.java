@@ -35,8 +35,12 @@ public class  StartSignupFragment extends Fragment {
     private FirebaseWrapper mFb;
     private DataTransfer mDt;
 
-    private String mName;
+    private EditText mName;
     private EditText mEmail;
+    private String fullName;
+
+    private String firstName;
+    private String lastName;
 
     private ImageView mBackToStart;
 
@@ -50,14 +54,16 @@ public class  StartSignupFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.start_signup_fragment, container, false);
-        mName = view.findViewById(R.id.signUpName).toString();
+        mName = view.findViewById(R.id.signUpName);
+        fullName = mName.getText().toString();
+        splitName();
         mEmail = view.findViewById(R.id.signUpEmail);
         mDt = ((MainActivity) this.getActivity()).getDataTransfer();
 
-        Button nameNextButton = view.findViewById(R.id.nameNextButton);
-        nameNextButton.setOnClickListener((view1) -> {
-            //mDt.addData(new DataPair(mFirstName.getText().toString(), "continueSignUpFragment", "startSignupFragment"));
-            //mDt.addData(new DataPair(mLastName.getText().toString(), "continueSignUpFragment", "startSignupFragment"));
+        Button signUpContinue = view.findViewById(R.id.signUpContinue);
+        signUpContinue.setOnClickListener((view1) -> {
+            mDt.addData(new DataPair(firstName, "continueSignUpFragment", "startSignupFragment"));
+            mDt.addData(new DataPair(lastName, "continueSignUpFragment", "startSignupFragment"));
             mDt.addData(new DataPair(mEmail.getText().toString(), "continueSignUpFragment", "startSignupFragment"));
             Navigation.findNavController(view1).navigate(R.id.action_startSignupFragment_to_continueSignUpFragment);
         });
@@ -92,6 +98,17 @@ public class  StartSignupFragment extends Fragment {
         mEmailSignup.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_startSignupFragment_to_emailFragment));*/
         mBackToStart = view.findViewById(R.id.signUpBackButton);
         mBackToStart.setOnClickListener(v -> Navigation.findNavController(v).popBackStack());
+    }
+
+    private void splitName() {
+        int spaceIndex = fullName.indexOf(' ');
+        if (spaceIndex != -1) {
+            firstName = fullName.substring(0, spaceIndex);
+            lastName = fullName.substring(spaceIndex + 1);
+        } else {
+            firstName = fullName;
+            lastName = "Temp";
+        }
     }
 
 }

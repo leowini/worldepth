@@ -71,7 +71,7 @@
         app:layout_constraintVertical_bias="0.35" />
 
     <Button
-        android:id="@+id/signInContinue"
+        android:id="@+id/signUpContinue"
         android:background="@drawable/purpleroundedbutton"
         android:layout_width="327dp"
         android:layout_height="52dp"
