@@ -58,6 +58,7 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
 
     @Override
     public void onFrameAvailable(SurfaceTexture surfaceTexture) {
+        long startTime = System.nanoTime();
         frameCount++;
         long frameTimeStamp = surfaceTexture.getTimestamp();
         // Latch the data.
@@ -76,7 +77,8 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        long endTime = System.nanoTime();
+        long timeElapsed = endTime - startTime;
     }
 
     /**
