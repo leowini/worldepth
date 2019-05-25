@@ -71,7 +71,7 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
         long endTime = System.nanoTime();
         long timeElapsed = endTime - startTime;
         try {
-            mFrameRenderedListenerHandler.post(() -> mFrameRenderedListener.onFrameRendered(new TimeFramePair<Bitmap, Long>(bmp, frameTimeStamp)));
+            mFrameRenderedListenerHandler.post(() -> mFrameRenderedListener.onFrameRendered(new TimeFramePair<Bitmap, Double>(bmp, frameTimeStamp)));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -113,7 +113,7 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
 
     public void stopRenderThread() {
         if (mRenderThread == null) return;
-        mRenderThread.handler.post(() -> mFrameRenderedListenerHandler.post(() -> mFrameRenderedListener.onFrameRendered(new TimeFramePair<Bitmap, Long>(mPoisonPillBitmap, (long) 0))));
+        mRenderThread.handler.post(() -> mFrameRenderedListenerHandler.post(() -> mFrameRenderedListener.onFrameRendered(new TimeFramePair<Bitmap, Double>(mPoisonPillBitmap, (double) 0))));
         mRenderThread.handler.post(() -> {
             Looper looper = Looper.myLooper();
             if (looper != null) {
@@ -511,7 +511,7 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
     }
 
     public interface OnFrameRenderedListener {
-        void onFrameRendered(TimeFramePair<Bitmap, Long> timeFramePair);
+        void onFrameRendered(TimeFramePair<Bitmap, Double> timeFramePair);
     }
 
     public void setOnFrameRenderedListener(OnFrameRenderedListener listener, Handler handler) {
