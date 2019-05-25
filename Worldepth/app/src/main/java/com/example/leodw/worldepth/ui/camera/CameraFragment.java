@@ -30,6 +30,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
+import android.renderscript.Allocation;
+import android.renderscript.Element;
+import android.renderscript.RenderScript;
+import android.renderscript.ScriptIntrinsicYuvToRGB;
+import android.renderscript.Type;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -97,6 +102,11 @@ public class CameraFragment extends Fragment {
 
     private ByteBuffer mPixelBuf; // used by saveFrame()
     private ImageReader mImageReader;
+
+    private RenderScript rs;
+    private ScriptIntrinsicYuvToRGB yuvToRgbIntrinsic;
+    private Type.Builder yuvType, rgbaType;
+    private Allocation in, out;
 
     private OnFrameRenderedListener mFrameRenderedListener;
     private Handler mFrameRenderedListenerHandler;
@@ -310,6 +320,8 @@ public class CameraFragment extends Fragment {
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
+        rs = RenderScript.create(getContext());
+        yuvToRgbIntrinsic = ScriptIntrinsicYuvToRGB.create(rs, Element.U8_4(rs));
         mReconVM = ViewModelProviders.of(getActivity()).get(ReconVM.class);
         mTextureView = view.findViewById(R.id.textureView);
         assert mTextureView != null;
@@ -356,13 +368,13 @@ public class CameraFragment extends Fragment {
         BlockingQueue<TimeFramePair<Bitmap, Long>> q = new LinkedBlockingQueue<>();
         //Poison pill to signal end of queue.
         mImageReader = ImageReader.newInstance(mPreviewSize.getWidth(), mPreviewSize.getHeight(),
-                ImageFormat.YUV_420_888, 1);
+                ImageFormat.YUV_420_888, 20);
         mImageReader.setOnImageAvailableListener(new ImageReader.OnImageAvailableListener() {
             @Override
             public void onImageAvailable(ImageReader reader) {
                 frameCount++;
                 Log.d(TAG, ""+frameCount);
-                Image image = reader.acquireNextImage();
+                Image image = reader.acquireLatestImage();
                 if (image == null) return;
                 Image.Plane Y = image.getPlanes()[0];
                 Image.Plane U = image.getPlanes()[1];
@@ -378,12 +390,29 @@ public class CameraFragment extends Fragment {
                 Y.getBuffer().get(data, 0, Yb);
                 U.getBuffer().get(data, Yb, Ub);
                 V.getBuffer().get(data, Yb + Ub, Vb);
+                if (yuvType == null)
+                {
+                    yuvType = new Type.Builder(rs, Element.U8(rs)).setX(data.length);
+                    in = Allocation.createTyped(rs, yuvType.create(), Allocation.USAGE_SCRIPT);
+
+                    rgbaType = new Type.Builder(rs, Element.RGBA_8888(rs)).setX(image.getWidth()).setY(image.getHeight());
+                    out = Allocation.createTyped(rs, rgbaType.create(), Allocation.USAGE_SCRIPT);
+                }
+
+                in.copyFrom(data);
+
+                yuvToRgbIntrinsic.setInput(in);
+                yuvToRgbIntrinsic.forEach(out);
+
+                Bitmap bmp = Bitmap.createBitmap(image.getWidth(), image.getHeight(), Bitmap.Config.ARGB_8888);
+                out.copyTo(bmp);
+                Bitmap scaledBmp = Bitmap.createScaledBitmap(bmp, 640 * bmp.getWidth()/bmp.getHeight(), 640, true);
                 double frameTimeStamp = (double) Calendar.getInstance().getTimeInMillis() /1000;
-                Bitmap bmp = getBitmap(NV21toJPEG(data, image.getWidth(), image.getHeight()));
+                //Bitmap bmp = getBitmap(NV21toJPEG(data, image.getWidth(), image.getHeight()));
                 //writeToFile(bmp, frameTimeStamp);
                 try {
                     mFrameRenderedListenerHandler.post(() -> mFrameRenderedListener
-                            .onFrameRendered(new TimeFramePair<Bitmap, Double>(bmp, frameTimeStamp)));
+                            .onFrameRendered(new TimeFramePair<Bitmap, Double>(scaledBmp, frameTimeStamp)));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -479,7 +508,7 @@ public class CameraFragment extends Fragment {
             SurfaceTexture texture = mTextureView.getSurfaceTexture();
             assert texture != null;
             texture.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
-            mPreviewBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_RECORD);
+            mPreviewBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
             List<Surface> surfaces = new ArrayList<>();
 
 
