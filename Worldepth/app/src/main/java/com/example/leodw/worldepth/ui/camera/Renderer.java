@@ -50,7 +50,7 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
 
     private final Bitmap mPoisonPillBitmap;
 
-    private static int frameCount = 1;
+    private static int frameCount = 0;
 
     public Renderer(Bitmap mPoisonPillBitmap) {
         this.mPoisonPillBitmap = mPoisonPillBitmap;
@@ -58,27 +58,23 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
 
     @Override
     public void onFrameAvailable(SurfaceTexture surfaceTexture) {
-        long startTime = System.nanoTime();
         frameCount++;
-        long frameTimeStamp = surfaceTexture.getTimestamp();
+        double frameTimeStamp = (double) surfaceTexture.getTimestamp() / 1000000;
         // Latch the data.
+        long startTime = System.nanoTime();
         renderer.checkGlError("before updateTexImage");
         mEglSurfaceTexture.updateTexImage();
 
         renderer.drawFrame(mEglSurfaceTexture, false);
 
         Bitmap bmp = getBitmap();
-        Log.d(TAG, ""+bmp.getHeight());
-        Log.d(TAG, ""+bmp.getWidth());
+        long endTime = System.nanoTime();
+        long timeElapsed = endTime - startTime;
         try {
-            if (frameCount % 2 == 0) {
-                mFrameRenderedListenerHandler.post(() -> mFrameRenderedListener.onFrameRendered(new TimeFramePair<Bitmap, Long>(bmp, frameTimeStamp)));
-            }
+            mFrameRenderedListenerHandler.post(() -> mFrameRenderedListener.onFrameRendered(new TimeFramePair<Bitmap, Long>(bmp, frameTimeStamp)));
         } catch (Exception e) {
             e.printStackTrace();
         }
-        long endTime = System.nanoTime();
-        long timeElapsed = endTime - startTime;
     }
 
     /**

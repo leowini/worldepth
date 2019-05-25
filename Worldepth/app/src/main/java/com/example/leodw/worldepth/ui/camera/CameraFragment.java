@@ -344,12 +344,10 @@ public class CameraFragment extends Fragment {
     private void startCameraRecording() {
         if (cameraDevice == null) return;
         CameraManager manager = (CameraManager) getActivity().getSystemService(Context.CAMERA_SERVICE);
-        closePreviewSession();
         if (null == cameraDevice || !mTextureView.isAvailable() || null == mPreviewSize) {
             return;
         }
         try {
-            closePreviewSession();
             SurfaceTexture texture = mTextureView.getSurfaceTexture();
             assert texture != null;
             texture.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
@@ -378,7 +376,7 @@ public class CameraFragment extends Fragment {
                 public void onConfigureFailed(@NonNull CameraCaptureSession session) {
 
                 }
-            }, mBackgroundHandler);
+            }, new Handler(Looper.getMainLooper()));
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
@@ -386,7 +384,7 @@ public class CameraFragment extends Fragment {
 
     private void stopRecording() {
         nextVideoAbsolutePath = null;
-        startPreview();
+        //startPreview();
     }
 
     private void openCamera(int tvWidth, int tvHeight) {
