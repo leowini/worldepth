@@ -13,13 +13,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.data.FirebaseWrapper;
 import com.example.leodw.worldepth.ui.MainActivity;
-import com.example.leodw.worldepth.ui.signup.Name.NameViewModel;
-import com.example.leodw.worldepth.ui.signup.Phone.PhoneFragment;
 
 import androidx.navigation.Navigation;
 

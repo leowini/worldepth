@@ -5,7 +5,7 @@
     android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.signup.StartSignup.StartSignupFragment"
+    tools:context=".ui.signup.ContinueSignUp.ContinueSignUp"
     android:background="@color/black">
 
     <ImageView
@@ -35,16 +35,16 @@
         app:layout_constraintVertical_bias="0.06"/>
 
     <EditText
-        android:id="@+id/signUpName"
+        android:id="@+id/signUpPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:textSize="25sp"
-        android:hint="Name"
+        android:hint="@string/password"
         android:fontFamily="@font/montserrat_m"
         android:textColorHint="@color/black"
         android:textColor="@color/black"
-        android:inputType="text"
+        android:inputType="textPassword"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -53,16 +53,16 @@
         app:layout_constraintVertical_bias="0.23" />
 
     <EditText
-        android:id="@+id/signUpEmail"
+        android:id="@+id/signUpConfirmPW"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:textSize="25sp"
-        android:hint="@string/email"
+        android:hint="@string/confirm_password"
         android:fontFamily="@font/montserrat_m"
         android:textColorHint="@color/black"
         android:textColor="@color/black"
-        android:inputType="textEmailAddress"
+        android:inputType="textPassword"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -71,11 +71,11 @@
         app:layout_constraintVertical_bias="0.35" />
 
     <Button
-        android:id="@+id/signInContinue"
+        android:id="@+id/signUpRegister"
         android:background="@drawable/purpleroundedbutton"
         android:layout_width="327dp"
         android:layout_height="52dp"
-        android:text="@string/CONTINUE"
+        android:text="@string/SIGNUP"
         android:fontFamily="@font/montserrat_sb"
         android:textColor="@color/white"
         android:textSize="18sp"
@@ -86,7 +86,7 @@
         app:layout_constraintVertical_bias="0.57" />
 
     <ImageView
-        android:id="@+id/signUpBackButton"
+        android:id="@+id/signUpBackButton2"
         android:layout_width="32dp"
         android:layout_height="69dp"
         android:src="@drawable/back2"
