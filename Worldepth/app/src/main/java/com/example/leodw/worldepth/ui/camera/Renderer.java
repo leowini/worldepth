@@ -100,30 +100,6 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
     }
 
     /**
-     * Saves the drawn frame
-     *
-     * @param filename
-     * @throws IOException
-     */
-    private void saveFrame(String filename) throws IOException {
-        mPixelBuf.rewind();
-        GLES20.glReadPixels(0, 0, mSurfaceWidth, mSurfaceHeight, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE,
-                mPixelBuf);
-
-        BufferedOutputStream bos = null;
-        try {
-            bos = new BufferedOutputStream(new FileOutputStream(filename));
-            Bitmap bmp = Bitmap.createBitmap(mSurfaceWidth, mSurfaceHeight, Bitmap.Config.ARGB_8888);
-            mPixelBuf.rewind();
-            bmp.copyPixelsFromBuffer(mPixelBuf);
-            bmp.compress(Bitmap.CompressFormat.PNG, 100, bos);
-            bmp.recycle();
-        } finally {
-            if (bos != null) bos.close();
-        }
-    }
-
-    /**
      * Starts the Renderthread and initializes the render dimensions
      *
      * @param width
