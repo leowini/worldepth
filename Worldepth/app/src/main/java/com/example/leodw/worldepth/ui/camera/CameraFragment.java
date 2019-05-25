@@ -260,8 +260,6 @@ public class CameraFragment extends Fragment {
         if (cameraDevice == null)
             return;
         setUpCaptureRequestBuilder(mPreviewBuilder);
-        HandlerThread thread = new HandlerThread("CameraPreview");
-        thread.start();
         try {
             mPreviewSession.setRepeatingRequest(mPreviewBuilder.build(), null, mBackgroundHandler);
         } catch (CameraAccessException e1) {
