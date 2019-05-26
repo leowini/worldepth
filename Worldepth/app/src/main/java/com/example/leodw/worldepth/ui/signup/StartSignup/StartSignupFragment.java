@@ -62,9 +62,9 @@ public class  StartSignupFragment extends Fragment {
 
         Button signUpContinue = view.findViewById(R.id.signUpContinue);
         signUpContinue.setOnClickListener((view1) -> {
+            mDt.addData(new DataPair(mEmail.getText().toString(), "continueSignUpFragment", "startSignupFragment"));
             mDt.addData(new DataPair(firstName, "continueSignUpFragment", "startSignupFragment"));
             mDt.addData(new DataPair(lastName, "continueSignUpFragment", "startSignupFragment"));
-            mDt.addData(new DataPair(mEmail.getText().toString(), "continueSignUpFragment", "startSignupFragment"));
             Navigation.findNavController(view1).navigate(R.id.action_startSignupFragment_to_continueSignUpFragment);
         });
         return view;
