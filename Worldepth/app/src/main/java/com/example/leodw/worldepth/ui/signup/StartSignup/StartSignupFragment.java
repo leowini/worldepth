@@ -55,13 +55,13 @@ public class  StartSignupFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.start_signup_fragment, container, false);
         mName = view.findViewById(R.id.signUpName);
-        fullName = mName.getText().toString();
-        splitName();
         mEmail = view.findViewById(R.id.signUpEmail);
         mDt = ((MainActivity) this.getActivity()).getDataTransfer();
 
         Button signUpContinue = view.findViewById(R.id.signUpContinue);
         signUpContinue.setOnClickListener((view1) -> {
+            fullName = mName.getText().toString();
+            splitName();
             mDt.addData(new DataPair(mEmail.getText().toString(), "continueSignUpFragment", "startSignupFragment"));
             mDt.addData(new DataPair(firstName, "continueSignUpFragment", "startSignupFragment"));
             mDt.addData(new DataPair(lastName, "continueSignUpFragment", "startSignupFragment"));

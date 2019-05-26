@@ -108,6 +108,9 @@
         <action
             android:id="@+id/action_continueSignUpFragment_to_cameraFragment"
             app:destination="@id/cameraFragment" />
+        <action
+            android:id="@+id/action_continueSignUpFragment_to_loadingFragment"
+            app:destination="@id/loadingFragment" />
     </fragment>
     <fragment
         android:id="@+id/signInFragment"
