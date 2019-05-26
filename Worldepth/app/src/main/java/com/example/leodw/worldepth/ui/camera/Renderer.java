@@ -61,15 +61,10 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
         frameCount++;
         double frameTimeStamp = (double) surfaceTexture.getTimestamp() / 1000000;
         // Latch the data.
-        long startTime = System.nanoTime();
         renderer.checkGlError("before updateTexImage");
         mEglSurfaceTexture.updateTexImage();
-
         renderer.drawFrame(mEglSurfaceTexture, false);
-
         Bitmap bmp = getBitmap();
-        long endTime = System.nanoTime();
-        long timeElapsed = endTime - startTime;
         try {
             mFrameRenderedListenerHandler.post(() -> mFrameRenderedListener.onFrameRendered(new TimeFramePair<Bitmap, Double>(bmp, frameTimeStamp)));
         } catch (Exception e) {
