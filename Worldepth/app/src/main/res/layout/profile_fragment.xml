@@ -47,6 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
+        android:fontFamily="@font/montserrat_b"
         android:textColor="@color/settingsText"
         android:textSize="32sp"
         app:layout_constraintBottom_toBottomOf="parent"
