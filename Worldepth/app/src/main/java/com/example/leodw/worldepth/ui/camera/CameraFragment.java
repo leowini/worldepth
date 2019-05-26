@@ -337,7 +337,7 @@ public class CameraFragment extends Fragment {
             startCameraRecording();
         }, new Handler(Looper.getMainLooper()));
         mRenderer.setOnFrameRenderedListener((timeFramePair) -> mReconVM.sendFrame(timeFramePair), new Handler(Looper.getMainLooper()));
-        mRenderer.start(mTextureView.getWidth(), mTextureView.getHeight());
+        mRenderer.start(mPreviewSize.getWidth(), mPreviewSize.getHeight());
         mReconVM.setReconProgress(ReconVM.ReconProgress.SLAM);
     }
 

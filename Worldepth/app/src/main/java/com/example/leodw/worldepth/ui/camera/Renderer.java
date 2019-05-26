@@ -52,7 +52,7 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
 
     private static int frameCount = 0;
 
-    public Renderer(Bitmap mPoisonPillBitmap) {
+    Renderer(Bitmap mPoisonPillBitmap) {
         this.mPoisonPillBitmap = mPoisonPillBitmap;
     }
 
