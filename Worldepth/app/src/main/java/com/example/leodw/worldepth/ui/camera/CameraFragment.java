@@ -417,6 +417,7 @@ public class CameraFragment extends Fragment {
                     e.printStackTrace();
                 }
                 image.close();
+                bmp.recycle();
             }
         }, mBackgroundHandler);
 
