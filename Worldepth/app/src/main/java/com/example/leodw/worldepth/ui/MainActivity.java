@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
             if (!targetFile.exists()) {
                 Log.e(TAG, "Could not make file!");
             }*/
-            File file = new File(getFilesDir().getAbsolutePath() + filename);
+            File file = new File(getFilesDir().getAbsolutePath() + "/" + filename);
             if(!file.exists()) {
                 String[] assetsRoot = getAssets().list("");
                 InputStream initialStream = getAssets().open(filename);
