@@ -177,15 +177,17 @@ public class MainActivity extends AppCompatActivity {
                 Log.e(TAG, "Could not make file!");
             }*/
             File file = new File(getFilesDir().getAbsolutePath() + "/" + filename);
-            String[] assetsRoot = getAssets().list("");
-            InputStream initialStream = getAssets().open(filename);
-            byte[] buffer = new byte[initialStream.available()];
-            initialStream.read(buffer);
+            if(!file.exists()) {
+                String[] assetsRoot = getAssets().list("");
+                InputStream initialStream = getAssets().open(filename);
+                byte[] buffer = new byte[initialStream.available()];
+                initialStream.read(buffer);
 
-            OutputStream outStream = openFileOutput(filename, 0);
-            outStream.write(buffer);
-            initialStream.close();
-            outStream.close();
+                OutputStream outStream = openFileOutput(filename, 0);
+                outStream.write(buffer);
+                initialStream.close();
+                outStream.close();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
