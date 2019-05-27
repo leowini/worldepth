@@ -417,7 +417,6 @@ public class CameraFragment extends Fragment {
                     e.printStackTrace();
                 }
                 image.close();
-                bmp.recycle();
             }
         }, mBackgroundHandler);
 
@@ -509,7 +508,7 @@ public class CameraFragment extends Fragment {
             SurfaceTexture texture = mTextureView.getSurfaceTexture();
             assert texture != null;
             texture.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
-            mPreviewBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
+            mPreviewBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_ZERO_SHUTTER_LAG);
             List<Surface> surfaces = new ArrayList<>();
 
 

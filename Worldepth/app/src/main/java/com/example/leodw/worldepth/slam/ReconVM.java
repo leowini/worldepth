@@ -199,7 +199,7 @@ public class ReconVM extends ViewModel {
                 mRenderedFrames = 0;
                 mProcessedFrames = 0;
             });
-            mSlam.doSlam();
+            //mSlam.doSlam();
         });
         mPoissonWrapper = new PoissonWrapper();
         mPoissonWrapper.setOnCompleteListener(() -> {
