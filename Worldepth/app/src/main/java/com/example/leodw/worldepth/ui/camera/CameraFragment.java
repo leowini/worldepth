@@ -406,7 +406,7 @@ public class CameraFragment extends Fragment {
 
                 Bitmap bmp = Bitmap.createBitmap(image.getWidth(), image.getHeight(), Bitmap.Config.ARGB_8888);
                 out.copyTo(bmp);
-                Bitmap scaledBmp = Bitmap.createScaledBitmap(bmp, 640 * bmp.getWidth()/bmp.getHeight(), 640, true);
+                Bitmap scaledBmp = Bitmap.createScaledBitmap(bmp, 1080 * bmp.getWidth()/bmp.getHeight(), 1080, true);
                 double frameTimeStamp = (double) Calendar.getInstance().getTimeInMillis() /1000;
                 //Bitmap bmp = getBitmap(NV21toJPEG(data, image.getWidth(), image.getHeight()));
                 //writeToFile(bmp, frameTimeStamp);
