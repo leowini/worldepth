@@ -731,9 +731,7 @@ namespace SLAM
         fill(mCurrentFrame.mvpMapPoints.begin(),mCurrentFrame.mvpMapPoints.end(),static_cast<MapPoint*>(NULL));
 
         // Project points seen in previous frame
-        int th;
-
-            th=7;
+        int th=7;
         int nmatches = matcher.SearchByProjection(mCurrentFrame,mLastFrame,th,true);
 
         // If few matches, uses a wider window search

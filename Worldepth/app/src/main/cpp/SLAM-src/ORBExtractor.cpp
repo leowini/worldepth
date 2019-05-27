@@ -68,7 +68,6 @@ namespace SLAM
         return fastAtan2((float)m_01, (float)m_10);
     }
 
-
     const float factorPI = (float)(CV_PI/180.f);
     static void computeOrbDescriptor(const KeyPoint& kpt,
                                      const Mat& img, const Point* pattern,
@@ -111,6 +110,12 @@ namespace SLAM
 #undef GET_VALUE
     }
 
+    static void computeTFeatDescriptor(const KeyPoint &kpt,
+                                        const Mat& img, const Point* pattern,
+                                        uchar* desc)
+    {
+
+    }
 
     static int bit_pattern_31_[256*4] =
             {
@@ -1010,7 +1015,8 @@ namespace SLAM
         descriptors = Mat::zeros((int)keypoints.size(), 32, CV_8UC1);
 
         for (size_t i = 0; i < keypoints.size(); i++)
-            computeOrbDescriptor(keypoints[i], image, &pattern[0], descriptors.ptr((int)i));
+            //computeOrbDescriptor(keypoints[i], image, &pattern[0], descriptors.ptr((int)i));
+            computeTFeatDescriptor(keypoints[i], image, &pattern[0], descriptors.ptr((int)i));
     }
 
     void ORBextractor::operator()( InputArray _image, InputArray _mask, vector<KeyPoint>& _keypoints,
@@ -1105,5 +1111,4 @@ namespace SLAM
         }
 
     }
-
 }
