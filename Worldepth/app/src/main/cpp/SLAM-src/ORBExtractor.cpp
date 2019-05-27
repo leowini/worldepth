@@ -1056,7 +1056,9 @@ namespace SLAM
 
             // preprocess the resized image
             Mat workingMat = mvImagePyramid[level].clone();
-            GaussianBlur(workingMat, workingMat, Size(7, 7), 2, 2, BORDER_REFLECT_101);
+
+            //For DF-SLAM, we don't need a Gaussian blur before feature extraction.
+            //GaussianBlur(workingMat, workingMat, Size(7, 7), 2, 2, BORDER_REFLECT_101);
 
             // Compute the descriptors
             Mat desc = descriptors.rowRange(offset, offset + nkeypointsLevel);
