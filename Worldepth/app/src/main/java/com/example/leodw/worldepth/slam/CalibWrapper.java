@@ -54,6 +54,7 @@ public class CalibWrapper {
                 Log.d(TAG, "calibration complete!");
             }
         }
+        frame.recycle();
     }
 
     /**
