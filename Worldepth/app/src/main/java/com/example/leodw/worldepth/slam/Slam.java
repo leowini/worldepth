@@ -46,6 +46,7 @@ public class Slam {
             Utils.bitmapToMat(frame, mat);
             success = passImageToSlam(mat.getNativeObjAddr(), timeStamp);
         }
+        frame.recycle();
         return success;
     }
 
