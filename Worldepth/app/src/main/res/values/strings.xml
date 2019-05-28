@@ -45,8 +45,6 @@
     <string name="last">Last</string>
     <string name="day">Day</string>
     <string name="year">Year</string>
-    <string name="welcome">Welcome to Worldepth</string>
-    <string name="continue_with">Continue with:</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
