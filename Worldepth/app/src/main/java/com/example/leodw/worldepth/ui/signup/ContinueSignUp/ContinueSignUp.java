@@ -224,6 +224,8 @@ public class ContinueSignUp extends Fragment {
                 ((MainActivity) getActivity()).setLoginState(true);
                 //go to camera fragment
                 //Navigation.findNavController(getView()).navigate(R.id.action_continueSignUpFragment_to_loadingFragment);
+                Toast.makeText(getContext(), "Account successfully created!", Toast.LENGTH_SHORT).show();
+
             } else {
                 Toast.makeText(getContext(), "Account creation failed.", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "createNewAccount:failed", task.getException());
