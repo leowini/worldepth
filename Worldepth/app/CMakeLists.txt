@@ -153,16 +153,3 @@ target_link_libraries( # Specifies the target library.
         lib_DBoW2
         lib_opencv
         lib_poisson)
-
-#Onnx
-add_subdirectory(
-        ${PROJECT_SOURCE_DIR}/src/main/cpp/Onnx/onnx
-        ${PROJECT_SOURCE_DIR}/src/main/cpp/Onnx
-)
-add_library( lib_onnx STATIC IMPORTED )
-set_target_properties( lib_onnx PROPERTIES IMPORTED_LOCATION
-        ${PROJECT_SOURCE_DIR}/src/main/Onnx/${ANDROID_ABI}/lib_gmath.a )
-include_directories( ${PROJECT_SOURCE_DIR}/src/main/cpp/Onnx/onnx/include )
-
-# Links the top-level CMake build output against lib_onnx.
-target_link_libraries( native-lib ... lib_onnx )
