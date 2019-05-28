@@ -8,7 +8,6 @@ public class PoissonWrapper {
 
     public native void startPoisson(String internalPath);
 
-
     void runPoisson(String internalPath) {
         startPoisson(internalPath);
         listener.onComplete();
