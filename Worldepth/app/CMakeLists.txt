@@ -23,7 +23,6 @@ include_directories(${PROJECT_SOURCE_DIR}/src/main/cpp)
 include_directories(${G2O})
 include_directories(${POISSON})
 include_directories(${PROJECT_SOURCE_DIR}/src/main/cpp/TextureMapping)
-include_directories(${PROJECT_SOURCE_DIR}/src/main/cpp/Onnx)
 
 add_library(lib_DBoW2
         SHARED
@@ -107,7 +106,6 @@ add_library( # Sets the name of the library.
         #Texture Mapping
         src/main/cpp/TextureMapping/TextureMapper.cpp
         src/main/cpp/TextureMapping/tinyply.cpp
-        src/main/cpp/Onnx/OnnxReader.cpp
         )
 
 add_library( lib_opencv SHARED IMPORTED)
@@ -153,16 +151,3 @@ target_link_libraries( # Specifies the target library.
         lib_DBoW2
         lib_opencv
         lib_poisson)
-
-#Onnx
-add_subdirectory(
-        ${PROJECT_SOURCE_DIR}/src/main/cpp/Onnx/onnx
-        ${PROJECT_SOURCE_DIR}/src/main/cpp/Onnx
-)
-add_library( lib_onnx STATIC IMPORTED )
-set_target_properties( lib_onnx PROPERTIES IMPORTED_LOCATION
-        ${PROJECT_SOURCE_DIR}/src/main/Onnx/${ANDROID_ABI}/lib_gmath.a )
-include_directories( ${PROJECT_SOURCE_DIR}/src/main/cpp/Onnx/onnx/include )
-
-# Links the top-level CMake build output against lib_onnx.
-target_link_libraries( native-lib ... lib_onnx )
