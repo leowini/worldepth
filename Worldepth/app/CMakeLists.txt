@@ -23,7 +23,6 @@ include_directories(${PROJECT_SOURCE_DIR}/src/main/cpp)
 include_directories(${G2O})
 include_directories(${POISSON})
 include_directories(${PROJECT_SOURCE_DIR}/src/main/cpp/TextureMapping)
-include_directories(${PROJECT_SOURCE_DIR}/src/main/cpp/Onnx)
 
 add_library(lib_DBoW2
         SHARED
@@ -107,7 +106,6 @@ add_library( # Sets the name of the library.
         #Texture Mapping
         src/main/cpp/TextureMapping/TextureMapper.cpp
         src/main/cpp/TextureMapping/tinyply.cpp
-        src/main/cpp/Onnx/OnnxReader.cpp
         )
 
 add_library( lib_opencv SHARED IMPORTED)
