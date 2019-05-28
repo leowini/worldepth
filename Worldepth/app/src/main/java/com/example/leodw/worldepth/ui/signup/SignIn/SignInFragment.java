@@ -92,7 +92,7 @@ public class SignInFragment extends Fragment {
                     if (task.isSuccessful()) {
                         Log.d(TAG, "signed in");
                         ((MainActivity) getActivity()).setLoginState(true);
-                        Navigation.findNavController(getView()).navigate(R.id.action_signInFragment_to_cameraFragment);
+                        Navigation.findNavController(getView()).navigate(R.id.action_signInFragment_to_homeFragment);
                     } else {
                         Log.w(TAG, "signInWithEmail:failure", task.getException());
                         Toast.makeText(getContext(), "Authentication failed.", Toast.LENGTH_SHORT).show();

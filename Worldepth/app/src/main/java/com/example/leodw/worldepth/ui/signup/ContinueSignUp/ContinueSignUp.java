@@ -73,7 +73,7 @@ public class ContinueSignUp extends Fragment {
                 Log.d(TAG, "lastName: " + lastName);
                 Log.d(TAG, "password: " + password);
                 createNewAccount(firstName, lastName, email, password);
-                Navigation.findNavController(view1).navigate(R.id.action_continueSignUpFragment_to_cameraFragment);
+                Navigation.findNavController(view1).navigate(R.id.action_continueSignUpFragment_to_homeFragment);
             }
 
             SignUpBackButton2 = view.findViewById(R.id.signUpBackButton2);
