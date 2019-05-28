@@ -116,7 +116,9 @@ namespace SLAM {
     static void computeTFeatDescriptor(const KeyPoint &kpt,
                                        const Mat &img, const Point *pattern,
                                        uchar *desc) {
-
+        //Crop 32 x 32 region around the keypoint
+        Mat regionAroundKpt = ;
+        desc = KFeat(regionAroundKpt);
     }
 
     static int bit_pattern_31_[256 * 4] =
