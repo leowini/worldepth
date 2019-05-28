@@ -27,7 +27,6 @@
 
 #include "../SLAM-include/ORBExtractor.h"
 
-
 using namespace cv;
 using namespace std;
 
@@ -1064,6 +1063,5 @@ namespace SLAM {
                                BORDER_REFLECT_101);
             }
         }
-
     }
 }
