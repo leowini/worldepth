@@ -72,7 +72,7 @@ System::System(const string &strVocFile, const string &strSettingsFile):
     if (has_suffix(strVocFile, ".txt"))
         bVocLoad = mpVocabulary->loadFromTextFile(strVocFile);
     else
-        bVocLoad = mpVocabulary->loadFromBinaryFile(strVocFile); //sigsegv here
+        bVocLoad = mpVocabulary->loadFromBinaryFile(strVocFile);
     if(!bVocLoad)
     {
         cerr << "Wrong path to vocabulary. " << endl;
@@ -161,7 +161,7 @@ cv::Mat System::TrackMonocular(const cv::Mat &im, const double &timestamp)
     }
     }
 
-    cv::Mat Tcw = mpTracker->GrabImageMonocular(im,timestamp); //the sigsev is in here
+    cv::Mat Tcw = mpTracker->GrabImageMonocular(im,timestamp);
 
     unique_lock<mutex> lock2(mMutexState);
     mTrackingState = mpTracker->mState;

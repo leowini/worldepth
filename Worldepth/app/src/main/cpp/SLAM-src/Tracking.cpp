@@ -90,7 +90,7 @@ namespace SLAM
 
         float fps = fSettings["Camera.fps"];
         if(fps==0)
-            fps=15;
+            fps=30;
 
         // Max/Min Frames to insert keyframes and to check relocalisation
         mMinFrames = 0;
@@ -209,8 +209,6 @@ namespace SLAM
                     if(mVelocity.empty() || mCurrentFrame.mnId<mnLastRelocFrameId+2)
                     {
                         bOK = TrackReferenceKeyFrame();
-                        if(!bOK)
-                            std::cout << "dsjfhs";
                     }
                     else
                     {
@@ -222,8 +220,6 @@ namespace SLAM
                 else
                 {
                     bOK = Relocalization();
-                    if(!bOK)
-                        std::cout << "dsjfhs";
                 }
             }
             else
@@ -233,8 +229,6 @@ namespace SLAM
                 if(mState==LOST)
                 {
                     bOK = Relocalization();
-                    if(!bOK)
-                        std::cout << "dsjfhs";
                 }
                 else
                 {
@@ -245,14 +239,10 @@ namespace SLAM
                         if(!mVelocity.empty())
                         {
                             bOK = TrackWithMotionModel();
-                            if(!bOK)
-                                std::cout << "dsjfhs";
                         }
                         else
                         {
                             bOK = TrackReferenceKeyFrame();
-                            if(!bOK)
-                                std::cout << "dsjfhs";
                         }
                     }
                     else
@@ -300,8 +290,6 @@ namespace SLAM
                         }
 
                         bOK = bOKReloc || bOKMM;
-                        if(!bOK)
-                            std::cout << "dsjfhs";
                     }
                 }
             }
@@ -313,8 +301,6 @@ namespace SLAM
             {
                 if(bOK)
                     bOK = TrackLocalMap();
-                if(!bOK)
-                    std::cout << "dsjfhs";
             }
             else
             {
@@ -323,8 +309,6 @@ namespace SLAM
                 // the camera we will use the local map again.
                 if(bOK && !mbVO)
                     bOK = TrackLocalMap();
-                if(!bOK)
-                    std::cout << "dsjfhs";
             }
 
             if(bOK)
@@ -747,7 +731,9 @@ namespace SLAM
         fill(mCurrentFrame.mvpMapPoints.begin(),mCurrentFrame.mvpMapPoints.end(),static_cast<MapPoint*>(NULL));
 
         // Project points seen in previous frame
-        int th = 15;
+        int th;
+
+            th=7;
         int nmatches = matcher.SearchByProjection(mCurrentFrame,mLastFrame,th,true);
 
         // If few matches, uses a wider window search
@@ -904,7 +890,6 @@ namespace SLAM
 
                     return false;
             }
-
         }
         else
             return false;

@@ -191,7 +191,7 @@ namespace SLAM
             {
                 lit = mlpRecentAddedMapPoints.erase(lit);
             }
-            else if(pMP->GetFoundRatio()<0.35f )
+            else if(pMP->GetFoundRatio()<0.25f )
             {
                 pMP->SetBadFlag();
                 lit = mlpRecentAddedMapPoints.erase(lit);
