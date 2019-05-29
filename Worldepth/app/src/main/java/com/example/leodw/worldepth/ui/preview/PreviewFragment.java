@@ -57,8 +57,6 @@ public class PreviewFragment extends Fragment {
     private ModelSurfaceView modelView;
     private ViewGroup containerView;
 
-    private Button mLoadSample;
-
     private MainActivity mainActivity;
 
     @Override
@@ -81,13 +79,6 @@ public class PreviewFragment extends Fragment {
         if (getActivity().getIntent().getData() != null && savedInstanceState == null) {
             beginLoadModel(getActivity().getIntent().getData());
         }
-        mLoadSample = view.findViewById(R.id.loadSampleButton);
-        mLoadSample.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loadSampleModel();
-            }
-        });
         Button backToCamera = view.findViewById(R.id.viewerBackToCamera);
         backToCamera.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_viewerFragment_to_cameraFragment));
         mainActivity = (MainActivity)getActivity();
