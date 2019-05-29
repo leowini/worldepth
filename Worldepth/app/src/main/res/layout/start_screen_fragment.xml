@@ -121,7 +121,7 @@
 
     <Button
         android:id="@+id/goToSignUp"
-        android:background="@drawable/purpleroundedbutton"
+        android:background="@drawable/purple_rounded_button"
         android:layout_width="400dp"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -137,7 +137,7 @@
 
     <Button
         android:id="@+id/toSignIn"
-        android:background="@drawable/pinkroundedbutton"
+        android:background="@drawable/pink_rounded_button"
         android:layout_width="400dp"
         android:layout_height="wrap_content"
         android:ems="10"
