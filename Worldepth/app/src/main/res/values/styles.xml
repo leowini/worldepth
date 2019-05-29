@@ -15,4 +15,16 @@
     <style name="BlankEditText">
         <item name="android:background">@null</item>
     </style>
+<<<<<<< HEAD
+=======
+    <style name="montserrat_sb" parent="@android:style/TextAppearance.Small">
+        <item name="android:fontFamily">@font/montserrat_sb</item>
+    </style>
+    <style name="montserrat_b" parent="@android:style/TextAppearance.Small">
+        <item name="android:fontFamily">@font/montserrat_b</item>
+    </style>
+    <style name="montserrat_m" parent="@android:style/TextAppearance.Small">
+        <item name="android:fontFamily">@font/montserrat_m</item>
+    </style>
+>>>>>>> e5fc9b6dcafbc680a5b6547bf3d8e8c1882935d8
 </resources>

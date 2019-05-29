@@ -8,6 +8,7 @@
     android:background="@color/backgroundColor"
     tools:context=".ui.StartScreen.StartScreenFragment">
 
+<<<<<<< HEAD
     <EditText
         android:id="@+id/enterEmail"
         style="@style/WorldepthEditText"
@@ -53,12 +54,70 @@
         android:adjustViewBounds="true"
         android:src="@drawable/logo"
         android:transitionName="small_logo"
+=======
+    <ImageView
+        android:id="@+id/start_logo"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/globe1"
+        android:transitionName="small_logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.38" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Welcome"
+        android:textColor="@color/white"
+        android:fontFamily="@font/montserrat_b"
+        android:textSize="32sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.38"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="to Worldepth"
+        android:textColor="@color/white"
+        android:fontFamily="@font/montserrat_b"
+        android:textSize="32sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.43"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/continue_with"
+        android:textColor="@color/white60"
+        android:fontFamily="@font/montserrat_sb"
+        android:textSize="20sp"
+>>>>>>> e5fc9b6dcafbc680a5b6547bf3d8e8c1882935d8
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+<<<<<<< HEAD
         app:layout_constraintVertical_bias="0.05" />
+=======
+        app:layout_constraintVertical_bias="0.82"
+        />
+>>>>>>> e5fc9b6dcafbc680a5b6547bf3d8e8c1882935d8
 
     <Button
         android:id="@+id/goToSignUp"
@@ -75,9 +134,15 @@
         app:layout_constraintVertical_bias="0.98" />
 
     <Button
+<<<<<<< HEAD
         android:id="@+id/loginBtn"
         style="@style/Widget.AppCompat.Button"
         android:layout_width="129dp"
+=======
+        android:id="@+id/toSignIn"
+        android:background="@drawable/pinkroundedbutton"
+        android:layout_width="400dp"
+>>>>>>> e5fc9b6dcafbc680a5b6547bf3d8e8c1882935d8
         android:layout_height="wrap_content"
         android:ems="10"
         android:text="@string/login"
