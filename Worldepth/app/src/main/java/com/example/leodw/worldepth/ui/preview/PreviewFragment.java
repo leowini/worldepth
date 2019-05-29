@@ -98,6 +98,22 @@ public class PreviewFragment extends Fragment {
                 Navigation.findNavController(v).navigate(R.id.action_viewerFragment_to_locationFragment);
             });
         }
+
+        try {
+            File file;
+            if(mainActivity.getLocalModelStatus()) {    //using created model
+                file = new File(getContext().getFilesDir().getAbsolutePath() + "/", "SLAM.ply");
+            } else {    //using downloaded model
+                file = new File(getContext().getFilesDir().getAbsolutePath() + "/", "download.ply");
+            }
+            Log.d(TAG, file.getName());
+            InputStream stream = new FileInputStream(file);
+            setCurrentModel(new PlyModel(stream));
+            stream.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -258,21 +274,7 @@ public class PreviewFragment extends Fragment {
 
 
     private void loadSampleModel() {
-        try {
-            File file;
-            if(mainActivity.getLocalModelStatus()) {    //using created model
-                file = new File(getContext().getFilesDir().getAbsolutePath() + "/", "SLAM.ply");
-            } else {    //using downloaded model
-                file = new File(getContext().getFilesDir().getAbsolutePath() + "/", "download.ply");
-            }
-            Log.d(TAG, file.getName());
-            InputStream stream = new FileInputStream(file);
-            setCurrentModel(new PlyModel(stream));
-            stream.close();
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
 }
