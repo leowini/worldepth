@@ -320,7 +320,7 @@ public class CameraFragment extends Fragment {
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
-        rs = RenderScript.create(getContext());
+        rs = RenderScript.create(getActivity());
         yuvToRgbIntrinsic = ScriptIntrinsicYuvToRGB.create(rs, Element.U8_4(rs));
         mReconVM = ViewModelProviders.of(getActivity()).get(ReconVM.class);
         mTextureView = view.findViewById(R.id.textureView);
@@ -368,13 +368,12 @@ public class CameraFragment extends Fragment {
         BlockingQueue<TimeFramePair<Bitmap, Long>> q = new LinkedBlockingQueue<>();
         //Poison pill to signal end of queue.
         mImageReader = ImageReader.newInstance(mPreviewSize.getWidth(), mPreviewSize.getHeight(),
-                ImageFormat.YUV_420_888, 20);
+                ImageFormat.YUV_420_888, 1);
         mImageReader.setOnImageAvailableListener(new ImageReader.OnImageAvailableListener() {
             @Override
             public void onImageAvailable(ImageReader reader) {
                 frameCount++;
-                Log.d(TAG, ""+frameCount);
-                Image image = reader.acquireLatestImage();
+                Image image = reader.acquireNextImage();
                 if (image == null) return;
                 Image.Plane Y = image.getPlanes()[0];
                 Image.Plane U = image.getPlanes()[1];
@@ -406,16 +405,13 @@ public class CameraFragment extends Fragment {
 
                 Bitmap bmp = Bitmap.createBitmap(image.getWidth(), image.getHeight(), Bitmap.Config.ARGB_8888);
                 out.copyTo(bmp);
-                Bitmap scaledBmp = Bitmap.createScaledBitmap(bmp, 1080 * bmp.getWidth()/bmp.getHeight(), 1080, true);
+                //Bitmap scaledBmp = Bitmap.createScaledBitmap(bmp, 640 * bmp.getWidth()/bmp.getHeight(), 640, true);
                 double frameTimeStamp = (double) Calendar.getInstance().getTimeInMillis() /1000;
                 //Bitmap bmp = getBitmap(NV21toJPEG(data, image.getWidth(), image.getHeight()));
                 //writeToFile(bmp, frameTimeStamp);
-                try {
-                    mFrameRenderedListenerHandler.post(() -> mFrameRenderedListener
-                            .onFrameRendered(new TimeFramePair<Bitmap, Double>(scaledBmp, frameTimeStamp)));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                Log.d(TAG, "hello"+frameCount);
+                mFrameRenderedListenerHandler.post(() -> mFrameRenderedListener
+                            .onFrameRendered(new TimeFramePair<Bitmap, Double>(bmp, frameTimeStamp)));
                 image.close();
             }
         }, mBackgroundHandler);
@@ -508,7 +504,7 @@ public class CameraFragment extends Fragment {
             SurfaceTexture texture = mTextureView.getSurfaceTexture();
             assert texture != null;
             texture.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
-            mPreviewBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_ZERO_SHUTTER_LAG);
+            mPreviewBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
             List<Surface> surfaces = new ArrayList<>();
 
 
