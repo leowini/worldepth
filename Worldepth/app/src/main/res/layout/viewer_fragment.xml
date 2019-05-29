@@ -6,7 +6,7 @@
     android:id="@+id/container_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWindowBackground"
+    android:background="@color/black"
     tools:context="com.example.leodw.worldepth.ui.preview.PreviewFragment">
 
     <ImageView
