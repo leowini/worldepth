@@ -79,8 +79,8 @@ public class PreviewFragment extends Fragment {
         if (getActivity().getIntent().getData() != null && savedInstanceState == null) {
             beginLoadModel(getActivity().getIntent().getData());
         }
-        Button backToCamera = view.findViewById(R.id.viewerBackToCamera);
-        backToCamera.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_viewerFragment_to_cameraFragment));
+        Button backToMap = view.findViewById(R.id.viewerBackToMap);
+        backToMap.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_viewerFragment_to_mapFragment));
         mainActivity = (MainActivity)getActivity();
         if(mainActivity.getLocalModelStatus()) {
             Button nextButton = view.findViewById(R.id.postButton);
