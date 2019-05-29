@@ -5,7 +5,7 @@
     android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.signup.StartSignup.StartSignupFragment"
+    tools:context=".ui.signup.SignIn.SignInFragment"
     android:background="@color/black">
 
     <ImageView
@@ -24,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/montserrat_sb"
-        android:text="SIGN UP (1/2)"
+        android:text="@string/SIGNIN"
         android:textColor="@color/white"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -35,25 +35,7 @@
         app:layout_constraintVertical_bias="0.06"/>
 
     <EditText
-        android:id="@+id/signUpName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:textSize="25sp"
-        android:hint="Name"
-        android:fontFamily="@font/montserrat_m"
-        android:textColorHint="@color/black"
-        android:textColor="@color/black"
-        android:inputType="text"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.20" />
-
-    <EditText
-        android:id="@+id/signUpEmail"
+        android:id="@+id/emailInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
@@ -68,10 +50,29 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.20" />
+
+    <EditText
+        android:id="@+id/signInPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="25sp"
+        android:hint="@string/password"
+        android:fontFamily="@font/montserrat_m"
+        android:textColorHint="@color/black"
+        android:textColor="@color/black"
+        android:inputType="textPassword"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.32" />
 
+
     <Button
-        android:id="@+id/signUpContinue"
+        android:id="@+id/signInContinue"
         android:background="@drawable/purpleroundedbutton"
         android:layout_width="327dp"
         android:layout_height="52dp"
@@ -86,7 +87,7 @@
         app:layout_constraintVertical_bias="0.53" />
 
     <ImageView
-        android:id="@+id/signUpBackButton"
+        android:id="@+id/emailBackButton"
         android:layout_width="32dp"
         android:layout_height="69dp"
         android:src="@drawable/back2"
@@ -97,4 +98,17 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.032" />
 
+    <ImageView
+        android:id="@+id/start_logo"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/globe1"
+        android:transitionName="small_logo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.90" />
 </android.support.constraint.ConstraintLayout>

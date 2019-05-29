@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/black"
     tools:context=".ui.StartScreen.StartScreenFragment">
-
+  
     <ImageView
         android:id="@+id/start_logo"
         android:layout_width="300dp"
@@ -20,22 +20,15 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.58" />
+        app:layout_constraintVertical_bias="0.38" />
 
-    <EditText
-        android:id="@+id/enterEmail"
-        style="@style/BlankEditText"
-        android:layout_width="match_parent"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:background="@drawable/bubble1"
-        android:ems="10"
-        android:textSize="25sp"
-        android:hint="@string/email"
-        android:textColorHint="@color/inputColor"
-        android:textColor="@color/inputColor"
-        android:inputType="textEmailAddress"
-        android:textAppearance="@android:style/TextAppearance.DeviceDefault.SearchResult.Title"
+        android:text="Welcome"
+        android:textColor="@color/white"
+        android:fontFamily="@font/montserrat_b"
+        android:textSize="32sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -84,10 +77,19 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+=======
+        app:layout_constraintVertical_bias="0.38"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+>>>>>>> parent of 4c1528b9a... Merge pull request #151 from github12364/revert-150-roland/UIRework
         android:text="to Worldepth"
         android:textColor="@color/white"
         android:fontFamily="@font/montserrat_b"
         android:textSize="32sp"
+<<<<<<< HEAD
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -103,11 +105,31 @@
         android:textColor="@color/white60"
         android:fontFamily="@font/montserrat_sb"
         android:textSize="20sp"
+=======
+>>>>>>> parent of 4c1528b9a... Merge pull request #151 from github12364/revert-150-roland/UIRework
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+<<<<<<< HEAD
+=======
+        app:layout_constraintVertical_bias="0.43"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/continue_with"
+        android:textColor="@color/white60"
+        android:fontFamily="@font/montserrat_sb"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+>>>>>>> parent of 4c1528b9a... Merge pull request #151 from github12364/revert-150-roland/UIRework
         app:layout_constraintVertical_bias="0.82"
         />
 
@@ -128,7 +150,11 @@
         app:layout_constraintVertical_bias="0.89" />
 
     <Button
+<<<<<<< HEAD
         android:id="@+id/loginBtn"
+=======
+        android:id="@+id/toSignIn"
+>>>>>>> parent of 4c1528b9a... Merge pull request #151 from github12364/revert-150-roland/UIRework
         android:background="@drawable/pinkroundedbutton"
         android:layout_width="400dp"
         android:layout_height="wrap_content"
