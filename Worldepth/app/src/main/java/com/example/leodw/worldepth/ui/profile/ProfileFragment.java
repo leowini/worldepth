@@ -52,8 +52,8 @@ public class ProfileFragment extends Fragment {
         mSettingsButton.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_profileFragment_to_settings));
         mNameOfUser = view.findViewById(R.id.profileName);
         mProfileViewModel.getName().observe(this, name -> mNameOfUser.setText(name));
-        mFriendText = view.findViewById(R.id.profileNumberOfFollowers);
-        mProfileViewModel.getFriendCount().observe(this, count -> mFriendText.setText(Integer.toString(mFriendNumber)));
+        //mFriendText = view.findViewById(R.id.profileNumberOfFollowers);
+        //mProfileViewModel.getFriendCount().observe(this, count -> mFriendText.setText(Integer.toString(mFriendNumber)));
     }
 
 }

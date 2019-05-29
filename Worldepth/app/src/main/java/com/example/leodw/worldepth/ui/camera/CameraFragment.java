@@ -8,14 +8,11 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
 import android.graphics.Matrix;
 import android.graphics.Point;
-import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.SurfaceTexture;
-import android.graphics.YuvImage;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraCharacteristics;
@@ -59,13 +56,6 @@ import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.slam.ReconVM;
 import com.example.leodw.worldepth.slam.Slam;
 
-import java.io.BufferedOutputStream;
-import java.io.BufferedWriter;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -86,8 +76,9 @@ public class CameraFragment extends Fragment {
 
     private ReconVM mReconVM;
 
+    private Renderer mRenderer;
     private Slam mSlam;
-    //private SurfaceTexture mSlamOutputSurface;
+    private SurfaceTexture mSlamOutputSurface;
 
     private Button captureBtn;
     private ImageView mMapButton;
@@ -292,13 +283,11 @@ public class CameraFragment extends Fragment {
             return;
         setUpCaptureRequestBuilder(mPreviewBuilder);
         try {
-            mPreviewSession.setRepeatingRequest(mPreviewBuilder.build(), null,
-                    mBackgroundHandler);
+            mPreviewSession.setRepeatingRequest(mPreviewBuilder.build(), null, mBackgroundHandler);
         } catch (CameraAccessException e1) {
             e1.printStackTrace();
         }
     }
-
 
     private void setUpCaptureRequestBuilder(CaptureRequest.Builder builder) {
         builder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO);
@@ -346,8 +335,6 @@ public class CameraFragment extends Fragment {
                         stopRecording();
                         mRecordingState = false;
                         Navigation.findNavController(getView()).navigate(R.id.action_cameraFragment_to_reconstructionFragment);
-                        mFrameRenderedListenerHandler.post(() -> mFrameRenderedListener.onFrameRendered(
-                                new TimeFramePair<Bitmap, Double>(mReconVM.getPoisonPill(), (double) 0)));
                         return true;
                     }
                     return false;
@@ -422,92 +409,18 @@ public class CameraFragment extends Fragment {
         mReconVM.setReconProgress(ReconVM.ReconProgress.SLAM);
     }
 
-    private void writeToFile(Bitmap bmp, Double timeStamp){
-        String filename = "" + timeStamp + ".png";
-        boolean intro = true; //already has intro text
-        File dir = new File("data/user/0/com.example.leodw.worldepth/files/rgb");
-        if(!dir.exists()){
-            dir.mkdir();
-            intro = false;
-        }
-        try {
-            String written = "" + timeStamp + " rgb/" + filename;
-            saveFrame(bmp, dir.getAbsolutePath() + "/" + filename);
-            BufferedWriter writer = new BufferedWriter(new FileWriter(
-                    dir.getAbsolutePath() + ".txt", true));
-            if(!intro){
-                writer.newLine();
-                writer.write("# color images");
-                writer.newLine();
-                writer.write("# file: 'sample'");
-                writer.newLine();
-                writer.write("# timestamp filename");
-            }
-            writer.newLine();
-            writer.write(written);
-            writer.close();
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-    }
-
-    private void saveFrame(Bitmap bmp, String filename) throws IOException {
-        /*mPixelBuf.rewind();
-        GLES20.glReadPixels(0, 0, mSurfaceWidth, mSurfaceHeight, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE,
-                mPixelBuf);*/
-
-        BufferedOutputStream bos = null;
-        try {
-            bos = new BufferedOutputStream(new FileOutputStream(filename));
-            /*Bitmap bmp = Bitmap.createBitmap(mSurfaceWidth, mSurfaceHeight, Bitmap.Config.ARGB_8888);
-            mPixelBuf.rewind();
-            bmp.copyPixelsFromBuffer(mPixelBuf);*/
-            bmp.compress(Bitmap.CompressFormat.PNG, 100, bos);
-            //bmp.recycle();
-        } finally {
-            if (bos != null) bos.close();
-        }
-    }
-
-
-    public Bitmap getBitmap(byte[] bytes) {
-        //mPixelBuf.rewind();
-        //GLES20.glReadPixels(0, 0, mSurfaceWidth, mSurfaceHeight, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE,
-        //        mPixelBuf);
-
-        //BufferedOutputStream bos = null;
-        //mPixelBuf.rewind();
-        //byte[] bytes = new byte[mPixelBuf.capacity()];
-        //mPixelBuf.get(bytes);
-        Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-
-        //return answer;
-        return Bitmap.createScaledBitmap(bmp, 640 * bmp.getWidth()/bmp.getHeight(), 640, true);
-
-    }
-
-    private static byte[] NV21toJPEG(byte[] nv21, int width, int height) {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        YuvImage yuv = new YuvImage(nv21, ImageFormat.NV21, width, height, null);
-        yuv.compressToJpeg(new Rect(0, 0, width, height), 100, out);
-        return out.toByteArray();
-    }
-
     private void startCameraRecording() {
         if (cameraDevice == null) return;
         CameraManager manager = (CameraManager) getActivity().getSystemService(Context.CAMERA_SERVICE);
-        //closePreviewSession();
         if (null == cameraDevice || !mTextureView.isAvailable() || null == mPreviewSize) {
             return;
         }
         try {
-            //closePreviewSession();
             SurfaceTexture texture = mTextureView.getSurfaceTexture();
             assert texture != null;
             texture.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
             mPreviewBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
             List<Surface> surfaces = new ArrayList<>();
-
 
             // Set up Surface for the camera preview
             Surface previewSurface = new Surface(texture);
@@ -518,7 +431,6 @@ public class CameraFragment extends Fragment {
             Surface slamOutputSurface = mImageReader.getSurface();
             surfaces.add(slamOutputSurface);
             mPreviewBuilder.addTarget(slamOutputSurface);
-
 
             cameraDevice.createCaptureSession(surfaces, new CameraCaptureSession.StateCallback() {
                 @Override
@@ -697,8 +609,7 @@ public class CameraFragment extends Fragment {
     }
 
     public void setOnFrameRenderedListener(OnFrameRenderedListener listener, Handler handler) {
-        this.mFrameRenderedListener = listener;
-        this.mFrameRenderedListenerHandler = handler;
+        mFrameRenderedListener = listener;
+        mFrameRenderedListenerHandler = handler;
     }
-
 }

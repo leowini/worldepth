@@ -201,8 +201,6 @@ namespace calib {
         //Mat view;
         bool blinkOutput = false;
 
-        aspectRatio = (float) view.cols / view.rows;
-
         if (mode == CALIBRATED)
             return;
         //view = s.nextImage();
@@ -520,9 +518,9 @@ void Settings::saveCameraParams(Settings &s, Size &imageSize, Mat &cameraMatrix,
 
             fs.write("Camera_fps", 15);
             fs.write("Camera_RGB", 1);
-            fs.write("ORBextractor_nFeatures", 3000);
+            fs.write("ORBextractor_nFeatures", 2000);
             fs.write("ORBextractor_scaleFactor", 1.2);
-            fs.write("ORBextractor_nLevels", 14);
+            fs.write("ORBextractor_nLevels", 8);
             fs.write("ORBextractor_iniThFAST", 20);
             fs.write("ORBextractor_minThFAST", 7);
 
