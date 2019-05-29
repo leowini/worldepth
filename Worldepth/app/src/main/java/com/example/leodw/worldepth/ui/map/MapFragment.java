@@ -83,14 +83,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         mStorageRef = FirebaseStorage.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
-        Button mHomeButton = view.findViewById(R.id.mapToHomeBtn);
-        mHomeButton.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_mapFragment_to_homeFragment));
-        //Button mProfileButton = view.findViewById(R.id.mapToProfileBtn);
-        //Button mMessageButton = view.findViewById(R.id.mapToMessageBtn);
-        //Button mCameraButton = view.findViewById(R.id.mapToCameraBtn);
-        //mProfileButton.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_mapFragment_to_profileFragment));
-        //mCameraButton.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_mapFragment_to_cameraFragment));
-        //mMessageButton.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_mapFragment_to_messageFragment));
+        Button mProfileButton = view.findViewById(R.id.mapToProfileBtn);
+        Button mMessageButton = view.findViewById(R.id.mapToMessageBtn);
+        Button mCameraButton = view.findViewById(R.id.mapToCameraBtn);
+        mProfileButton.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_mapFragment_to_profileFragment));
+        mCameraButton.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_mapFragment_to_cameraFragment));
+        mMessageButton.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_mapFragment_to_messageFragment));
     }
 
     /**

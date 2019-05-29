@@ -4,6 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.example.leodw.worldepth.ui.signup.Email.EmailFragment;
+import com.example.leodw.worldepth.ui.signup.Password.PasswordFragment;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
