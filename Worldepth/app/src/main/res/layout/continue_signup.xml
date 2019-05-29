@@ -72,7 +72,7 @@
 
     <Button
         android:id="@+id/signUpRegister"
-        android:background="@drawable/purpleroundedbutton"
+        android:background="@drawable/purple_rounded_button"
         android:layout_width="327dp"
         android:layout_height="52dp"
         android:text="@string/SIGNUP"

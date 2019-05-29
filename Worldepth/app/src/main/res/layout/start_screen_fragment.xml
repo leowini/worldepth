@@ -77,19 +77,10 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-=======
-        app:layout_constraintVertical_bias="0.38"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
->>>>>>> parent of 4c1528b9a... Merge pull request #151 from github12364/revert-150-roland/UIRework
         android:text="to Worldepth"
         android:textColor="@color/white"
         android:fontFamily="@font/montserrat_b"
         android:textSize="32sp"
-<<<<<<< HEAD
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -105,15 +96,11 @@
         android:textColor="@color/white60"
         android:fontFamily="@font/montserrat_sb"
         android:textSize="20sp"
-=======
->>>>>>> parent of 4c1528b9a... Merge pull request #151 from github12364/revert-150-roland/UIRework
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-<<<<<<< HEAD
-=======
         app:layout_constraintVertical_bias="0.43"
         />
 
@@ -129,7 +116,6 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
->>>>>>> parent of 4c1528b9a... Merge pull request #151 from github12364/revert-150-roland/UIRework
         app:layout_constraintVertical_bias="0.82"
         />
 
@@ -150,11 +136,7 @@
         app:layout_constraintVertical_bias="0.89" />
 
     <Button
-<<<<<<< HEAD
-        android:id="@+id/loginBtn"
-=======
         android:id="@+id/toSignIn"
->>>>>>> parent of 4c1528b9a... Merge pull request #151 from github12364/revert-150-roland/UIRework
         android:background="@drawable/pinkroundedbutton"
         android:layout_width="400dp"
         android:layout_height="wrap_content"
