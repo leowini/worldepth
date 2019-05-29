@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/startScreenFragment">
-
     <fragment
         android:id="@+id/startScreenFragment"
         android:name="com.example.leodw.worldepth.ui.StartScreen.StartScreenFragment"
@@ -16,6 +15,9 @@
         <action
             android:id="@+id/action_startScreenFragment_to_cameraFragment"
             app:destination="@id/cameraFragment" />
+        <action
+            android:id="@+id/action_startScreenFragment_to_SignInFragment"
+            app:destination="@id/signInFragment"/>
     </fragment>
     <fragment
         android:id="@+id/passwordFragment"
@@ -24,7 +26,7 @@
         tools:layout="@layout/password_fragment" >
         <action
             android:id="@+id/action_passwordFragment_to_birthdayFragment"
-            app:destination="@id/birthdayFragment" />
+            app:destination="@id/homeFragment" />
         <action
             android:id="@+id/action_passwordFragment_to_loadingFragment"
             app:destination="@id/loadingFragment" />
@@ -59,19 +61,28 @@
         tools:layout="@layout/name_fragment" >
         <action
             android:id="@+id/action_nameFragment_to_birthdayFragment"
-            app:destination="@id/birthdayFragment" />
+            app:destination="@id/homeFragment" />
     </fragment>
     <fragment
-        android:id="@+id/birthdayFragment"
-        android:name="com.example.leodw.worldepth.ui.signup.Birthday.BirthdayFragment"
-        android:label="birthday_fragment"
-        tools:layout="@layout/birthday_fragment" >
+        android:id="@+id/homeFragment"
+        android:name="com.example.leodw.worldepth.ui.signup.Home.HomeFragment"
+        android:label="home_fragment"
+        tools:layout="@layout/home_fragment" >
         <action
             android:id="@+id/action_birthdayFragment_to_passwordFragment"
             app:destination="@id/passwordFragment" />
         <action
             android:id="@+id/action_birthdayFragment_to_nameFragment"
             app:destination="@id/nameFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
     </fragment>
     <fragment
         android:id="@+id/startSignupFragment"
@@ -80,37 +91,49 @@
         tools:layout="@layout/start_signup_fragment" >
         <action
             android:id="@+id/action_startSignupFragment_to_phoneFragment"
-            app:destination="@id/phoneFragment" />
+            app:destination="@id/continueSignUpFragment" />
         <action
             android:id="@+id/action_startSignupFragment_to_startScreenFragment"
             app:destination="@id/startScreenFragment" />
         <action
             android:id="@+id/action_startSignupFragment_to_emailFragment"
-            app:destination="@id/emailFragment" />
+            app:destination="@id/signInFragment" />
+        <action
+            android:id="@+id/action_startSignupFragment_to_continueSignUpFragment"
+            app:destination="@id/continueSignUpFragment" />
     </fragment>
     <fragment
-        android:id="@+id/phoneFragment"
-        android:name="com.example.leodw.worldepth.ui.signup.Phone.PhoneFragment"
-        android:label="phone_fragment"
-        tools:layout="@layout/phone_fragment" >
+        android:id="@+id/continueSignUpFragment"
+        android:name="com.example.leodw.worldepth.ui.signup.ContinueSignUp.ContinueSignUp"
+        android:label="continueSignUp_fragment"
+        tools:layout="@layout/continue_signup" >
         <action
             android:id="@+id/action_phoneFragment_to_nameFragment"
             app:destination="@id/nameFragment" />
         <action
             android:id="@+id/action_phoneFragment_to_startSignupFragment"
             app:destination="@id/startSignupFragment" />
+        <action
+            android:id="@+id/action_continueSignUpFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
+        <action
+            android:id="@+id/action_continueSignUpFragment_to_loadingFragment"
+            app:destination="@id/loadingFragment" />
+        <action
+            android:id="@+id/action_continueSignUpFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
     <fragment
-        android:id="@+id/emailFragment"
-        android:name="com.example.leodw.worldepth.ui.signup.Email.EmailFragment"
-        android:label="email_fragment"
-        tools:layout="@layout/email_fragment">
+        android:id="@+id/signInFragment"
+        android:name="com.example.leodw.worldepth.ui.signup.SignIn.SignInFragment"
+        android:label="signIn_fragment"
+        tools:layout="@layout/sign_in_fragment">
         <action
-            android:id="@+id/action_emailFragment_to_startSignupFragment"
-            app:destination="@id/startSignupFragment" />
+            android:id="@+id/action_signInFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
         <action
-            android:id="@+id/action_emailFragment_to_nameFragment"
-            app:destination="@id/nameFragment" />
+            android:id="@+id/action_signInFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/settings"
@@ -170,6 +193,9 @@
         <action
             android:id="@+id/action_mapFragment_to_viewerFragment"
             app:destination="@id/viewerFragment" />
+        <action
+            android:id="@+id/action_mapFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"

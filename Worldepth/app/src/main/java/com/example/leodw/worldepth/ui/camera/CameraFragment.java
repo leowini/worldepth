@@ -30,6 +30,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Size;
 import android.util.SparseIntArray;
@@ -41,6 +42,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.leodw.worldepth.R;
@@ -258,8 +260,6 @@ public class CameraFragment extends Fragment {
         if (cameraDevice == null)
             return;
         setUpCaptureRequestBuilder(mPreviewBuilder);
-        HandlerThread thread = new HandlerThread("CameraPreview");
-        thread.start();
         try {
             mPreviewSession.setRepeatingRequest(mPreviewBuilder.build(), null, mBackgroundHandler);
         } catch (CameraAccessException e1) {
@@ -288,7 +288,7 @@ public class CameraFragment extends Fragment {
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         mReconVM = ViewModelProviders.of(getActivity()).get(ReconVM.class);
-        mTextureView = (AutoFitTextureView) view.findViewById(R.id.textureView);
+        mTextureView = view.findViewById(R.id.textureView);
         assert mTextureView != null;
         captureBtn = (Button) view.findViewById(R.id.captureButton);
         mMapButton = (ImageView) view.findViewById(R.id.cameraToMapButton);
@@ -329,7 +329,7 @@ public class CameraFragment extends Fragment {
      */
     private void startRecording() {
         //Queue for images and timestamps to send to Slam.
-        BlockingQueue<TimeFramePair<Bitmap, Long>> q = new LinkedBlockingQueue<TimeFramePair<Bitmap, Long>>();
+        BlockingQueue<TimeFramePair<Bitmap, Long>> q = new LinkedBlockingQueue<>();
         //Poison pill to signal end of queue.
         mRenderer = new Renderer(mReconVM.getPoisonPill());
         mRenderer.setOnSurfaceTextureReadyListener(texture -> {
@@ -337,23 +337,21 @@ public class CameraFragment extends Fragment {
             startCameraRecording();
         }, new Handler(Looper.getMainLooper()));
         mRenderer.setOnFrameRenderedListener((timeFramePair) -> mReconVM.sendFrame(timeFramePair), new Handler(Looper.getMainLooper()));
-        mRenderer.start(mTextureView.getWidth(), mTextureView.getHeight());
+        mRenderer.start(mPreviewSize.getWidth(), mPreviewSize.getHeight());
         mReconVM.setReconProgress(ReconVM.ReconProgress.SLAM);
     }
 
     private void startCameraRecording() {
         if (cameraDevice == null) return;
         CameraManager manager = (CameraManager) getActivity().getSystemService(Context.CAMERA_SERVICE);
-        closePreviewSession();
         if (null == cameraDevice || !mTextureView.isAvailable() || null == mPreviewSize) {
             return;
         }
         try {
-            closePreviewSession();
             SurfaceTexture texture = mTextureView.getSurfaceTexture();
             assert texture != null;
             texture.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
-            mPreviewBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_RECORD);
+            mPreviewBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
             List<Surface> surfaces = new ArrayList<>();
 
             // Set up Surface for the camera preview
@@ -378,7 +376,7 @@ public class CameraFragment extends Fragment {
                 public void onConfigureFailed(@NonNull CameraCaptureSession session) {
 
                 }
-            }, mBackgroundHandler);
+            }, new Handler(Looper.getMainLooper()));
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
@@ -386,15 +384,16 @@ public class CameraFragment extends Fragment {
 
     private void stopRecording() {
         nextVideoAbsolutePath = null;
-        startPreview();
+        //startPreview();
     }
 
-    private void openCamera(int width, int height) {
+    private void openCamera(int tvWidth, int tvHeight) {
         CameraManager manager = (CameraManager) getActivity().getSystemService(Context.CAMERA_SERVICE);
         try {
             if (!mCameraOpenCloseLock.tryAcquire(2500, TimeUnit.MILLISECONDS)) {
                 throw new RuntimeException("Time out waiting to lock camera opening.");
             }
+            assert manager != null;
             cameraId = manager.getCameraIdList()[0];
             CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraId);
             StreamConfigurationMap map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
@@ -403,60 +402,45 @@ public class CameraFragment extends Fragment {
             Size largest = Collections.max(
                     Arrays.asList(map.getOutputSizes(ImageFormat.JPEG)),
                     new CompareSizesByArea());
-            // Find out if we need to swap dimension to get the preview size relative to sensor
-            // coordinate.
-            int displayRotation = getActivity().getWindowManager().getDefaultDisplay().getRotation();
-            sensorOrientation = characteristics.get(CameraCharacteristics.SENSOR_ORIENTATION);
-            boolean swappedDimensions = false;
-            switch (displayRotation) {
-                case Surface.ROTATION_0:
-                case Surface.ROTATION_180:
-                    if (sensorOrientation == 90 || sensorOrientation == 270) {
-                        swappedDimensions = true;
-                    }
-                    break;
-                case Surface.ROTATION_90:
-                case Surface.ROTATION_270:
-                    if (sensorOrientation == 0 || sensorOrientation == 180) {
-                        swappedDimensions = true;
-                    }
-                    break;
-                default:
-                    Log.e(TAG, "Display rotation is invalid: " + displayRotation);
-            }
             Point displaySize = new Point();
             getActivity().getWindowManager().getDefaultDisplay().getSize(displaySize);
-            int rotatedPreviewWidth = width;
-            int rotatedPreviewHeight = height;
-            int maxPreviewWidth = displaySize.x;
-            int maxPreviewHeight = displaySize.y;
+            int displayWidth = displaySize.x;
+            int displayHeight = displaySize.y;
 
-            if (swappedDimensions) {
-                rotatedPreviewWidth = height;
-                rotatedPreviewHeight = width;
-                maxPreviewWidth = displaySize.y;
-                maxPreviewHeight = displaySize.x;
+            //mPreviewSize = chooseOptimalSize(map.getOutputSizes(SurfaceTexture.class), tvWidth, tvHeight, displayWidth, displayHeight, largest);
+            mPreviewSize = largest;
+            //mTextureView.setAspectRatio(mPreviewSize.getHeight(), mPreviewSize.getWidth());
+
+            //Suppose this value is obtained from Step 2.
+            //I simply test here by hardcoding a 3:4 aspect ratio, where my phone has a thinner aspect ratio.
+            float cameraAspectRatio = (float) largest.getHeight() / largest.getWidth();
+
+            //Preparation
+            int finalWidth = displayWidth;
+            int finalHeight = displayHeight;
+            int widthDifference = 0;
+            int heightDifference = 0;
+            float screenAspectRatio = (float) displayWidth / displayHeight;
+
+            //Determines whether we crop width or crop height
+            if (screenAspectRatio > cameraAspectRatio) { //Keep width crop height
+                finalHeight = (int) (displayWidth / cameraAspectRatio);
+                heightDifference = finalHeight - displayHeight;
+            } else { //Keep height crop width
+                finalWidth = (int) (displayHeight * cameraAspectRatio);
+                widthDifference = finalWidth - displayWidth;
             }
 
-            if (maxPreviewWidth > MAX_PREVIEW_WIDTH) {
-                maxPreviewWidth = MAX_PREVIEW_WIDTH;
-            }
+            //Apply the result to the Preview
+            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mTextureView.getLayoutParams();
+            lp.width = finalWidth;
+            lp.height = finalHeight;
+            //Below 2 lines are to center the preview, since cropping default occurs at the right and bottom
+            lp.leftMargin = - (widthDifference / 2);
+            lp.topMargin = - (heightDifference / 2);
+            mTextureView.setLayoutParams(lp);
+            mTextureView.setAspectRatio(finalWidth, finalHeight);
 
-            if (maxPreviewHeight > MAX_PREVIEW_HEIGHT) {
-                maxPreviewHeight = MAX_PREVIEW_HEIGHT;
-            }
-
-            mPreviewSize = chooseOptimalSize(map.getOutputSizes(SurfaceTexture.class), rotatedPreviewWidth, rotatedPreviewHeight, maxPreviewWidth, maxPreviewHeight, largest);
-
-
-            int orientation = getResources().getConfiguration().orientation;
-            if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                mTextureView.setAspectRatio(mPreviewSize.getWidth(), mPreviewSize.getHeight());
-            } else {
-                mTextureView.setAspectRatio(mPreviewSize.getHeight(), mPreviewSize.getWidth());
-            }
-
-            configureTransform(width, height);
             //check real-time permissions, this should be false on the first time the camera is ever opened
             if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 Log.i(TAG, "request permissions failed");
@@ -541,29 +525,6 @@ public class CameraFragment extends Fragment {
             mPreviewSession.close();
             mPreviewSession = null;
         }
-    }
-
-    private void configureTransform(int viewWidth, int viewHeight) {
-        if (null == mTextureView || null == mPreviewSize) {
-            return;
-        }
-        int rotation = getActivity().getWindowManager().getDefaultDisplay().getRotation();
-        Matrix matrix = new Matrix();
-        RectF viewRect = new RectF(0, 0, viewWidth, viewHeight);
-        RectF bufferRect = new RectF(0, 0, mPreviewSize.getHeight(), mPreviewSize.getWidth());
-        float centerX = viewRect.centerX();
-        float centerY = viewRect.centerY();
-
-        if (Surface.ROTATION_90 == rotation || Surface.ROTATION_270 == rotation) {
-            bufferRect.offset(centerX - bufferRect.centerX(), centerY - bufferRect.centerY());
-            matrix.setRectToRect(viewRect, bufferRect, Matrix.ScaleToFit.FILL);
-            float scale = Math.max(
-                    (float) viewHeight / mPreviewSize.getHeight(),
-                    (float) viewWidth / mPreviewSize.getWidth());
-            matrix.postScale(scale, scale, centerX, centerY);
-            matrix.postRotate(90 * (rotation - 2), centerX, centerY);
-        }
-        mTextureView.setTransform(matrix);
     }
 
     static class CompareSizesByArea implements Comparator<Size> {

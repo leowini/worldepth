@@ -50,33 +50,26 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
 
     private final Bitmap mPoisonPillBitmap;
 
-    private static int frameCount = 1;
+    private static int frameCount = 0;
 
-    public Renderer(Bitmap mPoisonPillBitmap) {
+    Renderer(Bitmap mPoisonPillBitmap) {
         this.mPoisonPillBitmap = mPoisonPillBitmap;
     }
 
     @Override
     public void onFrameAvailable(SurfaceTexture surfaceTexture) {
         frameCount++;
-        long frameTimeStamp = surfaceTexture.getTimestamp();
+        double frameTimeStamp = (double) surfaceTexture.getTimestamp() / 1000000;
         // Latch the data.
         renderer.checkGlError("before updateTexImage");
         mEglSurfaceTexture.updateTexImage();
-
         renderer.drawFrame(mEglSurfaceTexture, false);
-
         Bitmap bmp = getBitmap();
-        Log.d(TAG, ""+bmp.getHeight());
-        Log.d(TAG, ""+bmp.getWidth());
         try {
-            if (frameCount % 2 == 0) {
-                mFrameRenderedListenerHandler.post(() -> mFrameRenderedListener.onFrameRendered(new TimeFramePair<Bitmap, Long>(bmp, frameTimeStamp)));
-            }
+            mFrameRenderedListenerHandler.post(() -> mFrameRenderedListener.onFrameRendered(new TimeFramePair<Bitmap, Double>(bmp, frameTimeStamp)));
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     /**
@@ -98,30 +91,6 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
     }
 
     /**
-     * Saves the drawn frame
-     *
-     * @param filename
-     * @throws IOException
-     */
-    private void saveFrame(String filename) throws IOException {
-        mPixelBuf.rewind();
-        GLES20.glReadPixels(0, 0, mSurfaceWidth, mSurfaceHeight, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE,
-                mPixelBuf);
-
-        BufferedOutputStream bos = null;
-        try {
-            bos = new BufferedOutputStream(new FileOutputStream(filename));
-            Bitmap bmp = Bitmap.createBitmap(mSurfaceWidth, mSurfaceHeight, Bitmap.Config.ARGB_8888);
-            mPixelBuf.rewind();
-            bmp.copyPixelsFromBuffer(mPixelBuf);
-            bmp.compress(Bitmap.CompressFormat.PNG, 100, bos);
-            bmp.recycle();
-        } finally {
-            if (bos != null) bos.close();
-        }
-    }
-
-    /**
      * Starts the Renderthread and initializes the render dimensions
      *
      * @param width
@@ -139,7 +108,7 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
 
     public void stopRenderThread() {
         if (mRenderThread == null) return;
-        mRenderThread.handler.post(() -> mFrameRenderedListenerHandler.post(() -> mFrameRenderedListener.onFrameRendered(new TimeFramePair<Bitmap, Long>(mPoisonPillBitmap, (long) 0))));
+        mRenderThread.handler.post(() -> mFrameRenderedListenerHandler.post(() -> mFrameRenderedListener.onFrameRendered(new TimeFramePair<Bitmap, Double>(mPoisonPillBitmap, (double) 0))));
         mRenderThread.handler.post(() -> {
             Looper looper = Looper.myLooper();
             if (looper != null) {
@@ -537,7 +506,7 @@ public class Renderer implements SurfaceTexture.OnFrameAvailableListener {
     }
 
     public interface OnFrameRenderedListener {
-        void onFrameRendered(TimeFramePair<Bitmap, Long> timeFramePair);
+        void onFrameRendered(TimeFramePair<Bitmap, Double> timeFramePair);
     }
 
     public void setOnFrameRenderedListener(OnFrameRenderedListener listener, Handler handler) {

@@ -1,4 +1,4 @@
-package com.example.leodw.worldepth.ui.signup.Birthday;
+package com.example.leodw.worldepth.ui.signup.Home;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
@@ -13,55 +13,60 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.data.FirebaseWrapper;
 import com.example.leodw.worldepth.ui.MainActivity;
-import com.example.leodw.worldepth.ui.signup.Name.NameViewModel;
-import com.example.leodw.worldepth.ui.signup.Phone.PhoneFragment;
 
 import androidx.navigation.Navigation;
 
-public class BirthdayFragment extends Fragment {
+public class HomeFragment extends Fragment {
 
-    private static final String TAG = "BirthdayFragment";
+    private static final String TAG = "HomeFragment";
 
-    private BirthdayViewModel mViewModel;
+    private HomeViewModel mViewModel;
     private FirebaseWrapper mFb;
     private EditText mBirthdayInput;
 
-    public static BirthdayFragment newInstance() {
-        return new BirthdayFragment();
+    public static HomeFragment newInstance() {
+        return new HomeFragment();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.birthday_fragment, container, false);
-        String [] values =
-                {"Month","January","Febuary","March","April","May","June","July","August","September","October","November","December"};
-        Spinner spinner = (Spinner) view.findViewById(R.id.spinner);
-        ArrayAdapter<String> LTRadapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, values);
-        LTRadapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-        spinner.setAdapter(LTRadapter);
+        View view = inflater.inflate(R.layout.home_fragment, container, false);
 
-        Button birthdayNextButton = view.findViewById(R.id.birthdayNextButton);
+        ImageView homeToProfileButton = view.findViewById(R.id.homeToProfile);
+        homeToProfileButton.setOnClickListener((view1) -> {
+            Navigation.findNavController(view1).navigate(R.id.action_homeFragment_to_profileFragment);
+        });
+
+        ImageView homeToCameraButton = view.findViewById(R.id.homeToCamera);
+        homeToCameraButton.setOnClickListener((view1) -> {
+            Navigation.findNavController(view1).navigate(R.id.action_homeFragment_to_cameraFragment);
+        });
+
+        ImageView homeToMapButton = view.findViewById(R.id.homeToMap);
+        homeToMapButton.setOnClickListener((view1) -> {
+            Navigation.findNavController(view1).navigate(R.id.action_homeFragment_to_mapFragment);
+        });
+        /*Button birthdayNextButton = view.findViewById(R.id.birthdayNextButton);
         birthdayNextButton.setOnClickListener((view1) -> {
             Navigation.findNavController(view1).navigate(R.id.action_birthdayFragment_to_passwordFragment);
-        });
+        });*/
 
-        ImageView birthdayBackButton = view.findViewById(R.id.birthdayBackButton);
+        /*ImageView birthdayBackButton = view.findViewById(R.id.birthdayBackButton);
         birthdayBackButton.setOnClickListener((view2) -> {
             Navigation.findNavController(view2).popBackStack();
-        });
+        });*/
         return view;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(BirthdayViewModel.class);
+        mViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
         mFb = ((MainActivity)this.getActivity()).getFirebaseWrapper();
         // TODO: Use the ViewModel
     }
