@@ -358,7 +358,6 @@ public class CameraFragment extends Fragment {
             @Override
             public void onImageAvailable(ImageReader reader) {
                 frameCount++;
-                Log.d(TAG, ""+frameCount);
                 Image image = reader.acquireLatestImage();
                 if (image == null) return;
                 Image.Plane Y = image.getPlanes()[0];
@@ -402,6 +401,7 @@ public class CameraFragment extends Fragment {
                     e.printStackTrace();
                 }
                 image.close();
+                Log.d(TAG, ""+frameCount);
             }
         }, mBackgroundHandler);
 
@@ -429,8 +429,7 @@ public class CameraFragment extends Fragment {
             mPreviewBuilder.addTarget(previewSurface);
 
             //Set up Surface for SLAM
-            mSlamOutputSurface.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
-            Surface slamOutputSurface = new Surface(mSlamOutputSurface);
+            Surface slamOutputSurface = mImageReader.getSurface();
             surfaces.add(slamOutputSurface);
             mPreviewBuilder.addTarget(slamOutputSurface);
 

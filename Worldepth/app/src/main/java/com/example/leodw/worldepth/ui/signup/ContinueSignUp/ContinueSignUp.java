@@ -1,4 +1,4 @@
-package com.example.leodw.worldepth.ui.signup.Password;
+package com.example.leodw.worldepth.ui.signup.ContinueSignUp;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
@@ -25,45 +25,64 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import androidx.navigation.Navigation;
 
-public class PasswordFragment extends Fragment {
-    private static final String TAG = "PasswordFragment";
+public class ContinueSignUp extends Fragment {
+    private static final String TAG = "ContinueSignUp";
 
-    private PasswordViewModel mViewModel;
+    private ContinueSignUpViewModel mViewModel;
     private FirebaseWrapper mFb;
     private DataTransfer mDt;
-    private EditText mPasswordInput, mConfirmPassword;
-    private Button completeSignUp;
-    private ImageView goBack;
-    private String mEmail;
 
-    public static PasswordFragment newInstance() {
-        return new PasswordFragment();
+    private ImageView SignUpBackButton2;
+
+    private EditText mPassword;
+    private EditText mConfirmPassword;
+    private Button registerButton;
+
+    public static ContinueSignUp newInstance() {
+        return new ContinueSignUp();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.password_fragment, container, false);
+        return inflater.inflate(R.layout.continue_signup, container, false);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(PasswordViewModel.class);
-        mFb = ((MainActivity) this.getActivity()).getFirebaseWrapper();
+        mViewModel = ViewModelProviders.of(this).get(ContinueSignUpViewModel.class);
+        mFb = ((MainActivity)this.getActivity()).getFirebaseWrapper();
         mDt = ((MainActivity) this.getActivity()).getDataTransfer();
         // TODO: Use the ViewModel
     }
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
-        mPasswordInput = view.findViewById(R.id.passwordInput);
-        mConfirmPassword = view.findViewById(R.id.confirmPasswordInput);
+        registerButton = view.findViewById(R.id.signUpRegister);
+        mPassword = view.findViewById(R.id.signUpPassword);
+        mConfirmPassword = view.findViewById(R.id.signUpConfirmPW);
+        registerButton.setOnClickListener((view1) -> {
+            if (validPassword()) {
+                String email = mDt.getDataPair(0).getData();
+                String firstName = mDt.getDataPair(1).getData();
+                String lastName = mDt.getDataPair(2).getData();
+                String password = mPassword.getText().toString();
+                Log.d(TAG, "email: " + email);
+                Log.d(TAG, "firstName: " + firstName);
+                Log.d(TAG, "lastName: " + lastName);
+                Log.d(TAG, "password: " + password);
+                createNewAccount(firstName, lastName, email, password);
+                Navigation.findNavController(view1).navigate(R.id.action_continueSignUpFragment_to_homeFragment);
+            }
 
-        completeSignUp = view.findViewById(R.id.passwordNextButton);
-        goBack = view.findViewById(R.id.passwordBackButton);
+            SignUpBackButton2 = view.findViewById(R.id.signUpBackButton2);
+            SignUpBackButton2.setOnClickListener((view2) -> {
+                Navigation.findNavController(view2).popBackStack();
+            });
+        });
 
-        mPasswordInput.addTextChangedListener(new TextWatcher() {
+        mPassword.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -96,28 +115,10 @@ public class PasswordFragment extends Fragment {
 
             }
         });
-
-        completeSignUp.setOnClickListener((v) -> {
-            if (validPassword()) {
-                String email = mDt.getDataPair(0).getData();
-                String firstName = mDt.getDataPair(1).getData();
-                String lastName = mDt.getDataPair(2).getData();
-                String password = mPasswordInput.getText().toString();
-                Log.d(TAG, "email: " + email);
-                Log.d(TAG, "firstName: " + firstName);
-                Log.d(TAG, "lastName: " + lastName);
-                Log.d(TAG, "password: " + password);
-                createNewAccount(firstName, lastName, email, password);
-            }
-        });
-
-        goBack.setOnClickListener((view2) -> {
-            Navigation.findNavController(view2).popBackStack();
-        });
     }
 
     private boolean validPassword() {
-        String password = mPasswordInput.getText().toString();
+        String password = mPassword.getText().toString();
         String confirmed = mConfirmPassword.getText().toString();
         boolean validity = true;
 
@@ -158,7 +159,7 @@ public class PasswordFragment extends Fragment {
         }
 
         return validity;
-    }
+    };
 
     /*checks for illegal characters. Only the following are permitted:
     -Lower and uppercase English letters (A-Z)
@@ -222,7 +223,9 @@ public class PasswordFragment extends Fragment {
                 //set login state
                 ((MainActivity) getActivity()).setLoginState(true);
                 //go to camera fragment
-                Navigation.findNavController(getView()).navigate(R.id.action_passwordFragment_to_loadingFragment);
+                //Navigation.findNavController(getView()).navigate(R.id.action_continueSignUpFragment_to_loadingFragment);
+                Toast.makeText(getContext(), "Account successfully created!", Toast.LENGTH_SHORT).show();
+
             } else {
                 Toast.makeText(getContext(), "Account creation failed.", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "createNewAccount:failed", task.getException());
