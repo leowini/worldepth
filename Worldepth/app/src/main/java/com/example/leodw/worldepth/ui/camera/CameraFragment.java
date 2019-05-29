@@ -401,6 +401,7 @@ public class CameraFragment extends Fragment {
                     e.printStackTrace();
                 }
                 image.close();
+                bmp.recycle();
                 Log.d(TAG, ""+frameCount);
             }
         }, mBackgroundHandler);
