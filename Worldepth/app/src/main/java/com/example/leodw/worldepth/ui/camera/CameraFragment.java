@@ -372,12 +372,16 @@ public class CameraFragment extends Fragment {
                 int Ub = U.getBuffer().remaining();
                 int Vb = V.getBuffer().remaining();
 
-                byte[] data = new byte[Yb + Ub + Vb];
+                //byte[] data = new byte[Yb + Ub + Vb];
+                byte[] data = new byte[Yb + Vb + Ub];
 
 
+                //Y.getBuffer().get(data, 0, Yb);
+                //U.getBuffer().get(data, Yb, Ub);
+                //V.getBuffer().get(data, Yb + Ub, Vb);
                 Y.getBuffer().get(data, 0, Yb);
-                U.getBuffer().get(data, Yb, Ub);
-                V.getBuffer().get(data, Yb + Ub, Vb);
+                V.getBuffer().get(data, Yb, Vb);
+                U.getBuffer().get(data, Yb + Vb, Ub);
                 if (yuvType == null)
                 {
                     yuvType = new Type.Builder(rs, Element.U8(rs)).setX(data.length);
