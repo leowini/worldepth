@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/black"
     tools:context=".ui.StartScreen.StartScreenFragment">
-
+  
     <ImageView
         android:id="@+id/start_logo"
         android:layout_width="300dp"
@@ -20,22 +20,15 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.58" />
+        app:layout_constraintVertical_bias="0.38" />
 
-    <EditText
-        android:id="@+id/enterEmail"
-        style="@style/BlankEditText"
-        android:layout_width="match_parent"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:background="@drawable/bubble1"
-        android:ems="10"
-        android:textSize="25sp"
-        android:hint="@string/email"
-        android:textColorHint="@color/inputColor"
-        android:textColor="@color/inputColor"
-        android:inputType="textEmailAddress"
-        android:textAppearance="@android:style/TextAppearance.DeviceDefault.SearchResult.Title"
+        android:text="Welcome"
+        android:textColor="@color/white"
+        android:fontFamily="@font/montserrat_b"
+        android:textSize="32sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -108,12 +101,27 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.43"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/continue_with"
+        android:textColor="@color/white60"
+        android:fontFamily="@font/montserrat_sb"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.82"
         />
 
     <Button
         android:id="@+id/goToSignUp"
-        android:background="@drawable/purpleroundedbutton"
+        android:background="@drawable/purple_rounded_button"
         android:layout_width="400dp"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -128,8 +136,8 @@
         app:layout_constraintVertical_bias="0.89" />
 
     <Button
-        android:id="@+id/loginBtn"
-        android:background="@drawable/pinkroundedbutton"
+        android:id="@+id/toSignIn"
+        android:background="@drawable/pink_rounded_button"
         android:layout_width="400dp"
         android:layout_height="wrap_content"
         android:ems="10"
