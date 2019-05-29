@@ -76,22 +76,15 @@ public class CameraFragment extends Fragment {
 
     private ReconVM mReconVM;
 
-    private Renderer mRenderer;
-    private Slam mSlam;
-    private SurfaceTexture mSlamOutputSurface;
-
     private Button captureBtn;
     private ImageView mMapButton;
     private AutoFitTextureView mTextureView;
 
     private boolean mRecordingState;
 
-    private Integer sensorOrientation;
-
     private static final SparseIntArray DEFAULT_ORIENTATIONS = new SparseIntArray();
     private static final SparseIntArray INVERSE_ORIENTATIONS = new SparseIntArray();
 
-    private ByteBuffer mPixelBuf; // used by saveFrame()
     private ImageReader mImageReader;
 
     private RenderScript rs;
@@ -400,9 +393,6 @@ public class CameraFragment extends Fragment {
                 out.copyTo(bmp);
                 Bitmap scaledBmp = Bitmap.createScaledBitmap(bmp, 640 * bmp.getWidth()/bmp.getHeight(), 640, true);
                 double frameTimeStamp = (double) Calendar.getInstance().getTimeInMillis() /1000;
-                //Bitmap bmp = getBitmap(NV21toJPEG(data, image.getWidth(), image.getHeight()));
-                //writeToFile(bmp, frameTimeStamp);
-                Log.d(TAG, "hello"+frameCount);
                 mFrameRenderedListenerHandler.post(() -> mFrameRenderedListener
                             .onFrameRendered(new TimeFramePair<Bitmap, Double>(scaledBmp, frameTimeStamp)));
                 bmp.recycle();
@@ -457,7 +447,6 @@ public class CameraFragment extends Fragment {
 
     private void stopRecording() {
         nextVideoAbsolutePath = null;
-        //startPreview();
     }
 
     private void openCamera(int tvWidth, int tvHeight) {
