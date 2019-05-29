@@ -334,7 +334,8 @@ public class CameraFragment extends Fragment {
                     if (mRecordingState) {
                         stopRecording();
                         mRecordingState = false;
-                        mFrameRenderedListenerHandler.post(() -> mFrameRenderedListener.onFrameRendered(new TimeFramePair<Bitmap, Double>(mPoisonPillBitmap, (double) 0)))
+                        mFrameRenderedListenerHandler.post(() -> mFrameRenderedListener.onFrameRendered(
+                                new TimeFramePair<Bitmap, Double>(mReconVM.getPoisonPill(), (double) 0)));
                         Navigation.findNavController(getView()).navigate(R.id.action_cameraFragment_to_reconstructionFragment);
                         return true;
                     }
