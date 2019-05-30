@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linearLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/black">
 
     <com.example.leodw.worldepth.ui.camera.AutoFitTextureView
         android:id="@+id/textureView"
@@ -13,12 +14,12 @@
 
     <Button
         android:id="@+id/captureButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/circle_button_bordered"
-        android:text="@string/capture"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:background="@drawable/circle_button_transparent"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp"/>
 
     <ImageView
         android:id="@+id/cameraToMapButton"
