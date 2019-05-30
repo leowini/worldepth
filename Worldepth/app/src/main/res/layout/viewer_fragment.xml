@@ -6,21 +6,20 @@
     android:id="@+id/container_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWindowBackground"
+    android:background="@color/black"
     tools:context="com.example.leodw.worldepth.ui.preview.PreviewFragment">
 
-    <Button
-        android:id="@+id/viewerBackToCamera"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="35dp"
-        android:layout_marginEnd="138dp"
-        android:layout_marginBottom="519dp"
-        android:text="@string/back"
+    <ImageView
+        android:id="@+id/viewerBackToMap"
+        android:layout_width="40dp"
+        android:layout_height="30dp"
+        android:src="@drawable/back_arrow"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/loadSampleButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.046"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.02" />
 
     <Button
         android:id="@+id/postButton"
@@ -32,7 +31,8 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.90" />
+        app:layout_constraintVertical_bias="0.90"
+        android:visibility="invisible"/>
 
 </android.support.constraint.ConstraintLayout>
 

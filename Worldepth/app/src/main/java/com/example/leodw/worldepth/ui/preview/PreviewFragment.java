@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
+import android.widget.ImageView;
 
 import com.example.leodw.worldepth.ui.MainActivity;
 import com.example.leodw.worldepth.ui.map.MapFragment;
@@ -59,6 +60,8 @@ public class PreviewFragment extends Fragment {
 
     private MainActivity mainActivity;
 
+    private ImageView backToMap;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,10 +82,11 @@ public class PreviewFragment extends Fragment {
         if (getActivity().getIntent().getData() != null && savedInstanceState == null) {
             beginLoadModel(getActivity().getIntent().getData());
         }
-        Button backToCamera = view.findViewById(R.id.viewerBackToCamera);
-        backToCamera.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_viewerFragment_to_cameraFragment));
+        backToMap = view.findViewById(R.id.viewerBackToMap);
+        backToMap.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_viewerFragment_to_mapFragment));
         mainActivity = (MainActivity)getActivity();
         if(mainActivity.getLocalModelStatus()) {
+            getView().findViewById(R.id.postButton).setVisibility(View.VISIBLE);
             Button nextButton = view.findViewById(R.id.postButton);
             nextButton.setOnClickListener(v -> {
                 modelView.onPause();

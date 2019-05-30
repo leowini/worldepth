@@ -164,6 +164,9 @@
         <action
             android:id="@+id/action_viewerFragment_to_locationFragment"
             app:destination="@id/locationFragment" />
+        <action
+            android:id="@+id/action_viewerFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
     </fragment>
     <fragment
         android:id="@+id/loadingFragment"

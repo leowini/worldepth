@@ -59,6 +59,10 @@ public class ContinueSignUp extends Fragment {
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
+        SignUpBackButton2 = view.findViewById(R.id.signUpBackButton2);
+        SignUpBackButton2.setOnClickListener((view2) -> {
+            Navigation.findNavController(view2).popBackStack();
+        });
         registerButton = view.findViewById(R.id.signUpRegister);
         mPassword = view.findViewById(R.id.signUpPassword);
         mConfirmPassword = view.findViewById(R.id.signUpConfirmPW);
@@ -75,11 +79,6 @@ public class ContinueSignUp extends Fragment {
                 createNewAccount(firstName, lastName, email, password);
                 Navigation.findNavController(view1).navigate(R.id.action_continueSignUpFragment_to_homeFragment);
             }
-
-            SignUpBackButton2 = view.findViewById(R.id.signUpBackButton2);
-            SignUpBackButton2.setOnClickListener((view2) -> {
-                Navigation.findNavController(view2).popBackStack();
-            });
         });
 
         mPassword.addTextChangedListener(new TextWatcher() {
