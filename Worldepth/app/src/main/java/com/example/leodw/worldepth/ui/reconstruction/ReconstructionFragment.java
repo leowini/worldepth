@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ImageView;
 
 import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.slam.ReconVM;
@@ -31,7 +32,7 @@ public class ReconstructionFragment extends Fragment {
     private static boolean calibrating;
 
     private Button mNextButton;
-    private Button mBackButton;
+    private ImageView mBackButton;
 
     @Nullable
     @Override
