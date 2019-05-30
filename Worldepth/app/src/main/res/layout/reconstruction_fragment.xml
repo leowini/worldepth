@@ -34,16 +34,19 @@
 
     <Button
         android:id="@+id/reconNextButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:text="@string/nextButton"
+        android:textSize="12sp"
+        android:fontFamily="@font/montserrat_b"
+        android:textColor="@color/settingsText"
+        android:background="@drawable/circle_button_bordered"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.75" />
+        app:layout_constraintVertical_bias="0.9" />
 
     <TextView
         android:id="@+id/reconReconProgress"
