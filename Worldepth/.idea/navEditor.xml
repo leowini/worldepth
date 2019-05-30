@@ -209,6 +209,11 @@
                                 <LayoutPositions />
                               </value>
                             </entry>
+                            <entry key="action_mapFragment_to_viewerFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                           </map>
                         </option>
                       </LayoutPositions>
@@ -485,6 +490,11 @@
                               </value>
                             </entry>
                             <entry key="action_viewerFragment_to_locationFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_viewerFragment_to_mapFragment">
                               <value>
                                 <LayoutPositions />
                               </value>

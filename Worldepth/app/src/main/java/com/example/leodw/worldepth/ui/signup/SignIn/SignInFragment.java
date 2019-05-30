@@ -60,7 +60,7 @@ public class SignInFragment extends Fragment {
         mEmailInput = view.findViewById(R.id.emailInput);
         mPasswordInput = view.findViewById(R.id.signInPassword);
         continueButton = view.findViewById(R.id.signInContinue);
-        goBack = view.findViewById(R.id.emailBackButton);
+        goBack = view.findViewById(R.id.signInBackButton);
 
         /*continueButton.setOnClickListener((view1) -> {
             if (validEmail()) {
