@@ -1,12 +1,14 @@
 package com.example.leodw.worldepth.ui.post;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +24,9 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -52,6 +56,8 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Go
     private GoogleMap mMap;
 
     private MapView mMapView;
+
+    private final String TAG = "LocationFragment";
 
     private FirebaseDatabase mDatabase; //Instance of database
     private DatabaseReference mDataRef;
@@ -151,6 +157,19 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Go
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        try {
+            // Customise the styling of the base map using a JSON object defined
+            // in a raw resource file.
+            boolean success = googleMap.setMapStyle(
+                    MapStyleOptions.loadRawResourceStyle(
+                            this.getContext(), R.raw.style_json));
+
+            if (!success) {
+                Log.e(TAG, "Style parsing failed.");
+            }
+        } catch (Resources.NotFoundException e) {
+            Log.e(TAG, "Can't find style. Error: ", e);
+        }
         mMap = googleMap;
 
         googleMap.setOnMapClickListener((this));
@@ -159,7 +178,8 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Go
     @Override
     public void onMapClick(LatLng loc){
         mMap.clear();
-        mMap.addMarker(new MarkerOptions().position(loc).title("post location"));
+        mMap.addMarker(new MarkerOptions().position(loc).title("post location").
+                icon(BitmapDescriptorFactory.defaultMarker(208)));
         currentLoc = loc;
     }
 
