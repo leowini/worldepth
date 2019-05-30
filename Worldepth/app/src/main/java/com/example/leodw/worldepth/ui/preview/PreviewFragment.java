@@ -86,6 +86,7 @@ public class PreviewFragment extends Fragment {
         backToMap.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_viewerFragment_to_mapFragment));
         mainActivity = (MainActivity)getActivity();
         if(mainActivity.getLocalModelStatus()) {
+            getView().findViewById(R.id.postButton).setVisibility(View.INVISIBLE);
             Button nextButton = view.findViewById(R.id.postButton);
             nextButton.setOnClickListener(v -> {
                 modelView.onPause();
