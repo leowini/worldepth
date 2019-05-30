@@ -6,14 +6,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.post.LocationFragment"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/black">
 
     <Button
         android:id="@+id/postButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/circular_button"
+        android:textSize="12sp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:background="@drawable/circle_button_bordered"
         android:text="@string/post"
+        android:textColor="@color/settingsText"
+        android:fontFamily="@font/montserrat_b"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -25,5 +29,17 @@
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:id="@+id/map2"   />
+
+    <ImageView
+        android:id="@+id/postBackButton"
+        android:layout_width="40dp"
+        android:layout_height="30dp"
+        android:src="@drawable/back_arrow"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.046"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.02" />
 
 </android.support.constraint.ConstraintLayout>

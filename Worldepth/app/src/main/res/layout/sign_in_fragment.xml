@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.signup.SignIn.SignInFragment"
-    android:background="@color/black">
+    android:background="@drawable/purple_to_black_gradient">
 
     <ImageView
         android:layout_width="400dp"
@@ -17,7 +17,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.15"
+        app:layout_constraintVertical_bias="0.09"
         />
 
     <TextView
@@ -32,7 +32,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.06"/>
+        app:layout_constraintVertical_bias="0.02"/>
 
     <EditText
         android:id="@+id/emailInput"
@@ -50,7 +50,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.20" />
+        app:layout_constraintVertical_bias="0.155" />
 
     <EditText
         android:id="@+id/signInPassword"
@@ -68,8 +68,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.32" />
-
+        app:layout_constraintVertical_bias="0.29" />
 
     <Button
         android:id="@+id/signInContinue"
@@ -84,19 +83,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.53" />
+        app:layout_constraintVertical_bias="0.5" />
 
     <ImageView
-        android:id="@+id/emailBackButton"
-        android:layout_width="32dp"
-        android:layout_height="69dp"
-        android:src="@drawable/back2"
+        android:id="@+id/signInBackButton"
+        android:layout_width="40dp"
+        android:layout_height="30dp"
+        android:src="@drawable/back_arrow"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.045"
+        app:layout_constraintHorizontal_bias="0.046"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.032" />
+        app:layout_constraintVertical_bias="0.02" />
 
     <ImageView
         android:id="@+id/start_logo"

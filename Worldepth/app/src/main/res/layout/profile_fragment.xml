@@ -8,27 +8,27 @@
 
     <ImageView
         android:id="@+id/profileToMapButton"
-        android:layout_width="20dp"
-        android:layout_height="40dp"
-        android:src="@drawable/back2"
+        android:layout_width="40dp"
+        android:layout_height="30dp"
+        android:src="@drawable/back_arrow"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.046"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.008" />
+        app:layout_constraintVertical_bias="0.02" />
 
     <ImageView
         android:id="@+id/profileToSettingsBtn"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:src="@drawable/settings1"
+        android:src="@drawable/settings_icon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.96"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.008"
+        app:layout_constraintVertical_bias="0.02"
         android:contentDescription="@string/navbutton" />
 
     <ImageView

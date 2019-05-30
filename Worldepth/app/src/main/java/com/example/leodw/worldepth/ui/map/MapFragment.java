@@ -1,6 +1,7 @@
 package com.example.leodw.worldepth.ui.map;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
@@ -21,7 +22,9 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -74,6 +77,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         mMapView = view.findViewById(R.id.map);
         if (mMapView != null) {
+            Log.d(TAG, "making map");
             mMapView.onCreate(null);
             mMapView.onResume();
             mMapView.getMapAsync(this);
@@ -104,6 +108,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
+            // Customise the styling of the base map using a JSON object defined
+            // in a raw resource file.
+            MapStyleOptions mso = MapStyleOptions.loadRawResourceStyle(
+                    getContext(), R.raw.style_json);
+            boolean success = googleMap.setMapStyle(mso);
+
+            if (!success) {
+                Log.e(TAG, "Style parsing failed.");
+            }else {
+                Log.d(TAG, "map successfully styled");
+            }
         mMap = googleMap;
         mDataRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -112,7 +127,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                 postList = (Map<String, Map<String, Object>>) postsSnap.getValue();
                 for (Map<String, Object> post : postList.values()) {
                     LatLng loc = new LatLng((Double)post.get("lat"), (Double)post.get("lng"));
-                    mMap.addMarker(new MarkerOptions().position(loc).title((String)post.get("key")));
+                    mMap.addMarker(new MarkerOptions().position(loc).title((String)post.get("key"))
+                    .icon(BitmapDescriptorFactory.defaultMarker(208)));
                 }
             }
 
