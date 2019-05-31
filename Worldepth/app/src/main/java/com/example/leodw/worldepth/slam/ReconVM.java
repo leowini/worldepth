@@ -63,7 +63,9 @@ public class ReconVM extends ViewModel {
         mFrameCountHandler = new Handler(Looper.getMainLooper());
         mQueue = new LinkedBlockingQueue<>();
         startReconstructionThread();
-        calibration = false;
+        calibration = false;    //If you want to run calibration first set true and comment
+        // reconstruction, uncomment calibration
+        //startCalibrationThread();
     }
 
     private void startReconstructionThread() {
@@ -88,10 +90,13 @@ public class ReconVM extends ViewModel {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            //startReconstructionThread();
+            //mReconProgress.setValue(ReconProgress.READY);
 
             mPoissonWrapper = null;
             mTextureMapWrapper = null;
         });
+        //System.gc();
     }
 
     private void showModelPreview() {
@@ -151,9 +156,11 @@ public class ReconVM extends ViewModel {
     }
 
     private void stopCalibrationThread() throws InterruptedException {
+        //mCalibrationThread.join();
         mCalibrationThread = null;
         mQueue.clear();
         mCalibWrapper = null;
+        //System.gc();
         startReconstructionThread();
     }
 
@@ -192,6 +199,7 @@ public class ReconVM extends ViewModel {
                 mRenderedFrames = 0;
                 mProcessedFrames = 0;
             });
+            mSlam.doSlam();
         });
         mPoissonWrapper = new PoissonWrapper();
         mPoissonWrapper.setOnCompleteListener(() -> {
