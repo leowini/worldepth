@@ -187,11 +187,13 @@ public class ReconVM extends ViewModel {
     private void reconstruct() {
         mTextureMapWrapper = new TextureMapWrapper();
         mTextureMapWrapper.setOnCompleteListener(() -> {
+            mQueue.clear(); //Clear blocking queue to ensure no left over frames from last capture end up in next capture
             mProgressListenerHandler.post(() -> {
                 showModelPreview();
                 mRenderedFrames = 0;
                 mProcessedFrames = 0;
             });
+            mSlam.doSlam(); //Setup for the next capturing
         });
         mPoissonWrapper = new PoissonWrapper();
         mPoissonWrapper.setOnCompleteListener(() -> {
@@ -217,6 +219,7 @@ public class ReconVM extends ViewModel {
                 mProgressListenerHandler.post(() -> mReconProgress.setValue(ReconProgress.POISSON));
                 mPoissonWrapper.runPoisson(mInternalPath);
             } else {
+                mQueue.clear();
                 mProgressListenerHandler.post(() -> mReconProgress.setValue(ReconProgress.FAILED));
                 mProgressListenerHandler.post(() -> {
                     mRenderedFrames = 0;
