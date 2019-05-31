@@ -206,7 +206,6 @@ public class ReconVM extends ViewModel {
             mProgressListenerHandler.post(() -> mReconProgress.setValue(ReconProgress.TM));
             mTextureMapWrapper.map();
         });
-        mSlam.doSlam();
         synchronized(lock){
             while (mInternalPath.equals("")) {
                 try {
