@@ -42,8 +42,7 @@
         <action
             android:id="@+id/action_cameraFragment_to_mapFragment"
             app:destination="@id/mapFragment"
-            app:enterAnim="@animator/slide_down_in"
-            app:exitAnim="@animator/slide_down_out" />
+            app:exitAnim="@animator/slide_left_out" />
         <action
             android:id="@+id/action_cameraFragment_to_mapFragment2"
             app:destination="@id/mapFragment" />
