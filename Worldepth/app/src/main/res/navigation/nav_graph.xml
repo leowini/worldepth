@@ -42,7 +42,7 @@
         <action
             android:id="@+id/action_cameraFragment_to_mapFragment"
             app:destination="@id/mapFragment"
-            app:exitAnim="@animator/slide_left_out" />
+            app:exitAnim="@animator/slide_left" />
         <action
             android:id="@+id/action_cameraFragment_to_mapFragment2"
             app:destination="@id/mapFragment" />
@@ -187,8 +187,7 @@
         <action
             android:id="@+id/action_mapFragment_to_cameraFragment"
             app:destination="@id/cameraFragment"
-            app:enterAnim="@animator/slide_up_in"
-            app:exitAnim="@animator/slide_up_out" />
+            app:exitAnim="@animator/slide_down" />
         <action
             android:id="@+id/action_mapFragment_to_messageFragment"
             app:destination="@id/messageFragment" />
