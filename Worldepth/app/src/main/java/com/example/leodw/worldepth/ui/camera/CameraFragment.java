@@ -21,10 +21,17 @@ import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CameraMetadata;
 import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.params.StreamConfigurationMap;
+import android.media.Image;
+import android.media.ImageReader;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
+import android.renderscript.Allocation;
+import android.renderscript.Element;
+import android.renderscript.RenderScript;
+import android.renderscript.ScriptIntrinsicYuvToRGB;
+import android.renderscript.Type;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -49,8 +56,10 @@ import com.example.leodw.worldepth.R;
 import com.example.leodw.worldepth.slam.ReconVM;
 import com.example.leodw.worldepth.slam.Slam;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -67,20 +76,26 @@ public class CameraFragment extends Fragment {
 
     private ReconVM mReconVM;
 
-    private Renderer mRenderer;
-    private Slam mSlam;
-    private SurfaceTexture mSlamOutputSurface;
-
     private Button captureBtn;
     private ImageView mMapButton;
     private AutoFitTextureView mTextureView;
 
     private boolean mRecordingState;
 
-    private Integer sensorOrientation;
-
     private static final SparseIntArray DEFAULT_ORIENTATIONS = new SparseIntArray();
     private static final SparseIntArray INVERSE_ORIENTATIONS = new SparseIntArray();
+
+    private ImageReader mImageReader;
+
+    private RenderScript rs;
+    private ScriptIntrinsicYuvToRGB yuvToRgbIntrinsic;
+    private Type.Builder yuvType, rgbaType;
+    private Allocation in, out;
+
+    private OnFrameRenderedListener mFrameRenderedListener;
+    private Handler mFrameRenderedListenerHandler;
+
+    private static int frameCount = 0;
 
     static {
         DEFAULT_ORIENTATIONS.append(Surface.ROTATION_0, 90);
@@ -158,7 +173,6 @@ public class CameraFragment extends Fragment {
         public void onError(@NonNull CameraDevice camera, int error) {
             if(cameraDevice != null) {
                 cameraDevice.close();
-                camera = null;
             }
             Log.e(TAG, "" + error);
         }
@@ -287,6 +301,8 @@ public class CameraFragment extends Fragment {
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
+        rs = RenderScript.create(getActivity());
+        yuvToRgbIntrinsic = ScriptIntrinsicYuvToRGB.create(rs, Element.U8_4(rs));
         mReconVM = ViewModelProviders.of(getActivity()).get(ReconVM.class);
         mTextureView = view.findViewById(R.id.textureView);
         assert mTextureView != null;
@@ -310,8 +326,9 @@ public class CameraFragment extends Fragment {
                     if (mRecordingState) {
                         stopRecording();
                         mRecordingState = false;
+                        mFrameRenderedListenerHandler.post(() -> mFrameRenderedListener.onFrameRendered(
+                                new TimeFramePair<Bitmap, Double>(mReconVM.getPoisonPill(), (double) 0)));
                         Navigation.findNavController(getView()).navigate(R.id.action_cameraFragment_to_reconstructionFragment);
-                        mRenderer.stopRenderThread();
                         return true;
                     }
                     return false;
@@ -331,13 +348,55 @@ public class CameraFragment extends Fragment {
         //Queue for images and timestamps to send to Slam.
         BlockingQueue<TimeFramePair<Bitmap, Long>> q = new LinkedBlockingQueue<>();
         //Poison pill to signal end of queue.
-        mRenderer = new Renderer(mReconVM.getPoisonPill());
-        mRenderer.setOnSurfaceTextureReadyListener(texture -> {
-            mSlamOutputSurface = texture;
-            startCameraRecording();
-        }, new Handler(Looper.getMainLooper()));
-        mRenderer.setOnFrameRenderedListener((timeFramePair) -> mReconVM.sendFrame(timeFramePair), new Handler(Looper.getMainLooper()));
-        mRenderer.start(mPreviewSize.getWidth(), mPreviewSize.getHeight());
+        mImageReader = ImageReader.newInstance(mPreviewSize.getWidth(), mPreviewSize.getHeight(),
+                ImageFormat.YUV_420_888, 1);
+        mImageReader.setOnImageAvailableListener(new ImageReader.OnImageAvailableListener() {
+            @Override
+            public void onImageAvailable(ImageReader reader) {
+                frameCount++;
+                Image image = reader.acquireNextImage();
+                if (image == null) return;
+                Image.Plane Y = image.getPlanes()[0];
+                Image.Plane U = image.getPlanes()[1];
+                Image.Plane V = image.getPlanes()[2];
+
+                int Yb = Y.getBuffer().remaining();
+                int Ub = U.getBuffer().remaining();
+                int Vb = V.getBuffer().remaining();
+
+                byte[] data = new byte[Yb + Vb + Ub];
+
+
+                Y.getBuffer().get(data, 0, Yb);
+                V.getBuffer().get(data, Yb, Vb);
+                U.getBuffer().get(data, Yb + Vb, Ub);
+                if (yuvType == null)
+                {
+                    yuvType = new Type.Builder(rs, Element.U8(rs)).setX(data.length);
+                    in = Allocation.createTyped(rs, yuvType.create(), Allocation.USAGE_SCRIPT);
+
+                    rgbaType = new Type.Builder(rs, Element.RGBA_8888(rs)).setX(image.getWidth()).setY(image.getHeight());
+                    out = Allocation.createTyped(rs, rgbaType.create(), Allocation.USAGE_SCRIPT);
+                }
+
+                in.copyFrom(data);
+
+                yuvToRgbIntrinsic.setInput(in);
+                yuvToRgbIntrinsic.forEach(out);
+
+                Bitmap bmp = Bitmap.createBitmap(image.getWidth(), image.getHeight(), Bitmap.Config.ARGB_8888);
+                out.copyTo(bmp);
+                Bitmap scaledBmp = Bitmap.createScaledBitmap(bmp, 640 * bmp.getWidth()/bmp.getHeight(), 640, true);
+                double frameTimeStamp = (double) Calendar.getInstance().getTimeInMillis() /1000;
+                mFrameRenderedListenerHandler.post(() -> mFrameRenderedListener
+                            .onFrameRendered(new TimeFramePair<Bitmap, Double>(scaledBmp, frameTimeStamp)));
+                bmp.recycle();
+                image.close();
+            }
+        }, mBackgroundHandler);
+
+        startCameraRecording();
+        setOnFrameRenderedListener((timeFramePair) -> mReconVM.sendFrame(timeFramePair), new Handler(Looper.getMainLooper()));
         mReconVM.setReconProgress(ReconVM.ReconProgress.SLAM);
     }
 
@@ -360,8 +419,7 @@ public class CameraFragment extends Fragment {
             mPreviewBuilder.addTarget(previewSurface);
 
             //Set up Surface for SLAM
-            mSlamOutputSurface.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
-            Surface slamOutputSurface = new Surface(mSlamOutputSurface);
+            Surface slamOutputSurface = mImageReader.getSurface();
             surfaces.add(slamOutputSurface);
             mPreviewBuilder.addTarget(slamOutputSurface);
 
@@ -384,7 +442,6 @@ public class CameraFragment extends Fragment {
 
     private void stopRecording() {
         nextVideoAbsolutePath = null;
-        //startPreview();
     }
 
     private void openCamera(int tvWidth, int tvHeight) {
@@ -537,4 +594,12 @@ public class CameraFragment extends Fragment {
         }
     }
 
+    public interface OnFrameRenderedListener {
+        void onFrameRendered(TimeFramePair<Bitmap, Double> timeFramePair);
+    }
+
+    public void setOnFrameRenderedListener(OnFrameRenderedListener listener, Handler handler) {
+        mFrameRenderedListener = listener;
+        mFrameRenderedListenerHandler = handler;
+    }
 }
