@@ -11,12 +11,15 @@
         tools:layout="@layout/start_screen_fragment" >
         <action
             android:id="@+id/action_startScreenFragment_to_startSignupFragment"
+            app:exitAnim="@animator/slide_right"
             app:destination="@id/startSignupFragment" />
         <action
             android:id="@+id/action_startScreenFragment_to_cameraFragment"
+            app:exitAnim="@animator/slide_right"
             app:destination="@id/cameraFragment" />
         <action
             android:id="@+id/action_startScreenFragment_to_SignInFragment"
+            app:exitAnim="@animator/slide_right"
             app:destination="@id/signInFragment"/>
     </fragment>
     <fragment
@@ -44,13 +47,8 @@
             app:destination="@id/mapFragment"
             app:exitAnim="@animator/slide_left" />
         <action
-            android:id="@+id/action_cameraFragment_to_mapFragment2"
-            app:destination="@id/mapFragment" />
-        <action
-            android:id="@+id/action_cameraFragment_to_mapFragment3"
-            app:destination="@id/mapFragment" />
-        <action
             android:id="@+id/action_cameraFragment_to_reconstructionFragment"
+            app:exitAnim="@animator/slide_right"
             app:destination="@id/reconstructionFragment" />
     </fragment>
     <fragment
@@ -68,19 +66,16 @@
         android:label="home_fragment"
         tools:layout="@layout/home_fragment" >
         <action
-            android:id="@+id/action_birthdayFragment_to_passwordFragment"
-            app:destination="@id/passwordFragment" />
-        <action
-            android:id="@+id/action_birthdayFragment_to_nameFragment"
-            app:destination="@id/nameFragment" />
-        <action
             android:id="@+id/action_homeFragment_to_profileFragment"
+            app:exitAnim="@animator/slide_right"
             app:destination="@id/profileFragment" />
         <action
             android:id="@+id/action_homeFragment_to_cameraFragment"
+            app:exitAnim="@animator/slide_right"
             app:destination="@id/cameraFragment" />
         <action
             android:id="@+id/action_homeFragment_to_mapFragment"
+            app:exitAnim="@animator/slide_right"
             app:destination="@id/mapFragment" />
     </fragment>
     <fragment
@@ -89,16 +84,12 @@
         android:label="start_signup_fragment"
         tools:layout="@layout/start_signup_fragment" >
         <action
-            android:id="@+id/action_startSignupFragment_to_phoneFragment"
-            app:destination="@id/continueSignUpFragment" />
-        <action
             android:id="@+id/action_startSignupFragment_to_startScreenFragment"
+            app:exitAnim="@animator/slide_left"
             app:destination="@id/startScreenFragment" />
         <action
-            android:id="@+id/action_startSignupFragment_to_emailFragment"
-            app:destination="@id/signInFragment" />
-        <action
             android:id="@+id/action_startSignupFragment_to_continueSignUpFragment"
+            app:exitAnim="@animator/slide_right"
             app:destination="@id/continueSignUpFragment" />
     </fragment>
     <fragment
@@ -107,19 +98,11 @@
         android:label="continueSignUp_fragment"
         tools:layout="@layout/continue_signup" >
         <action
-            android:id="@+id/action_phoneFragment_to_nameFragment"
-            app:destination="@id/nameFragment" />
-        <action
-            android:id="@+id/action_phoneFragment_to_startSignupFragment"
-            app:destination="@id/startSignupFragment" />
-        <action
             android:id="@+id/action_continueSignUpFragment_to_cameraFragment"
             app:destination="@id/cameraFragment" />
         <action
-            android:id="@+id/action_continueSignUpFragment_to_loadingFragment"
-            app:destination="@id/loadingFragment" />
-        <action
             android:id="@+id/action_continueSignUpFragment_to_homeFragment"
+            app:exitAnim="@animator/slide_right"
             app:destination="@id/homeFragment" />
     </fragment>
     <fragment
@@ -132,6 +115,7 @@
             app:destination="@id/cameraFragment" />
         <action
             android:id="@+id/action_signInFragment_to_homeFragment"
+            app:exitAnim="@animator/slide_right"
             app:destination="@id/homeFragment" />
     </fragment>
     <fragment
@@ -141,12 +125,15 @@
         tools:layout="@layout/settings_fragment" >
         <action
             android:id="@+id/action_settings_to_startScreenFragment"
+            app:exitAnim="@animator/slide_left"
             app:destination="@id/startScreenFragment" />
         <action
             android:id="@+id/action_settings_to_cameraFragment"
+            app:exitAnim="@animator/slide_right"
             app:destination="@id/cameraFragment" />
         <action
             android:id="@+id/action_settings_to_profileFragment"
+            app:exitAnim="@animator/slide_left"
             app:destination="@id/profileFragment" />
     </fragment>
     <fragment
@@ -165,6 +152,7 @@
             app:destination="@id/locationFragment" />
         <action
             android:id="@+id/action_viewerFragment_to_mapFragment"
+            app:exitAnim="@animator/slide_left"
             app:destination="@id/mapFragment" />
     </fragment>
     <fragment
@@ -174,6 +162,7 @@
         tools:layout="@layout/loading_fragment" >
         <action
             android:id="@+id/action_loadingFragment_to_cameraFragment"
+            app:exitAnim="@animator/slide_right"
             app:destination="@id/cameraFragment" />
     </fragment>
     <fragment
@@ -183,6 +172,7 @@
         tools:layout="@layout/map_fragment" >
         <action
             android:id="@+id/action_mapFragment_to_profileFragment"
+            app:exitAnim="@animator/slide_right"
             app:destination="@id/profileFragment" />
         <action
             android:id="@+id/action_mapFragment_to_cameraFragment"
@@ -190,12 +180,15 @@
             app:exitAnim="@animator/slide_down" />
         <action
             android:id="@+id/action_mapFragment_to_messageFragment"
+            app:exitAnim="@animator/slide_right"
             app:destination="@id/messageFragment" />
         <action
             android:id="@+id/action_mapFragment_to_viewerFragment"
+            app:exitAnim="@animator/slide_right"
             app:destination="@id/viewerFragment" />
         <action
             android:id="@+id/action_mapFragment_to_homeFragment"
+            app:exitAnim="@animator/slide_left"
             app:destination="@id/homeFragment" />
     </fragment>
     <fragment
@@ -205,9 +198,11 @@
         tools:layout="@layout/profile_fragment" >
         <action
             android:id="@+id/action_profileFragment_to_settings"
+            app:exitAnim="@animator/slide_right"
             app:destination="@id/settings" />
         <action
             android:id="@+id/action_profileFragment_to_mapFragment"
+            app:exitAnim="@animator/slide_left"
             app:destination="@id/mapFragment" />
     </fragment>
     <fragment
@@ -217,6 +212,7 @@
         tools:layout="@layout/message_fragment" >
         <action
             android:id="@+id/action_messageFragment_to_mapFragment"
+            app:exitAnim="@animator/slide_left"
             app:destination="@id/mapFragment" />
     </fragment>
     <fragment
