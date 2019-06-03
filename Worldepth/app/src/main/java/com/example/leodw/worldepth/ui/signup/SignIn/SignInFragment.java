@@ -60,15 +60,11 @@ public class SignInFragment extends Fragment {
         mEmailInput = view.findViewById(R.id.emailInput);
         mPasswordInput = view.findViewById(R.id.signInPassword);
         continueButton = view.findViewById(R.id.signInContinue);
-        goBack = view.findViewById(R.id.signInBackButton);
 
-        /*continueButton.setOnClickListener((view1) -> {
-            if (validEmail()) {
-                String email = mEmailInput.getText().toString() + "@" + mServiceInput.getText().toString() + "." + mSuffixInput.getText().toString();
-                mDt.addData(new DataPair(email, "passwordFragment", "emailFragment"));
-                Navigation.findNavController(view1).navigate(R.id.action_emailFragment_to_nameFragment);
-            }
-        });*/
+        ImageView goBack = view.findViewById(R.id.signInBackButton);
+        goBack.setOnClickListener((view2) -> {
+            Navigation.findNavController(view2).navigate(R.id.action_signInFragment_to_startScreenFragment);
+        });
 
         continueButton.setOnClickListener((view1) -> {
             if ((!mEmailInput.getText().toString().equals("")) && (!mPasswordInput.getText().toString().equals("")))
@@ -78,11 +74,6 @@ public class SignInFragment extends Fragment {
                 Toast.makeText(getContext(), "Enter your login info.", Toast.LENGTH_SHORT).show();
             }
         });
-
-        goBack.setOnClickListener((view2) -> {
-            Navigation.findNavController(view2).popBackStack();
-        });
-
         mEmailInput.requestFocus();
     }
 
