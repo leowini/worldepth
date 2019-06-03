@@ -79,12 +79,13 @@
         android:label="continueSignUp_fragment"
         tools:layout="@layout/continue_signup" >
         <action
-            android:id="@+id/action_continueSignUpFragment_to_cameraFragment"
-            app:destination="@id/cameraFragment" />
-        <action
             android:id="@+id/action_continueSignUpFragment_to_homeFragment"
             app:exitAnim="@animator/slide_right"
             app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_continueSignUpFragment_to_startSignUpFragment"
+            app:exitAnim="@animator/slide_left"
+            app:destination="@id/startSignupFragment"/>
     </fragment>
     <fragment
         android:id="@+id/signInFragment"
@@ -92,12 +93,13 @@
         android:label="signIn_fragment"
         tools:layout="@layout/sign_in_fragment">
         <action
-            android:id="@+id/action_signInFragment_to_cameraFragment"
-            app:destination="@id/cameraFragment" />
-        <action
             android:id="@+id/action_signInFragment_to_homeFragment"
             app:exitAnim="@animator/slide_right"
             app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_signInFragment_to_startScreenFragment"
+            app:exitAnim="@animator/slide_left"
+            app:destination="@id/startScreenFragment" />
     </fragment>
     <fragment
         android:id="@+id/settings"

@@ -59,9 +59,9 @@ public class ContinueSignUp extends Fragment {
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
-        SignUpBackButton2 = view.findViewById(R.id.signUpBackButton2);
-        SignUpBackButton2.setOnClickListener((view2) -> {
-            Navigation.findNavController(view2).popBackStack();
+        ImageView signUpBack2 = view.findViewById(R.id.signUpBackButton2);
+        signUpBack2.setOnClickListener((view2) -> {
+            Navigation.findNavController(view2).navigate(R.id.action_continueSignUpFragment_to_startSignUpFragment);
         });
         registerButton = view.findViewById(R.id.signUpRegister);
         mPassword = view.findViewById(R.id.signUpPassword);

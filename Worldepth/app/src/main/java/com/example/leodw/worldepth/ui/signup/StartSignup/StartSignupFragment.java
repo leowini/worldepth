@@ -107,6 +107,9 @@ public class  StartSignupFragment extends Fragment {
         if (spaceIndex != -1) {
             firstName = fullName.substring(0, spaceIndex);
             lastName = fullName.substring(spaceIndex + 1);
+        } else if (fullName.equals("")){
+            firstName = "Blank";
+            lastName = "Temp";
         } else {
             firstName = fullName;
             lastName = "Temp";
