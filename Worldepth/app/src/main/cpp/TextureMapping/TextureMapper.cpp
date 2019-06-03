@@ -450,7 +450,6 @@ void TextureMapper::projectToSurface() {
     // accumulation buffers for colors and weights
     int buff_ind;
     cv::Mat sourceImage;
-    double pweight = 1.0;
     double *weights;
     double *acc_red;
     double *acc_grn;
@@ -462,7 +461,6 @@ void TextureMapper::projectToSurface() {
     acc_grn = new double[vertices.size()];
     acc_blu = new double[vertices.size()];
     for (int buff_ind = 0; buff_ind < vertices.size(); buff_ind++) {
-        weights[buff_ind] = 0.0;
         acc_red[buff_ind] = 0.0;
         acc_grn[buff_ind] = 0.0;
         acc_blu[buff_ind] = 0.0;
@@ -483,10 +481,10 @@ void TextureMapper::projectToSurface() {
             if (rect.contains(imgPoint)) {
                 cv::Vec3b pcolor = sourceImage.at<cv::Vec3b>(imgPoint);
                 //add color buffers
-                weights[buff_ind] += pweight;
-                acc_red[buff_ind] += (pcolor[0] * pweight / 255.0);
-                acc_grn[buff_ind] += (pcolor[1] * pweight / 255.0);
-                acc_blu[buff_ind] += (pcolor[2] * pweight / 255.0);
+                weights[buff_ind] += 1.0;
+                acc_red[buff_ind] += (pcolor[0] / 255.0);
+                acc_grn[buff_ind] += (pcolor[1] / 255.0);
+                acc_blu[buff_ind] += (pcolor[2] / 255.0);
             }
             buff_ind++;
         } //end for each vertex
