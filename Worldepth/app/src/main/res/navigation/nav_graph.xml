@@ -22,18 +22,7 @@
             app:exitAnim="@animator/slide_right"
             app:destination="@id/signInFragment"/>
     </fragment>
-    <fragment
-        android:id="@+id/passwordFragment"
-        android:name="com.example.leodw.worldepth.ui.signup.Password.PasswordFragment"
-        android:label="password_fragment"
-        tools:layout="@layout/password_fragment" >
-        <action
-            android:id="@+id/action_passwordFragment_to_birthdayFragment"
-            app:destination="@id/homeFragment" />
-        <action
-            android:id="@+id/action_passwordFragment_to_loadingFragment"
-            app:destination="@id/loadingFragment" />
-    </fragment>
+
     <fragment
         android:id="@+id/cameraFragment"
         android:name="com.example.leodw.worldepth.ui.camera.CameraFragment"
@@ -51,15 +40,7 @@
             app:exitAnim="@animator/slide_right"
             app:destination="@id/reconstructionFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/nameFragment"
-        android:name="com.example.leodw.worldepth.ui.signup.Name.NameFragment"
-        android:label="name_fragment"
-        tools:layout="@layout/name_fragment" >
-        <action
-            android:id="@+id/action_nameFragment_to_birthdayFragment"
-            app:destination="@id/homeFragment" />
-    </fragment>
+
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.leodw.worldepth.ui.signup.Home.HomeFragment"

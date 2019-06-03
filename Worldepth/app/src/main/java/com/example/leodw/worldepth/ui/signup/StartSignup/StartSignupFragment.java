@@ -96,8 +96,10 @@ public class  StartSignupFragment extends Fragment {
         mEmailSignup = view.findViewById(R.id.emailSignup);
         mPhoneSignup.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_startSignupFragment_to_phoneFragment));
         mEmailSignup.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_startSignupFragment_to_emailFragment));*/
-        mBackToStart = view.findViewById(R.id.signUpBackButton);
-        mBackToStart.setOnClickListener(v -> Navigation.findNavController(v).popBackStack());
+        ImageView signUpBack = view.findViewById(R.id.signUpBackButton);
+        signUpBack.setOnClickListener((view2) -> {
+            Navigation.findNavController(view2).navigate(R.id.action_startSignupFragment_to_startScreenFragment);
+        });
     }
 
     private void splitName() {
